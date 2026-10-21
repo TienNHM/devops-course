@@ -1,6 +1,6 @@
 # Buổi 32 – Final Demo & Review
 
-Tuần 16 · Phase 5 – Capstone Project · Slide deck: `slides/08-capstone/`
+Tuần 16 · Giai đoạn 5 – Capstone Project · Slide deck: `slides/08-capstone/`
 
 ## Learning objectives
 

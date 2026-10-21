@@ -1,6 +1,6 @@
 # Buổi 21 – Kubernetes Introduction
 
-Tuần 11 · Phase 4 – Kubernetes & kubectl · Slide deck: `slides/05-kubernetes/`
+Tuần 11 · Giai đoạn 4 – Kubernetes & kubectl · Slide deck: `slides/05-kubernetes/`
 
 ## Learning objectives
 

@@ -1,6 +1,6 @@
 # Buổi 02 – Development Environment
 
-Tuần 1 · Phase 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
+Tuần 1 · Giai đoạn 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
 
 ## Learning objectives
 

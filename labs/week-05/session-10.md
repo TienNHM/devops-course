@@ -1,6 +1,6 @@
 # Buổi 10 – Image Optimization
 
-Tuần 5 · Phase 2 – Docker & Containerization · Slide deck: `slides/02-docker/`
+Tuần 5 · Giai đoạn 2 – Docker & Containerization · Slide deck: `slides/02-docker/`
 
 ## Learning objectives
 

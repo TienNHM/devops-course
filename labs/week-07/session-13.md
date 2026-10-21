@@ -1,6 +1,6 @@
 # Buổi 13 – Docker Compose
 
-Tuần 7 · Phase 2 – Docker & Containerization · Slide deck: `slides/03-compose/`
+Tuần 7 · Giai đoạn 2 – Docker & Containerization · Slide deck: `slides/03-compose/`
 
 ## Learning objectives
 

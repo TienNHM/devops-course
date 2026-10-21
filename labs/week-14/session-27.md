@@ -1,6 +1,6 @@
 # Buổi 27 – Storage & Ingress
 
-Tuần 14 · Phase 4 – Kubernetes & kubectl · Slide deck: `slides/07-operations/`
+Tuần 14 · Giai đoạn 4 – Kubernetes & kubectl · Slide deck: `slides/07-operations/`
 
 ## Learning objectives
 

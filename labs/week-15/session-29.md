@@ -1,6 +1,6 @@
 # Buổi 29 – Architecture & Planning
 
-Tuần 15 · Phase 5 – Capstone Project · Slide deck: `slides/08-capstone/`
+Tuần 15 · Giai đoạn 5 – Capstone Project · Slide deck: `slides/08-capstone/`
 
 ## Learning objectives
 

@@ -1,6 +1,6 @@
 # Buổi 20 – Pipeline Security
 
-Tuần 10 · Phase 3 – CI/CD & Automation · Slide deck: `slides/04-cicd/`
+Tuần 10 · Giai đoạn 3 – CI/CD & Automation · Slide deck: `slides/04-cicd/`
 
 ## Learning objectives
 

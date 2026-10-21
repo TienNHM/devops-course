@@ -1,6 +1,6 @@
 # Buổi 08 – Docker CLI
 
-Tuần 4 · Phase 2 – Docker & Containerization · Slide deck: `slides/02-docker/`
+Tuần 4 · Giai đoạn 2 – Docker & Containerization · Slide deck: `slides/02-docker/`
 
 ## Learning objectives
 

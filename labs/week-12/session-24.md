@@ -1,6 +1,6 @@
 # Buổi 24 – Kubernetes Services
 
-Tuần 12 · Phase 4 – Kubernetes & kubectl · Slide deck: `slides/06-kubectl/`
+Tuần 12 · Giai đoạn 4 – Kubernetes & kubectl · Slide deck: `slides/06-kubectl/`
 
 ## Learning objectives
 

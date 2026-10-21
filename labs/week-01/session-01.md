@@ -1,6 +1,6 @@
 # Buổi 01 – DevOps Introduction
 
-Tuần 1 · Phase 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
+Tuần 1 · Giai đoạn 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
 
 ## Learning objectives
 

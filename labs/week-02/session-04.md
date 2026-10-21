@@ -1,6 +1,6 @@
 # Buổi 04 – Linux Administration
 
-Tuần 2 · Phase 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
+Tuần 2 · Giai đoạn 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
 
 ## Learning objectives
 

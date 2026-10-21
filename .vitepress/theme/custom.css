@@ -1,0 +1,42 @@
+/* Màu nhấn: xanh của Docker/Kubernetes */
+:root {
+  --vp-c-brand-1: #1d63ed;
+  --vp-c-brand-2: #3b7bf0;
+  --vp-c-brand-3: #1d63ed;
+  --vp-c-brand-soft: rgba(29, 99, 237, 0.1);
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #1d63ed 20%, #0aa5b8);
+  --vp-home-hero-image-background-image: none;
+}
+
+.dark {
+  --vp-c-brand-1: #6ea8fe;
+  --vp-c-brand-2: #5594f5;
+  --vp-c-brand-3: #1d63ed;
+  --vp-c-brand-soft: rgba(110, 168, 254, 0.14);
+  --vp-home-hero-name-background: linear-gradient(120deg, #6ea8fe 20%, #4fd1c5);
+}
+
+/* Bảng rộng: cuộn ngang thay vì tràn trang */
+.vp-doc table { display: block; overflow-x: auto; }
+
+/* Khối details (gợi ý, lời giải) */
+.vp-doc details {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: var(--vp-c-bg-soft);
+}
+.vp-doc details > summary { cursor: pointer; font-weight: 600; color: var(--vp-c-brand-1); }
+.vp-doc details[open] > summary { margin-bottom: 8px; }
+
+/* Danh sách rà soát "- [ ] ...": bỏ dấu chấm đầu dòng */
+.vp-doc li:has(> input[type='checkbox']) { list-style: none; margin-left: -1.25em; }
+
+/* Hero: khung code nằm gọn bên phải */
+.VPHero .image-container { display: flex; align-items: center; justify-content: center; }
+@media (min-width: 960px) {
+  .VPHero .image { margin-left: 32px; }
+}

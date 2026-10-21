@@ -1,6 +1,6 @@
 # Buổi 25 – Configuration Management
 
-Tuần 13 · Phase 4 – Kubernetes & kubectl · Slide deck: `slides/06-kubectl/`
+Tuần 13 · Giai đoạn 4 – Kubernetes & kubectl · Slide deck: `slides/06-kubectl/`
 
 ## Learning objectives
 

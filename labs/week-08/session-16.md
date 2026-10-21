@@ -1,6 +1,6 @@
 # Buổi 16 – GitHub Actions Basics
 
-Tuần 8 · Phase 3 – CI/CD & Automation · Slide deck: `slides/04-cicd/`
+Tuần 8 · Giai đoạn 3 – CI/CD & Automation · Slide deck: `slides/04-cicd/`
 
 ## Learning objectives
 

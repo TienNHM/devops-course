@@ -1,6 +1,6 @@
 # Buổi 18 – Docker CI Pipeline
 
-Tuần 9 · Phase 3 – CI/CD & Automation · Slide deck: `slides/04-cicd/`
+Tuần 9 · Giai đoạn 3 – CI/CD & Automation · Slide deck: `slides/04-cicd/`
 
 ## Learning objectives
 

@@ -1,6 +1,6 @@
 # Buổi 06 – Git & GitHub Workflow
 
-Tuần 3 · Phase 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
+Tuần 3 · Giai đoạn 1 – Engineering Foundation · Slide deck: `slides/01-foundation/`
 
 ## Learning objectives
 

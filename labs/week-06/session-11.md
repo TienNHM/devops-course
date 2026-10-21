@@ -1,6 +1,6 @@
 # Buổi 11 – Container Networking
 
-Tuần 6 · Phase 2 – Docker & Containerization · Slide deck: `slides/02-docker/`
+Tuần 6 · Giai đoạn 2 – Docker & Containerization · Slide deck: `slides/02-docker/`
 
 ## Learning objectives
 
