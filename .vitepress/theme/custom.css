@@ -40,3 +40,38 @@
 @media (min-width: 960px) {
   .VPHero .image { margin-left: 32px; }
 }
+
+/* Mobile */
+.VPNavBarTitle .title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 480px) {
+  .VPNavBar .title { font-size: 15px; }
+  .vp-doc h1 { font-size: 26px; line-height: 34px; }
+  .vp-doc h2 { font-size: 21px; line-height: 30px; }
+  .vp-doc div[class*='language-'] { margin-left: -24px; margin-right: -24px; border-radius: 0; }
+  .vp-doc table { font-size: 13px; }
+  .vp-doc th, .vp-doc td { padding: 8px 10px; }
+  .VPHero .name, .VPHero .text { word-break: break-word; }
+  .VPHero .actions { gap: 8px; }
+  .VPHero .action { width: 100%; }
+  .VPHero .VPButton { width: 100%; text-align: center; }
+}
+.vp-doc .mermaid { overflow-x: auto; }
+.vp-doc img { max-width: 100%; height: auto; }
+.vp-doc :not(pre) > code { overflow-wrap: anywhere; }
+.vp-doc a { overflow-wrap: anywhere; }
+
+/* Hero trên điện thoại/tablet: chữ trước, khung code sau, không chồng lên nhau */
+@media (max-width: 959px) {
+  .VPHero .container { display: flex; flex-direction: column; }
+  .VPHero .main { order: 1; }
+  .VPHero .image { order: 2; margin: 32px 0 0; width: 100%; }
+  .VPHero .image-container { height: auto !important; }
+}
+
+/* Tablet: thanh điều hướng chật, thu gọn khoảng cách */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .VPNavBarMenuLink, .VPNavBarMenuGroup .button { padding: 0 8px; font-size: 13px; }
+  .VPNavBarTitle .title { font-size: 15px; }
+  .VPNavBarSearch { padding-left: 8px; }
+  .VPNavBarSocialLinks { display: none; }
+}

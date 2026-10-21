@@ -149,15 +149,17 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
 
   themeConfig: {
     repoUrl: repo,
+    // Tên ngắn cho thanh điều hướng để vừa màn hình điện thoại; tiêu đề đầy đủ vẫn ở thẻ title
+    siteTitle: 'DevOps · HCMUTE DSC',
     nav: [
       { text: 'Syllabus', link: '/curriculum/syllabus' },
-      { text: 'Lịch học', link: '/curriculum/schedule' },
       { text: 'Bài lab', link: '/labs/week-01/' },
-      { text: 'Capstone', link: '/assignments/capstone/' },
       { text: 'Vibe Deploy', link: '/vibe/' },
       {
         text: 'Thêm',
         items: [
+          { text: 'Lịch học', link: '/curriculum/schedule' },
+          { text: 'Capstone', link: '/assignments/capstone/' },
           { text: 'Dành cho mentor', link: '/mentors/' },
           { text: 'Walkthrough (đáp án)', link: '/solutions/walkthroughs/' },
           { text: 'Starter project', link: '/starter-project/' },
