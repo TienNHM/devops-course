@@ -1,4 +1,4 @@
-# Project – <Tên nhóm>
+# Project – &lt;Tên nhóm&gt;
 
 ## Thành viên và vai trò
 | Thành viên | Trách nhiệm | Reviewer chéo |

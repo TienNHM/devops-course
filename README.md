@@ -15,7 +15,7 @@ Containerized Application + CI/CD + Kubernetes (kind) chạy local.
 | --- | --- |
 | Học viên | [curriculum/syllabus.md](curriculum/syllabus.md), [curriculum/schedule.md](curriculum/schedule.md), [resources/setup-guide.md](resources/setup-guide.md) |
 | Mentor | [CONTRIBUTING.md](CONTRIBUTING.md), [curriculum/assessment.md](curriculum/assessment.md), [examples/troubleshooting-scenarios.md](examples/troubleshooting-scenarios.md) |
-| Người muốn chạy thử app mẫu | [starter-project/README.md](starter-project/README.md) |
+| Người muốn chạy thử app mẫu | [starter-project/](starter-project/) |
 
 ## Cấu trúc repository
 

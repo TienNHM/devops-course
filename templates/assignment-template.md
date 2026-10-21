@@ -1,6 +1,6 @@
-# Assignment – <Tên>
+# Assignment – &lt;Tên&gt;
 
-**Tuần:** <n> · **Hạn nộp:** <ngày>
+**Tuần:** &lt;n&gt; · **Hạn nộp:** &lt;ngày&gt;
 
 ## Yêu cầu bắt buộc (L1)
 ## Thử thách nâng cao (L2)

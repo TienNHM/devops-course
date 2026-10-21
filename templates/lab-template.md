@@ -1,4 +1,4 @@
-# Lab XX – <Tên lab>
+# Lab XX – &lt;Tên lab&gt;
 
 ## 1. Bài lab giải quyết vấn đề gì?
 ## 2. Kiến thức đã sử dụng?
