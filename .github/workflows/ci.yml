@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: starter-project/backend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: starter-project/backend
+        run: npm ci
+
+      - name: Run tests
+        working-directory: starter-project/backend
+        run: npm test
+
+  validate-compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose file
+        working-directory: starter-project
+        env:
+          DB_PASSWORD: ci-only-password
+        run: docker compose config --quiet

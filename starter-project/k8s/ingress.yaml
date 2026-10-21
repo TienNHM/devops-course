@@ -1,0 +1,26 @@
+# Requires ingress-nginx and a kind cluster created with kind-config.yaml (Lab session 27).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: club
+  namespace: club
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: club.localhost
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 3000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: club-web
+                port:
+                  number: 80

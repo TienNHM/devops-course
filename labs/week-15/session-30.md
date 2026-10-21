@@ -1,0 +1,49 @@
+# Buổi 30 – Implementation
+
+Tuần 15 · Phase 5 – Capstone Project · Slide deck: `slides/08-capstone/`
+
+## Learning objectives
+
+Sau buổi học, bạn có thể: giải thích và áp dụng **Implementation** vào dự án Club Management.
+
+## Nội dung
+
+Docker, Compose, Kubernetes, GitHub Actions, testing
+
+## Cấu trúc buổi (120 phút)
+
+| Thời lượng | Hoạt động |
+| --- | --- |
+| 15' | Ôn tập buổi trước |
+| 30' | Kiến thức + demo của mentor |
+| 60' | Hands-on lab |
+| 15' | Review, recap |
+
+## Hands-on lab
+
+**Đề bài:** Hoàn thiện dự án.
+
+Công cụ: Toàn bộ toolchain
+
+### L1 – Foundation (hoàn thành theo hướng dẫn)
+
+Hoàn thiện CRUD, Compose, pipeline cơ bản.
+
+### L2 – Engineering (tự triển khai, giải thích, xử lý lỗi)
+
+Triển khai lên kind với đầy đủ ConfigMap, Secret, PVC, Ingress và scale backend.
+
+## Lỗi thường gặp
+
+- Merge lớn vào phút cuối
+- Không chạy thử từ máy sạch
+
+## Nộp bài
+
+Nộp theo `templates/lab-template.md` vào `lab-30/` trong repository cá nhân:
+`README.md`, `source/`, `screenshots/`, `evidence/command-output.txt`, `report.md`.
+Screenshot không đủ để chấm: phải có source, câu lệnh, log hoặc kết quả kiểm thử.
+
+## Recap
+
+Tự trả lời 3 câu: (1) Vấn đề này giải quyết gì? (2) Nó hoạt động thế nào? (3) Khi lỗi, bạn kiểm tra gì đầu tiên?
