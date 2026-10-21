@@ -1,0 +1,32 @@
+title: HCMUTE DSC – DevOps Learning Program
+description: From Code to Deployment – DevOps Foundation & Practical Engineering
+url: https://devops-course.tiennhm.io.vn
+lang: vi
+theme: minima
+
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+  - jekyll-titles-from-headings
+
+relative_links:
+  enabled: true
+  collections: false
+
+titles_from_headings:
+  enabled: true
+  strip_title: true
+  collection: false
+
+exclude:
+  - .github
+  - starter-project/backend
+  - starter-project/frontend
+  - starter-project/database
+  - starter-project/k8s
+  - starter-project/compose.yaml
+  - examples/linux
+  - examples/kubernetes
+  - solutions/mentor-only
+  - CODE_OF_CONDUCT.md
