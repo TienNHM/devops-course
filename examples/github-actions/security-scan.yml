@@ -1,0 +1,53 @@
+# security-scan.yml - Quét lỗ hổng dependency và image trong CI.
+# Buổi liên quan: Tuần 12 (DevSecOps cơ bản: audit dependency, scan image, least privilege).
+# Trước khi dùng, kiểm tra phiên bản mới nhất của từng action ở trang Marketplace/GitHub của action đó;
+# trong môi trường nghiêm ngặt nên pin action theo commit SHA.
+name: Security scan
+
+on:
+  pull_request:
+  schedule:
+    - cron: "0 2 * * 1" # 02:00 UTC mỗi thứ Hai
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Audit dependency của backend (fail nếu có lỗ hổng mức high trở lên)
+        working-directory: backend
+        run: npm audit --omit=dev --audit-level=high
+
+  dependency-review:
+    # Chỉ chạy trên pull request; so sánh dependency mới với nhánh gốc
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+
+  image-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image backend để quét (không push)
+        run: docker build -t club-api:scan backend
+
+      - name: Quét image bằng Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: club-api:scan
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"

@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ts-10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: club-api
+  namespace: ts-10
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: club-api
+  template:
+    metadata:
+      labels:
+        app: club-api
+    spec:
+      containers:
+        - name: api
+          image: club-api:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: ts-10
+spec:
+  selector:
+    app: club-api
+  ports:
+    - port: 3000
+      targetPort: 3000

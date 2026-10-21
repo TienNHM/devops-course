@@ -1,0 +1,56 @@
+# docker-publish.yml - Build image và push lên GitHub Container Registry (GHCR) dùng GITHUB_TOKEN.
+# Buổi liên quan: Tuần 11 (CI/CD cho container, registry, tag theo commit).
+# Không cần tạo token riêng: GITHUB_TOKEN do GitHub cấp cho mỗi run. Cần quyền packages: write.
+# Giả định repo bắt đầu từ starter-project (backend/ và frontend/ ở gốc repo).
+name: Docker publish
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - name: club-api
+            context: backend
+          - name: club-web
+            context: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # metadata-action tự chuyển tên image về chữ thường theo yêu cầu của registry
+          images: ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}
+          tags: |
+            type=sha
+            type=ref,event=tag
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

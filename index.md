@@ -13,6 +13,9 @@ hero:
     - theme: alt
       text: Chuẩn bị môi trường
       link: /resources/setup-guide
+    - theme: alt
+      text: Vibe Deploy – lên mạng nhanh
+      link: /vibe/
 
 features:
   - icon: 🧭

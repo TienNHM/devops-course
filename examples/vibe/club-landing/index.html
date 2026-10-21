@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLB Công nghệ DSC - Đăng ký thành viên</title>
+  <meta name="description" content="Landing page CLB công nghệ với form đăng ký thành viên lưu vào Supabase.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top">DSC<span>.club</span></a>
+      <nav class="menu" aria-label="Menu chính">
+        <a href="#about">Giới thiệu</a>
+        <a href="#activities">Hoạt động</a>
+        <a href="#join" class="btn btn-small">Đăng ký</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Câu lạc bộ công nghệ sinh viên</p>
+        <h1>Làm ra sản phẩm thật, <em>cùng nhau</em></h1>
+        <p class="lead">Mỗi tuần một buổi: nhờ AI viết code, đưa lên Internet, mời bạn bè dùng thử. Không cần biết lập trình trước.</p>
+        <a href="#join" class="btn">Đăng ký thành viên</a>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2>Chúng mình là ai</h2>
+        <p class="narrow">Một nhóm sinh viên thích tự tay làm ra thứ gì đó chạy được. Có bạn học công nghệ, có bạn học kinh tế, thiết kế, ngoại ngữ. Điểm chung là tò mò và thích học qua làm.</p>
+      </div>
+    </section>
+
+    <section id="activities" class="section alt">
+      <div class="container">
+        <h2>Hoạt động</h2>
+        <div class="cards">
+          <article class="card"><h3>Workshop Vibe Coding</h3><p>Nói chuyện với AI để ra một trang web hoàn chỉnh trong 90 phút.</p></article>
+          <article class="card"><h3>Deploy Day</h3><p>Cùng đưa sản phẩm lên Internet bằng các dịch vụ miễn phí.</p></article>
+          <article class="card"><h3>Mini Hackathon</h3><p>48 giờ làm một sản phẩm nhỏ theo nhóm và demo trước CLB.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="join" class="section">
+      <div class="container form-wrap">
+        <h2>Đăng ký thành viên</h2>
+        <p class="narrow">Điền thông tin, ban tổ chức sẽ liên hệ qua email. Chúng mình chỉ lưu những gì bạn nhập bên dưới.</p>
+
+        <div id="setupNotice" class="alert alert-warn" hidden>
+          Chưa cấu hình Supabase. Hãy tạo file <code>config.js</code> từ <code>config.example.js</code> và điền URL cùng khóa công khai. Xem README.
+        </div>
+
+        <form id="joinForm" novalidate>
+          <label for="full_name">Họ và tên</label>
+          <input id="full_name" name="full_name" type="text" autocomplete="name" required minlength="2" maxlength="100" placeholder="Nguyễn Văn A">
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" placeholder="ban@example.com">
+
+          <label for="student_id">Mã số sinh viên (không bắt buộc)</label>
+          <input id="student_id" name="student_id" type="text" maxlength="30" placeholder="Ví dụ: 24110000">
+
+          <label for="interest">Bạn quan tâm điều gì nhất?</label>
+          <select id="interest" name="interest">
+            <option value="general">Chưa rõ, muốn khám phá</option>
+            <option value="web">Làm web</option>
+            <option value="ai">AI và vibe coding</option>
+            <option value="devops">Deploy và DevOps</option>
+            <option value="design">Thiết kế giao diện</option>
+          </select>
+
+          <!-- Bẫy bot: người thật không thấy ô này, bot thường điền vào -->
+          <div class="hp" aria-hidden="true">
+            <label for="website">Đừng điền ô này</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label class="check">
+            <input id="consent" name="consent" type="checkbox" required>
+            <span>Mình đồng ý để CLB lưu họ tên, email (và MSSV nếu có) nhằm liên hệ về hoạt động của CLB.</span>
+          </label>
+
+          <button id="submitBtn" class="btn" type="submit">Gửi đăng ký</button>
+          <p id="formMsg" class="alert" role="status" aria-live="polite" hidden></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>&copy; <span id="year">2026</span> <span id="clubName">CLB Công nghệ DSC</span></span>
+      <a href="admin.html">Quản trị</a>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>

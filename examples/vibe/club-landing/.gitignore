@@ -1,0 +1,17 @@
+# File cấu hình thật (chứa URL/khóa của bạn) không được commit mặc định.
+config.js
+
+# Biến môi trường và khóa
+.env
+.env.*
+!.env.example
+
+# Thư mục công cụ
+node_modules/
+.vercel/
+.netlify/
+.wrangler/
+.DS_Store
+
+# Thư mục build do build-config.mjs tạo ra
+dist/

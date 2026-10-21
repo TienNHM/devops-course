@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workers static assets demo</title>
+</head>
+<body>
+  <h1>Workers static assets demo</h1>
+  <p>Trang này là file tĩnh. Hai nút dưới đây gọi Worker.</p>
+  <button id="hello">Gọi /api/hello</button>
+  <button id="env">Gọi /api/env-check</button>
+  <pre id="out">Bấm một nút để thử.</pre>
+  <script>
+    async function call(path) {
+      const out = document.getElementById("out");
+      try {
+        const res = await fetch(path);
+        out.textContent = res.status + "\n" + JSON.stringify(await res.json(), null, 2);
+      } catch (e) {
+        out.textContent = "Lỗi: " + e.message;
+      }
+    }
+    document.getElementById("hello").onclick = () => call("/api/hello");
+    document.getElementById("env").onclick = () => call("/api/env-check");
+  </script>
+</body>
+</html>

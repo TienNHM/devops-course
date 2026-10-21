@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Club Management</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { text-align: left; padding: .4rem; border-bottom: 1px solid #ddd; }
+    form { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+    input { padding: .4rem; flex: 1 1 180px; }
+    button { padding: .4rem .8rem; cursor: pointer; }
+    td.actions { white-space: nowrap; }
+    #status { color: #666; }
+    #status.error { color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1>Club Members</h1>
+
+  <form id="member-form">
+    <input id="name" name="name" placeholder="Họ tên" maxlength="100" required>
+    <input id="email" name="email" type="email" placeholder="Email" maxlength="150" required>
+    <button type="submit" id="submit">Thêm</button>
+    <button type="button" id="cancel" hidden>Hủy</button>
+  </form>
+
+  <p id="status" role="status">Loading...</p>
+
+  <table>
+    <thead><tr><th>ID</th><th>Name</th><th>Email</th><th></th></tr></thead>
+    <tbody id="members"></tbody>
+  </table>
+
+  <script>
+    const tbody = document.getElementById("members");
+    const statusEl = document.getElementById("status");
+    const form = document.getElementById("member-form");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const submitBtn = document.getElementById("submit");
+    const cancelBtn = document.getElementById("cancel");
+    let editingId = null;
+
+    function setStatus(text, isError = false) {
+      statusEl.textContent = text;
+      statusEl.className = isError ? "error" : "";
+    }
+
+    async function api(path, options) {
+      const res = await fetch(path, options);
+      if (res.status === 204) return null;
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const detail = body.errors ? Object.values(body.errors).join("; ") : "";
+        throw new Error(`${body.message || `HTTP ${res.status}`}${detail ? ` (${detail})` : ""}`);
+      }
+      return body;
+    }
+
+    function makeButton(label, onClick) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = label;
+      button.addEventListener("click", onClick);
+      return button;
+    }
+
+    function resetForm() {
+      editingId = null;
+      form.reset();
+      submitBtn.textContent = "Thêm";
+      cancelBtn.hidden = true;
+    }
+
+    function startEdit(member) {
+      editingId = member.id;
+      nameInput.value = member.name;
+      emailInput.value = member.email;
+      submitBtn.textContent = "Lưu";
+      cancelBtn.hidden = false;
+      nameInput.focus();
+    }
+
+    // Mọi dữ liệu từ API đều đi qua textContent, không dùng innerHTML.
+    function render(members) {
+      tbody.replaceChildren();
+      for (const m of members) {
+        const tr = document.createElement("tr");
+        for (const value of [m.id, m.name, m.email]) {
+          const td = document.createElement("td");
+          td.textContent = value;
+          tr.appendChild(td);
+        }
+        const actions = document.createElement("td");
+        actions.className = "actions";
+        actions.appendChild(makeButton("Sửa", () => startEdit(m)));
+        actions.appendChild(makeButton("Xóa", () => removeMember(m)));
+        tr.appendChild(actions);
+        tbody.appendChild(tr);
+      }
+    }
+
+    async function load() {
+      try {
+        const members = await api("/api/members");
+        render(members);
+        setStatus(`${members.length} member(s)`);
+      } catch (err) {
+        setStatus(`Cannot load members: ${err.message}`, true);
+      }
+    }
+
+    async function removeMember(member) {
+      if (!window.confirm(`Xóa thành viên "${member.name}"?`)) return;
+      try {
+        await api(`/api/members/${member.id}`, { method: "DELETE" });
+        if (editingId === member.id) resetForm();
+        await load();
+      } catch (err) {
+        setStatus(`Cannot delete: ${err.message}`, true);
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const payload = { name: nameInput.value, email: emailInput.value };
+      const path = editingId === null ? "/api/members" : `/api/members/${editingId}`;
+      try {
+        await api(path, {
+          method: editingId === null ? "POST" : "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        resetForm();
+        await load();
+      } catch (err) {
+        setStatus(`Cannot save: ${err.message}`, true);
+      }
+    });
+
+    cancelBtn.addEventListener("click", resetForm);
+    load();
+  </script>
+</body>
+</html>

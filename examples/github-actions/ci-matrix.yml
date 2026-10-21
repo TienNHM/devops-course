@@ -1,0 +1,42 @@
+# ci-matrix.yml - Chạy test trên nhiều phiên bản Node bằng matrix, có concurrency để hủy run cũ.
+# Buổi liên quan: Tuần 9-10 (matrix, cache, concurrency).
+# Lưu ý: backend của starter-project dùng Node 22; các phiên bản khác chỉ để học cách dùng matrix.
+name: CI matrix
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Khi push thêm commit vào cùng nhánh, hủy run đang chạy dở của commit trước
+concurrency:
+  group: ci-matrix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false # một tổ hợp fail không làm dừng các tổ hợp còn lại
+      matrix:
+        os: [ubuntu-latest]
+        node: [20, 22]
+    name: test (node ${{ matrix.node }} on ${{ matrix.os }})
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - run: npm ci
+        working-directory: backend
+
+      - run: npm test
+        working-directory: backend

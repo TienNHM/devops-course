@@ -1,0 +1,15 @@
+# 01-pod.yaml - Pod đơn lẻ (không có controller): nếu bị xóa thì không được tạo lại.
+# Buổi liên quan: Tuần 13. Dùng namespace demo (kubectl create namespace demo).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod
+  namespace: demo
+  labels:
+    app: hello
+spec:
+  containers:
+    - name: web
+      image: nginx:1.27-alpine
+      ports:
+        - containerPort: 80

@@ -1,0 +1,32 @@
+# 07-pvc.yaml - PersistentVolumeClaim và Pod ghi dữ liệu vào volume.
+# Buổi liên quan: Tuần 15. Dùng StorageClass mặc định của kind (standard, local-path).
+# Thử nghiệm: xóa Pod, tạo lại, file vẫn còn vì dữ liệu nằm trong PVC.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pvc
+  namespace: demo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-demo
+  namespace: demo
+spec:
+  containers:
+    - name: writer
+      image: busybox:1.36
+      command: ["sh", "-c", "date >> /data/log.txt; cat /data/log.txt; sleep 3600"]
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: data-pvc

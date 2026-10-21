@@ -1,0 +1,42 @@
+name: ts03
+
+services:
+  api:
+    build:
+      context: ../../../starter-project/backend
+    image: ts03-api:broken
+    environment:
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: clubdb
+      DB_USER: club
+      DB_PASSWORD: ${DB_PASSWORD:-demo-only-password}
+    ports:
+      - "23003:3000"
+    networks:
+      - app-net
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: clubdb
+      POSTGRES_USER: club
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-demo-only-password}
+    volumes:
+      - ts03-pgdata:/var/lib/postgresql/data
+      - ../../../starter-project/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U club -d clubdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - data-net
+
+networks:
+  app-net:
+  data-net:
+
+volumes:
+  ts03-pgdata:

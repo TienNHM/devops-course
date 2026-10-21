@@ -15,6 +15,7 @@ Containerized Application + CI/CD + Kubernetes (kind) chạy local.
 | --- | --- |
 | Học viên | [curriculum/syllabus.md](curriculum/syllabus.md), [curriculum/schedule.md](curriculum/schedule.md), [resources/setup-guide.md](resources/setup-guide.md) |
 | Mentor | [CONTRIBUTING.md](CONTRIBUTING.md), [curriculum/assessment.md](curriculum/assessment.md), [examples/troubleshooting-scenarios.md](examples/troubleshooting-scenarios.md) |
+| Người mới, muốn đưa sản phẩm AI viết lên mạng nhanh | [vibe/](vibe/) (Vibe Deploy: Vercel, Netlify, Cloudflare, Supabase, Firebase) |
 | Người muốn chạy thử app mẫu | [starter-project/](starter-project/) |
 
 ## Cấu trúc repository
@@ -27,7 +28,9 @@ Containerized Application + CI/CD + Kubernetes (kind) chạy local.
 | `assignments/` | Bài tập hàng tuần và capstone |
 | `examples/` | Ví dụ Linux, Docker, Compose, Actions, Kubernetes; 10 tình huống lỗi |
 | `starter-project/` | Club Management API mẫu (Node.js + PostgreSQL) |
-| `solutions/` | Đáp án (nên chuyển sang repo private cho mentor) |
+| `vibe/` | Track Vibe Deploy cho người mới và người dùng AI agent |
+| `mentors/` | Sổ tay mentor, pilot, checklist mở khóa |
+| `solutions/` | Walkthrough công bố sau mỗi tuần; `mentor-only/` nên chuyển sang repo private |
 | `resources/` | Sách, tài liệu, cheatsheet, hướng dẫn cài đặt |
 | `templates/` | Template lab, assignment, project |
 

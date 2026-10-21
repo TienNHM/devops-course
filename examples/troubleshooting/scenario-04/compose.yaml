@@ -1,0 +1,20 @@
+name: ts04
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: clubdb
+      POSTGRES_USER: club
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-demo-only-password}
+      PGDATA: /var/lib/postgresql/pgdata
+    volumes:
+      - ts04-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U club -d clubdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  ts04-pgdata:

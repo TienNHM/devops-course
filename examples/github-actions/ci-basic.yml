@@ -1,0 +1,35 @@
+# ci-basic.yml - CI tối thiểu: checkout, cài Node, cài dependency, chạy test.
+# Buổi liên quan: Tuần 9 (GitHub Actions căn bản).
+# Cách dùng: chép file vào .github/workflows/ trong repo của bạn (file này cố ý KHÔNG nằm trong
+# .github/workflows của repo giáo trình). Đường dẫn backend giả định repo bắt đầu từ starter-project.
+name: CI basic
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Quyền tối thiểu cho GITHUB_TOKEN: chỉ đọc nội dung repo
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Cài dependency theo đúng package-lock.json
+        working-directory: backend
+        run: npm ci
+
+      - name: Chạy test
+        working-directory: backend
+        run: npm test

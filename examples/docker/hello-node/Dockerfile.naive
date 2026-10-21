@@ -1,0 +1,9 @@
+# Phiên bản "ngây thơ": dùng để so sánh, KHÔNG dùng cho thực tế.
+# Vấn đề: image đầy đủ (Debian) rất nặng, COPY . . trước npm install làm mất cache,
+# chép cả file không cần thiết, chạy bằng root.
+FROM node:22
+WORKDIR /app
+COPY . .
+RUN npm install
+EXPOSE 3000
+CMD ["node", "server.js"]

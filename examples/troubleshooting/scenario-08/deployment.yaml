@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ts-08
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notes-app
+  namespace: ts-08
+data:
+  server.js: |
+    const http = require("node:http");
+
+    const dbUrl = process.env.NOTES_DB_URL;
+    if (!dbUrl) {
+      console.error("FATAL: missing required environment variable NOTES_DB_URL");
+      process.exit(1);
+    }
+
+    http
+      .createServer((req, res) => {
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ status: "healthy", db: dbUrl.split("@").pop() }));
+      })
+      .listen(3000, () => console.log("club-notes listening on 3000"));
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: club-notes
+  namespace: ts-08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: club-notes
+  template:
+    metadata:
+      labels:
+        app: club-notes
+    spec:
+      containers:
+        - name: notes
+          image: node:22-alpine
+          command: ["node", "/app/server.js"]
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: app
+              mountPath: /app
+              readOnly: true
+      volumes:
+        - name: app
+          configMap:
+            name: notes-app

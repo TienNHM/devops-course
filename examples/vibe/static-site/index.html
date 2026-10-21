@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLB Công nghệ DSC - Học, làm, chia sẻ</title>
+  <meta name="description" content="Landing page mẫu cho câu lạc bộ công nghệ sinh viên: giới thiệu, hoạt động, lịch sinh hoạt và cách tham gia.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top">DSC<span>.club</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Mở menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav id="menu" class="menu" aria-label="Menu chính">
+        <a href="#about">Giới thiệu</a>
+        <a href="#activities">Hoạt động</a>
+        <a href="#schedule">Lịch</a>
+        <a href="#join" class="btn btn-small">Tham gia</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow">Câu lạc bộ công nghệ sinh viên</p>
+        <h1>Học công nghệ bằng cách <em>làm ra sản phẩm thật</em></h1>
+        <p class="lead">Mỗi tuần một buổi: viết code cùng AI, đưa lên Internet, mời bạn bè dùng thử. Không cần biết lập trình trước.</p>
+        <div class="hero-actions">
+          <a href="#join" class="btn">Đăng ký tham gia</a>
+          <a href="#activities" class="btn btn-ghost">Xem hoạt động</a>
+        </div>
+        <ul class="stats" aria-label="Số liệu nhanh">
+          <li><strong data-count="120">0</strong><span>thành viên</span></li>
+          <li><strong data-count="24">0</strong><span>buổi workshop</span></li>
+          <li><strong data-count="15">0</strong><span>sản phẩm đã ra mắt</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container two-col">
+        <div>
+          <h2>Chúng mình là ai</h2>
+          <p>Một nhóm sinh viên thích tự tay làm ra thứ gì đó chạy được. Có bạn học ngành công nghệ, có bạn học kinh tế, thiết kế, ngoại ngữ. Điểm chung là tò mò.</p>
+          <p>Ở đây không ai bị bắt học thuộc. Bạn có ý tưởng, nhờ AI viết bản đầu, rồi cả nhóm cùng sửa, cùng đưa lên mạng và cùng học vì sao nó chạy.</p>
+        </div>
+        <ul class="checks">
+          <li>Thân thiện với người mới bắt đầu</li>
+          <li>Mentor hỗ trợ trực tiếp mỗi buổi</li>
+          <li>Sản phẩm có link công khai để bỏ vào CV</li>
+          <li>Miễn phí, dùng dịch vụ gói free</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="activities" class="section alt">
+      <div class="container">
+        <h2>Hoạt động nổi bật</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Workshop Vibe Coding</h3>
+            <p>Nói chuyện với AI để ra một trang web hoàn chỉnh trong 90 phút.</p>
+          </article>
+          <article class="card">
+            <h3>Deploy Day</h3>
+            <p>Mang sản phẩm của bạn, cùng nhau đưa lên Vercel, Netlify hay GitHub Pages.</p>
+          </article>
+          <article class="card">
+            <h3>Mini Hackathon</h3>
+            <p>48 giờ làm một sản phẩm nhỏ theo nhóm, demo trước cả CLB.</p>
+          </article>
+          <article class="card">
+            <h3>Code Review Cafe</h3>
+            <p>Đọc code do AI viết, tìm lỗi và lỗ hổng bảo mật trước khi người khác tìm ra.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="schedule" class="section">
+      <div class="container">
+        <h2>Lịch sinh hoạt</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Thời gian</th><th>Nội dung</th><th>Địa điểm</th></tr></thead>
+            <tbody>
+              <tr><td>Thứ Ba, 18:30</td><td>Workshop chủ đề tuần</td><td>Phòng A1-101</td></tr>
+              <tr><td>Thứ Năm, 18:30</td><td>Deploy Day và hỏi đáp</td><td>Phòng A1-101</td></tr>
+              <tr><td>Chủ nhật đầu tháng</td><td>Mini Hackathon</td><td>Online (Discord)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Lịch chỉ là ví dụ. Hãy sửa lại cho đúng CLB của bạn.</p>
+      </div>
+    </section>
+
+    <section id="join" class="section cta">
+      <div class="container cta-inner">
+        <h2>Sẵn sàng thử chưa?</h2>
+        <p>Đến buổi gần nhất, mang theo laptop. Hoặc liên hệ để được hướng dẫn trước.</p>
+        <a class="btn btn-light" href="mailto:club@example.com?subject=Tham%20gia%20CLB">Gửi email cho CLB</a>
+        <p class="note-light">Đổi club@example.com thành email thật của bạn.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>&copy; <span id="year">2026</span> CLB Công nghệ DSC. Trang mẫu tĩnh, không thu thập dữ liệu.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: club-config
+  namespace: club
+data:
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_NAME: clubdb
+  DB_USER: club

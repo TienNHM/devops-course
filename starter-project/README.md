@@ -3,6 +3,12 @@
 Ứng dụng mẫu xuyên suốt khóa học: Node.js (Express 5) + PostgreSQL + Nginx frontend.
 Đây là **skeleton để học**, chưa phải cấu hình production.
 
+## Tải về
+
+- Dùng git: `git clone https://github.com/TienNHM/devops-course.git` rồi mở thư mục `starter-project/`.
+- Không dùng git: tải [starter-project.zip](https://devops-course.tiennhm.io.vn/downloads/starter-project.zip) từ website của khóa học.
+- Xem từng file trên GitHub: [backend](backend/), [frontend](frontend/), [database](database/), [k8s](k8s/), [compose.yaml](compose.yaml).
+
 ## Chạy bằng Docker Compose
 
 ```bash

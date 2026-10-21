@@ -11,4 +11,4 @@ Phase 5 – Capstone Project
 - **Advanced challenge:** CI/CD và deployment automation
 - **Sản phẩm phải nộp:** xem [assignments/weekly/week-15.md](../../assignments/weekly/week-15.md)
 
-Buổi 1 trong tuần thiên về kiến thức, minh họa kiến trúc và demo; buổi 2 thiên về thực hành, thử thách và review.
+Mỗi buổi 120 phút: 15' ôn tập, 30' kiến thức và demo, 60' thực hành, 15' review. Buổi đầu của tuần dành nhiều thời gian hơn cho khái niệm và demo; buổi thứ hai dồn vào thực hành, thử thách L2 và review bài làm.

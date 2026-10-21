@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Firebase mẫu: ghi chú riêng tư</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 560px; margin: 2rem auto; padding: 0 1rem; }
+    button, input { font: inherit; padding: .5rem; }
+    li { margin: .25rem 0; }
+    #status { color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Ghi chú riêng tư</h1>
+  <p id="status">Đang tải...</p>
+  <button id="login" hidden>Đăng nhập bằng Google</button>
+  <button id="logout" hidden>Đăng xuất</button>
+  <form id="form" hidden>
+    <input id="text" maxlength="500" placeholder="Viết ghi chú" required>
+    <button type="submit">Lưu</button>
+  </form>
+  <ul id="list"></ul>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

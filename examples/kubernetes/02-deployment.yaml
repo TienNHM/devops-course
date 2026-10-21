@@ -1,0 +1,27 @@
+# 02-deployment.yaml - Deployment quản lý ReplicaSet và Pod: tự thay Pod chết, hỗ trợ rolling update.
+# Buổi liên quan: Tuần 13-14.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80

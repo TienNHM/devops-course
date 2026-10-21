@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng ký CLB (demo Supabase)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 2rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: .8rem; }
+    input, textarea { width: 100%; padding: .5rem; box-sizing: border-box; }
+    button { margin-top: 1rem; padding: .6rem 1.2rem; }
+    #status { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Đăng ký tham gia CLB</h1>
+  <form id="form">
+    <label>Họ tên <input name="full_name" required maxlength="100"></label>
+    <label>Email <input name="email" type="email" required maxlength="200"></label>
+    <label>Lời nhắn <textarea name="message" maxlength="1000"></textarea></label>
+    <button type="submit">Gửi đăng ký</button>
+  </form>
+  <p id="status" role="status"></p>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    import { SUPABASE_URL, SUPABASE_KEY } from './config.js'
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+    const status = document.getElementById('status')
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const data = Object.fromEntries(new FormData(e.target))
+      // Không gọi .select() sau insert: khách chưa đăng nhập không có quyền đọc lại dòng vừa tạo
+      const { error } = await supabase.from('signups').insert(data)
+      status.textContent = error ? 'Lỗi: ' + error.message : 'Đã gửi. Cảm ơn bạn!'
+      if (!error) e.target.reset()
+    })
+  </script>
+</body>
+</html>

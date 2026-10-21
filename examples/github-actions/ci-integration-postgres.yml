@@ -1,0 +1,57 @@
+# ci-integration-postgres.yml - Test tích hợp với PostgreSQL chạy như service container.
+# Buổi liên quan: Tuần 10 (service containers, integration test).
+# Mật khẩu dưới đây chỉ dùng trong job CI tạm thời, không phải secret thật.
+name: CI integration postgres
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: clubdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 5432:5432
+        # Runner đợi healthcheck đạt trước khi chạy các step
+        options: >-
+          --health-cmd "pg_isready -U postgres -d clubdb"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DB_HOST: localhost
+      DB_PORT: "5432"
+      DB_NAME: clubdb
+      DB_USER: postgres
+      DB_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Nạp schema và dữ liệu mẫu
+        # psql có sẵn trên ubuntu-latest runner
+        run: psql "postgresql://postgres:ci-only-password@localhost:5432/clubdb" -v ON_ERROR_STOP=1 -f database/init.sql
+
+      - run: npm ci
+        working-directory: backend
+
+      - name: Chạy test
+        working-directory: backend
+        run: npm test

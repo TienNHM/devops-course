@@ -1,0 +1,50 @@
+# deploy-local-dispatch.yml - "CD cho môi trường local": chạy thủ công, kiểm tra image đã có trên GHCR,
+# rồi in ra lệnh để BẠN chạy trên máy của mình (kind chạy local, không expose ra Internet).
+# Buổi liên quan: Tuần 11 (CD thủ công có kiểm soát), kết hợp examples/kubernetes/deploy-local.sh.
+#
+# Workflow này KHÔNG truy cập cluster của bạn. Nó chỉ xác nhận tag tồn tại và hướng dẫn bước triển khai.
+name: Deploy local dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag image cần triển khai, ví dụ sha-abc1234 hoặc v1.0.0"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  verify-and-instruct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OWNER: ${{ github.repository_owner }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Kiểm tra image tồn tại trên GHCR
+        run: |
+          OWNER_LC=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          for img in club-api club-web; do
+            echo "Kiểm tra ghcr.io/${OWNER_LC}/${img}:${TAG}"
+            docker manifest inspect "ghcr.io/${OWNER_LC}/${img}:${TAG}" > /dev/null
+          done
+
+      - name: Ghi hướng dẫn triển khai vào job summary
+        run: |
+          OWNER_LC=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          cat >> "$GITHUB_STEP_SUMMARY" <<SUMMARY
+          ### Image sẵn sàng
+          Chạy trên máy local của bạn (WSL2):
+
+          OWNER=${OWNER_LC} TAG=${TAG} ./examples/kubernetes/deploy-local.sh
+          SUMMARY

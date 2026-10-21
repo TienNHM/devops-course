@@ -1,0 +1,22 @@
+# Compose nhỏ nhất có ý nghĩa: một web (Nginx) và một database (PostgreSQL).
+# Chạy: docker compose up -d   (đọc biến từ file .env cùng thư mục, xem .env.example)
+services:
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - "${WEB_PORT:-38090}:80"
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: clubdb
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Hãy đặt DB_PASSWORD trong file .env}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

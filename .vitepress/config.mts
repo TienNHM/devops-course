@@ -1,9 +1,38 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import { courseTree } from './course'
 
 const repo = process.env.REPO_URL || 'https://github.com/TienNHM/devops-course'
+
+
+const root = join(import.meta.dirname, '..')
+const h1 = (rel: string) => readFileSync(join(root, rel), 'utf8').match(/^# (.+)$/m)?.[1] ?? rel
+
+function slidesSidebar(): DefaultTheme.SidebarItem[] {
+  const names: Record<string, string> = {
+    '01-foundation': 'Foundation', '02-docker': 'Docker', '03-compose': 'Compose', '04-cicd': 'CI/CD',
+    '05-kubernetes': 'Kubernetes', '06-kubectl': 'kubectl', '07-operations': 'Operations', '08-capstone': 'Capstone',
+  }
+  return Object.entries(names).map(([dir, name], i) => ({
+    text: `${dir.slice(0, 2)} – ${name}`,
+    collapsed: i > 0,
+    link: `/slides/${dir}/`,
+    items: readdirSync(join(root, 'slides', dir))
+      .filter((f) => /^session-\d+\.md$/.test(f))
+      .sort()
+      .map((f) => ({ text: h1(`slides/${dir}/${f}`).replace(/^Slide buổi /, 'Buổi '), link: `/slides/${dir}/${f.replace(/\.md$/, '')}` })),
+  }))
+}
+
+// Sidebar cho một thư mục phẳng: index.md trước, các file còn lại theo tên
+function flatSidebar(dir: string, group: string): DefaultTheme.SidebarItem[] {
+  if (!existsSync(join(root, dir))) return []
+  const files = readdirSync(join(root, dir)).filter((f) => f.endsWith('.md')).sort()
+  const ordered = ['index.md', ...files.filter((f) => f !== 'index.md')].filter((f) => files.includes(f))
+  return [{ text: group, items: ordered.map((f) => ({ text: f === 'index.md' ? 'Tổng quan' : h1(`${dir}/${f}`), link: `/${dir}/${f === 'index.md' ? '' : f.replace(/\.md$/, '')}` })) }]
+}
 
 const weekNums = Array.from({ length: 16 }, (_, i) => String(i + 1).padStart(2, '0'))
 
@@ -20,7 +49,7 @@ function labsSidebar(): DefaultTheme.SidebarItem[] {
   }))
 }
 
-export default defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>({
+export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>({
   lang: 'vi-VN',
   title: 'DevOps – From Code to Deployment',
   description:
@@ -52,7 +81,8 @@ export default defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>(
   transformPageData(pageData, { siteConfig }) {
     if (pageData.frontmatter.description) return
     const src = readFileSync(join(siteConfig.srcDir, pageData.filePath), 'utf8')
-    const body = src.match(/^## Nội dung\s+([^\n#][^\n]+)$/m)?.[1]
+    const body =
+      src.match(/^> \*\*Tóm tắt:\*\* (.+)$/m)?.[1] ?? src.match(/^## Nội dung\s+([^\n#][^\n]+)$/m)?.[1]
     if (body) pageData.description = body.replace(/[`*]/g, '')
   },
 
@@ -69,6 +99,36 @@ export default defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>(
       }
 
       // Danh sách rà soát "- [ ] ...": markdown-it không tự hiển thị ô đánh dấu
+      // Link tương đối tới file không phải .md (schema.sql, compose.yaml...) hoặc thư mục không có trang
+      // (starter-project/backend/): website không phục vụ chúng, nên trỏ sang GitHub để không thành link chết.
+      md.core.ruler.push('repo_links', (state) => {
+        const from = (state.env?.relativePath as string | undefined)?.split('/').slice(0, -1) ?? []
+        for (const block of state.tokens) {
+          for (const tok of block.children ?? []) {
+            if (tok.type !== 'link_open') continue
+            const href = tok.attrGet('href') ?? ''
+            if (!href || /^([a-z][a-z0-9+.-]*:|#|\/)/i.test(href)) continue
+            const [path, hash] = href.split('#')
+            const parts = [...from]
+            for (const seg of path.split('/')) {
+              if (seg === '..') parts.pop()
+              else if (seg && seg !== '.') parts.push(seg)
+            }
+            const rel = parts.join('/')
+            const abs = join(root, rel)
+            if (!rel || !existsSync(abs)) continue
+            const isDir = statSync(abs).isDirectory()
+            const hasPage = isDir
+              ? ['README.md', 'index.md'].some((f) => existsSync(join(abs, f))) && !/^(starter-project\/(backend|frontend|k8s|database)|solutions\/mentor-only)/.test(rel)
+              : rel.endsWith('.md') && !/^(starter-project\/(backend|frontend|k8s|database)|solutions\/mentor-only)\//.test(rel)
+            if (hasPage) continue
+            tok.attrSet('href', `${repo}/${isDir ? 'tree' : 'blob'}/master/${rel}${hash ? `#${hash}` : ''}`)
+            tok.attrSet('target', '_blank')
+            tok.attrSet('rel', 'noreferrer')
+          }
+        }
+      })
+
       md.core.ruler.push('task_list', (state) => {
         state.tokens.forEach((block, i) => {
           const box =
@@ -94,9 +154,12 @@ export default defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>(
       { text: 'Lịch học', link: '/curriculum/schedule' },
       { text: 'Bài lab', link: '/labs/week-01/' },
       { text: 'Capstone', link: '/assignments/capstone/' },
+      { text: 'Vibe Deploy', link: '/vibe/' },
       {
         text: 'Thêm',
         items: [
+          { text: 'Dành cho mentor', link: '/mentors/' },
+          { text: 'Walkthrough (đáp án)', link: '/solutions/walkthroughs/' },
           { text: 'Starter project', link: '/starter-project/' },
           { text: '10 tình huống lỗi', link: '/examples/troubleshooting-scenarios' },
           { text: 'Setup guide', link: '/resources/setup-guide' },
@@ -124,20 +187,11 @@ export default defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>(
           items: weekNums.map((n) => ({ text: `Tuần ${n}`, link: `/assignments/weekly/week-${n}` })),
         },
       ],
-      '/slides/': [
-        {
-          text: 'Slide deck',
-          items: [
-            ['01-foundation', 'Foundation'],
-            ['02-docker', 'Docker'],
-            ['03-compose', 'Compose'],
-            ['04-cicd', 'CI/CD'],
-            ['05-kubernetes', 'Kubernetes'],
-            ['06-kubectl', 'kubectl'],
-            ['07-operations', 'Operations'],
-            ['08-capstone', 'Capstone'],
-          ].map(([dir, name]) => ({ text: `${dir.slice(0, 2)} – ${name}`, link: `/slides/${dir}/` })),
-        },
+      '/slides/': slidesSidebar(),
+      '/mentors/': flatSidebar('mentors', 'Dành cho mentor'),
+      '/vibe/': flatSidebar('vibe', 'Vibe Deploy'),
+      '/solutions/': [
+        { text: 'Walkthrough', items: [{ text: 'Giới thiệu', link: '/solutions/' }, { text: 'Mục lục 16 tuần', link: '/solutions/walkthroughs/' }, ...weekNums.map((n) => ({ text: `Tuần ${n}`, link: `/solutions/walkthroughs/week-${n}` }))] },
       ],
       '/resources/': [
         {
@@ -199,4 +253,5 @@ export default defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>(
       copyright: 'Nội dung gốc của TienNHM',
     },
   },
-})
+  mermaid: {},
+}))

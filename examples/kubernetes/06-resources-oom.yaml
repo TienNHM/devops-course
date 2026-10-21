@@ -1,0 +1,22 @@
+# 06-resources-oom.yaml - Mô phỏng OOMKilled an toàn: vòng lặp shell nhân đôi chuỗi liên tục
+# cho tới khi vượt giới hạn bộ nhớ 32Mi của container. Chỉ container này bị kill, node không ảnh hưởng.
+# Buổi liên quan: Tuần 15-16. Liên quan tình huống lỗi "CrashLoopBackOff".
+# Kiểm tra: kubectl -n demo describe pod oom-demo   (Last State/State: Terminated, Reason: OOMKilled, Exit Code: 137)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oom-demo
+  namespace: demo
+spec:
+  restartPolicy: Never
+  containers:
+    - name: hog
+      image: busybox:1.36
+      command: ["sh", "-c", "a=xxxxxxxxxxxxxxxx; while true; do a=\"$a$a\"; done"]
+      resources:
+        requests:
+          cpu: 50m
+          memory: 16Mi
+        limits:
+          cpu: 200m
+          memory: 32Mi

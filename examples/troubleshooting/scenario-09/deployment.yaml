@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ts-09
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: club-web
+  namespace: ts-09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: club-web
+  template:
+    metadata:
+      labels:
+        app: club-web
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "64"
+              memory: 128Gi
+            limits:
+              cpu: "64"
+              memory: 128Gi

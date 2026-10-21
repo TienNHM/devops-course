@@ -3,11 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
+    "docs:dev": "node scripts/make-starter-zip.mjs && vitepress dev",
+    "docs:build": "node scripts/make-starter-zip.mjs && vitepress build",
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
-    "vitepress": "^1.6.4"
+    "@types/node": "^22.20.5",
+    "fflate": "^0.8.3",
+    "mermaid": "^11.17.2",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17"
   }
 }

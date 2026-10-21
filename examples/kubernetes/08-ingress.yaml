@@ -1,0 +1,21 @@
+# 08-ingress.yaml - Ingress định tuyến http://demo.localhost tới Service web (từ 03-service.yaml).
+# Buổi liên quan: Tuần 14. Yêu cầu: cluster tạo bằng kind-3-nodes.yaml (map cổng 80/443)
+# và đã cài ingress-nginx theo hướng dẫn trong README.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  namespace: demo
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: demo.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80

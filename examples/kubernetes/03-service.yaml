@@ -1,0 +1,15 @@
+# 03-service.yaml - Service ClusterIP: địa chỉ ổn định + load balancing tới các Pod có label app=web.
+# Buổi liên quan: Tuần 14. Trong cluster, gọi bằng http://web.demo.svc.cluster.local hoặc http://web (cùng namespace).
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: demo
+spec:
+  type: ClusterIP
+  selector:
+    app: web
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
