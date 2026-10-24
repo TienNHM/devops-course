@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Dùng Docker Compose để mô tả và chạy cả Frontend, API và PostgreSQL của starter-project bằng một file `compose.yaml` và một lệnh duy nhất.
 
-Bài học đầy đủ: [Buổi 13 – Docker Compose](../../labs/week-07/session-13.md). Kịch bản demo và ghi chú giảng viên nằm ở trang dành cho mentor.
+Bài học đầy đủ: [Buổi 13 – Docker Compose](../../labs/week-07/session-13.md).
 
 ## Slide 1: Mục tiêu buổi học
 

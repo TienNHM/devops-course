@@ -1,8 +1,10 @@
-# Chấm điểm tuần 10 – CD & Pipeline Security
+# Hướng dẫn chấm tuần 10 – CD & Pipeline Security
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm, học viên không cần đọc. Đề bài và bảng điểm ngắn: [Bài tập tuần 10](../../assignments/weekly/week-10.md). Đáp án và hướng dẫn chấm theo từng nhiệm vụ: [Walkthrough tuần 10](../walkthroughs/week-10.md). Bài học: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/session-19.md), [Buổi 20 – Pipeline Security](../../labs/week-10/session-20.md).
+Trang này dành cho người chấm, học viên không cần đọc. Đề bài và bảng điểm ngắn: [Bài tập tuần 10](../../assignments/weekly/week-10.md). Đáp án và hướng dẫn chấm theo từng nhiệm vụ: [Đáp án tuần 10](../walkthroughs/week-10.md). Bài học: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/session-19.md), [Buổi 20 – Pipeline Security](../../labs/week-10/session-20.md).
 :::
+
+> **Tóm tắt:** Barem chi tiết (đạt và không đạt), lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp để chấm bài tuần 10.
 
 ## Cách kiểm chứng
 
@@ -10,9 +12,7 @@ Mentor kiểm chứng bằng cách đọc evidence, mở workflow và script tro
 
 ## Barem chi tiết
 
-Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2 (trần cuối cùng 110).
-
-Ghi chú điều chỉnh: bài tập tuần 10 đã tách phần bắt buộc (permissions, một lần quét image) khỏi phần nâng cao (SBOM, pin SHA, quét `--ignore-unfixed`, `trivy config`), nên điểm nhiệm vụ 4 và 5 cũ được chia lại và phần nâng cao có dòng riêng 10 điểm. Bảng chấm trong Walkthrough tuần 10 vẫn dùng trọng số cũ (15, 10); khi chấm theo bảng này, hiểu "Nhiệm vụ 4" và "Nhiệm vụ 5" trong Walkthrough là gộp của ba dòng nhiệm vụ 4, nhiệm vụ 5 và nâng cao ở đây.
+Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2 (trần cuối cùng 110). Phần bắt buộc (nhiệm vụ 1 đến 5) và phần nâng cao (10 điểm) được chấm ở các dòng riêng.
 
 | Tiêu chí | Đạt | Không đạt | Điểm |
 | --- | --- | --- | --- |
@@ -75,7 +75,7 @@ Ba kiểm tra chéo nên làm: hai tag trong evidence khớp tab Packages; thờ
 
 ## Câu hỏi vấn đáp gợi ý
 
-Dùng khi nghi ngờ bài chép hoặc muốn kiểm tra mức hiểu. Bảng đầy đủ kèm bằng chứng cần thấy và dấu hiệu bài chép nằm ở mục "Hướng dẫn chấm cho mentor" của [Walkthrough tuần 10](../walkthroughs/week-10.md).
+Dùng khi nghi ngờ bài chép hoặc muốn kiểm tra mức hiểu. Bảng kèm bằng chứng cần thấy và dấu hiệu bài chép nằm ở mục "Hướng dẫn chấm cho mentor" của [Đáp án tuần 10](../walkthroughs/week-10.md).
 
 1. Vì sao dùng `/ready` thay vì `/health`? Điều gì xảy ra nếu ghi `current-tag` trước health check?
 2. Chạy rollback lần hai thì ra gì và vì sao? Rollback có hoàn tác dữ liệu không?

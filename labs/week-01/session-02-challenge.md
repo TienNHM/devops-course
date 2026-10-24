@@ -104,7 +104,7 @@ Dùng `ln -sfn` để tạo symlink, và `cp -n` hoặc `mv` sang `.bak` trướ
 
 Trong `report.md`, giải thích bằng 5 đến 8 dòng: vì sao dùng `~` thay cho `/mnt/c`, và vì sao dùng ed25519 với ssh-agent thay cho mật khẩu GitHub.
 
-Sau khi nộp bài, đối chiếu lời giải với [Đáp án Tuần 1](../../mentors/walkthroughs/week-01.md).
+Sau khi nộp bài, đối chiếu lời giải với [trang tuần 1](README.md).
 
 ## Phá lỗi nâng cao
 

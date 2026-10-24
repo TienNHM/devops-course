@@ -106,12 +106,12 @@ flowchart TD
 
 ---
 
-## Slide 9: Demo của mentor (outline)
+## Slide 9: Demo
 
 - Tạo ConfigMap bằng lệnh, xem lại bằng `-o yaml`.
 - Tạo Secret rồi giải mã: so sánh `describe` với `get -o yaml` cộng `base64 -d`.
 - Câu hỏi cho lớp: dán YAML này lên chat thì ai thấy mật khẩu? Đổi ConfigMap xong thì biến và file có đổi không?
-- Kịch bản và lệnh đầy đủ nằm ở trang dành cho mentor, không chép lại trên slide.
+- Lệnh chi tiết do người hướng dẫn chạy trực tiếp trên cluster; bạn quan sát và ghi lại dự đoán của mình.
 
 ---
 

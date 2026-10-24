@@ -1,18 +1,16 @@
-# Walkthrough tuần 10 – CD & Pipeline Security
+# Đáp án tuần 10 – CD & Pipeline Security
 
-::: warning Dành cho mentor và học viên đã nộp bài
-Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+::: warning Đáp án đối chiếu: học viên chỉ xem sau khi đã nộp bài tuần này
+Mentor dùng trang này để chấm bài. Tag, digest, số lỗ hổng và thời gian trên máy học viên sẽ khác tài liệu; chấm theo output thật của máy học viên.
 :::
 
 > **Tóm tắt:** Hướng dẫn giải Buổi 19 (deploy local bằng script, health check, rollback, workflow_dispatch) và Buổi 20 (permissions, quét image, SBOM, pin SHA), kèm đáp án bài tập và hướng dẫn chấm.
 
 ## Cách dùng tài liệu này
 
-Chỉ đọc sau khi bạn đã tự làm xong bài lab và bài tập của tuần. Mục đích là đối chiếu cách nghĩ và cách điều tra, không phải chép lệnh: tag, digest, số lỗ hổng và thời gian trên máy bạn sẽ khác tài liệu này, và mentor chấm theo output thật của máy bạn.
+Dùng để đối chiếu cách nghĩ và cách điều tra, không phải để chép lệnh. Mỗi buổi có các phần: đáp án L1, đáp án phần nâng cao hoặc lời giải L2, lời giải phần Phá lỗi và những hiểu lầm hay gặp. Cuối tài liệu là gợi ý cho bài tập tuần, hướng dẫn chấm và mã lời giải L2. Bài gốc: [Buổi 19](../../labs/week-10/session-19.md), [Buổi 20](../../labs/week-10/session-20.md) và [bài tập tuần 10](../../assignments/weekly/week-10.md). Barem: [Hướng dẫn chấm tuần 10](../grading/week-10.md).
 
-Mỗi buổi có bốn phần: đáp án L1, lời giải L2, lời giải phần Phá lỗi và những hiểu lầm hay gặp. Cuối tài liệu là gợi ý cho bài tập tuần và hướng dẫn chấm. Đề gốc nằm ở [Buổi 19](../../labs/week-10/session-19.md), [Buổi 20](../../labs/week-10/session-20.md) và [bài tập tuần 10](../../assignments/weekly/week-10.md).
-
-Đã chạy kiểm tra thật bằng Docker (tên container, mạng, volume và cổng riêng, đã dọn sạch): script `deploy-local.sh` với đủ các tình huống (từ chối `latest`, deploy lần một và hai, rollback, rollback lần hai, deploy bản hỏng tự rollback, tag không tồn tại, đổi mật khẩu), quét Trivy 0.57.1, SBOM, `trivy config`, và lệnh `git ls-remote`. Vì không có GHCR của học viên, registry được thay bằng một registry cục bộ tạm thời; logic script giữ nguyên. Chưa kiểm chứng: workflow trên GitHub Actions, self-hosted runner, environment và required reviewers, Dependabot và dependency review.
+Phạm vi đã kiểm chứng bằng Docker (tên container, mạng, volume và cổng riêng): `deploy-local.sh` với các tình huống từ chối `latest`, deploy lần một và hai, rollback, rollback lần hai, deploy bản hỏng tự rollback, tag không tồn tại, đổi mật khẩu; quét Trivy 0.57.1, SBOM, `trivy config` và `git ls-remote`. Registry được thay bằng registry cục bộ tạm thời, logic script giữ nguyên. Chưa kiểm chứng: workflow trên GitHub Actions, self-hosted runner, environment và required reviewers, Dependabot và dependency review.
 
 ### Buổi 19 – CD & Deployment Strategies
 
@@ -49,8 +47,6 @@ Mỗi buổi có bốn phần: đáp án L1, lời giải L2, lời giải phầ
 
    `curl /health` trả `{"status":"healthy","service":"club-api"}` và `/api/members` trả hai dòng Alice, Bob của `init.sql`. Evidence cho `latest`: chạy `OWNER=... TAG=latest ./deploy-local.sh; echo "exit=$?"` cho thông báo từ chối và `exit=2`, và `docker compose ps` trước/sau giống hệt nhau.
 
-   Sửa nhỏ trong đề khi kiểm tra: dòng log cuối của script trước đây in `previous` đọc từ đầu lần chạy, nên sau lần deploy hai (hoặc rollback) nó báo sai (ví dụ `previous=none` dù file đã có tag). Đề đã đổi sang đọc lại từ hai file trạng thái sau khi ghi, nên log khớp với nội dung file.
-
 4. **Phần 3: bản thứ hai và rollback.** Trình tự trạng thái đã kiểm chứng (A là bản đầu, B là bản thứ hai):
 
    | Bước | Lệnh | current-tag | previous-tag |
@@ -64,7 +60,7 @@ Mỗi buổi có bốn phần: đáp án L1, lời giải L2, lời giải phầ
 
 #### Lời giải L2
 
-**Thử thách 1 – chặn tag không tồn tại.** Lời giải của đề đúng: thêm vòng `docker manifest inspect` cho `club-api` và `club-web` ngay sau `export OWNER TAG`, thoát mã 3 nếu thiếu. Đã kiểm chứng với tag giả: `exit=3`, thông báo rõ ràng, và `docker compose ps` trước/sau cho thấy backend, frontend, postgres vẫn `Up` với cùng thời gian chạy (stack không bị đụng tới). Vì sao đặt trước `compose pull`: mọi bước đụng vào stack đang chạy phải đứng sau mọi kiểm tra có thể thất bại. Khi chạy trên GHCR thật, lệnh này cũng thất bại nếu thiếu quyền pull, nên thông báo nên nói "không tìm thấy hoặc không có quyền".
+**Thử thách 1 – chặn tag không tồn tại.** Lời giải: thêm vòng `docker manifest inspect` cho `club-api` và `club-web` ngay sau `export OWNER TAG`, thoát mã 3 nếu thiếu. Đã kiểm chứng với tag giả: `exit=3`, thông báo rõ ràng, và `docker compose ps` trước/sau cho thấy backend, frontend, postgres vẫn `Up` với cùng thời gian chạy (stack không bị đụng tới). Vì sao đặt trước `compose pull`: mọi bước đụng vào stack đang chạy phải đứng sau mọi kiểm tra có thể thất bại. Khi chạy trên GHCR thật, lệnh này cũng thất bại nếu thiếu quyền pull, nên thông báo nên nói "không tìm thấy hoặc không có quyền".
 
 **Workflow `deploy-local.yml`.** Các khóa phải có và vì sao:
 
@@ -136,7 +132,13 @@ Nguyên nhân gốc: mật khẩu trong database được cố định khi tạo
 
    Số liệu của học viên sẽ khác vì cơ sở dữ liệu CVE đổi liên tục; mentor yêu cầu học viên ghi thời điểm quét (lệnh `date` trong evidence). Lưu ý với Trivy 0.57.1: kết quả in thành từng khối có dòng `Total`, không có bảng "Report Summary".
 
-3. **Phần 2.3: `trivy config /project/k8s`.** Đã chạy: lệnh quét 7 file, báo lỗi cấu hình ở bốn file; `backend.yaml` 12, `frontend.yaml` 14, `postgres.yaml` 13 và `configmap.yaml` 1. Trong lúc Trivy tải bộ luật có thể in vài dòng `ERROR` về một file `.rego`; đó là nhiễu của bộ luật cloud, không ảnh hưởng kết quả Kubernetes. Ba ví dụ để học viên chọn hai cảnh báo phân tích:
+3. **Phần 3: `git grep` tìm secret.** Trên `starter-project` các dòng tìm thấy là tên biến hoặc giá trị giả: `DB_PASSWORD` và `POSTGRES_PASSWORD` trong `compose.yaml`, `password: process.env.DB_PASSWORD || "change-me"` trong `backend/db.js` (giá trị mặc định giả, đáng ghi nhận là rủi ro nếu ai quên đặt biến), `secretKeyRef` trong `k8s/*.yaml`, `change-me-locally` trong `.env.example` và `k8s/secret.example.yaml`. Trong repo học viên thêm `secrets.GITHUB_TOKEN`, `secrets.DB_PASSWORD` và `ci-only-password` của lab 17. Mỗi dòng phải được phân loại là tên biến, giá trị giả hay giá trị thật. Nếu có giá trị thật thì coi như đã lộ: xoay ngay, xóa khỏi code, nhớ rằng xóa commit không xóa lịch sử.
+
+#### Đáp án phần nâng cao
+
+Tương ứng [Buổi 20 – Phần nâng cao](../../labs/week-10/session-20-challenge.md). **Phần A.1** (`--ignore-unfixed`): xem số liệu ở mục quét image ở trên; với `--ignore-unfixed` số lỗ hổng HIGH giảm vì lỗ hổng chưa có bản vá bị lọc.
+
+- **Phần A.3: `trivy config /project/k8s`.** Đã chạy: lệnh quét 7 file, báo lỗi cấu hình ở bốn file; `backend.yaml` 12, `frontend.yaml` 14, `postgres.yaml` 13 và `configmap.yaml` 1. Trong lúc Trivy tải bộ luật có thể in vài dòng `ERROR` về một file `.rego`; đó là nhiễu của bộ luật cloud, không ảnh hưởng kết quả Kubernetes. Ba ví dụ để học viên chọn hai cảnh báo phân tích:
 
    - `AVD-KSV-0014` (HIGH, `readOnlyRootFilesystem`): đáng sửa. Đặt `securityContext.readOnlyRootFilesystem: true` và nếu ứng dụng cần ghi thì mount `emptyDir` cho thư mục đó (Nginx và Postgres cần thêm thư mục ghi, nên với hai service này phải thử kỹ).
    - `AVD-KSV-0012` (MEDIUM, `runAsNonRoot`): đáng sửa cho `club-api` vì Dockerfile đã có `USER node`; manifest chưa khai báo nên Trivy không biết. Thêm `runAsNonRoot: true` và `runAsUser` lớn hơn 10000 nếu image cho phép.
@@ -144,9 +146,9 @@ Nguyên nhân gốc: mật khẩu trong database được cố định khi tạo
 
    Học viên chọn hai cảnh báo bất kỳ miễn là phân tích có lý lẽ: nội dung, có đáng sửa không, sửa thế nào.
 
-4. **Phần 3: SBOM.** Lệnh `--format cyclonedx --output /work/evidence/club-api-sbom.cdx.json` sinh file khoảng 378 KB. Đã kiểm chứng: JSON hợp lệ, `bomFormat` là `CycloneDX` (specVersion 1.6), 296 thành phần `"type": "library"` (tổng 297 gồm cả thành phần hệ điều hành), thấy `express` 5.3.0 và `pg` 8.23.1 (phiên bản của học viên có thể khác). Lệnh kiểm tra JSON: `python3 -m json.tool lab-20/evidence/club-api-sbom.cdx.json > /dev/null && echo valid` hoặc `jq . ... > /dev/null`. Đếm thành phần: `grep -c '"type": "library"' ...`. SBOM liệt kê cả dependency gián tiếp mà học viên không tự khai báo trong `package.json`.
+- **Phần B: SBOM.** Lệnh `--format cyclonedx --output /work/evidence/club-api-sbom.cdx.json` sinh file khoảng 378 KB. Đã kiểm chứng: JSON hợp lệ, `bomFormat` là `CycloneDX` (specVersion 1.6), 296 thành phần `"type": "library"` (tổng 297 gồm cả thành phần hệ điều hành), thấy `express` 5.3.0 và `pg` 8.23.1 (phiên bản của học viên có thể khác). Lệnh kiểm tra JSON: `python3 -m json.tool lab-20/evidence/club-api-sbom.cdx.json > /dev/null && echo valid` hoặc `jq . ... > /dev/null`. Đếm thành phần: `grep -c '"type": "library"' ...`. SBOM liệt kê cả dependency gián tiếp mà học viên không tự khai báo trong `package.json`.
 
-5. **Phần 4: pin SHA.** Lệnh `git ls-remote https://github.com/actions/checkout 'refs/tags/v4.2.2*'` ngày 21/10/2026 cho đúng một dòng: `11bd71901bbe5b1630ceea73d27597364c9af683` kèm `refs/tags/v4.2.2` (tag nhẹ nên không có dòng `^{}`). Dòng `uses:` sau khi pin:
+- **Phần C: pin SHA.** Lệnh `git ls-remote https://github.com/actions/checkout 'refs/tags/v4.2.2*'` ngày 21/10/2026 cho đúng một dòng: `11bd71901bbe5b1630ceea73d27597364c9af683` kèm `refs/tags/v4.2.2` (tag nhẹ nên không có dòng `^{}`). Dòng `uses:` sau khi pin:
 
    ```yaml
    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -154,11 +156,9 @@ Nguyên nhân gốc: mật khẩu trong database được cố định khi tạo
 
    SHA phải đủ 40 ký tự, thuộc đúng repo action và workflow phải chạy xanh sau khi pin. Học viên phải tự chạy `git ls-remote`, không chép SHA từ tài liệu; mentor đối chiếu với trang Releases. Placeholder `SHA_DAY_DU_40_KY_TU` còn trong workflow là lỗi bị trừ điểm.
 
-6. **Phần 4.3: `git grep` tìm secret.** Trên `starter-project` các dòng tìm thấy là tên biến hoặc giá trị giả: `DB_PASSWORD` và `POSTGRES_PASSWORD` trong `compose.yaml`, `password: process.env.DB_PASSWORD || "change-me"` trong `backend/db.js` (giá trị mặc định giả, đáng ghi nhận là rủi ro nếu ai quên đặt biến), `secretKeyRef` trong `k8s/*.yaml`, `change-me-locally` trong `.env.example` và `k8s/secret.example.yaml`. Trong repo học viên thêm `secrets.GITHUB_TOKEN`, `secrets.DB_PASSWORD` và `ci-only-password` của lab 17. Mỗi dòng phải được phân loại là tên biến, giá trị giả hay giá trị thật. Nếu có giá trị thật thì coi như đã lộ: xoay ngay, xóa khỏi code, nhớ rằng xóa commit không xóa lịch sử.
-
 #### Lời giải L2
 
-**Thử thách: `security.yml`.** Lời giải của đề đúng và có các chốt sau: `permissions: contents: read` ở cấp workflow, không job nào cần ghi; job `dependency-review` chỉ chạy khi `github.event_name == 'pull_request'` với `fail-on-severity: high` (repo private chưa bật dependency graph thì thay bằng `npm audit --omit=dev` và ghi vào report); job `image-scan` build, `docker save`, sinh SBOM trước rồi quét với `--severity CRITICAL --ignore-unfixed --exit-code 1`, upload SBOM với `if: always()` và `retention-days: 30`; Trivy chạy bằng container với `--input`, không mount `docker.sock`. Action bên thứ ba phải pin SHA; `actions/` chính chủ có thể giữ tag nhưng pin SHA vẫn tốt hơn. Không có `${{ }}` chứa dữ liệu người dùng trong `run:`; kiểm bằng `grep -n '\${{' .github/workflows/security.yml` rồi đọc từng dòng nằm trong `run:`.
+**Thử thách: `security.yml`.** Lời giải có các chốt sau: `permissions: contents: read` ở cấp workflow, không job nào cần ghi; job `dependency-review` chỉ chạy khi `github.event_name == 'pull_request'` với `fail-on-severity: high` (repo private chưa bật dependency graph thì thay bằng `npm audit --omit=dev` và ghi vào report); job `image-scan` build, `docker save`, sinh SBOM trước rồi quét với `--severity CRITICAL --ignore-unfixed --exit-code 1`, upload SBOM với `if: always()` và `retention-days: 30`; Trivy chạy bằng container với `--input`, không mount `docker.sock`. Action bên thứ ba phải pin SHA; `actions/` chính chủ có thể giữ tag nhưng pin SHA vẫn tốt hơn. Không có `${{ }}` chứa dữ liệu người dùng trong `run:`; kiểm bằng `grep -n '\${{' .github/workflows/security.yml` rồi đọc từng dòng nằm trong `run:`.
 
 Giải thích ngưỡng (phần `report.md`): ngưỡng CRITICAL kèm `--ignore-unfixed` chặn được thứ xử lý ngay (có bản vá) mà không làm pipeline đỏ vĩnh viễn vì lỗ hổng chưa có bản vá; đánh đổi là HIGH không chặn, nên cần quét định kỳ và theo dõi riêng. Quan sát thực tế khi kiểm chứng: với `club-api:1.0.0` hôm nay không có CRITICAL nên gate xanh dù có 10 HIGH có bản vá nằm trong npm của base image; học viên chọn ngưỡng HIGH sẽ thấy gate đỏ, và cần giải thích vì sao các HIGH đó có thể xử lý bằng nâng base image chứ không phải sửa code. Đánh đổi nào cũng được chấp nhận miễn có lập luận.
 
@@ -211,13 +211,17 @@ Gợi ý: bảng trạng thái ở Phần 3 của Buổi 19. Evidence cần: `cu
 
 Gợi ý: bảng ở Buổi 20. Mentor kiểm: `grep permissions` trong evidence; `git log --oneline -- .github/workflows/demo-wide.yml` có ít nhất hai commit và `git diff` thấy `write-all` bị thay; bảng phủ mọi workflow và job, mỗi hàng có lý do cụ thể; ảnh Workflow permissions chỉ để minh họa.
 
-#### Nhiệm vụ 4 – Quét image và sinh SBOM
+#### Nhiệm vụ 4 – Quét image một lần
 
-Gợi ý: đúng các lệnh của Phần 2 và 3. Mentor kiểm: output ở cả hai chế độ (có và không có `--ignore-unfixed`) kèm dòng `Total`; SBOM là JSON hợp lệ (lệnh kiểm tra trong evidence) có `express` và `pg`; số thành phần đếm bằng lệnh; thời điểm quét; phân tích hai cảnh báo `trivy config` có nội dung, có đáng sửa không, sửa thế nào và một câu về việc severity không phải thước đo duy nhất.
+Gợi ý: Phần 2 của Buổi 20. Mentor kiểm: output quét kèm dòng `Total` theo từng loại thành phần; thời điểm quét (`date`); 3 ý phân tích trong `report.md` (gói hệ điều hành hay `node-pkg`, có bản vá không, có nằm trên đường xử lý request không) cho ít nhất một lỗ hổng, hoặc ghi "không có lỗ hổng" kèm thời điểm quét.
 
-#### Nhiệm vụ 5 – Pin SHA và tìm secret
+#### Nhiệm vụ 5 – Tìm secret lỡ commit
 
-Gợi ý: Phần 4 của Buổi 20. Mentor kiểm: output `git ls-remote` do học viên tự chạy; dòng `uses:` có SHA 40 ký tự hex kèm comment phiên bản; mã run xanh sau khi pin; `git grep` có diễn giải từng dòng (tên biến, giá trị giả hay giá trị thật).
+Gợi ý: Phần 3 của Buổi 20. Mentor kiểm: output `git grep`; `report.md` phân loại từng dòng (tên biến, giá trị giả hay giá trị thật); không còn giá trị thật trong repo.
+
+#### Phần nâng cao (10 điểm)
+
+Gợi ý: Phần A, B, C của [Buổi 20 – Phần nâng cao](../../labs/week-10/session-20-challenge.md). Mentor kiểm: output quét cả hai chế độ (có và không có `--ignore-unfixed`) kèm `Total` và so sánh; SBOM là JSON hợp lệ (lệnh kiểm tra trong evidence) có `express` và `pg`, kèm số thành phần đếm bằng lệnh; phân tích hai cảnh báo `trivy config` có nội dung, có đáng sửa không, sửa thế nào và một câu về việc severity không phải thước đo duy nhất; output `git ls-remote` do học viên tự chạy; dòng `uses:` có SHA 40 ký tự hex kèm comment phiên bản; mã run xanh sau khi pin.
 
 #### Nhiệm vụ L2
 
@@ -242,8 +246,9 @@ Chạy lại các lệnh kiểm tra trên máy mentor nếu có thể (`python3 
 | Nhiệm vụ 1: deploy bằng script (15) | `config` hợp nhất đúng image và tag; `health OK` kèm mã thoát 0; `latest` bị từ chối kèm mã thoát khác 0 và `compose ps` trước/sau; `curl` hai endpoint; `git check-ignore` | Script ghi trạng thái trước health check; health check dùng `/health`; không có bằng chứng từ chối `latest` | Vì sao dùng `/ready`? Điều gì xảy ra nếu ghi `current-tag` trước health check? |
 | Nhiệm vụ 2: bản hai và rollback (15) | Hai tag thật khớp Packages; hai file trạng thái sau từng bước; `docker compose ps --format` cho thấy tag đầu sau rollback; log rollback | Rollback bằng cách sửa tay `compose.yaml` hoặc `TAG`; tag giả; mô tả sai hành vi rollback lần hai | Chạy rollback lần hai thì ra gì và vì sao? Rollback có hoàn tác dữ liệu không? |
 | Nhiệm vụ 3: permissions (15) | `grep permissions`; `git log` có hai commit cho `demo-wide.yml`; `git diff` thấy `write-all` bị thay; bảng phủ mọi job với lý do cụ thể | Chỉ một commit; bảng thiếu job; lý do kiểu "cần để chạy"; ảnh thay cho output | Nếu xóa khối `permissions` thì token có quyền gì? Vì sao `packages: write` ở cấp job? |
-| Nhiệm vụ 4: quét và SBOM (15) | Hai chế độ quét kèm `Total`; JSON hợp lệ có `express`, `pg`; số thành phần; thời điểm quét; phân tích hai cảnh báo | SBOM không phải JSON hợp lệ; thiếu chế độ `--ignore-unfixed`; không phân tích cảnh báo; số liệu giống bạn khác | Vì sao có HIGH nhưng không cần sửa code của bạn? Vì sao `--ignore-unfixed` có ích và rủi ro của nó là gì? |
-| Nhiệm vụ 5: pin SHA và rà secret (10) | `git ls-remote`; dòng `uses:` có SHA 40 ký tự và comment; run xanh; `git grep` có diễn giải từng dòng | SHA cắt ngắn hoặc placeholder; `git ls-remote` không có trong evidence; không phân biệt tên biến với giá trị thật | Vì sao SHA an toàn hơn tag? Nếu `git grep` thấy giá trị thật thì làm gì? |
+| Nhiệm vụ 4: quét image một lần (10) | Output quét kèm `Total` theo từng loại; thời điểm quét; 3 ý phân tích cho ít nhất một lỗ hổng (gói nào, có bản vá không, có nằm trên đường xử lý request không) | Không có thời điểm quét; chỉ chạy lệnh mà không phân tích; số liệu giống bạn khác | Vì sao có HIGH nhưng không cần sửa code của bạn? |
+| Nhiệm vụ 5: tìm secret lỡ commit (5) | Output `git grep`; phân loại từng dòng là tên biến, giá trị giả hay giá trị thật | Không giải thích kết quả; không phân biệt tên biến với giá trị thật | Nếu `git grep` thấy giá trị thật thì làm gì? |
+| Nâng cao: quét sâu, SBOM, pin SHA (10) | `--ignore-unfixed` kèm so sánh; JSON hợp lệ có `express`, `pg` và số thành phần; phân tích đúng hai cảnh báo cấu hình; SHA 40 ký tự thật kèm comment; run xanh | SBOM không phải JSON hợp lệ; SHA cắt ngắn hoặc placeholder; `git ls-remote` không có trong evidence; không phân tích cảnh báo | Vì sao `--ignore-unfixed` có ích và rủi ro của nó là gì? Vì sao SHA an toàn hơn tag? |
 | README và report (10) | Đủ 7 câu; nêu nguyên nhân gốc và giới hạn của giải pháp | Sao chép đề bài; chung chung | Chọn một mục trong report và yêu cầu tái hiện nhanh. |
 | Câu hỏi kiểm tra (15) | Năm câu đúng ý, có lệnh hoặc cấu hình minh họa (3 điểm mỗi câu) | Trả lời giống từng chữ với bài khác; chỉ nêu kết luận | Câu 2 và 4: yêu cầu giải thích bằng ví dụ lệnh hoặc workflow cụ thể. |
 | Vệ sinh và quy trình (5) | Không `.env`, `.deploy/`, file tar, token; PR có reviewer | `.env` hoặc tar trong repo; thiếu review | Chạy `git ls-files` và `git grep -i password` trên repo học viên. |
@@ -253,9 +258,9 @@ Chạy lại các lệnh kiểm tra trên máy mentor nếu có thể (`python3 
 
 Ba kiểm tra chéo nên làm: hai tag trong evidence khớp tab Packages; thời điểm quét trong evidence hợp lý với số liệu (cơ sở dữ liệu CVE đổi theo ngày, kết quả giống hệt bài khác là dấu hiệu bất thường); và `demo-wide.yml` có hai commit riêng với SHA 40 ký tự ở bản cuối.
 
-### Phụ lục – Mã lời giải L2 đầy đủ (chuyển từ bài lab)
+### Phụ lục – Mã lời giải L2
 
-Phần này giữ nguyên mã lời giải đã được bỏ khỏi trang học viên của [Buổi 19](../../labs/week-10/session-19.md) và [Buổi 20](../../labs/week-10/session-20.md), để mentor đối chiếu.
+Mã đầy đủ cho hai thử thách L2, để mentor đối chiếu. Học viên tự thử trước khi xem.
 
 #### Buổi 19 – chặn tag không tồn tại
 

@@ -15,7 +15,7 @@ Pilot là mục 7 trong [ROADMAP](https://github.com/TienNHM/devops-course/blob/
 3. Tìm lỗi và chỗ mơ hồ trong tài liệu, slide, lab, starter project.
 4. Kiểm tra độ khó của L1 và L2, độ phù hợp của phần Break.
 5. Kiểm tra quy trình vận hành: nộp bài bằng PR, chấm bài, GitHub Projects, office hour.
-6. Thu số liệu để quyết định go/no-go (mục 7).
+6. Thu số liệu để quyết định go/no-go (mở khóa hay chưa, xem mục 7).
 
 Pilot không nhằm đánh giá học viên. Học viên pilot là người đồng góp ý, cần được nói rõ điều này ngay từ đầu.
 
@@ -29,7 +29,7 @@ Chọn 3 đến 5 thành viên, cố ý đa dạng:
 | Người có nền tảng lập trình, chưa có DevOps | 1 đến 2 | Đại diện nhóm học viên phổ biến |
 | Người có kinh nghiệm hơn | 1 | Kiểm tra L2 và độ sâu của capstone |
 
-Điều kiện máy: có ít nhất một học viên dùng máy 8 GB RAM và một học viên dùng máy 16 GB, để kiểm chứng phần [máy yếu](handbook.md).
+Điều kiện máy: có ít nhất một học viên dùng máy 8 GB RAM và một học viên dùng máy 16 GB, để kiểm chứng phần [máy yếu (8 GB RAM)](mentor-onboarding.md).
 
 Nhân sự: Program Lead (1), Technical Mentor (tối thiểu 1), Lab Assistant (tối thiểu 1). Với nhóm 3 đến 5 người, một mentor là đủ cho giờ lab.
 
@@ -57,7 +57,7 @@ Mỗi buổi pilot vẫn chạy đúng khung 120 phút, có mentor quan sát và
 
 ## 4. Quy trình vận hành pilot
 
-1. Chuẩn bị: chạy [checklist D-7 đến D-1](session-runbook.md) cho từng buổi, như một buổi chính thức.
+1. Chuẩn bị: chạy [checklist chuẩn bị trước buổi](session-runbook.md) cho từng buổi, như một buổi chính thức.
 2. Khởi động (kickoff 30 phút): giải thích mục tiêu pilot, quy tắc ghi log, cách báo lỗi (Issue có nhãn `pilot`), cam kết không chấm điểm.
 3. Trong buổi: một người quan sát chuyên ghi (không hỗ trợ học viên), ghi lại thời điểm học viên kẹt, câu hỏi họ đặt, lệnh họ gõ sai.
 4. Sau buổi: học viên điền feedback form (mục 6) trong vòng 24 giờ.
@@ -69,7 +69,7 @@ Các việc pilot phải kiểm thử rõ ràng:
 - [ ] Học viên tự cài môi trường theo [Setup Guide](../resources/setup-guide.md) mà không cần mentor làm hộ.
 - [ ] Học viên chạy `starter-project` bằng `docker compose` từ repo của mình.
 - [ ] Học viên nộp ít nhất 5 bài lab bằng PR theo [mẫu báo cáo](../templates/lab-template.md).
-- [ ] Mentor chấm theo rubric và trả phản hồi đúng hạn 72 giờ.
+- [ ] Mentor chấm theo [Hướng dẫn chấm bài](grading-guide.md) và trả phản hồi đúng hạn 72 giờ.
 - [ ] Học viên tạo cluster kind và triển khai `k8s/` trên máy của mình.
 - [ ] Có ít nhất 3 trong 10 tình huống lỗi được giải bởi học viên chỉ với triệu chứng.
 

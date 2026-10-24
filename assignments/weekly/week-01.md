@@ -15,7 +15,7 @@
 | 2. Sơ đồ thủ công và 3 điểm nghẽn | Buổi 01, Phần 2 và Phần 3 | 0,5 giờ | `manual-workflow.mmd`, `bottlenecks.md`, ảnh `manual-workflow.png` |
 | 3. Sơ đồ tự động hóa | Buổi 01, Phần 4 (cộng việc mới: bảng ánh xạ trong `report.md`, khoảng 15 phút) | 0,5 giờ | `automated-workflow.mmd`, ảnh `automated-workflow.png`, bảng ánh xạ trong `report.md` |
 | 4. Môi trường WSL2 + Git + SSH | Buổi 02, Phần 1, 2, 3, 5 và 6 | 1,5 giờ (60 phút ở lớp, 30 phút ở nhà) | `lab-02/evidence/command-output.txt`, ảnh `vscode-wsl.png` |
-| 5. Log `check-env.sh` | Buổi 02, Phần 4 | 0,25 giờ | Log có dòng `exit code:` trong `command-output.txt` |
+| 5. Log `check-env.sh` | Buổi 02, Phần 4 | 0,25 giờ | Log có dòng `exit code: 0` trong `command-output.txt` |
 | README, report và 5 câu kiểm tra | Phần Nộp bài của hai buổi | 0,75 giờ | `README.md` (7 câu), `report.md` ở mỗi lab |
 | L2 (tùy chọn, điểm thưởng) | [Buổi 01 – Thử thách thêm](../../labs/week-01/session-01-challenge.md), [Buổi 02 – Thử thách thêm](../../labs/week-01/session-02-challenge.md) | 1,5 giờ | Theo từng thử thách |
 
@@ -35,7 +35,7 @@ Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2 (chỉ c
 | Nhiệm vụ 2: sơ đồ thủ công và 3 điểm nghẽn | 15 |
 | Nhiệm vụ 3: sơ đồ tự động hóa và bảng ánh xạ | 15 |
 | Nhiệm vụ 4: môi trường (WSL2, `~`, Git, SSH) | 20 |
-| Nhiệm vụ 5: log `check-env.sh` có `exit code:` đúng | 15 |
+| Nhiệm vụ 5: log `check-env.sh 2` có `exit code: 0` đúng | 15 |
 | `README.md` và `report.md` | 10 |
 | Bằng chứng và kỷ luật repo (không có secret) | 5 |
 | Quy trình nộp (PR có người review) | 5 |
@@ -87,9 +87,9 @@ Tiêu chí hoàn thành:
 
 Chạy `resources/check-env.sh` của giáo trình (Buổi 02, Phần 4). Tiêu chí hoàn thành:
 
-- Log chạy script nằm trong `lab-02/evidence/command-output.txt`, kèm dòng `exit code: N` ở cuối phần chạy script, lấy bằng `code=$?` ngay sau lệnh chạy.
-- Các dòng WSL, git, curl là `[ OK ]`. Các công cụ của tuần sau (docker, kubectl, kind, node) có thể còn `[ THIEU ]`, mã thoát 1 là trạng thái dự kiến.
-- Trong `report.md` ghi rằng mã thoát khác 0 là dự kiến ở tuần này và nêu khi nào nó thành 0.
+- Chạy đúng lệnh `bash resources/check-env.sh 2` (số 2 là mốc Buổi 02). Log nằm trong `lab-02/evidence/command-output.txt`, kèm dòng `exit code: 0` ở cuối phần chạy script, lấy bằng `code=$?` ngay sau lệnh chạy.
+- Các dòng WSL, git, curl là `[ OK ]`. Công cụ của buổi sau (docker, kubectl, kind) hiện `[ DE SAU ]`, đó là bình thường.
+- Trong `report.md` giải thích vì sao chạy với số `2` mà không phải chạy không đối số, và khi nào bạn chạy lại script với số buổi lớn hơn (Docker để dành cho Buổi 07 – Container Fundamentals, Buổi 08 là Docker CLI; kubectl và kind ở Buổi 21).
 
 ## Nhiệm vụ L2 (nâng cao)
 
@@ -209,7 +209,7 @@ Nộp muộn bị trừ theo quy định trong [Đánh giá](../../curriculum/as
 - [ ] `bottlenecks.md` có đúng 3 điểm nghẽn, truy ngược được về `steps.md`
 - [ ] `report.md` có bảng ánh xạ điểm nghẽn sang nút trong sơ đồ tự động hóa
 - [ ] `wsl --list --verbose` (VERSION 2), `pwd`, `lsb_release -a`, `git config --global --list`, `git remote -v`, `ssh -T git@github.com` đều có trong evidence
-- [ ] Log `check-env.sh` có dòng `exit code:` đúng
+- [ ] Log `bash resources/check-env.sh 2` có dòng `exit code: 0`
 - [ ] 5 câu hỏi kiểm tra kiến thức đã được trả lời trong `report.md`
 - [ ] Đã chạy lệnh quét secret và không có kết quả; không commit `.env`, password, token, private key
 - [ ] Ghi rõ mức đã làm (L1 hoặc L2) cuối `README.md`

@@ -1,40 +1,38 @@
-# Walkthrough tuần 8 – CI/CD Fundamentals và GitHub Actions
+# Đáp án tuần 8 – CI/CD Fundamentals và GitHub Actions
 
-::: warning Dành cho mentor và học viên đã nộp bài
-Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+::: warning Đáp án đối chiếu: học viên chỉ xem sau khi đã nộp bài tuần này
+Mentor dùng trang này để chấm và đối chiếu kết quả. Học viên mở sau khi đã nộp bài, để so sánh với bài của mình.
 :::
 
-> **Tóm tắt:** Hướng dẫn giải tuần 8: thiết kế pipeline Club API, pipeline giả lập, workflow GitHub Actions có cache và matrix, kèm gợi ý bài tập và hướng dẫn chấm cho mentor.
+> **Tóm tắt:** Đáp án tuần 8 theo từng Phần của Buổi 15 và Buổi 16 (L1), các thử thách L2 và tình huống phá lỗi, gợi ý giải 4 nhiệm vụ của bài tập và đáp án 5 câu hỏi kiểm tra.
 
 ## Cách dùng tài liệu này
 
-Chỉ đọc sau khi bạn đã tự làm bài lab và bài tập. Hãy đối chiếu để tìm chỗ lệch, không chép nguyên văn: mentor chấm bằng source, log và link run thật, rồi hỏi vấn đáp về chính bài bạn nộp.
+Hãy đối chiếu để tìm chỗ lệch, không chấm theo kiểu chép nguyên văn: mentor chấm bằng source, log và link run thật, rồi hỏi vấn đáp về chính bài học viên nộp. Tiêu chí chấm nằm ở [Hướng dẫn chấm tuần 8](../grading/week-08.md).
 
 Phần pipeline giả lập (Buổi 15) đã được chạy thử trên máy với Node 22, Docker Engine 29.x: script chạy xanh, bản test đỏ dừng trước stage build với `exit code: 1`, và bản `|| true` vẫn in `PIPELINE OK`. Phần GitHub Actions (Buổi 16) chạy trên hạ tầng của GitHub nên đáp án dưới đây dựa trên cú pháp và hành vi đã được tài liệu hóa, chưa được chạy trên một repo thật; thông báo log chính xác có thể khác theo phiên bản action. Hai bài lab liên quan: [Buổi 15](../../labs/week-08/session-15.md) và [Buổi 16](../../labs/week-08/session-16.md); đề bài tập: [Bài tập tuần 8](../../assignments/weekly/week-08.md).
 
-## Lời giải theo buổi
+## Buổi 15: CI/CD Fundamentals
 
-### Buổi 15 – CI/CD Fundamentals
+### Đáp án L1 theo từng Phần
 
-#### Đáp án các nhiệm vụ L1
+**Chuẩn bị.** Tạo `~/devops-labs/lab-15/{source,screenshots,evidence}`, đặt `starter-project/` (không có `node_modules`) vào `source/`, và tạo `.gitignore` ở gốc repo với `node_modules/` và `.env`.
 
-Chuẩn bị: tạo `~/devops-labs/lab-15/{source,screenshots,evidence}`, đặt `starter-project/` (không có `node_modules`) vào `source/`, và tạo `.gitignore` ở gốc repo với `node_modules/` và `.env`.
-
-Phần 1 – sơ đồ pipeline. Điểm mấu chốt là mỗi mũi tên phải ghi cái gì chảy qua nó. Một `pipeline.mmd` đạt yêu cầu:
+**Phần 1. Vẽ pipeline.** Điểm mấu chốt là mỗi mũi tên phải ghi cái gì chảy qua nó. Một `pipeline.mmd` đạt yêu cầu:
 
 ```mermaid
 flowchart LR
     T["Trigger: push hoặc pull request"] -->|"mã nguồn tại commit SHA"| A["Test: npm ci, npm test. Qua khi exit code 0"]
     A -->|"mã nguồn đã qua test, log test"| B["Build: docker build. Qua khi build thành công"]
     B -->|"image club-api:SHA"| C["Publish: docker push. Qua khi push thành công"]
-    C -->|"image trên registry, tag SHA"| D["Deploy: cập nhật Deployment. Qua khi rollout xong"]
+    C -->|"image trên registry, tag SHA"| D["Deploy: cập nhật môi trường chạy. Qua khi kiểm tra sức khỏe đạt"]
     A -->|"exit code khác 0"| X["Dừng, báo lỗi"]
     B -->|"build lỗi"| X
     C -->|"push lỗi"| X
-    D -->|"rollout lỗi"| X
+    D -->|"kiểm tra sức khỏe lỗi"| X
 ```
 
-Phần 2 – `pipeline-spec.md` đủ 4 stage, không ô nào để trống, có thêm tag, secret và song song:
+**Phần 2. Đặc tả stage.** `pipeline-spec.md` đủ 4 stage, không ô nào để trống, có thêm tag, secret và song song:
 
 ```markdown
 | Stage | Lệnh chính | Runner cần | Input | Output (artifact) | Điều kiện qua |
@@ -42,16 +40,16 @@ Phần 2 – `pipeline-spec.md` đủ 4 stage, không ô nào để trống, có
 | Test | npm ci; npm test | Node 22 | mã nguồn backend tại commit | log test | exit code 0, `# fail 0` |
 | Build | docker build -t club-api:SHA . | Docker | mã nguồn + Dockerfile | image club-api:SHA | build thành công |
 | Publish | docker push | Docker + đăng nhập registry | image club-api:SHA | image trên registry | push thành công |
-| Deploy | cập nhật Deployment sang tag SHA | truy cập cluster | tên image + tag SHA | Pod mới Ready | rollout xong, `/ready` trả 200 |
+| Deploy | cập nhật môi trường chạy sang tag SHA | quyền truy cập môi trường chạy | tên image + tag SHA | bản mới đang chạy | kiểm tra sức khỏe đạt, `/ready` trả 200 |
 
 - Tag image: commit SHA ngắn (trên CI là github.sha); có thể thêm tag phiên bản khi phát hành, không dùng `latest` làm định danh duy nhất.
-- Secret cần (chỉ tên): token đăng nhập registry, kubeconfig hoặc credential của cluster. Không ghi giá trị.
+- Secret cần (chỉ tên): token đăng nhập registry, credential truy cập môi trường chạy. Không ghi giá trị.
 - Song song: lint hoặc kiểm tra cú pháp YAML có thể chạy song song với test; Build phải chờ Test; Publish chờ Build; Deploy chờ Publish.
 ```
 
-Phần 3 – chạy `run-pipeline.sh` (đúng script trong lab) bằng `./source/run-pipeline.sh 2>&1 | tee evidence/command-output.txt`. Log đúng phải có theo thứ tự: `=== STAGE: test ===`, `# pass 1` và `# fail 0`, `=== STAGE: build ===`, `=== STAGE: verify-artifact ===` với dòng `image=[club-api:1.0.0 club-api:2026...] size=...` (tag cụ thể từ `docker image inspect`, thứ tự tag có thể khác), `=== STAGE: publish (mô phỏng) ===`, và dòng cuối `PIPELINE OK: club-api:2026...`. `set -euo pipefail` làm script dừng ngay ở lệnh lỗi đầu tiên, giống một runner CI; `npm ci` thay `npm install` để cài đúng theo lock file.
+**Phần 3. Chạy pipeline giả lập trên máy.** Chạy `run-pipeline.sh` (đúng script trong lab) bằng `./source/run-pipeline.sh 2>&1 | tee evidence/command-output.txt`. Log đúng phải có theo thứ tự: `=== STAGE: test ===`, `# pass 1` và `# fail 0`, `=== STAGE: build ===`, `=== STAGE: verify-artifact ===` với dòng `image=[club-api:1.0.0 club-api:2026...] size=...` (tag cụ thể từ `docker image inspect`, thứ tự tag có thể khác), `=== STAGE: publish (mô phỏng) ===`, và dòng cuối `PIPELINE OK: club-api:2026...`. `set -euo pipefail` làm script dừng ngay ở lệnh lỗi đầu tiên, giống một runner CI; `npm ci` thay `npm install` để cài đúng theo lock file.
 
-Phần 4 (Nhiệm vụ 2) – chứng minh gate:
+**Phần 4. Kiểm chứng gate "dừng khi fail"** (Nhiệm vụ 2):
 
 ```bash
 cd ~/devops-labs/lab-15/source/starter-project/backend
@@ -69,7 +67,9 @@ Hai chi tiết để tự kiểm tra: chỉ đổi tên test (chuỗi `"GET /hea
 
 `report.md` về Delivery và Deployment (2 đến 3 câu): Continuous Delivery luôn sẵn sàng deploy nhưng production cần con người duyệt; Continuous Deployment tự deploy mọi thay đổi qua test, không cần duyệt.
 
-#### Lời giải L2
+### Lời giải L2
+
+Đề nằm ở [Buổi 15 – thử thách và tìm hiểu thêm](../../labs/week-08/session-15-challenge.md).
 
 1. Ba môi trường (`environments.md`). Cách tiếp cận: mỗi môi trường tăng dần mức rủi ro và mức kiểm soát.
 
@@ -96,7 +96,7 @@ Hai chi tiết để tự kiểm tra: chỉ đổi tên test (chuỗi `"GET /hea
    Kiểm tra: `grep -c "^+ docker build" evidence/command-output.txt` ra `1`. Cách khác: `set -x` và đếm dòng `+ docker build`.
 4. Hai gate bổ sung (mẫu): `docker compose config --quiet` chặn lỗi cú pháp và biến thiếu trong Compose; kiểm tra `/ready` sau deploy (smoke test) chặn lỗi kết nối DB hoặc cấu hình sai mà `/health` không phát hiện. Phương án khác: quét lỗ hổng image (chặn dependency có lỗ hổng đã biết), test tích hợp với postgres.
 
-#### Lời giải phần Phá lỗi và debug: pipeline xanh nhưng bản deploy lỗi
+### Lời giải Phá lỗi nâng cao: pipeline xanh nhưng bản deploy lỗi
 
 Triệu chứng: script in `PIPELINE OK` và image được tạo dù log có `# fail 1` (đã kiểm chứng).
 
@@ -109,7 +109,7 @@ Cây điều tra:
 
 Nguyên nhân gốc: gate bị vô hiệu hóa vì mã thoát của test bị nuốt (và có thể thêm thứ tự stage sai). Sửa: bỏ `|| true`, giữ `set -euo pipefail`, đưa test lên trước build. Phòng tránh: không bao giờ nuốt mã thoát của lệnh kiểm tra, branch protection bắt buộc check xanh mới merge, review mọi thay đổi vào file định nghĩa pipeline.
 
-#### Những hiểu lầm hay gặp
+### Hiểu lầm hay gặp ở Buổi 15
 
 - Nhầm Delivery với Deployment: khác nhau ở đúng một chỗ, có cổng duyệt tay trước production hay không.
 - Nhầm artifact với cache: artifact là kết quả cần giữ (image `club-api`, báo cáo test); cache chỉ tăng tốc (`node_modules`) và mất đi pipeline vẫn đúng.
@@ -119,22 +119,22 @@ Nguyên nhân gốc: gate bị vô hiệu hóa vì mã thoát của test bị nu
 - Dùng `$?` sau `| tee` để lấy exit code của script; phải dùng `PIPESTATUS[0]`.
 - Quên hoàn tác file test sau khi thử gate.
 
-### Buổi 16 – GitHub Actions Basics
+## Buổi 16: GitHub Actions Basics
 
-#### Đáp án các nhiệm vụ L1
+### Đáp án L1 theo từng Phần
 
-Chuẩn bị: tạo `lab-16/source`, `lab-16/evidence`, `lab-16/screenshots` và `.github/workflows` trong repo cá nhân; sao chép `starter-project/backend` vào `lab-16/source/` (có `package-lock.json`, không có `node_modules`); chạy `npm ci` và `npm test` cục bộ trước, ghi log vào `lab-16/evidence/command-output.txt`. Chạy được ở local trước để khi CI đỏ biết lỗi nằm ở cấu hình workflow.
+**Chuẩn bị.** Tạo `lab-16/source`, `lab-16/evidence`, `lab-16/screenshots` và `.github/workflows` trong repo cá nhân; sao chép `starter-project/backend` vào `lab-16/source/` (có `package-lock.json`, không có `node_modules`); chạy `npm ci` và `npm test` cục bộ trước, ghi log vào `lab-16/evidence/command-output.txt`. Chạy được ở local trước để khi CI đỏ biết lỗi nằm ở cấu hình workflow.
 
-Phần 1 – workflow `hello.yml` dùng `workflow_dispatch`. Nút Run workflow chỉ hiện khi file đã nằm trên nhánh mặc định. Log đúng: tên repo, `OS: Linux`, và `ls` không in gì vì chưa checkout (runner là máy trống).
+**Phần 1. Workflow đầu tiên "hello".** Workflow `hello.yml` dùng `workflow_dispatch`. Nút Run workflow chỉ hiện khi file đã nằm trên nhánh mặc định. Log đúng: tên repo, `OS: Linux`, và `ls` không in gì vì chưa checkout (runner là máy trống).
 
-Phần 2 – `ci.yml` L1 (Nhiệm vụ 3): dùng đúng file trong lab, gồm `on` với `push` (nhánh `main` và `master`) và `pull_request`, `permissions: contents: read`, các step `actions/checkout@v4`, `actions/setup-node@v4` với `node-version: 22`, `npm ci`, `npm test`; hai step `npm` đặt `working-directory: lab-16/source`. Giải thích trong `report.md`:
+**Phần 2. CI chạy test** (Nhiệm vụ 3). Dùng đúng file trong lab, gồm `on` với `push` (nhánh `main` và `master`) và `pull_request`, `permissions: contents: read`, các step `actions/checkout@v4`, `actions/setup-node@v4` với `node-version: 22`, `npm ci`, `npm test`; hai step `npm` đặt `working-directory: lab-16/source`. Giải thích trong `report.md`:
 
 - Cần checkout vì runner là máy mới, không có mã nguồn; không có checkout thì không có `package.json`.
 - `working-directory` là `lab-16/source` vì `package.json` nằm ở đó, không phải gốc repo; nếu không đặt, `npm` chạy ở gốc repo và không tìm thấy `package.json`.
 
 Bằng chứng: log local, `git log --oneline` có commit thêm workflow, link run xanh, đoạn log step Run tests có `# pass` và `# fail 0`, và `source/ci.yml.copy` trùng file thật (`diff .github/workflows/ci.yml lab-16/source/ci.yml.copy` không in gì).
 
-Phần 3 – cache (Nhiệm vụ 4): step Setup Node.js thêm `cache: npm` và `cache-dependency-path: lab-16/source/package-lock.json`:
+**Phần 3. Bật cache** (Nhiệm vụ 4). Step Setup Node.js thêm `cache: npm` và `cache-dependency-path: lab-16/source/package-lock.json`:
 
 ```yaml
       - name: Setup Node.js
@@ -147,7 +147,7 @@ Phần 3 – cache (Nhiệm vụ 4): step Setup Node.js thêm `cache: npm` và `
 
 Chạy lần đầu rồi Re-run all jobs. Cần thấy khác biệt trong log step Setup Node.js: lần đầu báo không tìm thấy cache (cache được lưu ở cuối job), lần hai báo khôi phục cache từ key tính theo hash của lock file. Ghi thời gian step `npm ci` của hai lần bằng số giây thật (dự án nhỏ nên chênh lệch có thể chỉ vài giây). Giải thích artifact so với cache bằng ví dụ Club API: image `club-api` hoặc báo cáo test là artifact; thư mục npm cache là cache.
 
-Tách job `validate` (không có `needs`, chạy song song):
+**Phần 4. Tách job `validate`** (không có `needs`, chạy song song):
 
 ```yaml
   validate:
@@ -160,9 +160,11 @@ Tách job `validate` (không có `needs`, chạy song song):
 
 Trang run phải hiển thị ít nhất hai job `test` và `validate`, cả hai xanh, không có mũi tên phụ thuộc giữa chúng.
 
-#### Lời giải L2
+### Lời giải L2
 
-Thử thách 1 – matrix, `needs`, `build-image`. Workflow đầy đủ:
+Đề nằm ở [Buổi 16 – thử thách và tìm hiểu thêm](../../labs/week-08/session-16-challenge.md). Mục 1 của lab (matrix, cộng `needs` và `build-image` ở gợi ý bậc 3) ứng với Thử thách 1 của bài tập; mục 2 (PR đỏ) và mục 3 (tình huống 06) ứng với Thử thách 2.
+
+**Matrix, `needs` và `build-image` (Thử thách 1 của bài tập).** Workflow đầy đủ:
 
 ```yaml
 name: CI
@@ -215,11 +217,11 @@ jobs:
 
 Matrix `node-version: [22, 24]` tạo 2 job (`test (22)`, `test (24)`), cộng `validate` và `build-image` thành 4 job. `fail-fast: false` để một biến thể đỏ không hủy biến thể còn lại, giúp thấy đủ kết quả khi học. Chứng minh `needs`: tạo một run mà `test` đỏ (đổi `"healthy"` thành `"unhealthy"` trong `tests/health.test.js` trên nhánh riêng), job `build-image` hiển thị `skipped`; kèm link run và ảnh.
 
-Thử thách 2 – PR đỏ và Tình huống 06. Nhánh `feature/break-test`, sửa assertion, push, mở pull request: check đỏ ở step Run tests; sửa lại trên cùng PR để thấy xanh. Báo cáo Tình huống 06 theo năm mục (triệu chứng, nguyên nhân gốc, cách xác minh, giải pháp, phòng tránh). Quy trình điều tra chung (xem phần Phá lỗi bên dưới): tìm step đỏ đầu tiên, đọc dòng lỗi đầu tiên, phân loại lỗi xảy ra trước `npm` hay trong `npm`, đối chiếu `git ls-files`, tái hiện bằng bản clone sạch. Tình huống 06 trong thư mục examples có workflow nhiều lỗi nối tiếp, nên sau khi sửa một lỗi hãy đọc lại log vì lỗi mới có thể ở job hoặc step khác. Phần xác minh phải trích đúng dòng log đầu tiên báo lỗi và nói rõ lỗi xảy ra trước hay trong lệnh `npm`; bằng chứng tái hiện là `git clone` vào thư mục mới rồi `npm ci` hoặc `git ls-files`.
+**PR đỏ và Tình huống 06 (Thử thách 2 của bài tập).** Nhánh `feature/break-test`, sửa assertion, push, mở pull request: check đỏ ở step Run tests; sửa lại trên cùng PR để thấy xanh. Báo cáo Tình huống 06 theo năm mục (triệu chứng, nguyên nhân gốc, cách xác minh, giải pháp, phòng tránh). Quy trình điều tra chung (xem phần Phá lỗi bên dưới): tìm step đỏ đầu tiên, đọc dòng lỗi đầu tiên, phân loại lỗi xảy ra trước `npm` hay trong `npm`, đối chiếu `git ls-files`, tái hiện bằng bản clone sạch. Tình huống 06 trong thư mục examples có workflow nhiều lỗi nối tiếp, nên sau khi sửa một lỗi hãy đọc lại log vì lỗi mới có thể ở job hoặc step khác. Phần xác minh phải trích đúng dòng log đầu tiên báo lỗi và nói rõ lỗi xảy ra trước hay trong lệnh `npm`; bằng chứng tái hiện là `git clone` vào thư mục mới rồi `npm ci` hoặc `git ls-files`.
 
-Thử thách 3 – xem lời giải L2 của Buổi 15 (môi trường, build một lần, hai gate).
+**Môi trường và build một lần (Thử thách 3 của bài tập)** làm ở Buổi 15; xem lời giải L2 của Buổi 15.
 
-#### Lời giải phần Phá lỗi và debug: Tình huống 06
+### Lời giải Phá lỗi nâng cao: Tình huống 06
 
 Hai cách phá và quy trình điều tra:
 
@@ -236,7 +238,7 @@ Cây điều tra chung:
 
 Nguyên nhân gốc: runner chỉ có những gì đã commit và những gì workflow khai báo. Đường dẫn sai hoặc file bị `.gitignore` làm môi trường CI khác máy bạn. Phòng tránh: luôn commit `package-lock.json`, dùng `defaults.run.working-directory` để không lặp đường dẫn, kiểm tra bằng clone sạch trước khi đổ lỗi cho CI.
 
-#### Những hiểu lầm hay gặp
+### Hiểu lầm hay gặp ở Buổi 16
 
 - Quên `actions/checkout` rồi thắc mắc không thấy file. Runner là máy trống.
 - Dùng `npm install` trong CI. Nên dùng `npm ci` vì cài đúng theo lock file và báo lỗi khi lock lệch hoặc thiếu.
@@ -248,49 +250,30 @@ Nguyên nhân gốc: runner chỉ có những gì đã commit và những gì wo
 - Không pin phiên bản action hoặc cấp `permissions` rộng hơn nhu cầu (CI chỉ đọc code thì `contents: read` là đủ).
 - Sai thụt lề YAML hoặc dùng tab; workflow không được nhận hoặc chạy sai.
 
-## Bài tập và chấm bài
-
-### Bài tập tuần
+## Bài tập tuần 8
 
 Phần này gợi ý cách tiếp cận cho từng nhiệm vụ của [bài tập tuần 8](../../assignments/weekly/week-08.md). Nhiệm vụ 1 và 2 nằm ở `lab-15/`, nhiệm vụ 3 và 4 ở `lab-16/`.
 
-#### Nhiệm vụ L1
+### Gợi ý lời giải L1
 
-Nhiệm vụ 1 (thiết kế và giả lập). Dùng sơ đồ, `pipeline-spec.md` và `run-pipeline.sh` ở Buổi 15. Tiêu chí kiểm: spec không ô trống; evidence có `=== STAGE: test ===`, `=== STAGE: build ===`, `# fail 0`, `PIPELINE OK`, và tên image kèm tag cụ thể lấy từ `docker image inspect`; mỗi mũi tên của sơ đồ ghi cái gì chảy qua.
+Nhiệm vụ 1 (thiết kế và giả lập, Buổi 15 Phần 1 đến 3). Dùng sơ đồ, `pipeline-spec.md` và `run-pipeline.sh` ở Buổi 15. Tiêu chí kiểm: spec không ô trống; evidence có `=== STAGE: test ===`, `=== STAGE: build ===`, `# fail 0`, `PIPELINE OK`, và tên image kèm tag cụ thể lấy từ `docker image inspect`; mỗi mũi tên của sơ đồ ghi cái gì chảy qua.
 
-Nhiệm vụ 2 (gate dừng khi fail). Chuỗi lệnh ở phần Đáp án Buổi 15, Phần 4. Evidence đúng: lần đỏ có `# fail` lớn hơn 0, không có `=== STAGE: build ===` sau đó, `exit code` khác 0 (thường là 1); lần xanh sau hoàn tác có `# fail 0`; `git diff` của thư mục `tests` trống khi nộp. Giải thích fail fast: stage rẻ và nhanh đứng trước stage đắt; build trước test thì lãng phí thời gian build và tạo artifact từ mã lỗi.
+Nhiệm vụ 2 (gate dừng khi fail, Buổi 15 Phần 4). Chuỗi lệnh ở đáp án Buổi 15, Phần 4. Evidence đúng: lần đỏ có `# fail` lớn hơn 0, không có `=== STAGE: build ===` sau đó, `exit code` khác 0 (thường là 1); lần xanh sau hoàn tác có `# fail 0`; `git diff` của thư mục `tests` trống khi nộp. Giải thích fail fast: stage rẻ và nhanh đứng trước stage đắt; build trước test thì lãng phí thời gian build và tạo artifact từ mã lỗi.
 
-Nhiệm vụ 3 (workflow CI thật). Dùng `ci.yml` L1 ở Buổi 16. Điểm kiểm: YAML thụt 2 dấu cách, đủ 4 step, có `permissions` và action pin theo `@v4`; hai step `npm` có `working-directory: lab-16/source`; link run xanh và đoạn log step Run tests (có `# pass` và `# fail 0`); `ci.yml.copy` trùng workflow thật; `git log --oneline` có commit thêm workflow. Log của run lấy từ trang run (Download log archive) hoặc `gh run view --log` nếu đã cài GitHub CLI.
+Nhiệm vụ 3 (workflow CI thật, Buổi 16 Phần 1 và 2). Dùng `ci.yml` ở đáp án Buổi 16, Phần 2. Điểm kiểm: YAML thụt 2 dấu cách, đủ 4 step, có `permissions` và action pin theo `@v4`; hai step `npm` có `working-directory: lab-16/source`; link run xanh và đoạn log step Run tests (có `# pass` và `# fail 0`); `ci.yml.copy` trùng workflow thật; `git log --oneline` có commit thêm workflow. Log của run lấy từ trang run (Download log archive) hoặc `gh run view --log` nếu đã cài GitHub CLI.
 
-Nhiệm vụ 4 (cache và tách job). Dùng đoạn cache và job `validate` ở Buổi 16. Cần log Setup Node.js của cả hai lần chạy trong `report.md`, lần hai có dòng khôi phục cache; thời gian `npm ci` hai lần bằng số giây thật; trang run có `test` và `validate` song song. Artifact so với cache: artifact là kết quả cần giữ và truyền đi (image `club-api`, báo cáo test), cache chỉ để tăng tốc (npm cache) và mất đi thì kết quả vẫn đúng.
+Nhiệm vụ 4 (cache và tách job, Buổi 16 Phần 3 và 4). Dùng đoạn cache và job `validate` ở đáp án Buổi 16. Cần log Setup Node.js của cả hai lần chạy trong `report.md`, lần hai có dòng khôi phục cache; thời gian `npm ci` hai lần bằng số giây thật; trang run có `test` và `validate` song song. Artifact so với cache: artifact là kết quả cần giữ và truyền đi (image `club-api`, báo cáo test), cache chỉ để tăng tốc (npm cache) và mất đi thì kết quả vẫn đúng.
 
-#### Nhiệm vụ L2
+### Gợi ý lời giải L2
 
-- Thử thách 1: workflow đầy đủ ở lời giải L2 Buổi 16; cần link run chứng minh `build-image` bị `skipped` khi `test` đỏ, và nêu số job từ matrix (2) cùng lợi ích của `fail-fast: false`.
-- Thử thách 2: PR đỏ rồi xanh trên cùng PR, báo cáo 5 phần, trích đúng dòng log đầu tiên báo lỗi, bằng chứng clone sạch.
-- Thử thách 3: `environments.md`, script build một lần với đúng một dòng `+ docker build` trong log, hai gate bổ sung có nêu loại lỗi chặn được.
+- Thử thách 1 (matrix, `needs`, `build-image`): workflow đầy đủ ở lời giải L2 của Buổi 16; cần link run chứng minh `build-image` bị `skipped` khi `test` đỏ, và nêu số job từ matrix (2) cùng lợi ích của `fail-fast: false`.
+- Thử thách 2 (PR đỏ và Tình huống 06): PR đỏ rồi xanh trên cùng PR, báo cáo 5 phần, trích đúng dòng log đầu tiên báo lỗi, bằng chứng clone sạch.
+- Thử thách 3 (môi trường và build một lần, Buổi 15): `environments.md`, script build một lần với đúng một dòng `+ docker build` trong log, hai gate bổ sung có nêu loại lỗi chặn được.
 
-#### Đáp án 5 câu hỏi kiểm tra
+### Đáp án 5 câu hỏi kiểm tra
 
 1. CI tự động build và test mỗi thay đổi. Continuous Delivery giữ một cổng duyệt tay trước production. Continuous Deployment bỏ cổng đó và tự deploy mọi thay đổi qua test. Với Club API chỉ có test cho `/health`, chọn Continuous Delivery cho production vì độ phủ test thấp, dữ liệu thành viên là thật và chi phí duyệt tay nhỏ so với một sự cố.
 2. Workflow là cả file YAML; job là nhóm step chạy trên một runner; step là một lệnh `run` hoặc một action `uses`; runner là máy ảo thực thi job. Hai job chạy trên hai runner khác nhau, không chia sẻ hệ thống file; dữ liệu đi qua artifact (upload ở job trước, download ở job sau), cache hoặc registry.
 3. `npm ci` cài đúng theo lock file, xóa `node_modules` trước khi cài và báo lỗi nếu thiếu hoặc lệch lock file, nên tái lập được; `npm install` có thể sửa lock file. Nếu quên commit `package-lock.json`, `npm ci` fail (và nếu có `cache: npm` thì Setup Node.js fail vì không tìm thấy lock file).
 4. Key cache tính từ hash của lock file. Thêm dependency làm lock file đổi, hash đổi nên lần chạy kế không khớp cache cũ và cache mới được tạo ở cuối job. Cache chỉ tăng tốc; artifact là kết quả cần giữ.
 5. Ba việc theo thứ tự: (a) đọc dòng lỗi đầu tiên của step đỏ để biết lỗi nằm trước hay trong `npm`; (b) kiểm tra `working-directory` và `git ls-files` xem `package-lock.json` có được commit không; (c) `git clone` vào thư mục mới và chạy `npm ci` để xác định vấn đề do dữ liệu repo hay do cấu hình workflow. Có thể thêm (d) so phiên bản Node với local.
-
-### Hướng dẫn chấm cho mentor
-
-Mentor kiểm chứng bằng cách đọc workflow trong repo, mở link run và đối chiếu với log học viên dán, chạy lại `run-pipeline.sh` và đọc lịch sử commit. Link run không truy cập được hoặc log không khớp workflow trong repo thì hỏi lại trực tiếp.
-
-| Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
-| --- | --- | --- | --- |
-| Nhiệm vụ 1 – thiết kế và giả lập | `pipeline-spec.md` đủ ô; log `run-pipeline.sh` có đủ stage, `# fail 0`, `PIPELINE OK`, tag cụ thể; sơ đồ có nhãn trên mũi tên | Spec giữ nguyên bảng mẫu của lab, không thêm tag, secret, song song; log không có mốc thời gian khác nhau giữa các lần chạy | Output của stage Build là gì và đi đâu tiếp? Vì sao tag bằng commit SHA tốt hơn `latest`? Secret nào cần và lưu ở đâu? |
-| Nhiệm vụ 2 – gate dừng khi fail | Log đỏ: `# fail` lớn hơn 0, không có stage build, `exit code` khác 0; log `npm test` xanh sau hoàn tác; `git diff` thư mục `tests` trống | Chỉ có lần chạy xanh; `exit code` lấy bằng `$?` nên luôn 0; để lại test hỏng | Vì sao `exit code` phải lấy từ `PIPESTATUS[0]`? Nếu em thêm `|| true` sau `npm test` thì chuyện gì xảy ra? Build trước test lãng phí gì? |
-| Nhiệm vụ 3 – workflow CI | `ci.yml` và `ci.yml.copy` giống nhau; `permissions`, pin action, `working-directory`; link run xanh khớp với commit; log step Run tests | Link run thuộc repo khác hoặc commit không khớp; log đã chỉnh tay; thiếu checkout; dùng `npm install` | Nếu bỏ checkout thì step nào đỏ đầu tiên và vì sao? Vì sao `working-directory` là `lab-16/source`? Vì sao `contents: read` là đủ? |
-| Nhiệm vụ 4 – cache và tách job | Log Setup Node.js hai lần, lần hai khôi phục cache; thời gian `npm ci` hai lần; run có `test` và `validate` song song | Hai đoạn log giống hệt nhau; `cache-dependency-path` sai mà không nhận ra; `validate` có `needs` | Key của cache lấy từ đâu? Thêm dependency thì chuyện gì xảy ra? Cache khác artifact thế nào, cho ví dụ của Club API? |
-| README và report | 7 câu theo template, nêu nguyên nhân gốc khi có lỗi | Sao chép đề bài, chung chung | Chọn một lỗi em gặp: em đọc log ở đâu đầu tiên và xác minh bằng lệnh nào? |
-| Câu hỏi kiểm tra kiến thức | 5 câu đúng ý, có lệnh hoặc YAML dẫn chứng | Trùng câu chữ với lab; không có dẫn chứng | Hỏi câu 5 với một tình huống mới (PR đỏ ở step `npm test` chỉ trên Node 24) |
-| Vệ sinh và quy trình | Có `package-lock.json`, không có `node_modules`, `.env`, token; PR có reviewer | `git ls-files` thấy `node_modules`; thiếu lock file; không có phản hồi review | Em làm gì nếu lỡ commit token (thu hồi token trước, rồi mới xóa khỏi lịch sử)? |
-| L2-1 matrix, `needs`, `build-image` | YAML có `strategy.matrix` (2 phiên bản), `fail-fast: false`, `needs`; link run `build-image` bị skipped | Có YAML nhưng không có run chứng minh; không biết matrix tạo mấy job | Matrix tạo mấy job? Khi `test (24)` đỏ thì `build-image` ra sao và vì sao? |
-| L2-2 PR đỏ và Tình huống 06 | Link PR đỏ rồi xanh; báo cáo 5 phần; dòng log đầu tiên báo lỗi; bằng chứng clone sạch | Chỉ có kết luận, không trích log; sửa nhiều thứ một lúc không biết cái nào có tác dụng | Lỗi xảy ra trước khi chạy `npm` hay trong `npm`? Em biết bằng dòng log nào? |
-| L2-3 môi trường và build một lần | `environments.md` đủ trigger, gate, rollback; `grep -c` ra 1 với dòng lệnh build được in ra log; hai gate có lý do | Log có nhiều hơn một lệnh build; lý do chung chung ("cho an toàn") | Nếu production cần quay lui, em deploy lại cái gì? Vì sao điều đó chỉ làm được khi tag bất biến? |

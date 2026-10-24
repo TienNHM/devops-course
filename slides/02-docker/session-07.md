@@ -1,6 +1,6 @@
 # Slide buổi 07 – Container Fundamentals
 
-> **Tóm tắt:** Phân biệt VM và container, đọc kiến trúc Docker (client, daemon, registry), cài Docker Desktop và chạy, kiểm tra, dọn một container Nginx. Bài lab đầy đủ: [Buổi 07](../../labs/week-04/session-07.md). Kịch bản mentor: [Kịch bản Buổi 07](../../mentors/sessions/session-07.md).
+> **Tóm tắt:** Phân biệt VM và container, đọc kiến trúc Docker (client, daemon, registry), cài Docker Desktop và chạy, kiểm tra, dọn một container Nginx. Bài lab đầy đủ: [Buổi 07](../../labs/week-04/session-07.md).
 
 ## Slide 1: Mục tiêu buổi học
 

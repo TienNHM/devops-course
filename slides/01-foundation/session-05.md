@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Hiểu IP, DNS, TCP, port, HTTP và localhost, rồi dùng ping, curl, nslookup, ss để chẩn đoán một request theo từng tầng.
 
-Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fundamentals](../../labs/week-03/session-05.md). Kịch bản dạy: [Kịch bản mentor buổi 05](../../mentors/sessions/session-05.md).
+Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fundamentals](../../labs/week-03/session-05.md).
 
 ## Slide 1: Mục tiêu buổi học
 

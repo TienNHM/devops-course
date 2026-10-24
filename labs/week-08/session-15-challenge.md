@@ -67,7 +67,7 @@ Tiêu chí hoàn thành: nộp thêm `source/environments.md` và cập nhật s
 :::
 
 ::: details Gợi ý bậc 2
-Cách đảm bảo build một lần: stage `build` sinh ra tag SHA; các bước sau chỉ tham chiếu tag đó, không gọi `docker build` nữa. Đếm số lần build trong log bằng `grep -c "^+ docker build" evidence/command-output.txt` (kết quả mong đợi là `1`). Lời giải đầy đủ có ở [Walkthrough tuần 8](../../mentors/walkthroughs/week-08.md); chỉ mở sau khi nộp bài.
+Cách đảm bảo build một lần: stage `build` sinh ra tag SHA; các bước sau chỉ tham chiếu tag đó, không gọi `docker build` nữa. Đếm số lần build trong log bằng `grep -c "^+ docker build" evidence/command-output.txt` (kết quả mong đợi là `1`). Lời giải đầy đủ có ở [trang tuần 8](README.md); chỉ mở sau khi nộp bài.
 :::
 
 Hai câu thảo luận thêm:

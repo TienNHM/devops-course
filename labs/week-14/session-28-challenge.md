@@ -7,7 +7,7 @@ Tuần 14/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 28/32
 > **Tóm tắt:** Trang phụ của buổi 28: ba thử thách L2 (ba tình huống chỉ có triệu chứng, sự cố trên ứng dụng thật club-api, report 5 mục) và tình huống tổng hợp Pod 0/1 sau khi deploy.
 
 ::: tip Trang này dành cho ai
-Bạn đã xong checklist L1 của [Buổi 28 – Kubernetes Operations](session-28.md) và còn thời gian, hoặc bạn cần phần L2 cho bài tập tuần. Ở trang này bạn chỉ nhận triệu chứng, đáp án nằm ở phía mentor: hãy tự điều tra bằng quy trình `get pods`, `describe`, `logs --previous`, rồi mới đối chiếu với [Walkthrough tuần 14](../../mentors/walkthroughs/week-14.md) sau khi nộp bài.
+Bạn đã xong checklist L1 của [Buổi 28 – Kubernetes Operations](session-28.md) và còn thời gian, hoặc bạn cần phần L2 cho bài tập tuần. Ở trang này bạn chỉ nhận triệu chứng, đáp án nằm ở phía mentor: hãy tự điều tra bằng quy trình `get pods`, `describe`, `logs --previous`, rồi mới đối chiếu với [trang tuần 14](README.md) sau khi nộp bài.
 :::
 
 ## Thử thách L2 {#thu-thach}

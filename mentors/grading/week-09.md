@@ -1,7 +1,7 @@
-# Chấm bài tuần 9 – Automated Testing & Docker CI
+# Hướng dẫn chấm tuần 9 – Automated Testing & Docker CI
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm; học viên không cần đọc. Đề bài: [Bài tập tuần 9](../../assignments/weekly/week-09.md). Đáp án và hướng dẫn chấm chi tiết: [Walkthrough tuần 9](../walkthroughs/week-09.md). Bài học: [Buổi 17 – Automated Testing](../../labs/week-09/session-17.md) và [Buổi 18 – Docker CI Pipeline](../../labs/week-09/session-18.md).
+Trang này dành cho người chấm; học viên không cần đọc. Đề bài: [Bài tập tuần 9](../../assignments/weekly/week-09.md). Đáp án và hướng dẫn chấm chi tiết: [Đáp án tuần 9](../walkthroughs/week-09.md). Bài học: [Buổi 17 – Automated Testing](../../labs/week-09/session-17.md) và [Buổi 18 – Docker CI Pipeline](../../labs/week-09/session-18.md).
 :::
 
 > **Tóm tắt:** Barem chi tiết (đạt và không đạt), lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp để chấm bài tuần 9.

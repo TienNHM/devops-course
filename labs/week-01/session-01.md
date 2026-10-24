@@ -14,8 +14,9 @@ Tuần 1/16 · Giai đoạn 1 – Engineering Foundation · Buổi 01/32
 **Cần chuẩn bị:**
 
 - [ ] Tài khoản GitHub và repo `devops-labs` để PUBLIC, xem [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md)
-- [ ] Mở được terminal (Git Bash hoặc WSL), xem [Terminal 101](../../resources/terminal-101.md)
-- [ ] Trình xem Mermaid: VS Code có extension Mermaid, hoặc trang [mermaid.live](https://mermaid.live). Chưa cần cài WSL hay Docker, việc đó để [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md) và Buổi 02.
+- [ ] Đã đọc [Terminal 101](../../resources/terminal-101.md) (mục bắt buộc, khoảng 10 phút): buổi này gõ lệnh `mkdir`, `cat`, `ls` trong terminal
+- [ ] Mở Git Bash: bấm Start, gõ `Git Bash`. Trong VS Code: menu Terminal > New Terminal, rồi chọn Git Bash ở mũi tên cạnh dấu `+`
+- [ ] Trình xem Mermaid: VS Code có extension Mermaid, hoặc trang [mermaid.live](https://mermaid.live). Chưa cần cài WSL hay Docker: WSL cài ở Buổi 02, Docker để dành cho Buổi 07 (Container Fundamentals), Buổi 08 là Docker CLI. Các bước cài nằm ở [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md)
 
 **Sản phẩm phải nộp** (thư mục `lab-01/`):
 
@@ -69,7 +70,11 @@ Bảng SDLC chi tiết và so sánh Dev với Ops nằm trong mục "Tìm hiểu
 
 ## Hands-on lab {#hands-on-lab}
 
-**Đề bài:** vẽ quy trình triển khai một ứng dụng từ máy lập trình đến server. Mức L1, bắt buộc, 60 phút. Chạy lệnh trong Git Bash hoặc WSL (không dùng PowerShell). Không quen terminal? Tạo file bằng VS Code hoặc Notepad, nội dung giống hệt các khối bên dưới.
+**Đề bài:** vẽ quy trình triển khai một ứng dụng từ máy lập trình đến server. Mức L1, bắt buộc, 60 phút. Chạy lệnh trong Git Bash (WSL chưa cài ở buổi này; không dùng PowerShell).
+
+::: tip Không muốn gõ heredoc? Tạo file bằng VS Code
+Các Phần 1 đến 4 dùng `cat > tên-file <<'EOF' ... EOF` (heredoc) để ghi nhiều dòng vào file. Cách thay thế cho mọi Phần: mở thư mục `devops-labs` bằng VS Code (`code .` trong Git Bash, hoặc File > Open Folder), tạo file đúng tên trong `lab-01/source/`, dán phần nội dung nằm giữa dòng `cat > ...` và dòng `EOF`, rồi lưu. Kết quả giống hệt.
+:::
 
 ### Chuẩn bị (5 phút)
 
@@ -107,7 +112,7 @@ cat > lab-01/source/steps.md <<'EOF'
 EOF
 ```
 
-Mở file và bổ sung tối thiểu 8 dòng nữa: commit, build, test, đóng gói, gửi lên server, cấu hình biến môi trường (ví dụ `DB_PASSWORD`), chạy ứng dụng, kiểm tra `/health`. Mỗi dòng phải đủ bốn cột. Vì sao: bảng "ai, đầu vào, đầu ra" làm lộ ra khoảng trống mà sơ đồ đẹp thường che giấu.
+Không dùng heredoc thì tạo `steps.md` bằng VS Code và dán nội dung. Mở file và bổ sung tối thiểu 8 dòng nữa: commit, build, test, đóng gói, gửi lên server, cấu hình biến môi trường (ví dụ `DB_PASSWORD`), chạy ứng dụng, kiểm tra `/health`. Mỗi dòng phải đủ bốn cột. Vì sao: bảng "ai, đầu vào, đầu ra" làm lộ ra khoảng trống mà sơ đồ đẹp thường che giấu.
 
 ::: tip Kiểm tra: bạn đúng khi
 `grep -c '^|' lab-01/source/steps.md` in 11 trở lên (9 dòng bước cộng dòng tiêu đề và dòng phân cách) và không ô nào để trống.
@@ -132,7 +137,7 @@ flowchart LR
 EOF
 ```
 
-Dán nội dung vào mermaid.live hoặc xem trước trong VS Code, chụp ảnh lưu vào `lab-01/screenshots/manual-workflow.png`. Vì sao: vòng lặp lỗi chính là chi phí ẩn của quy trình thủ công, hãy nhìn nó bằng mắt.
+(Thay cho heredoc: tạo `manual-workflow.mmd` bằng VS Code, dán nội dung giữa dòng `cat` và dòng `EOF`.) Dán nội dung vào mermaid.live hoặc xem trước trong VS Code, chụp ảnh lưu vào `lab-01/screenshots/manual-workflow.png`. Vì sao: vòng lặp lỗi chính là chi phí ẩn của quy trình thủ công, hãy nhìn nó bằng mắt.
 
 ::: tip Kiểm tra: bạn đúng khi
 Sơ đồ vẽ ra được (không báo Syntax error) với đúng 9 nút, có vòng lặp từ "Hỏi lại dev" về "Cài dependency", mỗi nút ghi rõ `Dev:` hoặc `Ops:`.
@@ -140,7 +145,7 @@ Sơ đồ vẽ ra được (không báo Syntax error) với đúng 9 nút, có v
 
 ### Phần 3 – Đánh dấu điểm nghẽn (10 phút)
 
-Với mỗi bước trong `steps.md`, thêm cột "Rủi ro" và "Tự động hóa được không". Gợi ý nhận diện điểm nghẽn: bước phụ thuộc vào trí nhớ của một người, bước chờ người khác, bước dễ sai khi làm tay, bước lặp lại nhiều lần. Chọn 3 bước nghẽn nhất:
+Với mỗi bước trong `steps.md`, thêm cột "Rủi ro" và "Tự động hóa được không". Gợi ý nhận diện điểm nghẽn: bước phụ thuộc vào trí nhớ của một người, bước chờ người khác, bước dễ sai khi làm tay, bước lặp lại nhiều lần. Chọn 3 bước nghẽn nhất (tạo `bottlenecks.md` bằng lệnh dưới đây, hoặc bằng VS Code và dán nội dung):
 
 ```bash
 cat > lab-01/source/bottlenecks.md <<'EOF'
@@ -176,7 +181,7 @@ flowchart LR
 EOF
 ```
 
-Bổ sung ít nhất một bước bạn thấy còn thiếu (ví dụ rollback, thông báo cho nhóm) rồi chụp ảnh lưu vào `lab-01/screenshots/automated-workflow.png`.
+Tạo file bằng heredoc hoặc bằng VS Code như trên. Bổ sung ít nhất một bước bạn thấy còn thiếu (ví dụ rollback, thông báo cho nhóm) rồi chụp ảnh lưu vào `lab-01/screenshots/automated-workflow.png`.
 
 ::: tip Kiểm tra: bạn đúng khi
 Sơ đồ có CI build và test, cổng kiểm thử có nhánh "không đạt", đóng gói image, registry, deploy, health check và một bước do bạn tự thêm.
@@ -238,7 +243,7 @@ ls lab-01/source lab-01/screenshots lab-01/evidence && grep -c '^|' lab-01/sourc
 | Bạn cùng bàn "triển khai" theo sơ đồ nhưng cứ hỏi "lệnh nào, Node bản mấy, mật khẩu ở đâu" | Kiến thức nằm trong đầu một người (tribal knowledge), chưa được viết ra | Ghi mọi câu hỏi đó thành file trong Git (README, `compose.yaml`, `.env.example`) |
 | Trả lời "DevOps là Docker và Kubernetes" | Nhầm công cụ với văn hóa và quy trình | Nhắc lại bốn nguyên tắc: cộng tác, tự động hóa, đo lường, phản hồi |
 | Tự động hóa mọi thứ nhưng không nêu điểm nghẽn | Chọn công cụ trước khi hiểu vấn đề | Quay lại Phần 3, ưu tiên bước đau nhất |
-| `mkdir -p` hoặc `cat > ... <<'EOF'` báo lỗi | Đang chạy trong PowerShell | Mở Git Bash hoặc WSL, xem [Terminal 101](../../resources/terminal-101.md) |
+| `mkdir -p` hoặc `cat > ... <<'EOF'` báo lỗi | Đang chạy trong PowerShell | Mở Git Bash (Start, gõ `Git Bash`), xem [Terminal 101](../../resources/terminal-101.md). Hoặc tạo file bằng VS Code như hộp ở đầu Hands-on lab |
 | `Author identity unknown` khi `git commit` | Chưa cấu hình `user.name`, `user.email` | Chạy `git config user.name "Ten Ban"` và `git config user.email "email-github@example.com"` trong repo |
 | `git push` báo `no upstream branch` hoặc bị từ chối | Chưa đặt upstream hoặc chưa đăng nhập GitHub | Chạy `git push -u origin HEAD`, kiểm tra `git remote -v`, đăng nhập bằng Git Credential Manager. Không dán token vào file nào |
 | `command-output.txt` rỗng | Quên chuyển hướng đầu ra vào file | Chạy lại khối lệnh ở Phần 5, kiểm tra bằng `cat` |
@@ -272,7 +277,7 @@ Nộp vào thư mục `lab-01/` trong repo cá nhân `devops-labs`, theo [mẫu 
 
 **Cách A, upload trên web (không cần Git):** vào repo `devops-labs` trên GitHub, bấm Add file, Upload files, kéo thả cả thư mục `lab-01/`, rồi Commit changes.
 
-**Cách B, dùng Git:** làm theo mục "Git trong 10 phút" của [Bắt đầu từ đây](../../curriculum/getting-started.md). Nếu đã quen:
+**Cách B, dùng Git:** làm theo mục [Git trong 10 phút](../../curriculum/how-to-learn.md#git-10-phut) (dùng địa chỉ HTTPS hoặc GitHub Desktop). Nếu đã quen:
 
 ```bash
 git add lab-01

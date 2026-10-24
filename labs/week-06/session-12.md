@@ -284,7 +284,7 @@ Nộp vào thư mục `lab-12/` trong repo `devops-labs`, theo [Lab XX – Tên 
 Buổi tiếp theo: [Buổi 13 – Docker Compose](../week-07/session-13.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Thử thách A (Compose, `down` với `down -v`), B (backup mức volume) và C (tái hiện Tình huống 04) nằm ở [Thử thách thêm buổi 12](session-12-challenge.md). Mỗi thử thách có gợi ý từng bậc; tự thử 15 phút trước khi mở gợi ý. Đáp án đối chiếu (mở sau khi nộp bài): [Walkthrough tuần 6](../../mentors/walkthroughs/week-06.md).
+Thử thách A (Compose, `down` với `down -v`), B (backup mức volume) và C (tái hiện Tình huống 04) nằm ở [Thử thách thêm buổi 12](session-12-challenge.md). Mỗi thử thách có gợi ý từng bậc; tự thử 15 phút trước khi mở gợi ý. Đáp án đối chiếu (mở sau khi nộp bài): [trang tuần 6](README.md).
 :::
 
 ::: details Phá lỗi nâng cao

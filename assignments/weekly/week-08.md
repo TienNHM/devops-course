@@ -35,7 +35,7 @@ L2 tính điểm thưởng tối đa 10, chỉ làm khi đã xong L1. Mentor ch�
 
 ## Bảng điểm
 
-Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2. Tiêu chí chi tiết do mentor giữ ở [Chấm bài tuần 8](../../mentors/grading/week-08.md).
+Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2. Tiêu chí chi tiết do mentor giữ.
 
 | Tiêu chí | Điểm |
 | --- | --- |

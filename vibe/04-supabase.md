@@ -6,7 +6,7 @@
 - **Kết quả:** một database Supabase có bảng đăng ký, bật RLS, và web gửi dữ liệu vào được mà người lạ không đọc được.
 - **Thời gian:** 60 đến 90 phút.
 - **Cần gì trước:** tài khoản GitHub, một trang web tĩnh đã deploy, và email để đăng ký Supabase (không cần thẻ).
-- **Module trước:** [Fullstack serverless](03-fullstack-serverless.md) hoặc [Đưa web tĩnh lên mạng](02-static-hosting.md). Chặng 2: chọn Supabase hoặc [Firebase](05-firebase.md), không cần cả hai.
+- **Module trước:** [02 Hosting tĩnh](02-static-hosting.md) (bạn đã có link công khai). [03 Fullstack serverless](03-fullstack-serverless.md) chỉ là tùy chọn, khi cần gọi API có khóa bí mật. Chặng 2: chọn Supabase hoặc [Firebase](05-firebase.md), không cần cả hai.
 :::
 
 ## Bạn sẽ làm được gì
@@ -101,34 +101,57 @@ Về gói miễn phí: giới hạn thay đổi theo thời gian. Theo trang gi�
 ### Bước 2. Tạo bảng và bật RLS bằng SQL Editor
 
 1. Mở SQL Editor, bấm New query.
-2. Dán nội dung file `schema.sql` (xem [README của ví dụ](../examples/vibe/supabase/README.md)), bấm Run.
-3. Dán tiếp file `policies.sql`, bấm Run.
-
-Đoạn cốt lõi của `schema.sql` và `policies.sql`:
+2. Chép **toàn bộ** khối SQL dưới đây vào ô soạn thảo, bấm Run. Không cần tải file nào: khối này đã đủ để làm các bước tiếp theo.
 
 ```sql
+-- Bảng đăng ký tham gia CLB
 create table if not exists public.signups (
   id         bigint generated always as identity primary key,
   full_name  text not null check (char_length(full_name) between 1 and 100),
-  email      text not null check (char_length(email) between 3 and 200),
-  message    text,
+  email      text not null check (char_length(email) between 3 and 200 and position('@' in email) > 1),
+  message    text check (message is null or char_length(message) <= 1000),
   created_at timestamptz not null default now()
 );
 
+-- Bảng quản trị viên: ai nằm trong bảng này được đọc danh sách đăng ký
+create table if not exists public.admins (
+  user_id uuid primary key references auth.users (id) on delete cascade
+);
+
+-- Bật Row Level Security cho MỌI bảng
 alter table public.signups enable row level security;
+alter table public.admins  enable row level security;
+
+-- Quyền ở mức bảng: thu hồi hết, cấp lại tối thiểu
+revoke all on public.signups from anon, authenticated;
+revoke all on public.admins  from anon, authenticated;
+grant insert on public.signups to anon, authenticated;
+grant select on public.signups to authenticated;
+grant select on public.admins  to authenticated;
 
 -- Ai cũng được gửi form
+drop policy if exists "signups_insert_public" on public.signups;
 create policy "signups_insert_public"
   on public.signups for insert
   to anon, authenticated
   with check (true);
 
 -- Chỉ admin được đọc danh sách
+drop policy if exists "signups_select_admin" on public.signups;
 create policy "signups_select_admin"
   on public.signups for select
   to authenticated
   using (exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
+
+-- Admin tự xem dòng của mình
+drop policy if exists "admins_select_self" on public.admins;
+create policy "admins_select_self"
+  on public.admins for select
+  to authenticated
+  using (user_id = (select auth.uid()));
 ```
+
+Khối này chạy lại nhiều lần được. Bản đầy đủ hơn (thêm bảng hồ sơ thành viên `members`) là hai file `schema.sql` và `policies.sql` trong [ví dụ supabase](../examples/vibe/supabase/README.md); chỉ cần khi bạn làm bài [09 Dự án mini](09-mini-project.md) theo ví dụ đó.
 
 Giải thích từng phần:
 
@@ -175,11 +198,7 @@ Trong trang HTML:
 
 Chú ý: không gọi `.select()` ngay sau `.insert()` với khách chưa đăng nhập. `.select()` đòi quyền đọc lại dòng vừa tạo, mà khách không có quyền đó (đúng ý ta), nên cả lệnh báo lỗi vi phạm RLS và dòng không được lưu.
 
-Chạy thử cục bộ rồi mở trang:
-
-```bash
-npx serve .
-```
+Cách thử: đẩy `index.html` và `config.js` lên GitHub rồi mở link GitHub Pages của bạn (mở file trực tiếp từ ổ đĩa không chạy được vì trình duyệt chặn `import` giữa các file). Ai có Node.js có thể chạy `npx serve .` để thử trên máy. Nhờ AI agent viết sẵn trang form hoàn chỉnh cũng được, miễn là nó dùng đúng hai giá trị URL và publishable key.
 
 Bạn sẽ thấy: gửi form xong, dòng mới xuất hiện trong Table Editor, bảng `signups`.
 
@@ -217,25 +236,7 @@ Bạn sẽ thấy: email chứa link, bấm vào thì quay về đúng trang c�
 
 Lưu ý nhỏ: dịch vụ gửi email mặc định của Supabase chỉ phù hợp để thử. Theo [tài liệu SMTP](https://supabase.com/docs/guides/auth/auth-smtp) (kiểm tra 10/2026) nó chỉ gửi tới địa chỉ thuộc nhóm của dự án, khoảng 2 email mỗi giờ và có thể đổi không báo trước. Sản phẩm thật cần cấu hình nhà cung cấp email riêng.
 
-#### Tạo admin đầu tiên cho một trang quản trị
-
-Nếu web của bạn có trang admin (như [club-landing](../examples/vibe/club-landing/README.md)), làm theo thứ tự này, ít phụ thuộc vào email nhất:
-
-1. Authentication, mục Providers (hoặc Sign In / Providers), bấm Email, xem công tắc **Confirm email**. Bật nghĩa là user phải bấm link trong email mới đăng nhập được.
-2. Authentication, mục Users, Add user, Create new user: nhập email, mật khẩu mạnh, tích **Auto Confirm User**. Cách này không gửi email nào nên không đụng giới hạn ở trên.
-3. Tắt "Allow new users to sign up" nếu web không cần người lạ tự tạo tài khoản. Theo tài liệu, khi tắt thì chỉ user đã có mới đăng nhập được.
-4. Đánh dấu user là admin bằng một dòng trong bảng `admins` (chạy trong SQL Editor, đổi email):
-
-```sql
-insert into public.admins (user_id)
-select id from auth.users where email = 'admin@example.com';
-```
-
-Policy chỉ cần hỏi "`auth.uid()` có trong bảng `admins` không", như ở bước 2. Muốn thêm hay bớt admin chỉ cần thêm hay xóa một dòng.
-
-Vì sao **không** dùng `user_metadata` (cột `raw_user_meta_data`) để phân quyền: chính người dùng sửa được nó bằng `supabase.auth.updateUser()`, nên policy kiểu "metadata nói role là admin thì cho xem" để ai đăng nhập cũng tự phong mình làm admin chỉ bằng một dòng JavaScript. Nếu muốn đưa quyền vào token JWT, dùng `app_metadata` (người dùng không sửa được), nhưng thay đổi chỉ có hiệu lực sau khi token làm mới. Người mới nên chọn bảng `admins`: dễ đọc, dễ kiểm tra, có hiệu lực ngay.
-
-Site URL và Redirect URLs khi chạy local và khi lên domain thật: xem bảng trong [README của club-landing](../examples/vibe/club-landing/README.md). Đăng nhập bằng mật khẩu không chuyển hướng nên hay chạy được dù quên cấu hình, nhưng mọi email Supabase gửi đi (xác nhận, đặt lại mật khẩu) vẫn dùng Site URL, nên đổi nó ngay khi có domain.
+Nếu web có trang quản trị cần tài khoản admin, cách tạo admin an toàn (không phụ thuộc email) nằm ở [Supabase nâng cao](04-supabase-advanced.md).
 
 ### Bước 7. Đọc thêm khi cần: Storage, Edge Functions, CLI, MCP
 
@@ -315,7 +316,7 @@ Bạn phải tự kiểm tra sau khi agent làm xong:
 ## Checklist hoàn thành
 
 - [ ] Đã tạo project Supabase dành cho học tập và lưu mật khẩu database trong trình quản lý mật khẩu.
-- [ ] Đã chạy `schema.sql` và `policies.sql`, mọi bảng trong `public` đều hiện RLS enabled.
+- [ ] Đã chạy khối SQL ở Bước 2, mọi bảng trong `public` đều hiện RLS enabled.
 - [ ] Đã dùng `curl` với publishable key khi chưa đăng nhập và xác nhận không đọc được dữ liệu riêng.
 - [ ] Web chỉ chứa publishable key; tìm trong repo không có `service_role` hay `sb_secret`.
 - [ ] File `.env` (nếu có) nằm trong `.gitignore`.

@@ -1,6 +1,6 @@
 # Slide buổi 23 – kubectl Fundamentals
 
-> **Tóm tắt:** Dùng kubectl để chọn đúng cluster và namespace, apply manifest, đọc trạng thái, log, exec, port-forward và trích dữ liệu bằng -o yaml, jsonpath. Lệnh lab: [Buổi 23 – kubectl Fundamentals](../../labs/week-12/session-23.md). Kịch bản dạy: [Kịch bản mentor buổi 23](../../mentors/sessions/session-23.md).
+> **Tóm tắt:** Dùng kubectl để chọn đúng cluster và namespace, apply manifest, đọc trạng thái, log, exec, port-forward và trích dữ liệu bằng -o yaml, jsonpath. Lệnh lab: [Buổi 23 – kubectl Fundamentals](../../labs/week-12/session-23.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -90,7 +90,7 @@ sequenceDiagram
 
 ---
 
-## Slide 8: Demo outline – ba cú nhìn đầu tiên
+## Slide 8: Demo – ba cú nhìn đầu tiên
 
 - Cú nhìn 1: context và namespace hiện tại, rồi so `get pods` với `-n club`.
 - Cú nhìn 2: sinh YAML mẫu bằng `--dry-run=client -o yaml`, không tạo gì trong cluster.

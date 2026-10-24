@@ -1,6 +1,6 @@
 # Slide buổi 02 – Development Environment
 
-> **Tóm tắt:** Dựng môi trường Linux thật trên Windows 11 bằng WSL2 Ubuntu, VS Code Remote WSL, Git và SSH key GitHub, rồi kiểm tra bằng script check-env. Bài lab tương ứng: [Buổi 02 – Development Environment](../../labs/week-01/session-02.md). Kịch bản dạy: [Kịch bản mentor Buổi 02](../../mentors/sessions/session-02.md).
+> **Tóm tắt:** Dựng môi trường Linux thật trên Windows 11 bằng WSL2 Ubuntu, VS Code Remote WSL, Git và SSH key GitHub, rồi kiểm tra bằng script check-env. Bài lab tương ứng: [Buổi 02 – Development Environment](../../labs/week-01/session-02.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -100,7 +100,7 @@ flowchart LR
   subgraph Windows11["Windows 11"]
     WT["Windows Terminal"]
     VSC["VS Code - giao diện"]
-    DD["Docker Desktop - buổi sau"]
+    DD["Docker Desktop - Buổi 07"]
   end
   subgraph WSL2["WSL2 - nhân Linux thật"]
     UB["Ubuntu + bash"]
@@ -130,7 +130,7 @@ flowchart LR
 
 ## Slide 10: Lab – bản đồ 60 phút ở lớp và việc ở nhà
 
-- Ở lớp: cài WSL2 + Ubuntu (khoảng 30 phút lần đầu, gồm khởi động lại), VS Code Remote WSL, `git config`, chạy `resources/check-env.sh`
+- Ở lớp: cài WSL2 + Ubuntu (khoảng 30 phút lần đầu, gồm khởi động lại), VS Code Remote WSL, `git config`, chạy `bash resources/check-env.sh 2`
 - Ở nhà: tạo SSH key, thêm lên GitHub, nối remote bằng SSH, gom evidence
 - Kỳ vọng: `wsl --list --verbose` thấy VERSION 2; góc dưới trái VS Code ghi "WSL: Ubuntu-24.04"; `uname -a` chứa `microsoft-standard-WSL2`
 - Các bước cài đặt chi tiết: [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md)

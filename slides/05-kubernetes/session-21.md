@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Vì sao cần orchestration, các thành phần của Kubernetes, và dựng cluster kind club bằng kubectl. Lệnh lab nằm ở bài học, slide chỉ giữ khung.
 
-Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md) · Kịch bản người dạy: [Kịch bản mentor buổi 21](../../mentors/sessions/session-21.md)
+Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md)
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -121,7 +121,7 @@ flowchart LR
 
 ---
 
-## Slide 11: Demo outline
+## Slide 11: Demo
 
 - Tạo cluster bằng `kind create cluster`.
 - Cho thấy node trong `kubectl get nodes` và container trong `docker ps` là cùng một thứ.
@@ -130,7 +130,7 @@ flowchart LR
 
 ---
 
-## Slide 12: Lab outline
+## Slide 12: Lab
 
 - Chuẩn bị: kiểm tra Docker, kubectl, kind.
 - Phần 1: tạo cluster `club` từ `starter-project/k8s/kind-config.yaml`.

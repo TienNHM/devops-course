@@ -1,14 +1,14 @@
-# Chấm điểm tuần 14 – Storage, Ingress và Operations
+# Hướng dẫn chấm tuần 14 – Storage, Ingress & Operations
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 14](../../assignments/weekly/week-14.md). Đáp án và bằng chứng cần thấy: [Walkthrough tuần 14](../walkthroughs/week-14.md). Kịch bản dạy: [Buổi 27](../sessions/session-27.md), [Buổi 28](../sessions/session-28.md).
+Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 14](../../assignments/weekly/week-14.md). Đáp án: [Đáp án tuần 14](../walkthroughs/week-14.md). Kịch bản dạy: [buổi 27](../sessions/session-27.md), [buổi 28](../sessions/session-28.md).
 :::
 
-> **Tóm tắt:** Barem chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho bài tập tuần 14 (PVC, Ingress, rollout và chẩn đoán ba trạng thái lỗi).
+> **Tóm tắt:** Barem 100 điểm cho bài tập tuần 14 (PVC, Ingress, rollout và chẩn đoán ba trạng thái lỗi), lệnh kiểm tra nhanh, bằng chứng cần thấy, câu hỏi vấn đáp, lỗi hay bị trừ điểm và cách chấm thử thách L2.
 
-## Barem chấm
+## Barem
 
-Nguyên văn từ đề bài. Tổng 100 điểm, cộng tối đa 10 điểm L2 (tổng không vượt quá 110).
+Tổng 100 điểm, cộng tối đa 10 điểm L2 (tổng không vượt quá 110). L2 chỉ chấm khi L1 đạt từ 60 điểm.
 
 | Tiêu chí | Mô tả mức đạt / không đạt | Điểm |
 | --- | --- | --- |
@@ -23,23 +23,7 @@ Nguyên văn từ đề bài. Tổng 100 điểm, cộng tối đa 10 điểm L2
 | Thử thách A (L2) | Bảng dự đoán/kết quả có dự đoán viết trước, có PV `Released`, giải thích đúng | +4 |
 | Thử thách B (L2) | Hai host cùng chạy, tự gây và chẩn đoán một lỗi Ingress bằng bằng chứng | +3 |
 | Thử thách C (L2) | Rollout kẹt được chẩn đoán và undo trên `club-api`, xử lý được tối thiểu một scenario | +3 |
-| **Điểm thưởng tối đa** | L2 không làm tổng vượt quá 110 | **10** |
-
-L2 là điểm thưởng, chỉ chấm khi L1 đã đạt từ 60 điểm trở lên.
-
-## Lỗi hay bị trừ điểm
-
-- Nộp chỉ ảnh chụp màn hình, không có output lệnh dạng text trong `evidence/command-output.txt`.
-- Số đếm `members` trước và sau xóa Pod không có, hoặc không chứng minh được dòng dữ liệu riêng của bạn còn lại.
-- Kết luận nguyên nhân lỗi mà không trích dòng events, logs hay exit code tương ứng; đoán mò rồi "sửa cho chạy" mà không giải thích.
-- Dùng `kubectl logs` thường thay vì `--previous` cho Pod crash và kết luận "không có log".
-- Chỉ rollback rồi coi như xong, không nêu nguyên nhân gốc và cách phòng tránh.
-- Gọi `curl` tới Ingress mà không kiểm tra header Host, rồi kết luận Ingress hỏng.
-- Quên `kind load docker-image` hoặc tạo cluster kind không có `--config`, dẫn tới `ImagePullBackOff` hay `Connection refused` không liên quan tới bài.
-- Commit mật khẩu thật, file Secret chứa giá trị thật hoặc `.env` vào repo.
-- Làm trong `/mnt/c` thay vì filesystem WSL; manifest trong `source/` không khớp với thứ đã chạy.
-- Không dọn tài nguyên thử nghiệm (`crashy`, `hungry`, PVC thừa), làm lần chạy sau nhiễu.
-- PR không có người review, hoặc nộp sau hạn mà không báo trước.
+| **Điểm thưởng tối đa** | | **10** |
 
 ## Lệnh kiểm tra nhanh
 
@@ -60,9 +44,7 @@ kubectl apply -f lab-27/source/postgres.yaml --dry-run=server
 
 Điều cần thấy: node `Ready`; PVC `postgres-pvc` `Bound` với PV có `CLAIM` là `club/postgres-pvc`; bốn Pod `1/1 Running`; Ingress host `club.localhost` class `nginx`; `count(*)` lớn hơn hoặc bằng 3 và còn dòng email riêng; curl có Host đúng trả JSON, không Host đúng trả `404`; namespace `ops-lab` không còn `crashy` và `hungry`; `rollout history` có change-cause; `--dry-run=server` không báo lỗi (manifest trong `source/` chạy được từ thư mục sạch).
 
-## Dấu hiệu bài chép hoặc không hiểu, và câu hỏi vấn đáp
-
-Nguyên văn từ hướng dẫn chấm trong [Walkthrough tuần 14](../walkthroughs/week-14.md) (mục "Hướng dẫn chấm cho mentor"), để chấm tại một chỗ.
+## Bằng chứng và câu hỏi vấn đáp
 
 | Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- | --- |
@@ -73,10 +55,24 @@ Nguyên văn từ hướng dẫn chấm trong [Walkthrough tuần 14](../walkthr
 | Nhiệm vụ 5: Troubleshooting report (10 điểm) | Đủ 5 mục cho 2 sự cố; trích dẫn khớp `command-output.txt`; phòng tránh cụ thể | Trích dẫn không có trong evidence; phòng tránh kiểu "cẩn thận hơn"; không phân biệt rollback và sửa gốc | Rollback đã đủ chưa? Nêu một tình huống `undo` không giúp. |
 | Câu hỏi kiểm tra (10 điểm) | 5 câu ngắn, đúng thuật ngữ | Nhầm reclaim policy với access mode; nhầm Ingress với Service | Giải thích bằng ví dụ vì sao xóa PVC làm mất dữ liệu còn xóa Pod thì không. |
 | Cấu trúc nộp bài và an toàn (10 điểm) | README đủ 7 mục; manifest trong `source/` khớp thứ đã chạy; không có secret; PR có review | `source/` khác với lệnh trong evidence; mật khẩu trong repo | Em đã chạy lại manifest trong `source/` từ đầu chưa? |
-| L2 (tối đa 10 điểm) | A: bảng dự đoán viết trước và PV `Released`. B: hai lệnh curl hai Host, `describe ingress` hai rule, một lỗi Ingress đã gây và chẩn đoán. C: rollout kẹt với `9.9.9`, hai ReplicaSet, undo, ít nhất một scenario | Dự đoán giống hệt kết quả không có ngộ nhận; L2-C không có bằng chứng ứng dụng vẫn trả lời khi kẹt | Vì sao PV `Released` chưa bind lại được và admin cần làm gì? Làm sao kiểm tra image đã có trong node trước `set image`? |
+| L2 (tối đa 10 điểm) | A: bảng dự đoán viết trước và PV `Released`. B: hai lệnh curl hai Host, `describe ingress` hai rule, một lỗi Ingress đã gây và chẩn đoán. C: rollout kẹt với `9.9.9`, hai ReplicaSet, undo, ít nhất một scenario | Dự đoán giống hệt kết quả không có ngộ nhận; thử thách C không có bằng chứng ứng dụng vẫn trả lời khi kẹt | Vì sao PV `Released` chưa bind lại được và admin cần làm gì? Làm sao kiểm tra image đã có trong node trước `set image`? |
 
 Lưu ý khi chấm: yêu cầu học viên mở lại `evidence/command-output.txt` và chạy lại một lệnh bất kỳ khi vấn đáp; bài chép thường không tái hiện được kết quả. Tên PV, hash ReplicaSet và timestamp giống hệt giữa hai bài là dấu hiệu sao chép.
 
+## Lỗi hay bị trừ điểm
+
+- Nộp chỉ ảnh chụp màn hình, không có output lệnh dạng text trong `evidence/command-output.txt`.
+- Số đếm `members` trước và sau xóa Pod không có, hoặc không chứng minh được dòng dữ liệu riêng của bạn còn lại.
+- Kết luận nguyên nhân lỗi mà không trích dòng events, logs hay exit code tương ứng; đoán mò rồi "sửa cho chạy" mà không giải thích.
+- Dùng `kubectl logs` thường thay vì `--previous` cho Pod crash và kết luận "không có log".
+- Chỉ rollback rồi coi như xong, không nêu nguyên nhân gốc và cách phòng tránh.
+- Gọi `curl` tới Ingress mà không kiểm tra header Host, rồi kết luận Ingress hỏng.
+- Quên `kind load docker-image` hoặc tạo cluster kind không có `--config`, dẫn tới `ImagePullBackOff` hay `Connection refused` không liên quan tới bài.
+- Commit mật khẩu thật, file Secret chứa giá trị thật hoặc `.env` vào repo.
+- Làm trong `/mnt/c` thay vì filesystem WSL; manifest trong `source/` không khớp với thứ đã chạy.
+- Không dọn tài nguyên thử nghiệm (`crashy`, `hungry`, PVC thừa), làm lần chạy sau nhiễu.
+- PR không có người review, hoặc nộp sau hạn mà không báo trước.
+
 ## Lưu ý khi chấm thử thách C
 
-Đáp án các tình huống `scenario-07`, `scenario-08`, `scenario-09` nằm ở [Kịch bản mentor buổi 28](../sessions/session-28.md). Học viên chỉ được nhận triệu chứng, nên kiểm tra kỹ bài nộp có lệnh và output chứng minh nguyên nhân (không chỉ ghi kết luận trùng với đáp án). Kịch bản 07 dùng biến `KIND_CLUSTER`, nên bài nộp từ máy học viên cần có dòng `KIND_CLUSTER=club`.
+Đáp án các tình huống `scenario-07`, `scenario-08`, `scenario-09` nằm ở [Kịch bản buổi 28](../sessions/session-28.md). Học viên chỉ được nhận triệu chứng, nên kiểm tra kỹ bài nộp có lệnh và output chứng minh nguyên nhân (không chỉ ghi kết luận trùng với đáp án). Kịch bản 07 dùng biến `KIND_CLUSTER`, nên bài nộp từ máy học viên cần có dòng `KIND_CLUSTER=club`.

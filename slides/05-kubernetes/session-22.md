@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Vòng đời Pod, ReplicaSet, Deployment; deploy Club API lên kind, rolling update, rollback và chẩn đoán ImagePullBackOff. Lệnh lab nằm ở bài học, slide chỉ giữ khung.
 
-Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md) · Kịch bản người dạy: [Kịch bản mentor buổi 22](../../mentors/sessions/session-22.md)
+Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md)
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -120,7 +120,7 @@ sequenceDiagram
 
 ---
 
-## Slide 10: Demo outline - Pod trần và Deployment
+## Slide 10: Demo - Pod trần và Deployment
 
 - Tạo Pod trần, xóa nó: không quay lại vì không có controller sở hữu.
 - Tạo Deployment 3 replicas, xóa một Pod: ReplicaSet tạo Pod thay thế.
@@ -129,7 +129,7 @@ sequenceDiagram
 
 ---
 
-## Slide 11: Lab outline
+## Slide 11: Lab
 
 - Phần 1: build `club-api:1.0.0` và nạp vào cluster `club`.
 - Phần 2: dựng nền (namespace, ConfigMap, Secret, Postgres, `init.sql`).

@@ -1,10 +1,19 @@
-# Chấm bài tuần 8 – CI/CD Fundamentals và GitHub Actions
+# Hướng dẫn chấm – Tuần 8
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm bài, học viên không cần đọc. Đề bài: [Bài tập tuần 8](../../assignments/weekly/week-08.md). Đáp án: [Walkthrough tuần 8](../walkthroughs/week-08.md). Kịch bản dạy: [Buổi 15](../sessions/session-15.md) và [Buổi 16](../sessions/session-16.md).
+Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 8](../../assignments/weekly/week-08.md). Đáp án: [Đáp án tuần 8](../walkthroughs/week-08.md). Kịch bản buổi: [Buổi 15](../sessions/session-15.md) và [Buổi 16](../sessions/session-16.md).
 :::
 
-> **Tóm tắt:** Barem chi tiết, tiêu chí L2, lỗi hay bị trừ điểm, cách kiểm chứng nhanh và câu hỏi vấn đáp cho bài tập tuần 8.
+> **Tóm tắt:** Thang điểm 100 cho 4 nhiệm vụ L1 của tuần 8 (cộng tối đa 10 điểm thưởng L2), tiêu chí hoàn thành chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho từng tiêu chí.
+
+## Phạm vi bài nộp
+
+Bài nộp gồm hai thư mục trong repo cá nhân `devops-labs`:
+
+- `lab-15/`: Nhiệm vụ 1 và 2 (Buổi 15, Phần 1 đến 4), làm bằng sơ đồ, đặc tả và script giả lập, chưa cần Kubernetes.
+- `lab-16/`: Nhiệm vụ 3 và 4 (Buổi 16, Phần 1 đến 4), làm bằng workflow GitHub Actions thật.
+
+Thử thách L2: Thử thách 1 (matrix, `needs`, `build-image`) và Thử thách 2 (PR đỏ, tình huống 06) lấy từ [Buổi 16 – thử thách](../../labs/week-08/session-16-challenge.md); Thử thách 3 (môi trường và build một lần) lấy từ [Buổi 15 – thử thách](../../labs/week-08/session-15-challenge.md).
 
 ## Cách kiểm chứng nhanh
 
@@ -20,7 +29,7 @@ diff .github/workflows/ci.yml lab-16/source/ci.yml.copy
 git ls-files | grep -E "node_modules|\.env$" || echo "sạch"
 ```
 
-## Barem chấm
+## Thang điểm
 
 Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2 (trần cuối cùng 110).
 
@@ -109,17 +118,26 @@ Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2 (trần cuối
 4. Cache của `actions/setup-node` lấy gì làm key? Khi bạn thêm một dependency mới thì lần chạy kế tiếp xảy ra điều gì? Cache khác artifact ở điểm nào?
 5. Check CI trên PR đỏ ở step `npm ci` nhưng local chạy tốt. Nêu ba việc bạn kiểm tra tiếp theo theo thứ tự và mỗi việc cho bạn biết điều gì.
 
-Đáp án gợi ý cho 5 câu nằm trong [Walkthrough tuần 8](../walkthroughs/week-08.md).
+Đáp án gợi ý cho 5 câu nằm trong [Đáp án tuần 8](../walkthroughs/week-08.md).
 
-## Bảng vấn đáp và dấu hiệu bài chép
+## Câu hỏi vấn đáp và dấu hiệu bài chép
 
-Bảng đầy đủ về bằng chứng cần thấy, dấu hiệu bài chép hoặc không hiểu và câu hỏi vấn đáp cho từng tiêu chí nằm ở mục "Hướng dẫn chấm cho mentor" của [Walkthrough tuần 8](../walkthroughs/week-08.md). Câu vấn đáp nên ưu tiên:
+Mentor kiểm chứng bằng cách đọc workflow trong repo, mở link run và đối chiếu với log học viên dán, chạy lại `run-pipeline.sh` và đọc lịch sử commit. Link run không truy cập được hoặc log không khớp workflow trong repo thì hỏi lại trực tiếp.
 
-- Nhiệm vụ 1: Output của stage Build là gì và đi đâu tiếp? Vì sao tag bằng commit SHA tốt hơn `latest`? Secret nào cần và lưu ở đâu?
-- Nhiệm vụ 2: Vì sao `exit code` phải lấy từ `PIPESTATUS[0]`? Nếu em thêm `|| true` sau `npm test` thì chuyện gì xảy ra? Build trước test lãng phí gì?
-- Nhiệm vụ 3: Nếu bỏ checkout thì step nào đỏ đầu tiên và vì sao? Vì sao `working-directory` là `lab-16/source`? Vì sao `contents: read` là đủ?
-- Nhiệm vụ 4: Key của cache lấy từ đâu? Thêm dependency thì chuyện gì xảy ra? Cache khác artifact thế nào, cho ví dụ của Club API?
-- Vệ sinh: Em làm gì nếu lỡ commit token? (Thu hồi token trước, rồi mới xóa khỏi lịch sử.)
+| Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
+| --- | --- | --- | --- |
+| Nhiệm vụ 1: thiết kế và giả lập | `pipeline-spec.md` đủ ô; log `run-pipeline.sh` có đủ stage, `# fail 0`, `PIPELINE OK`, tag cụ thể; sơ đồ có nhãn trên mũi tên | Spec giữ nguyên bảng mẫu của lab, không thêm tag, secret, song song; log không có mốc thời gian khác nhau giữa các lần chạy | Output của stage Build là gì và đi đâu tiếp? Vì sao tag bằng commit SHA tốt hơn `latest`? Secret nào cần và lưu ở đâu? |
+| Nhiệm vụ 2: gate dừng khi fail | Log đỏ: `# fail` lớn hơn 0, không có stage build, `exit code` khác 0; log `npm test` xanh sau hoàn tác; `git diff` thư mục `tests` trống | Chỉ có lần chạy xanh; `exit code` lấy bằng `$?` nên luôn 0; để lại test hỏng | Vì sao `exit code` phải lấy từ `PIPESTATUS[0]`? Nếu em thêm `|| true` sau `npm test` thì chuyện gì xảy ra? Build trước test lãng phí gì? |
+| Nhiệm vụ 3: workflow CI | `ci.yml` và `ci.yml.copy` giống nhau; `permissions`, pin action, `working-directory`; link run xanh khớp với commit; log step Run tests | Link run thuộc repo khác hoặc commit không khớp; log đã chỉnh tay; thiếu checkout; dùng `npm install` | Nếu bỏ checkout thì step nào đỏ đầu tiên và vì sao? Vì sao `working-directory` là `lab-16/source`? Vì sao `contents: read` là đủ? |
+| Nhiệm vụ 4: cache và tách job | Log Setup Node.js hai lần, lần hai khôi phục cache; thời gian `npm ci` hai lần; run có `test` và `validate` song song | Hai đoạn log giống hệt nhau; `cache-dependency-path` sai mà không nhận ra; `validate` có `needs` | Key của cache lấy từ đâu? Thêm dependency thì chuyện gì xảy ra? Cache khác artifact thế nào, cho ví dụ của Club API? |
+| `README.md` và `report.md` | 7 câu theo template, nêu nguyên nhân gốc khi có lỗi | Sao chép đề bài, chung chung | Chọn một lỗi em gặp: em đọc log ở đâu đầu tiên và xác minh bằng lệnh nào? |
+| Câu hỏi kiểm tra kiến thức | 5 câu đúng ý, có lệnh hoặc YAML dẫn chứng | Trùng câu chữ với lab; không có dẫn chứng | Hỏi câu 5 với một tình huống mới (PR đỏ ở step `npm test` chỉ trên Node 24) |
+| Vệ sinh và quy trình | Có `package-lock.json`, không có `node_modules`, `.env`, token; PR có reviewer | `git ls-files` thấy `node_modules`; thiếu lock file; không có phản hồi review | Em làm gì nếu lỡ commit token? (Thu hồi token trước, rồi mới xóa khỏi lịch sử.) |
+| L2, Thử thách 1: matrix, `needs`, `build-image` | YAML có `strategy.matrix` (2 phiên bản), `fail-fast: false`, `needs`; link run `build-image` bị skipped | Có YAML nhưng không có run chứng minh; không biết matrix tạo mấy job | Matrix tạo mấy job? Khi `test (24)` đỏ thì `build-image` ra sao và vì sao? |
+| L2, Thử thách 2: PR đỏ và tình huống 06 | Link PR đỏ rồi xanh; báo cáo 5 phần; dòng log đầu tiên báo lỗi; bằng chứng clone sạch | Chỉ có kết luận, không trích log; sửa nhiều thứ một lúc không biết cái nào có tác dụng | Lỗi xảy ra trước khi chạy `npm` hay trong `npm`? Em biết bằng dòng log nào? |
+| L2, Thử thách 3: môi trường và build một lần | `environments.md` đủ trigger, gate, rollback; `grep -c` ra 1 với dòng lệnh build được in ra log; hai gate có lý do | Log có nhiều hơn một lệnh build; lý do chung chung ("cho an toàn") | Nếu production cần quay lui, em deploy lại cái gì? Vì sao điều đó chỉ làm được khi tag bất biến? |
+
+Gợi ý chung khi vấn đáp: yêu cầu học viên mở log của chính họ và chỉ ra dòng đầu tiên cho biết trạng thái của pipeline; bài hiểu thật giải thích được vì sao gate dừng đúng chỗ.
 
 ## Quy trình nộp và hạn
 

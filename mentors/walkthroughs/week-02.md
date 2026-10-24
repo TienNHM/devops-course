@@ -1,27 +1,27 @@
-# Walkthrough tuần 2 – Linux Essentials
+# Đáp án Tuần 2 – Linux Essentials
 
-::: warning Dành cho mentor và học viên đã nộp bài
-Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+::: warning Đáp án đối chiếu: học viên chỉ xem sau khi đã nộp bài tuần này
+Trang này cũng là tài liệu của mentor khi chấm. Học viên mở sau khi đã nộp bài của mình; xem trước sẽ mất phần học quan trọng nhất.
 :::
 
-> **Tóm tắt:** Hướng dẫn giải Buổi 03 (Linux CLI, phân tích access log) và Buổi 04 (user, group, setgid, process, biến môi trường, systemd), kèm đáp án bài tập tuần 2 và hướng dẫn chấm cho mentor.
+> **Tóm tắt:** Đáp án Buổi 03 (Linux CLI, phân tích access log) và Buổi 04 (user, group, setgid, process, biến môi trường, systemd), kèm gợi ý giải bài tập tuần 2. Cách chấm nằm ở [Hướng dẫn chấm Tuần 2](../grading/week-02.md).
 
-## Cách dùng tài liệu này
+## Cách dùng trang này
 
-Tài liệu được công bố sau khi tuần 2 kết thúc. Hãy tự làm bài lab và bài tập trước, rồi mới đối chiếu. Mục đích là so sánh cách nghĩ của bạn với cách nghĩ trong lời giải, không phải để chép.
+Hãy tự làm bài lab và bài tập trước, rồi mới đối chiếu. Mục đích là so sánh cách nghĩ của bạn với cách nghĩ trong lời giải, không phải để chép.
 
-- Phần "Đáp án L1" cho kết quả cần đạt và lệnh quan trọng. Thời gian, PID, UID, GID trong output của bạn sẽ khác.
-- Phần "Lời giải L2" giải thích vì sao chọn cách đó; có thể có cách khác cũng đúng.
-- Các lệnh trong tài liệu đã được chạy thử trong một container Debian (có `runuser` thay cho `sudo -u`). Riêng systemd, WSL và `sudo` thật chưa được chạy lại ở đó, xem ghi chú ở từng chỗ.
+- Mục "Đáp án L1" đi theo từng Phần của bài lab, cho kết quả cần đạt và lệnh quan trọng. Thời gian, PID, UID, GID trong output của bạn sẽ khác.
+- Mục "Lời giải L2" nằm trong phần thử thách thêm của từng buổi; có thể có cách khác cũng đúng.
+- Output mẫu lấy từ một môi trường Linux thông thường. Phần systemd cần WSL đã bật systemd; phần `sudo -u` cần quyền `sudo` của học viên.
 - Bài tập tuần dùng tên user, group, thư mục khác với bài lab. Khi tự làm, hãy dùng đúng tên của bài tập, không chép tên trong ví dụ lab.
 
-Bài lab liên quan: [Buổi 03](../../labs/week-02/session-03.md), [Buổi 04](../../labs/week-02/session-04.md). Bài tập tuần: [Bài tập tuần 2](../../assignments/weekly/week-02.md).
+Bài lab liên quan: [Buổi 03 – Linux CLI](../../labs/week-02/session-03.md), [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md). Bài tập tuần: [Bài tập tuần 2](../../assignments/weekly/week-02.md).
 
-### Buổi 03 – Linux CLI
+## Buổi 03 – Linux CLI
 
-#### Đáp án L1
+### Đáp án L1
 
-Làm trong `~/devops-labs/lab-03`. Trước hết `pwd` phải in `/home/TEN_BAN/devops-labs/lab-03`, không phải `/mnt/c/...`.
+**Chuẩn bị.** Làm trong `~/devops-labs/lab-03`. `pwd` phải in `/home/TEN_BAN/devops-labs/lab-03`, không phải `/mnt/c/...`. `ls` in `evidence  screenshots  source`.
 
 **Phần 1 – cây `club-site`.** Hai lệnh tạo cây:
 
@@ -35,9 +35,9 @@ touch "club-site/docs/meeting notes/week 1.txt"
 find club-site | sort
 ```
 
-`find club-site | sort` phải in đúng 11 dòng như Bước 1.2 của bài lab. Điểm cần hiểu: `{a,b}` do bash mở rộng thành nhiều đối số trước khi `mkdir` chạy; đường dẫn có khoảng trắng bắt buộc đặt trong nháy kép. Với đường dẫn tương đối và `cd -`: `cd club-site/src` rồi `cd ../config`, rồi nhảy tuyệt đối về `club-site`, `cd -` quay về thư mục đứng trước đó (`config`).
+`find club-site | sort` phải in đúng 11 dòng như Bước 1.2 của bài lab. Điểm cần hiểu: `{a,b}` do bash mở rộng thành nhiều đối số trước khi `mkdir` chạy; đường dẫn có khoảng trắng bắt buộc đặt trong nháy kép. Bài luyện đường dẫn (ở trang thử thách): `cd club-site/src`, `cd ../config`, nhảy tuyệt đối về `club-site`, rồi `cd -` quay về thư mục đứng trước đó (`config`).
 
-**Phần 2 – find và grep.**
+**Phần 2 – `find` và `grep`.**
 
 ```bash
 find club-site -name "*.conf"
@@ -45,12 +45,13 @@ find club-site -type d
 find club-site -type f -name "*.txt"
 echo "host=localhost" > club-site/config/db.conf
 echo "port=5432" >> club-site/config/db.conf
+echo "debug=true" > club-site/config/app.conf
 grep -rn "port" club-site/config
 ```
 
-`-type d` in 6 thư mục (kể cả `club-site`). Dòng `club-site/docs/meeting notes/week 1.txt` vẫn in nguyên vẹn vì `find` tự nhận tên file, không đi qua việc tách từ của shell. `grep -rn` in `club-site/config/db.conf:2:port=5432`. Nếu dùng nhầm `>` ở dòng thứ hai, dòng `host` mất, đó là lỗi hay gặp nhất của phần này.
+`-type d` in 6 thư mục (kể cả `club-site`). Dòng `club-site/docs/meeting notes/week 1.txt` vẫn in nguyên vẹn vì `find` tự nhận tên file, không đi qua việc tách từ của shell. `grep -rn` in `club-site/config/db.conf:2:port=5432`. Nếu dùng nhầm `>` ở dòng thứ hai, dòng `host` mất, đó là lỗi hay gặp nhất của phần này; `wc -l club-site/config/db.conf` phải in `2`.
 
-**Phần 3 – access log nhỏ.** Sau khi tạo `mini-access.log` (10 dòng), các kết quả cần khớp đếm tay:
+**Phần 3 – access log nhỏ.** Sau khi tạo `mini-access.log` (10 dòng, Bước 3.1), `head -n 3`, `tail -n 2`, `grep -c " 404 "` in `2`, `grep "POST"` in đúng một dòng từ `10.0.0.7`. Các kết quả đếm cần khớp đếm tay:
 
 ```bash
 wc -l mini-access.log
@@ -71,13 +72,13 @@ awk '$9 ~ /^5/ {print $1, $7, $9}' mini-access.log
 10.0.0.9 /api/members 500
 ```
 
-(Hai IP cùng 3 request nên thứ tự của chúng có thể đảo.) Kiểm tra bằng tay: 4 + 3 + 3 = 10 và 6 + 2 + 1 + 1 = 10, cả hai bằng `wc -l`. `grep -c " 404 "` in `2`.
+(Hai IP cùng 3 request nên thứ tự của chúng có thể đảo.) Kiểm tra bằng tay: 4 + 3 + 3 = 10 và 6 + 2 + 1 + 1 = 10, cả hai bằng `wc -l`.
 
-**Bước 3.6 – file thật.** `examples/linux/access.log` có 260 dòng; các cột 1, 7, 9 vẫn là IP, đường dẫn, mã HTTP dù file có thêm referer và user-agent. `less access.log`, gõ `/404` để tìm, `n` để sang kết quả kế tiếp, `q` để thoát.
+**Bước 3.6 – file thật.** `examples/linux/access.log` có 260 dòng; các cột 1, 7, 9 vẫn là IP, đường dẫn, mã HTTP dù file có thêm referer và user-agent. `less access.log`, gõ `/404` để tìm, `n` để sang kết quả kế tiếp, `q` để thoát. Lệnh tự kiểm tra cuối bài in `11 10 260`.
 
-#### Lời giải L2
+### Lời giải L2
 
-Nguyên tắc chung: dựng pipeline từng đoạn, nhìn output rồi mới thêm lệnh tiếp theo. Mỗi lệnh làm một việc: `awk` chọn cột, `sort` đưa giá trị giống nhau nằm cạnh nhau, `uniq -c` gộp và đếm, `sort -nr` xếp giảm dần, `head` cắt top N.
+Đề (ở [Buổi 03 – Thử thách thêm](../../labs/week-02/session-03-challenge.md)): bốn thử thách trên `source/access.log`, mỗi thử thách một pipeline một dòng và một câu giải thích. Nguyên tắc chung: dựng pipeline từng đoạn, nhìn output rồi mới thêm lệnh tiếp theo. Mỗi lệnh làm một việc: `awk` chọn cột, `sort` đưa giá trị giống nhau nằm cạnh nhau, `uniq -c` gộp và đếm, `sort -nr` xếp giảm dần, `head` cắt top N.
 
 ```bash
 # 1. Top 5 IP
@@ -104,7 +105,7 @@ Top 5 IP có thể có hai IP cùng 33 request ở hạng 5 và 6 (`192.168.1.11
 
 Vì sao `$9 >= 400` đúng: awk so sánh theo số khi trường trông giống số, nên `404` và `500` thỏa còn `200` và `304` thì không. Kiểm chứng bằng `mini-access.log`: `/api/members` xuất hiện 2 lần (một POST trả 405, một GET trả 500), `/api/members/99` và `/favicon.ico` mỗi cái 1 lần.
 
-Script `log-report.sh` (có kiểm tra tham số), lời giải tham khảo cho thử thách 4 của L2:
+**Thử thách 4 – `log-report.sh` (bản của bài lab).** Nhận đường dẫn file log, in ba báo cáo trên, thoát có thông báo khi thiếu tham số hoặc file không tồn tại:
 
 ```bash
 #!/usr/bin/env bash
@@ -128,11 +129,11 @@ echo "== Top 3 endpoint lỗi =="
 awk '$9 >= 400 {print $7}' "$1" | sort | uniq -c | sort -nr | head -n 3
 ```
 
-Chạy thử: `bash log-report.sh mini-access.log`. Với `mini-access.log`, `/api/members` xuất hiện 2 lần (một POST trả 405, một GET trả 500), còn `/api/members/99` và `/favicon.ico` mỗi cái 1 lần. Điểm mấu chốt: `[ -z "${1:-}" ]` để `set -u` không báo lỗi khi thiếu tham số, `[ ! -f "$1" ]` để bắt file không tồn tại, thoát mã 1 và ghi thông báo vào stderr bằng `>&2`, mọi biến trong nháy kép. Chạy thử với cả `mini-access.log` và `access.log`, không hard-code đường dẫn.
+Chạy thử: `bash log-report.sh mini-access.log`. Điểm mấu chốt: `[ -z "${1:-}" ]` để `set -u` không báo lỗi khi thiếu tham số, `[ ! -f "$1" ]` để bắt file không tồn tại, thoát mã 1 và ghi thông báo vào stderr bằng `>&2`, mọi biến trong nháy kép. Chạy thử với cả `mini-access.log` và `access.log`, không hard-code đường dẫn. Bản mở rộng có `TOP_N` (Thử thách A của bài tập tuần) nằm ở phần Bài tập tuần bên dưới.
 
-#### Lời giải phần Phá lỗi và debug
+### Phá lỗi
 
-**Tình huống 1 – thư mục có khoảng trắng.** Lệnh `rm -r club-site/docs/meeting notes` báo hai lỗi `No such file or directory` cho `club-site/docs/meeting` và `notes`.
+**Lỗi trong bảng "Gặp lỗi?" – thư mục có khoảng trắng.** Lệnh `rm -r club-site/docs/meeting notes` báo hai lỗi `No such file or directory` cho `club-site/docs/meeting` và `notes`.
 
 Cây điều tra:
 
@@ -142,9 +143,13 @@ Cây điều tra:
 
 Sửa: `rm -r "club-site/docs/meeting notes"`. Phòng tránh: luôn quote đường dẫn và biến; trước lệnh xóa, chạy `ls` hoặc `echo` với cùng đối số; kiểm tra `pwd`; không dùng `rm -rf` khi chưa xem bash sẽ truyền gì.
 
-**Tình huống 2 – quên `sort` trước `uniq -c`.** `awk '{print $9}' mini-access.log | uniq -c` cho nhiều dòng mã 200 với số đếm nhỏ. Điều tra: chạy `awk '{print $9}' mini-access.log` xem dữ liệu thô, thấy các mã giống nhau không nằm liền kề. Nguyên nhân gốc: `uniq` chỉ gộp dòng liền nhau. Cách kiểm tra phòng tránh: cộng các số đếm và so với `wc -l`; với bản thiếu `sort`, tổng vẫn đúng nhưng số dòng kết quả nhiều hơn số mã khác nhau, đó là dấu hiệu.
+**Phá lỗi nâng cao 1 – quên `sort` trước `uniq -c`.** `awk '{print $9}' mini-access.log | uniq -c` cho nhiều dòng mã 200 với số đếm nhỏ. Điều tra: chạy `awk '{print $9}' mini-access.log` xem dữ liệu thô, thấy các mã giống nhau không nằm liền kề. Nguyên nhân gốc: `uniq` chỉ gộp dòng liền nhau. Cách kiểm tra phòng tránh: cộng các số đếm và so với `wc -l`; với bản thiếu `sort`, tổng vẫn đúng nhưng số dòng kết quả nhiều hơn số mã khác nhau, đó là dấu hiệu.
 
-#### Những hiểu lầm hay gặp
+**Phá lỗi nâng cao 2 – `rm -rf logs /` do gõ thừa dấu cách.** Chỉ thảo luận, không chạy. Hệ thống hiện đại có `--preserve-root` nhưng không nên dựa vào nó. Thói quen: chạy `ls` với cùng đối số trước, dùng `rm -r` không `-f` khi cần xác nhận, `pwd` trước khi xóa.
+
+**Phá lỗi nâng cao 3 – `grep ERROR app.log` không ra gì nhưng chắc có lỗi.** Kiểm tra theo thứ tự: thử `grep -i` (sai chữ hoa chữ thường), đúng file và thư mục (`pwd`, `ls`), file có rỗng không (`wc -l`), log có nằm ở stderr hoặc file khác không, và thử `grep -r ERROR .` trong thư mục log.
+
+### Hiểu lầm hay gặp
 
 - Nghĩ `uniq` đếm mọi dòng trùng trong file. Nó chỉ gộp các dòng liền kề, nên luôn cần `sort` trước.
 - Dùng `grep " 5"` để đếm lỗi 5xx. Chuỗi này khớp cả số byte hoặc ngày giờ; `awk '$9 ~ /^5/'` kiểm tra đúng cột mã.
@@ -153,11 +158,13 @@ Sửa: `rm -r "club-site/docs/meeting notes"`. Phòng tránh: luôn quote đư�
 - Quên quote đường dẫn có khoảng trắng; hoặc nghĩ `find` cũng cần quote để in tên file có khoảng trắng (nó không cần, nhưng lệnh dùng kết quả đó sau này thì cần).
 - Làm việc trong `/mnt/c`: chậm và lỗi quyền file. Luôn kiểm tra bằng `pwd`.
 
-### Buổi 04 – Linux Administration
+## Buổi 04 – Linux Administration
 
-#### Đáp án L1
+### Đáp án L1
 
 Tên dùng trong lab: user `clb-dev1`, `clb-dev2`, `clb-guest`, group `clbdev`, thư mục `/srv/club-shared`.
+
+**Chuẩn bị.** `whoami`, `sudo -v && echo "sudo OK"` rồi tạo `~/devops-labs/lab-04`. Lệnh quan trọng chạy dạng `lệnh 2>&1 | tee -a evidence/command-output.txt` (nhớ `-a`).
 
 **Phần 1 – group và user.**
 
@@ -192,7 +199,7 @@ sudo -u clb-dev2 bash -c 'echo "dev2 doc:"; ls -l /srv/club-shared'
 sudo -u clb-guest ls /srv/club-shared
 ```
 
-dev1 ghi được, dev2 liệt kê được và thấy file có group `clbdev` (nhờ setgid) với quyền `-rw-rw----` (nhờ `umask 007`), guest bị `Permission denied`. Đứng ở `/tmp` vì `sudo -u` giữ nguyên thư mục hiện tại và home của bạn có quyền `750`.
+dev1 ghi được, dev2 liệt kê được và thấy file có group `clbdev` (nhờ setgid) với quyền `-rw-rw----` (nhờ `umask 007`), guest bị `Permission denied`. Đứng ở `/tmp` vì `sudo -u` giữ nguyên thư mục hiện tại và home của bạn có quyền `750`. Sau bước này quay lại `cd ~/devops-labs/lab-04`.
 
 Đối chứng không có setgid:
 
@@ -215,9 +222,7 @@ kill $(pgrep -n -f "sleep 700")
 pgrep -a -f "sleep 700"
 ```
 
-`sleep 700` vẫn còn vì `trap "" TERM` đặt SIGTERM ở chế độ bỏ qua và chế độ này được giữ khi bash chuyển thẳng sang chạy `sleep`. Dọn dẹp: `pkill -9 -f "sleep 700"` (SIGKILL không thể bỏ qua), `kill %2` cho `sleep 601`, rồi `pgrep -af "sleep 60[01]|sleep 700" || echo "sach"`.
-
-Lưu ý: bản gốc của bài lab dùng `pkill sleep`, lệnh này dừng mọi process tên `sleep` của bạn. Bản hiện tại đã đổi thành `kill %2`, khớp với bài tập tuần (bài tập cấm `pkill sleep`).
+`sleep 700` vẫn còn vì `trap "" TERM` đặt SIGTERM ở chế độ bỏ qua và chế độ này được giữ khi bash chuyển thẳng sang chạy `sleep`. Dọn dẹp: `pkill -9 -f "sleep 700"` (SIGKILL không thể bỏ qua, nhưng process không kịp đóng file hay xóa file tạm), `kill %2` cho `sleep 601`, rồi `pgrep -af "sleep 60[01]|sleep 700" || echo "sach"` in `sach`. Không dùng `pkill sleep` vì nó dừng mọi process `sleep` của học viên; bài tập tuần cấm lệnh này.
 
 **Phần 4 – biến môi trường.**
 
@@ -237,14 +242,17 @@ Kết quả: `khong export: [trong]`, `da export: [doi-mat-khau-that]`, `1`, `WE
 **Dọn dẹp.** Sau khi chụp bằng chứng:
 
 ```bash
+ls -d /srv/club-shared /srv/club-nosgid
 sudo rm -rf /srv/club-shared /srv/club-nosgid
 sudo userdel -r clb-dev1; sudo userdel -r clb-dev2; sudo userdel -r clb-guest
 sudo groupdel clbdev
 ```
 
-Đọc kỹ đường dẫn trước khi nhấn Enter khi dùng `rm -rf` với `sudo`.
+Đọc kỹ đường dẫn trước khi nhấn Enter khi dùng `rm -rf` với `sudo`. Nếu `userdel` báo user đang có process chạy, dừng process đó trước; cảnh báo `mail spool` có thể bỏ qua. Nếu học viên định làm L2, có thể dọn sau.
 
-#### Lời giải L2
+### Lời giải L2
+
+Các bài nằm ở [Buổi 04 – Thử thách thêm (L2)](../../labs/week-02/session-04-challenge.md).
 
 **Bài 1 – `resource-check.sh`.** Cách tiếp cận: mỗi số liệu một lệnh, ngưỡng đọc từ biến môi trường với giá trị mặc định `${MEM_LIMIT:-85}`.
 
@@ -274,9 +282,9 @@ if [ "$disk" -ge "$DISK_LIMIT" ]; then echo "WARN: disk above ${DISK_LIMIT}%"; w
 [ "$warn" -eq 0 ] || exit 2
 ```
 
-Đã chạy thử: mặc định cho mã 0, `MEM_LIMIT=1` in `WARN: memory above 1%` và mã 2, `MEM_LIMIT=abc` in lỗi ra stderr và mã 1.
+Kết quả: mặc định cho mã 0, `MEM_LIMIT=1` in `WARN: memory above 1%` và mã 2, `MEM_LIMIT=abc` in lỗi ra stderr và mã 1.
 
-**Bài 2 – systemd (chưa chạy lại trong container vì không có systemd).** Cách tiếp cận: bật systemd cho WSL nếu cần (`[boot]` và `systemd=true` trong `/etc/wsl.conf`, rồi `wsl --shutdown` từ PowerShell), copy script vào `/opt/club/` với quyền 755 để user của service đọc và chạy được cả đường dẫn, bọc script trong vòng lặp vì `Type=simple` cần tiến trình chạy mãi, `User=clb-dev1` để không chạy bằng root, `Restart=on-failure`. Unit tham khảo:
+**Bài 2 – service systemd (cần WSL đã bật systemd).** Cách tiếp cận: bật systemd cho WSL nếu cần (`[boot]` và `systemd=true` trong `/etc/wsl.conf`, rồi `wsl --shutdown` từ PowerShell), copy script vào `/opt/club/` với quyền 755 để user của service đọc và chạy được cả đường dẫn, bọc script trong vòng lặp vì `Type=simple` cần tiến trình chạy mãi, `User=clb-dev1` để không chạy bằng root, `Restart=on-failure`. Tạo lại user `clb-dev1` nếu đã dọn ở cuối lab. Unit tham khảo:
 
 ```bash
 sudo mkdir -p /opt/club
@@ -301,13 +309,13 @@ systemctl status club-resource-check --no-pager
 sudo journalctl -u club-resource-check -n 5 --no-pager
 ```
 
-Dọn: `sudo systemctl stop club-resource-check`, xóa file unit rồi `daemon-reload`. Hướng chẩn đoán nếu lỗi: `systemctl status` rồi `journalctl -u club-resource-check -n 20 --no-pager`; `status=203/EXEC` nghĩa là đường dẫn trong `ExecStart` sai hoặc thiếu quyền thực thi; nhớ `daemon-reload` sau mỗi lần sửa unit. Kiểm tra tự khởi động lại: `sudo kill -9` PID chính (lấy bằng `systemctl show -p MainPID --value club-resource-check`); SIGKILL được tính là thất bại nên `on-failure` khởi động lại sau `RestartSec`.
+Dọn: `sudo systemctl stop club-resource-check`, xóa file unit rồi `daemon-reload`. Hướng chẩn đoán nếu lỗi: `systemctl status` rồi `journalctl -u club-resource-check -n 20 --no-pager`; `status=203/EXEC` nghĩa là đường dẫn trong `ExecStart` sai hoặc thiếu quyền thực thi; nhớ `daemon-reload` sau mỗi lần sửa unit. Kiểm tra tự khởi động lại: `sudo kill -9` PID chính (lấy bằng `systemctl show -p MainPID --value club-resource-check`); SIGKILL được tính là thất bại nên `on-failure` khởi động lại sau `RestartSec`. Nếu ghi `/etc/wsl.conf` bằng `tee` thì nhắc học viên đọc `cat /etc/wsl.conf` trước, vì lệnh ghi đè file.
 
 **Bài 3 – `permissions-notes.md`.** Ý chính của 5 dòng: `chmod 777` cho cả người ngoài nhóm đọc, ghi, xóa nên mất ranh giới; thay bằng group sở hữu `clbdev`, `chmod 2770` để người ngoài bị chặn, setgid để file mới luôn thuộc nhóm, umask 007 hoặc 002 để các thành viên sửa được file của nhau; mỗi người một user giúp biết ai đã làm gì.
 
-#### Lời giải phần Phá lỗi và debug
+### Phá lỗi nâng cao
 
-**Tình huống – user mới thêm vào group vẫn `Permission denied`.**
+**Tình huống – user mới thêm vào group vẫn `Permission denied`.** Tạo lại môi trường (nhóm `clbdev`, user `clb-dev3`, thư mục `/srv/club-shared` quyền `2770`) rồi `sudo -u clb-dev3 ls /srv/club-shared` cho lỗi.
 
 Cây điều tra:
 
@@ -319,7 +327,9 @@ Cây điều tra:
 
 Nguyên nhân gốc: kernel dùng danh sách group nạp lúc phiên bắt đầu; sửa `/etc/group` không đổi các phiên đang chạy. Lưu ý khi tự kiểm chứng: `sudo -u clb-dev3 ls ...` luôn mở một tiến trình mới nên thấy group mới ngay lập tức. Điều này không chứng minh phiên đăng nhập thật của bạn ấy đã có group. Phải chạy `id` trong chính terminal của bạn ấy. Không bao giờ chữa cháy bằng `chmod 777`. Dọn: `sudo userdel -r clb-dev3`.
 
-#### Những hiểu lầm hay gặp
+Hai câu hỏi tình huống ở cuối trang thử thách: (1) thành viên báo `Permission denied` sau `usermod -aG` 10 phút: chạy `id` trong terminal của bạn ấy, rồi `ls -ld` và `namei -l`, không `chmod 777`; (2) service chạy bằng user riêng theo nguyên tắc quyền tối thiểu, nếu service bị khai thác thì kẻ tấn công chỉ có quyền của user đó; đây cũng là lý do Dockerfile của backend starter-project dùng user không phải root.
+
+### Hiểu lầm hay gặp
 
 - Nghĩ quyền "cộng dồn": thực tế kernel chọn đúng một nhóm (owner nếu UID khớp, nếu không thì group nếu GID khớp, nếu không thì other).
 - Nghĩ xóa file cần quyền `w` trên file: cần `w` và `x` trên thư mục chứa nó.
@@ -330,11 +340,13 @@ Nguyên nhân gốc: kernel dùng danh sách group nạp lúc phiên bắt đầ
 - Quên `daemon-reload` sau khi sửa unit systemd, hoặc để script service ở thư mục home mà user service không đọc được.
 - Nhớ: container thực chất là process Linux, nhiều lỗi quyền trong container (volume, UID/GID) là cùng một cơ chế này.
 
-### Bài tập tuần
+## Bài tập tuần
 
-#### Gợi ý lời giải nhiệm vụ L1
+Đề: [Bài tập tuần 2](../../assignments/weekly/week-02.md). Dưới đây là gợi ý lời giải nhiệm vụ L1, L2 và đáp án 5 câu hỏi kiểm tra.
 
-**Nhiệm vụ 1 – workspace (lab-03).** Gom lệnh vào `source/commands-task1.sh` để dựng lại được trên thư mục trống. Đã chạy thử, chạy hai lần liên tiếp vẫn cho cùng kết quả:
+### Gợi ý lời giải nhiệm vụ L1
+
+**Nhiệm vụ 1 – workspace (lab-03).** Gom lệnh vào `source/commands-task1.sh` để dựng lại được trên thư mục trống. Chạy hai lần liên tiếp vẫn cho cùng kết quả:
 
 ```bash
 mkdir -p club-workspace/{backend/{src,config},frontend/{public,config},database,logs}
@@ -439,7 +451,7 @@ echo "exit code: $?"
 ls -l /srv/club-reports /srv/club-reports-nosgid
 ```
 
-Kết quả đã chạy thử: hành động 1 và 2 thành công (mã 0), hành động 3 `ls: cannot open directory ... Permission denied` (mã 2), hành động 4 thành công, hành động 5 `Permission denied` (mã 1, vì lỗi nằm ở phép chuyển hướng của bash). `ls -ld` in `drwxrws--- 2 root clbops` và `drwxrwx--- 2 root clbops`. Trong `ls -l`: `report-ops1.txt` mang group `clbops` với quyền `-rw-rw----`, còn `report-nosgid.txt` mang group `clb-ops1` với quyền `-rw-r--r--`.
+Kết quả: hành động 1 và 2 thành công (mã 0), hành động 3 `ls: cannot open directory ... Permission denied` (mã 2), hành động 4 thành công, hành động 5 `Permission denied` (mã 1, vì lỗi nằm ở phép chuyển hướng của bash). `ls -ld` in `drwxrws--- 2 root clbops` và `drwxrwx--- 2 root clbops`. Trong `ls -l`: `report-ops1.txt` mang group `clbops` với quyền `-rw-rw----`, còn `report-nosgid.txt` mang group `clb-ops1` với quyền `-rw-r--r--`.
 
 Nếu học viên bỏ `umask 007` ở hành động 1, file là `rw-r--r--` và hành động 2 sẽ thất bại dù setgid đúng; ma trận của họ phải giải thích dòng lệch này bằng umask.
 
@@ -459,7 +471,7 @@ echo "exit code: $?"
 
 Cả ba lệnh kiểm tra không in gì và có mã thoát khác 0 (`getent` cho mã 2, `ls` cho mã 2). Cảnh báo `mail spool` của `userdel` có thể bỏ qua.
 
-**Nhiệm vụ 4 – process.** Cách làm đã chạy thử, dùng PID cụ thể và mẫu `pgrep -af "sleep 91"`:
+**Nhiệm vụ 4 – process.** Dùng PID cụ thể và mẫu `pgrep -af "sleep 91"`:
 
 ```bash
 sleep 910 &
@@ -479,7 +491,7 @@ Quan sát cần có: PPID của cả hai bằng số in ra từ `echo $$`; sau `
 
 `process-notes.md` mẫu (6 dòng): PPID bằng `$$` vì process được shell hiện tại tạo ra (fork) nên shell là cha. Bước 5 thất bại vì `trap "" TERM` khiến process bỏ qua SIGTERM (tín hiệu 15) và dấu hiệu bỏ qua được giữ khi chạy `sleep`. SIGKILL (tín hiệu 9) kernel thực thi trực tiếp, không thể bắt hoặc bỏ qua. Không mở đầu bằng `kill -9` vì process không kịp đóng file hoặc xóa file tạm; luôn thử SIGTERM trước.
 
-**Nhiệm vụ 5 – `show-config.sh`.** Đã chạy thử cả bốn trường hợp:
+**Nhiệm vụ 5 – `show-config.sh`.**
 
 ```bash
 #!/usr/bin/env bash
@@ -505,9 +517,9 @@ Kết quả bốn lần chạy:
 
 Khác biệt ở lần 4: biến shell chưa `export` không truyền sang process con (script), nên script thấy `DB_PASSWORD` rỗng. Sau `export` nó nằm trong môi trường của mọi process con. Lần 2 và 3 dùng cú pháp `BIEN=giatri lenh`, vốn chỉ đặt môi trường cho riêng lệnh đó. Chứng minh không lộ mật khẩu: `DB_PASSWORD=mat-khau-thu ./show-config.sh 2>&1 | grep -c "mat-khau-thu"` in `0`. Dọn bằng `unset DB_PASSWORD` và ghi lệnh vào evidence. File `.env.example` chứa `DB_PASSWORD=doi-mat-khau-that` và `WEB_PORT=8080`; `.gitignore` chứa dòng `.env`; kiểm tra bằng `git check-ignore -v source/.env`. Quét secret trước khi nộp bằng hai lệnh trong phần Bằng chứng của bài tập.
 
-#### Gợi ý lời giải nhiệm vụ L2
+### Gợi ý lời giải nhiệm vụ L2
 
-**Thử thách A – `log-report.sh FILE [TOP_N]`.** Cách tiếp cận: kiểm tra tham số trước khi chạy pipeline vì pipeline với tham số sai cho kết quả rỗng hoặc lỗi khó hiểu. Đã chạy thử:
+**Thử thách A – `log-report.sh FILE [TOP_N]`.** Cách tiếp cận: kiểm tra tham số trước khi chạy pipeline vì pipeline với tham số sai cho kết quả rỗng hoặc lỗi khó hiểu:
 
 ```bash
 #!/usr/bin/env bash
@@ -528,7 +540,7 @@ Ba trường hợp lỗi (thiếu FILE, FILE không tồn tại, `TOP_N` là `ab
 
 **Thử thách B – `resource-check.sh`.** Dùng phiên bản ở lời giải Bài 1 của Buổi 04. Giải thích `awk` bằng lời của mình: ba lệnh `awk` (một trong `free`, một trong `df`) như đã nêu ở trên. Ba lần chạy: mặc định (mã 0), `MEM_LIMIT=1` (in `WARN`, mã 2), `MEM_LIMIT=abc` (lỗi stderr, mã 1).
 
-**Thử thách C – `onboard.sh USER GROUP`.** Mỗi bước kiểm tra tồn tại trước khi làm, nên chạy lại không lỗi và không tạo trùng. Đã chạy thử với `sudo` được thay bằng một wrapper:
+**Thử thách C – `onboard.sh USER GROUP`.** Mỗi bước kiểm tra tồn tại trước khi làm, nên chạy lại không lỗi và không tạo trùng:
 
 ```bash
 #!/usr/bin/env bash
@@ -541,37 +553,12 @@ if id -nG "$user" | tr ' ' '\n' | grep -qx "$group"; then echo "user $user da th
 id "$user"
 ```
 
-Kịch bản chứng minh: thêm user vào một group thứ hai trước, chạy script lần 1 (tạo group mới, thêm user), lần 2 (in `da ton tai`, `da thuoc`), và `id` vẫn còn cả group thứ hai, chứng tỏ `-aG` không làm mất group phụ. Lỗi có thể xảy ra nếu chạy script trong phiên đăng nhập đang mở của chính user vừa thêm: `id` (đọc từ cơ sở dữ liệu group) hiện group mới nhưng `id` của tiến trình hiện tại và các lệnh cần group đó vẫn thất bại cho tới khi đăng nhập lại; kiểm tra bằng `id -nG` (cơ sở dữ liệu) so với `groups` hoặc `ls` thật trong phiên đó. Dọn bằng `userdel -r`, `groupdel`, rồi `getent` để chứng minh.
+Kịch bản chứng minh: thêm user vào một group thứ hai trước, chạy script lần 1 (tạo group mới, thêm user), lần 2 (in `da ton tai`, `da thuoc`), và `id` vẫn còn cả group thứ hai, chứng tỏ `-aG` không làm mất group phụ. Lỗi có thể xảy ra nếu chạy script trong phiên đăng nhập đang mở của chính user vừa thêm: `id` (đọc từ cơ sở dữ liệu group) hiện group mới nhưng tiến trình hiện tại và các lệnh cần group đó vẫn thất bại cho tới khi đăng nhập lại; kiểm tra bằng `id -nG` (cơ sở dữ liệu) so với `groups` hoặc `ls` thật trong phiên đó. Dọn bằng `userdel -r`, `groupdel`, rồi `getent` để chứng minh.
 
-#### Đáp án 5 câu hỏi kiểm tra
+### Đáp án 5 câu hỏi kiểm tra
 
 1. `uniq -c` chỉ gộp các dòng liền kề; log có mã 200 xen kẽ mã khác nên mỗi đoạn liền nhau bị đếm riêng. Sửa: thêm `sort` đứng trước `uniq -c`. Tự kiểm tra: cộng tất cả số đếm và so với `wc -l`, tổng phải bằng số dòng.
 2. Bash tách dòng lệnh theo khoảng trắng nên `rm` nhận `meeting` và `notes` như hai đối số, mà hai thư mục đó không tồn tại. Thói quen: quote mọi đường dẫn và biến (`"club-workspace/docs/meeting notes"`); chạy `ls` hoặc `echo` với cùng đối số trước lệnh xóa; kiểm tra `pwd`; tránh `rm -rf` khi chưa chắc.
 3. Ví dụ `find`: tìm mọi file `.conf` trong dự án để biết cấu hình nằm ở đâu (`find . -name "*.conf"`). Ví dụ `grep`: tìm dòng có `port=` trong một file cấu hình đã biết. Cả hai: muốn biết file `.conf` nào đặt cổng 3000 thì `grep -rn "3000" .` hoặc kết hợp `find . -name "*.conf"` với `grep` trên từng file.
 4. Quyền `640` là owner `rw-`, group `r--`, other `---`. Bob (thuộc `dev`) chỉ đọc được, không ghi được. Carol (không thuộc `dev`, nhóm other) không đọc cũng không ghi được. Thư mục chia sẻ nên có group sở hữu là group của nhóm và `chmod 2770`: bit setgid làm file mới thừa hưởng group của thư mục, nên mọi thành viên có quyền nhất quán với file của nhau; nếu thiếu, file mang group cá nhân của người tạo và đồng đội không sửa được. Cần thêm umask phù hợp (002 hoặc 007) để group được ghi.
 5. Ba điểm kiểm tra theo thứ tự: (1) `id clb-ops2` xem đã có `clbops` chưa; nếu có mà vẫn lỗi thì phiên cũ chưa nạp group, nhờ đăng nhập lại hoặc dùng `newgrp clbops`; (2) `ls -ld /srv/club-reports` xem owner, group và bit `rwx` của group; (3) `namei -l /srv/club-reports` xem mọi thư mục dọc đường có `x`. Không dùng `chmod 777` vì nó cho cả người ngoài nhóm đọc, ghi, xóa và mất ranh giới. Trong container cũng vậy: process chạy với UID/GID cố định (thường là user không phải root), và volume mount mang quyền của UID/GID phía host; nếu hai bên lệch nhau thì process bị `Permission denied`.
-
-### Hướng dẫn chấm cho mentor
-
-Dùng barem trong [bài tập tuần 2](../../assignments/weekly/week-02.md). Quy ước chung cho cả bài: mọi con số trong bài nộp phải tái hiện được khi mentor chạy lại lệnh học viên ghi.
-
-| Tiêu chí | Bằng chứng cần thấy trong evidence | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
-| --- | --- | --- | --- |
-| Workspace (15 điểm) | Đủ năm phép kiểm tra: 11 thư mục, 7 file, 2 file conf, hai dòng của grep, backend.conf có 2 dòng; `commands-task1.sh` chạy lại dựng được cây | Số đếm đúng nhưng không có script lệnh; script không quote `meeting notes`; `backend.conf` 1 dòng | "Giải thích dòng mkdir có dấu ngoặc nhọn." "Nếu thiếu dấu nháy ở thư mục meeting notes thì điều gì xảy ra?" |
-| Phân tích log (20 điểm) | `my-access.log` 15 dòng, 4 IP, IP nhiều nhất không hòa; tổng theo IP và theo mã đều 15; 5xx lọc theo cột 9; `stderr.txt`; `log-answers.md` mỗi dòng có lệnh | Log mô tả không khớp điều kiện; con số trong `log-answers.md` không tái hiện được; lọc 5xx bằng grep lỏng; giải thích thiếu `sort` giống nguyên văn lab | "Vì sao `uniq` cần `sort` trước?" "Sửa `$9` thành `$8` thì kết quả đổi thế nào và vì sao?" "Số 6 lỗi 5xx của bạn lấy bằng lệnh nào?" |
-| Thư mục chung (20 điểm) | `id` của 3 user; `ls -ld` thấy `drwxrws---` và `drwxrwx---`; 5 hành động đúng kết quả; commit dự đoán có trước (so sánh thời gian commit với thời gian trong evidence); đã dọn kèm mã thoát khác 0 | Tên `clbdev`, `clb-dev1` chép từ lab; ma trận có "Khớp" toàn bộ mà không giải thích; không có `git log` cho thấy commit trước | "Vì sao hành động 5 thất bại dù ops2 thuộc cùng group?" "Bỏ umask 007 ở hành động 1 thì hành động 2 ra sao?" "Vì sao không dùng 777?" |
-| Process (10 điểm) | PPID của hai process khớp số `echo $$`; `pgrep -af` trước và sau mỗi tín hiệu; `exit code: 1` cuối; không dùng `pkill sleep` | PPID không khớp `$$`; thiếu bước chứng minh còn sống sau SIGTERM; process-notes thiếu số hiệu tín hiệu | "Vì sao bước 5 thất bại?" "SIGKILL khác SIGTERM ở điểm nào về phía process?" |
-| show-config.sh (10 điểm) | Bốn lần chạy với mã 1, 0, 0 và cặp trước và sau export; `grep -c` bằng 0; `file` không báo CRLF; `.gitignore` có `.env` | In ra giá trị mật khẩu; mã thoát đọc sau `tee`; không có `.env.example` | "Vì sao lần 4 đầu tiên thất bại?" "Khác nhau giữa `A=1 lenh` và `export A=1` là gì?" |
-| 5 câu hỏi (10 điểm) | Câu trả lời bằng lời, có lệnh khi được hỏi | Trả lời giống nguyên văn đề hoặc đáp án lab | Chọn một câu và đổi số liệu hoặc tên (ví dụ quyền `750`) để hỏi lại |
-| README và report (5 điểm) | 7 câu; một lỗi thật và cách điều tra; hash commit dự đoán; mức L1 hoặc L2 | Lỗi bịa, không có cách điều tra | "Kể lại lỗi này bạn thấy lần đầu ở lệnh nào?" |
-| Kỷ luật repo (5 điểm) | Evidence text có dòng chú thích nhiệm vụ; lệnh quét secret không in dòng nào | Evidence chỉ là ảnh; có `.env` thật | "Làm sao bạn chắc không có secret trong repo?" |
-| Quy trình nộp (5 điểm) | PR với hai nhận xét cụ thể; reviewer có chạy lại một phép kiểm tra | Review chỉ ghi "OK" | "Reviewer đã chạy lại phép kiểm tra nào?" |
-
-Lưu ý chấm:
-
-- Cách nhanh để kiểm chứng: clone repo nộp, chạy `bash commands-task1.sh` trong thư mục trống rồi chạy năm phép kiểm tra; chạy lại các lệnh pipeline trên `my-access.log`.
-- Nhiệm vụ 3 có thứ tự thời gian: so `git log` của `permissions-matrix.md` với thời điểm chạy lệnh trong evidence. Ma trận điền sau khi chạy nhận điểm 0 cho phần dự đoán.
-- Mã thoát: bài đọc `$?` sau `| tee` sẽ ghi `exit code: 0` cho lệnh thật sự thất bại. Đối chiếu với nội dung output ngay phía trên.
-- Lệnh dọn dẹp: kiểm tra `getent` có mã thoát khác 0 (không tìm thấy user, group) thì mới coi là đã dọn.
-- Bài có `chmod 777` ở bất kỳ bước nào hoặc `pkill sleep` nhận điểm không cho phần vi phạm, theo barem.
-- Điểm L2 chỉ cộng khi L1 đạt từ 60. Với Thử thách C, kiểm tra evidence chứng minh user không mất group phụ.

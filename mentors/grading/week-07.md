@@ -1,10 +1,21 @@
-# Chấm bài tuần 7 – Docker Compose
+# Hướng dẫn chấm – Tuần 7
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm; học viên không cần đọc. Đề bài: [Bài tập tuần 7 – Docker Compose](../../assignments/weekly/week-07.md). Đáp án: [Walkthrough tuần 7](../walkthroughs/week-07.md). Hub tuần: [Tuần 07 – Docker Compose](../../labs/week-07/README.md).
+Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 7 – Docker Compose](../../assignments/weekly/week-07.md). Đáp án: [Đáp án tuần 7](../walkthroughs/week-07.md). Kịch bản buổi: [Buổi 13](../sessions/session-13.md), [Buổi 14](../sessions/session-14.md).
 :::
 
-## Barem chi tiết
+> **Tóm tắt:** Thang điểm 100 cho 5 nhiệm vụ L1 của tuần 7 (cộng tối đa 10 điểm thưởng L2), các lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho từng tiêu chí.
+
+## Phạm vi bài nộp
+
+Bài nộp gồm hai thư mục trong repo cá nhân `devops-labs`:
+
+- `lab-13/`: Nhiệm vụ 1 và 2 (Buổi 13, Chuẩn bị và Phần 1 đến 4).
+- `lab-14/`: Nhiệm vụ 3 đến 5 (Buổi 14, Phần 1 đến 4). Hai lab dùng chung tên project Compose `source`, nên học viên phải `docker compose down` ở `lab-13/source` trước khi làm `lab-14`.
+
+Thử thách L2 lấy từ [Buổi 14 – thử thách L2](../../labs/week-07/session-14-challenge.md): L2-A (backup và restore, Phần L2-3 và Thử thách 3), L2-B (secret cho Postgres, Phần L2-2), L2-C (resource limits và OOM, Phần L2-1 và Thử thách 2).
+
+## Thang điểm
 
 | Tiêu chí | Mô tả đạt | Không đạt | Điểm |
 | --- | --- | --- | --- |
@@ -51,8 +62,6 @@ Kết quả đúng: `exit code: 0`; ba service chạy (lab 14: cả ba `(healthy
 
 ## Câu hỏi vấn đáp và dấu hiệu bài chép
 
-Nguyên văn từ phần Hướng dẫn chấm của [Walkthrough tuần 7](../walkthroughs/week-07.md).
-
 | Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- | --- |
 | Nhiệm vụ 1 – ba service | `command-output.txt` có `config --quiet` kèm exit code, `ps`, `curl`, lệnh `exec` theo tên; `compose.yaml`, `.env.example` | Tên container y hệt ví dụ của đề (`starter-project-...`) dù thư mục khác tên; giải thích từng khóa chép lại câu của lab | Vì sao backend gọi `postgres` mà không gọi `localhost`? Nếu bỏ `networks`, hệ thống có còn chạy không và vì sao? Lệnh nào cho em thấy mật khẩu đã được thay vào YAML? |
@@ -66,4 +75,4 @@ Nguyên văn từ phần Hướng dẫn chấm của [Walkthrough tuần 7](../w
 | L2-B secret cho Postgres | `compose.yaml` có `secrets` và `POSTGRES_PASSWORD_FILE`; `inspect` không lộ mật khẩu; `/ready` 200 | Giữ nguyên volume cũ nên không chứng minh được mật khẩu mới; nêu giới hạn chung chung | Vì sao phải khởi động từ volume mới? Backend đang đọc mật khẩu từ đâu? |
 | L2-C OOM | Log `OOMKilled` hoặc exit 137 (hoặc ghi rõ kết quả khác và giải thích), số liệu `docker stats` | Giá trị cuối cùng không dựa trên đo đạc | Đặt giới hạn thấp hơn mức đo thì chuyện gì xảy ra với restart policy? |
 
-Đáp án 5 câu hỏi kiểm tra kiến thức và lời giải từng nhiệm vụ nằm trong [Walkthrough tuần 7](../walkthroughs/week-07.md), mục "Bài tập và chấm bài".
+Đáp án 5 câu hỏi kiểm tra kiến thức và lời giải từng nhiệm vụ nằm trong [Đáp án tuần 7](../walkthroughs/week-07.md), mục "Bài tập tuần 7".

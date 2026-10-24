@@ -1,25 +1,25 @@
-# Walkthrough tuần 12 – kubectl và Services
+# Đáp án tuần 12 – kubectl và Services
 
-::: warning Dành cho mentor và học viên đã nộp bài
-Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+::: warning Đáp án đối chiếu: học viên chỉ xem sau khi đã nộp bài tuần này
+Mentor dùng trang này để chấm bài. Tên Pod, hash, IP và ClusterIP trên máy học viên luôn khác tài liệu; chấm theo output thật của học viên.
 :::
 
-> **Tóm tắt:** Hướng dẫn giải buổi 23 (kubectl: context, namespace, apply, logs, exec, jsonpath) và buổi 24 (Service, DNS, Endpoints rỗng), kèm bài tập tuần và bảng chấm cho mentor.
+> **Tóm tắt:** Đáp án buổi 23 (kubectl: context, namespace, apply, logs, exec, jsonpath) và buổi 24 (Service, DNS, Endpoints rỗng), kèm gợi ý cho bài tập tuần, bảng bằng chứng cần thấy và mã lời giải L2.
 
 ## Cách dùng tài liệu này
 
-- Đọc sau khi bạn đã tự làm lab và bài tập; hãy đối chiếu cách điều tra của bạn với cây điều tra bên dưới thay vì chép lệnh.
-- Tên Pod, hash, IP, ClusterIP trên máy bạn luôn khác. Evidence phải là output thật của bạn.
+- Dùng để đối chiếu cách điều tra với cây điều tra bên dưới, không phải để chép lệnh.
+- Môi trường cả tuần: cluster kind `club`, context `kind-club`.
 - Nhiều lỗi trong tuần này đến từ một nguyên nhân chung: đứng sai namespace hoặc sai context. Khi lệnh cho kết quả lạ, kiểm tra hai thứ đó trước.
-- Bài lab: [buổi 23](../../labs/week-12/session-23.md), [buổi 24](../../labs/week-12/session-24.md). Bài tập: [bài tập tuần 12](../../assignments/weekly/week-12.md).
+- Bài gốc: [Buổi 23](../../labs/week-12/session-23.md), [Thử thách buổi 23](../../labs/week-12/session-23-challenge.md), [Buổi 24](../../labs/week-12/session-24.md). Bài tập: [bài tập tuần 12](../../assignments/weekly/week-12.md). Barem: [Hướng dẫn chấm tuần 12](../grading/week-12.md).
 
 ### Buổi 23 – kubectl Fundamentals
 
-#### Đáp án các nhiệm vụ L1
+#### Đáp án lab bắt buộc
 
-Chuẩn bị: cluster kind đang chạy, `kubectl config current-context` trả về `kind-` cộng tên cluster, `source/namespace.yaml` và `source/demo-web.yaml` như trong lab.
+Chuẩn bị: cluster `club` đang chạy, `kubectl config current-context` trả về `kind-club`, `source/namespace.yaml` và `source/demo-web.yaml` như trong lab.
 
-1. Context và namespace mặc định:
+1. **Phần 1: context và namespace.**
 
    ```bash
    kubectl config get-contexts
@@ -29,7 +29,7 @@ Chuẩn bị: cluster kind đang chạy, `kubectl config current-context` trả 
 
    Dấu `*` trong `get-contexts` là context đang dùng. Cột NAMESPACE trống nghĩa là namespace mặc định là `default`. Sau `kubectl config set-context --current --namespace=club` thì lệnh cuối in `namespace: club`.
 
-2. Tạo namespace và workload:
+2. **Phần 2: apply, get, delete.** Tạo namespace và workload:
 
    ```bash
    kubectl create namespace club-dev
@@ -41,11 +41,11 @@ Chuẩn bị: cluster kind đang chạy, `kubectl config current-context` trả 
 
    `apply` có tính idempotent: namespace `club` đã có thì ra `unchanged` hoặc `configured`, đều đúng. Thói quen cần có: `diff` trước, `apply` sau, `rollout status` cuối.
 
-3. Hai Pod `Running` và node chạy chúng: `kubectl get pods -n club -o wide`. Cột NODE và IP đến từ `-o wide`; với kind một node thì cả hai Pod nằm cùng node.
+   Hai Pod `Running` và node chạy chúng: `kubectl get pods -n club -o wide`. Cột NODE và IP đến từ `-o wide`; với kind một node thì cả hai Pod nằm cùng node.
 
-4. Events trong `describe pod`: ba sự kiện đầu của một Pod khỏe thường là `Scheduled` (scheduler gán node), `Pulled` hoặc `Pulling` (kéo hoặc dùng lại image), `Created` rồi `Started`. Học viên phải chỉ ra đúng ba dòng thật trong output của mình; ví dụ này chỉ là kiểu thường thấy, thứ tự và số dòng có thể lệch một chút (ví dụ có thêm `Pulling`).
+3. **Phần 3: describe, events, explain.** Events trong `describe pod`: ba sự kiện đầu của một Pod khỏe thường là `Scheduled` (scheduler gán node), `Pulled` hoặc `Pulling` (kéo hoặc dùng lại image), `Created` rồi `Started`. Học viên phải chỉ ra đúng ba dòng thật trong output của mình; ví dụ này chỉ là kiểu thường thấy, thứ tự và số dòng có thể lệch một chút (ví dụ có thêm `Pulling`).
 
-5. `port-forward` và log (đã chọn cổng 8081 vì 8080 hay bị chiếm):
+4. **Phần 4: logs, exec, port-forward.** `port-forward` và log (cổng 8081 vì 8080 hay bị chiếm):
 
    ```bash
    kubectl port-forward deployment/demo-web 8081:80 -n club
@@ -55,7 +55,7 @@ Chuẩn bị: cluster kind đang chạy, `kubectl config current-context` trả 
 
    Phải thấy `HTTP/1.1 200 OK` và một dòng log `HEAD / HTTP/1.1" 200` từ `curl`. Lọc `kube-probe` vì readiness probe gọi `GET /` mỗi 5 giây. Dùng `-l app=demo-web --prefix` vì `port-forward` tới Deployment chỉ chọn một Pod; không biết Pod nào nhận request thì xem log của cả hai.
 
-6. `exec` và vì sao thay đổi mất:
+   `exec` và vì sao thay đổi mất:
 
    ```bash
    POD=$(kubectl get pods -n club -l app=demo-web -o jsonpath='{.items[0].metadata.name}')
@@ -64,27 +64,27 @@ Chuẩn bị: cluster kind đang chạy, `kubectl config current-context` trả 
 
    Giải thích: thay đổi viết vào lớp ghi của container; khi Pod bị xóa hoặc tạo lại (ReplicaSet luôn giữ đủ 2 Pod), container mới sinh ra từ image gốc nên thay đổi biến mất. Dấu `--` tách cờ của kubectl khỏi lệnh trong container.
 
-7. `-o yaml` và jsonpath lấy tên image:
+5. **Phần 5: định dạng đầu ra.** `-o yaml` và jsonpath lấy tên image:
 
    ```bash
    kubectl get deployment demo-web -n club -o yaml | head -40
    kubectl get deployment demo-web -n club -o jsonpath='{.spec.template.spec.containers[0].image}'; echo
    ```
 
-   Kết quả: `nginx:1.27-alpine`. Jsonpath đặt trong nháy đơn để shell không xử lý dấu ngoặc và `*`.
+   Kết quả: `nginx:1.27-alpine`. Jsonpath đặt trong nháy đơn để shell không xử lý dấu ngoặc và `*`. Phần sửa trực tiếp so với manifest: `kubectl scale deployment demo-web -n club --replicas=3`, rồi `kubectl diff -f source/demo-web.yaml` thấy `replicas` lệch, rồi `kubectl apply -f source/demo-web.yaml` đưa Deployment về `2/2`.
 
-8. Dọn: `kubectl delete -f source/demo-web.yaml` rồi `kubectl get pods -n club -l app=demo-web` ra `No resources found in club namespace.`. Không xóa namespace `club`; chỉ xóa `club-dev` ở cuối lab: `kubectl delete namespace club-dev`.
+6. **Phần 6: dọn dẹp bằng manifest.** `kubectl delete -f source/demo-web.yaml` rồi `kubectl get pods -n club -l app=demo-web` ra `No resources found in club namespace.`. Không xóa namespace `club`; chỉ xóa `club-dev` ở cuối lab: `kubectl delete namespace club-dev`.
 
 #### Lời giải L2
 
-**Thử thách 1 – `inspect.sh`.** Lời giải trong lab đạt yêu cầu. Những điểm mentor cần kiểm:
+**Thử thách 1: `inspect.sh`.** Mã mẫu ở phụ lục. Những điểm mentor cần kiểm:
 
 - Tham số bắt buộc: `NS="${1:?Usage: inspect.sh NAMESPACE}"` làm script dừng và in thông báo nếu thiếu; cách khác là `if [ -z "$1" ]` rồi `exit 1`.
 - Mọi lệnh `kubectl` đều có `-n "$NS"`, không dựa vào namespace của context.
 - Phần (a) dùng `-o custom-columns`, phần (b) dùng jsonpath với `range` rồi `sort` và `uniq -c`, phần (c) dùng `--field-selector=status.phase!=Running`.
 - Chạy thử `bash source/inspect.sh club` sau khi apply lại `demo-web`. Kết quả (b) phải đếm đúng số Pod dùng mỗi image; nếu trong lúc rolling update có hai image thì mỗi image một dòng.
 
-**Thử thách 2 – phát hiện drift.** Trình tự đúng:
+**Thử thách 2: phát hiện drift.** Trình tự đúng:
 
 ```bash
 kubectl apply -f source/demo-web.yaml
@@ -104,7 +104,7 @@ kubectl get deployment demo-web -n club -o yaml > source/exported.yaml
 
 Lưu ý: `kubectl diff` trả exit code 1 khi có khác biệt, nên dùng được trong CI.
 
-**Thử thách 3 – Deployment bí ẩn.** Lệnh `kubectl create deployment mystery --image=busybox:1.36 -n club-dev`:
+**Thử thách 3: Deployment bí ẩn.** Lệnh `kubectl create deployment mystery --image=busybox:1.36 -n club-dev`:
 
 - Triệu chứng: `get pods -n club-dev -w` thấy Pod đổi `Completed`, `CrashLoopBackOff`, `Running` rồi lặp, `RESTARTS` tăng.
 - `describe pod`: mục `Last State: Terminated`, `Reason: Completed`, `Exit Code: 0`. `kubectl logs --previous` trống: container không in gì, không có lỗi.
@@ -119,7 +119,9 @@ Lưu ý: `kubectl diff` trả exit code 1 khi có khác biệt, nên dùng đư�
 
   Pod `Running` và `RESTARTS` không tăng. Sửa đúng cách là đưa lệnh vào manifest (`command`), không tạo bằng lệnh.
 
-#### Lời giải phần Phá lỗi / Debug – ImagePullBackOff
+**Thử thách 4: cluster 3 node `club-3n` (tùy chọn).** `kind create cluster --name club-3n --config source/kind-3-nodes.yaml` (1 control-plane, 2 worker) tạo context `kind-club-3n`; từ đây luôn thêm `--context kind-club-3n`. Tạo namespace `club`, apply `demo-web` với `replicas: 6`, rồi `kubectl get pods -n club -o wide --context kind-club-3n` cho thấy Pod rải trên hai worker (control plane có taint nên không nhận Pod ứng dụng). Dọn đúng cluster: `kind get clusters` rồi `kind delete cluster --name club-3n`; không xóa cluster `club`, và `kubectl config use-context kind-club` sau đó.
+
+#### Lời giải phần Phá lỗi: ImagePullBackOff
 
 Phá: tạo `source/broken.yaml` bằng `sed` đổi tag thành `nginx:1.99-nope` rồi `kubectl apply -f source/broken.yaml`.
 
@@ -159,15 +161,15 @@ Tình huống phụ: `kubectl get pods` khi context đặt namespace `default` b
 
 #### Đáp án câu tự kiểm tra của buổi 23
 
-Lab có đáp án 5 câu trong `details` (4 câu thêm ở trang thử thách nâng cao, xem phụ lục cuối trang). Mentor cần nghe được các ý chính: kubeconfig gồm cluster, user, context và current-context; kubectl chỉ xem namespace của context; `apply` khai báo còn `create` báo lỗi nếu trùng; `port-forward` không thay Service; `--previous` cho log lần chạy trước và `-l app=demo-web --prefix` cho nhiều Pod; ImagePullBackOff thì `get`, `describe` Events, kiểm tra tag, rồi credential; `scale` live bị manifest ghi đè; lệnh jsonpath với `range`, `metadata.name` và `status.podIP`.
+Bài lab có 5 câu tự kiểm tra (câu tình huống thêm nằm ở [Thử thách nâng cao](../../labs/week-12/session-23-challenge.md)). Mentor cần nghe được các ý chính: kubeconfig gồm cluster, user, context và current-context; kubectl chỉ xem namespace của context; `apply` khai báo còn `create` báo lỗi nếu trùng; `port-forward` không thay Service; `--previous` cho log lần chạy trước và `-l app=demo-web --prefix` cho nhiều Pod; ImagePullBackOff thì `get`, `describe` Events, kiểm tra tag, rồi credential; `scale` live bị manifest ghi đè; lệnh jsonpath với `range`, `metadata.name` và `status.podIP`.
 
 ### Buổi 24 – Kubernetes Services
 
-#### Đáp án các nhiệm vụ L1
+#### Đáp án lab bắt buộc
 
-Chuẩn bị: `kubectl config set-context --current --namespace=club`, các Pod `postgres-0`, `club-api-*` (2), `club-web-*` (1) đều `1/1 Running`.
+Chuẩn bị: cluster `club`, `kubectl config set-context --current --namespace=club`, các Pod `postgres-0`, `club-api-*` (2), `club-web-*` (1) đều `1/1 Running`.
 
-1. Service `backend` chọn Pod nào:
+1. **Phần 1: đọc Service của backend.** Service `backend` chọn Pod nào:
 
    ```bash
    kubectl get svc backend -o yaml
@@ -177,7 +179,7 @@ Chuẩn bị: `kubectl config set-context --current --namespace=club`, các Pod 
 
    Selector `app: club-api` khớp label `app=club-api` của hai Pod API; `port: 3000`, `targetPort: 3000`; `describe` liệt kê hai địa chỉ `10.244.x.x:3000` trong `Endpoints`. Selector là liên kết duy nhất giữa Service và Pod, không có tên Deployment.
 
-2. Phân giải DNS từ Pod debug:
+2. **Phần 2: gọi Service bằng DNS từ Pod debug.**
 
    ```bash
    kubectl run debug --rm -it --restart=Never --image=busybox:1.36 -- sh
@@ -191,7 +193,7 @@ Chuẩn bị: `kubectl config set-context --current --namespace=club`, các Pod 
 
    Cả ba tên trả cùng một ClusterIP. `resolv.conf` có dòng `search club.svc.cluster.local svc.cluster.local cluster.local` và `nameserver` là IP của CoreDNS. Tên ngắn `backend` được mở rộng nhờ search domain của namespace `club`. `/health` trả `{"status":"healthy","service":"club-api"}`; `/api/members` trả mảng JSON thành viên.
 
-3. Frontend qua Service và `port-forward`:
+3. **Phần 3: nối frontend với backend và xem từ máy.**
 
    ```bash
    kubectl exec deploy/club-web -- wget -qO- http://backend:3000/health
@@ -202,7 +204,7 @@ Chuẩn bị: `kubectl config set-context --current --namespace=club`, các Pod 
 
    Lệnh `exec` chứng minh đúng đường mà `proxy_pass http://backend:3000` đi. Mã `200` và JSON thành viên đi qua Nginx rồi tới API chứng minh chuỗi frontend, Service, backend, Postgres hoạt động.
 
-4. NodePort và LoadBalancer thử nghiệm:
+4. **Phần 4: NodePort và LoadBalancer.**
 
    ```bash
    kubectl expose deployment club-web --name=club-web-np --type=NodePort --port=80 --target-port=80
@@ -215,7 +217,7 @@ Chuẩn bị: `kubectl config set-context --current --namespace=club`, các Pod 
 
 #### Lời giải L2
 
-**Thử thách 1 – Service viết tay.** Manifest cần đúng ba thứ: tên `backend-lab`, selector `app: club-api`, cặp `port: 8080` và `targetPort: 3000` (lời giải trong lab đạt yêu cầu). Kiểm tra:
+**Thử thách 1: Service viết tay.** Manifest cần đúng ba thứ: tên `backend-lab`, selector `app: club-api`, cặp `port: 8080` và `targetPort: 3000` (mã mẫu ở phụ lục). Kiểm tra:
 
 ```bash
 kubectl apply --dry-run=client -f source/backend-svc-lab.yaml
@@ -226,11 +228,11 @@ kubectl run debug --rm -it --restart=Never --image=busybox:1.36 -- wget -qO- htt
 
 Endpoints phải có hai địa chỉ cổng 3000 (không phải 8080). Giải thích: client gọi cổng của Service (8080), kube-proxy chuyển tới `targetPort` 3000, là cổng process Node.js thật sự nghe; `port` là giao diện công khai, `targetPort` là chi tiết bên trong Pod, nên có thể đổi một bên mà không sửa bên kia. Nếu `targetPort` sai, Endpoints vẫn có địa chỉ nhưng kết nối bị từ chối.
 
-**Thử thách 2 – chéo namespace.** Trong Pod debug ở namespace `lab24`: `wget -qO- http://backend:3000/health` lỗi `bad address 'backend'`, còn `http://backend.club:3000/health` chạy được. Lý do: search domain của Pod chỉ gồm namespace của chính nó (`lab24.svc.cluster.local`, ...), nên tên ngắn tìm trong `lab24` và không thấy; thêm namespace làm tên thành `backend.club.svc.cluster.local` sau khi mở rộng. Dọn: `kubectl delete namespace lab24`.
+**Thử thách 2: gọi chéo namespace.** Trong Pod debug ở namespace `lab24`: `wget -qO- http://backend:3000/health` lỗi `bad address 'backend'`, còn `http://backend.club:3000/health` chạy được. Lý do: search domain của Pod chỉ gồm namespace của chính nó (`lab24.svc.cluster.local`, ...), nên tên ngắn tìm trong `lab24` và không thấy; thêm namespace làm tên thành `backend.club.svc.cluster.local` sau khi mở rộng. Dọn: `kubectl delete namespace lab24`.
 
-**Thử thách 3 – Endpoints rỗng:** xem phần Phá lỗi ngay dưới.
+**Thử thách 3: Endpoints rỗng.** Xem phần Phá lỗi ngay dưới.
 
-#### Lời giải phần Phá lỗi / Debug – Service không có Endpoints
+#### Lời giải phần Phá lỗi: Service không có Endpoints
 
 Phá: `kubectl patch svc backend -p '{"spec":{"selector":{"app":"club-apii"}}}'`.
 
@@ -360,28 +362,23 @@ Kiểm tra: `kubectl get endpoints notice-board -n club-dev` có đúng 3 địa
 
 ### Hướng dẫn chấm cho mentor
 
-Tổng 100 điểm theo barem trong đề, cộng tối đa 10 điểm L2.
+Tổng 100 điểm, cộng tối đa 10 điểm L2, theo [Hướng dẫn chấm tuần 12](../grading/week-12.md) (barem, lỗi hay bị trừ điểm, dấu hiệu bài chép và câu hỏi vấn đáp). Bảng dưới là bằng chứng cần thấy trong `evidence/`.
 
-| Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
-| --- | --- | --- | --- |
-| NV1: manifest và rollout (15) | `get deployment` 3/3; `get pods -l app=notice-board,tier=web` 3 Pod; `apply` lần hai `unchanged`; manifest có probe, resources, đúng nhãn | Manifest giống `demo-web.yaml` chỉ đổi tên, vẫn `namespace: club`; thiếu `tier: web`; không có bằng chứng `unchanged` | Idempotent là gì? Vì sao `selector` phải khớp nhãn template? Nếu bỏ readinessProbe thì rollout khác gì? |
-| NV2: quan sát và truy cập (15) | `inspect.txt` 4 phần, lệnh đứng trước kết quả; jsonpath chỉ in chuỗi image; `port-forward` cổng 8082; dòng log request `200` | Tên Pod hoặc IP trong `inspect.txt` không khớp với `get pods`; log không có `HEAD` hoặc `GET` do curl; dùng cổng 8080 | Vì sao log chỉ ở một trong ba Pod? Vì sao phải lọc `kube-probe`? Khi nào dùng `-o jsonpath` thay cho `-o yaml`? |
-| NV3: điều tra image sai (15) | `ErrImagePull` hoặc `ImagePullBackOff`; Events `Failed to pull image` với tag của học viên; Pod cũ `Running`; `diff` sạch sau khôi phục; file lỗi trong `broken/` | Dùng đúng `nginx:1.99-nope` của lab; chỉ ghi "sai tag"; bỏ bước sửa Git; `undo` nhưng manifest vẫn còn tag lỗi | Vì sao dịch vụ chưa sập? Nếu `maxUnavailable` là 100% thì sao? Vì sao đặt file lỗi ở `broken/`? |
-| NV4: Service và DNS (20) | `get endpoints` 3 địa chỉ cổng 80; `nslookup` ba tên cùng ClusterIP khớp `get svc`; `wget` nội dung nginx; `curl` 200 qua `svc/notice-board 8082:8080` | `targetPort: 8080`; ClusterIP trong nslookup khác `get svc` (bài ghép từ nhiều lần chạy); giải thích ba cổng chung chung | Gọi `notice-board:80` có được không và vì sao? ClusterIP có tồn tại trên node nào không? Điều gì đổi khi Pod bị tạo lại? |
-| NV5: Endpoints rỗng (20) | Ba lần `get endpoints` (3, `<none>`, 3); Pod `1/1` lúc lỗi; so sánh selector với nhãn; file `notice-board-svc.yaml` đã sửa; `diff` sạch | Dùng lại selector `club-apii` của lab; sửa bằng `patch` mà file còn sai; thiếu bước từ ngoài vào trong | Vì sao Nginx hoặc client nhận lỗi dù Pod `Running`? Selector đúng nhưng Endpoints vẫn rỗng thì kiểm tra gì? Phân biệt với `targetPort` sai thế nào? |
-| Chất lượng nộp bài (10) | README đủ 7 câu, đúng cấu trúc, chạy lại được, không secret, PR có review | Thiếu mục, `~/.kube/config` trong repo (trừ toàn bộ phần này) | Chạy lại từ đầu cần những lệnh nào theo thứ tự? |
-| Câu hỏi kiến thức (5) | 5 câu trả lời ngắn có lý do ở cuối `lab-24/report.md` | Chép nguyên đề hoặc đáp án lab; sai khái niệm (ví dụ cho rằng Pod fail readiness bị restart) | Bảo học viên giải thích lại câu 4 bằng ví dụ khác |
+| Tiêu chí | Bằng chứng cần thấy trong evidence/ |
+| --- | --- |
+| NV1: manifest và rollout (15) | `get deployment` 3/3; `get pods -l app=notice-board,tier=web` 3 Pod; `apply` lần hai `unchanged`; manifest có probe, resources, đúng nhãn |
+| NV2: quan sát và truy cập (15) | `inspect.txt` 4 phần, lệnh đứng trước kết quả; jsonpath chỉ in chuỗi image; `port-forward` cổng 8082; dòng log request `200` |
+| NV3: điều tra image sai (15) | `ErrImagePull` hoặc `ImagePullBackOff`; Events `Failed to pull image` với tag của học viên; Pod cũ `Running`; `diff` sạch sau khôi phục; file lỗi trong `broken/` |
+| NV4: Service và DNS (20) | `get endpoints` 3 địa chỉ cổng 80; `nslookup` ba tên cùng ClusterIP khớp `get svc`; `wget` nội dung nginx; `curl` 200 qua `svc/notice-board 8082:8080` |
+| NV5: Endpoints rỗng (20) | Ba lần `get endpoints` (3, `<none>`, 3); Pod `1/1` lúc lỗi; so sánh selector với nhãn; file `notice-board-svc.yaml` đã sửa; `diff` sạch |
+| Chất lượng nộp bài (10) | README đủ 7 câu, đúng cấu trúc, chạy lại được, không secret, PR có review |
+| Câu hỏi kiến thức (5) | 5 câu trả lời ngắn có lý do ở cuối `lab-24/report.md` |
 
-Gợi ý chấm nhanh:
+Ghi chú khi chấm: nếu `exported.yaml` hay file lỗi nằm cạnh `notice-board.yaml` thì `kubectl apply -f lab-23/source/` sẽ áp dụng cả chúng; đây là lý do đề yêu cầu đặt file lỗi trong `broken/`.
 
-- Đối chiếu ClusterIP, tên Pod và IP giữa các file evidence: những giá trị này phải nhất quán trong cùng một lần làm; không nhất quán là dấu hiệu bài ghép hoặc tự gõ.
-- Kiểm tra `kubectl diff` sạch: học viên có thể chạy lại trên máy của mình với repo đã nộp (mentor chạy `kubectl diff -f lab-23/source/notice-board.yaml` nếu có cluster).
-- Điểm L2 chỉ tính khi L1 từ 70: thử thách A cần ba lần chạy kèm mã thoát; thử thách B cần cả lần thất bại và thành công kèm `resolv.conf`; thử thách C cần bảng so sánh có lệnh thật.
-- Lưu ý khi chấm bài làm trong `source/`: nếu `exported.yaml` hay file lỗi nằm cạnh `notice-board.yaml`, thì `kubectl apply -f lab-23/source/` sẽ áp dụng cả chúng; đây là một lý do đề yêu cầu `broken/`.
+### Phụ lục: mã lời giải L2
 
-### Phụ lục: mã lời giải chuyển từ bài lab
-
-Phần này bổ sung các lời giải L2 từng nằm trong bài lab học viên (đã chuyển sang đây để bài học viên gọn hơn).
+Mã mẫu cho các thử thách của buổi 23 và 24, để mentor đối chiếu. Học viên tự thử trước khi xem.
 
 #### Buổi 23 – script `inspect.sh` (thử thách 1)
 
@@ -408,7 +405,7 @@ Chạy lại demo-web (`kubectl apply -f source/demo-web.yaml`) trước khi th�
 
 #### Buổi 23 – câu hỏi tình huống thêm
 
-Bài lab chỉ còn 5 câu tự kiểm tra; 4 câu còn lại nằm ở trang [thử thách nâng cao](../../labs/week-12/session-23-challenge.md) với đáp án gợi ý. Ý chính cho câu ImagePullBackOff: `get pods` xác nhận trạng thái, `describe pod` đọc Events, kiểm tra tên và tag image trong spec, rồi `imagePullSecrets` nếu image private, rồi mạng và registry.
+Câu hỏi tình huống thêm nằm ở trang [thử thách nâng cao](../../labs/week-12/session-23-challenge.md) với đáp án gợi ý. Ý chính cho câu ImagePullBackOff: `get pods` xác nhận trạng thái, `describe pod` đọc Events, kiểm tra tên và tag image trong spec, rồi `imagePullSecrets` nếu image private, rồi mạng và registry.
 
 #### Buổi 24 – manifest `backend-svc-lab.yaml` (thử thách 1)
 

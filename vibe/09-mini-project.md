@@ -1,17 +1,15 @@
 # Mini project: Landing page CLB có đăng ký thành viên
 
-> **Tóm tắt:** Dự án cuối track: làm trong một buổi chiều một landing page CLB có form đăng ký lưu vào Supabase, trang admin có đăng nhập, có link công khai, HTTPS và RLS.
+> **Tóm tắt:** Dự án tổng hợp cuối track: ghép những gì đã học ở bài 01, 02, 04 và 07 thành một landing page CLB có form đăng ký lưu vào Supabase, trang admin có đăng nhập, link công khai, HTTPS và RLS.
 
 ::: tip Bạn làm gì
 - **Kết quả:** một landing page CLB có link công khai, form đăng ký lưu vào Supabase và trang admin có đăng nhập.
-- **Thời gian:** 3 đến 4 giờ (một buổi chiều), chia làm 8 mốc.
-- **Cần gì trước:** đã làm xong [Đưa web tĩnh lên mạng](02-static-hosting.md) và một backend: [Supabase](04-supabase.md) (bài này dùng Supabase; nếu bạn học Firebase thì xem thử thách trong trang chấm điểm).
-- **Module trước:** [Supabase](04-supabase.md) hoặc [Firebase](05-firebase.md).
+- **Thời gian:** 3 đến 4 giờ nếu bạn đã làm các bài 01, 02, 04 (các mốc trùng chỉ là làm lại nhanh theo bài cũ).
+- **Cần gì trước:** đã làm xong [01 Git và GitHub](01-git-github.md), [02 Hosting tĩnh](02-static-hosting.md) và [04 Supabase](04-supabase.md). Bài này **không dạy lại** các bước đó, chỉ chỉ chỗ để bạn làm lại. Nếu bạn học Firebase thì xem thử thách trong trang chấm điểm.
+- **Đây là Chặng 3, tùy chọn:** chỉ làm khi bạn muốn một dự án thật có database và đăng nhập. Chỉ cần link công khai thì dừng ở Chặng 1.
 :::
 
 ## Bạn sẽ làm được gì
-
-Thời lượng ước tính: 3 đến 4 giờ (một buổi chiều), chia làm 8 mốc.
 
 - Có một link công khai dạng `https://ten-cua-ban.xxx` mà bất kỳ ai cũng mở được trên điện thoại.
 - Có form đăng ký thành viên: người lạ điền vào thì dữ liệu nằm trong database Supabase của bạn.
@@ -19,7 +17,7 @@ Thời lượng ước tính: 3 đến 4 giờ (một buổi chiều), chia làm
 - Không lộ secret: repo công khai không chứa khóa bí mật, `.env` không bị commit.
 - Giải thích được bằng lời của mình vì sao hệ thống chạy, và sửa được một lỗi cố tình bị cài.
 
-Đây là bài "ghép lại" mọi thứ đã học: [mindset](00-mindset.md), [Git và GitHub](01-git-github.md), [static hosting](02-static-hosting.md), [Supabase](04-supabase.md), [domain và bảo mật](07-domain-security-production.md). Kẹt ở đâu, mở [Xử lý sự cố](08-troubleshooting.md).
+Đây là bài ghép lại: mốc nào đã học ở bài trước thì có dòng "đã học ở bài X, làm lại theo". Kẹt ở đâu, mở [Xử lý sự cố](08-troubleshooting.md).
 
 ## Khái niệm trong 5 phút
 
@@ -45,7 +43,7 @@ flowchart LR
   SB -->|"RLS lọc dữ liệu"| AD
 ```
 
-Điều quan trọng nhất: trang web nằm hoàn toàn trong trình duyệt của khách, ai cũng "xem mã nguồn" được. Vì vậy mọi thứ đặt trong trang đều coi như công khai. Khóa công khai (publishable) chỉ an toàn vì RLS đứng sau canh cửa. Hãy đọc lại phần anon, publishable và `service_role` ở [bài Supabase](04-supabase.md) trước khi làm mốc 5.
+Điều quan trọng nhất: trang web nằm hoàn toàn trong trình duyệt của khách, ai cũng "xem mã nguồn" được. Vì vậy mọi thứ đặt trong trang đều coi như công khai. Khóa công khai (publishable) chỉ an toàn vì RLS đứng sau canh cửa. Đọc lại phần khóa và RLS ở [bài 04 Supabase](04-supabase.md) trước khi làm mốc 5.
 
 ## Yêu cầu của sản phẩm
 
@@ -64,13 +62,13 @@ Ràng buộc bảo mật (không thương lượng):
 - Chỉ dùng khóa công khai trong code frontend. `config.js` thật hoặc `.env` không nằm trong lịch sử Git.
 - Không dán dữ liệu thành viên thật vào AI để "nhờ xử lý".
 
-Mẫu tham chiếu đã chạy được nằm ở [examples/vibe/club-landing](../examples/vibe/club-landing/README.md). Hãy tự làm trước, mở mẫu để so sánh sau khi xong mỗi mốc. Nếu bạn muốn làm bản chỉ có giao diện, dùng [static-site](../examples/vibe/static-site/README.md).
+**Mẫu tham chiếu đã chạy được:** tải gói [vibe-club-landing.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-club-landing.zip) (có `index.html`, `admin.html`, `app.js`, `admin.js`, `schema.sql`, `config.example.js`), giải nén để so sánh sau mỗi mốc. Mã nguồn cũng có ở [examples/vibe/club-landing](../examples/vibe/club-landing/README.md). Hãy tự làm trước, mở mẫu để đối chiếu sau. Ai không muốn tự làm giao diện có thể bắt đầu thẳng từ gói mẫu này và bỏ qua mốc 1.
 
 ## Thực hành từng bước
 
 Mỗi mốc có việc cần làm, kết quả mong đợi và tiêu chí đo được. Dừng lại tích checklist rồi mới sang mốc tiếp.
 
-### Mốc 1: Nhờ agent tạo bản đầu (20 phút)
+### Mốc 1: Nhờ agent tạo bản đầu (20 phút, nội dung riêng của dự án)
 
 Mở agent (Claude Code, Cursor, Copilot agent, Codex hoặc Gemini CLI) trong một thư mục trống tên `club-landing`. Dán prompt:
 
@@ -88,47 +86,109 @@ Bạn sẽ thấy: 3 file mới, mở `index.html` lên là có trang đẹp. Ti
 
 ### Mốc 2: Chạy local và đọc lại (15 phút)
 
-```bash
-npx serve .
-```
-
-Mở `http://localhost:3000`. Thử bấm mọi nút, gõ email sai, để trống ô bắt buộc. Rồi nhờ agent giải thích file `app.js` từng dòng và tự hỏi: "dòng nào gọi ra ngoài Internet?". Ở mốc này câu trả lời phải là: không dòng nào.
+Bấm đúp `index.html` để mở bằng trình duyệt (không cần cài Node hay chạy server). Thử bấm mọi nút, gõ email sai, để trống ô bắt buộc. Rồi nhờ agent giải thích file `app.js` từng dòng và tự hỏi: "dòng nào gọi ra ngoài Internet?". Ở mốc này câu trả lời phải là: không dòng nào.
 
 Tiêu chí: không có lỗi đỏ trong Console (nhấn F12), bạn chỉ ra được file nào lo giao diện, file nào lo hành vi.
 
 ### Mốc 3: Đưa lên GitHub (15 phút)
 
-Trước khi commit, tạo `.gitignore` có `config.js`, `.env`, `node_modules/`. Rồi tạo repo trên GitHub và đẩy code theo [bài Git và GitHub](01-git-github.md). Chọn tên repo `club-landing`.
+**Đã học ở [bài 01 Git và GitHub](01-git-github.md), làm lại theo bài đó** (GitHub Desktop, tạo `.gitignore` trước khi commit). Điểm riêng của dự án: `.gitignore` phải có thêm dòng `config.js` (chỗ sẽ chứa khóa Supabase của bạn). Tên repo gợi ý: `club-landing`.
 
-Bạn sẽ thấy: trang repo trên GitHub hiện đủ file. Tiêu chí: tìm trong repo chữ `secret` và `service_role` không ra kết quả nào.
+Tiêu chí: tìm trong repo chữ `secret` và `service_role` không ra kết quả nào.
 
 ### Mốc 4: Deploy bản tĩnh (20 phút)
 
-Chọn một dịch vụ trong [bài Static hosting](02-static-hosting.md) (GitHub Pages, Netlify, Vercel hoặc Cloudflare), nối repo, để trống Build command, thư mục xuất bản là thư mục gốc. Gói miễn phí là đủ, đừng nhập thẻ.
+**Đã học ở [bài 02 Hosting tĩnh](02-static-hosting.md), làm lại theo bài đó** (GitHub Pages là đủ). Mốc này chỉ cần bản tĩnh chưa có Supabase, nên chưa có `config.js` và chưa cần build. Ở mốc 5 bạn sẽ đổi sang cách build có cấu hình để bản online có khóa công khai.
 
-Mốc này chỉ cần bản tĩnh chưa có Supabase, nên chưa có `config.js` và chưa cần build. Ở mốc 5 bạn sẽ đổi Build command thành `node build-config.mjs` và thư mục xuất bản thành `dist` để bản online có cấu hình.
-
-Bạn sẽ thấy: một link công khai. Mở bằng điện thoại (tắt Wi-Fi, dùng 4G) để chắc chắn ai cũng vào được. Sửa một chữ, đẩy lên, chờ vài chục giây để thấy trang tự cập nhật.
-
-Tiêu chí: link mở được trên thiết bị khác, và có ít nhất 2 lần deploy trong lịch sử.
+Tiêu chí: link mở được trên thiết bị khác (thử bằng điện thoại dùng 4G), và có ít nhất 2 lần deploy trong lịch sử.
 
 ### Mốc 5: Thêm Supabase và RLS (45 phút)
 
-Đây là mốc khó nhất. Làm lần lượt:
+Đây là mốc khó nhất và là phần riêng của dự án. Làm lần lượt:
 
-1. Tạo project Supabase, chạy `schema.sql` (mẫu ở [club-landing/schema.sql](https://github.com/TienNHM/devops-course/blob/master/examples/vibe/club-landing/schema.sql)) trong SQL Editor.
-2. Kiểm tra RLS đã bật cho cả hai bảng `members`, `admins`.
-3. Tạo `config.js` từ `config.example.js`, chỉ điền URL và khóa công khai.
-4. Nhờ agent nối form với `supabase-js` (prompt ở mục sau). Chạy local, gửi một đăng ký thử, kiểm tra dòng đó xuất hiện trong Table Editor.
-5. Tạo user admin trong Authentication, thêm vào bảng `admins`, làm trang `admin.html` đăng nhập và xem danh sách.
-6. Thử "tấn công" chính mình: dùng lệnh `curl` trong README của mẫu, đọc `members` bằng khóa công khai, không đăng nhập. Phải ra rỗng.
+1. **Đã học ở [bài 04 Supabase](04-supabase.md), Bước 1 và Bước 3:** tạo project Supabase, lấy Project URL và publishable key.
+2. Mở SQL Editor, chép khối SQL trong mục gập bên dưới (bảng `members` và `admins`, bật RLS, policy) vào và bấm Run. Đây cũng là nội dung file `schema.sql` trong gói mẫu.
+3. Kiểm tra RLS đã bật cho cả hai bảng `members`, `admins` (Table Editor, nhãn RLS enabled).
+4. Tạo `config.js` từ `config.example.js` (có trong gói mẫu), chỉ điền URL và khóa công khai.
+5. Nhờ agent nối form với `supabase-js` (prompt ở mục sau). Chạy local, gửi một đăng ký thử, kiểm tra dòng đó xuất hiện trong Table Editor.
+6. Tạo user admin và thêm vào bảng `admins`, làm trang `admin.html` đăng nhập và xem danh sách. Cách tạo admin an toàn: mục "Tạo admin đầu tiên" ở [Supabase nâng cao](04-supabase-advanced.md).
+7. Thử "tấn công" chính mình theo [bài 04, Bước 5](04-supabase.md): đọc `members` bằng khóa công khai, không đăng nhập. Phải ra rỗng.
 
-Chuyện admin: ở bước 5, tạo user bằng Authentication, Users, Add user và tích Auto Confirm User (không phụ thuộc email, vì email mặc định của Supabase rất hạn chế). Tắt đăng ký công khai, rồi thêm user vào `admins`. Phân quyền bằng bảng `admins`, không bằng `user_metadata` vì người dùng tự sửa được. Chi tiết ở mục "Admin đầu tiên và Supabase Auth" của [README mẫu](../examples/vibe/club-landing/README.md).
+::: details SQL cho bảng members và admins (chép toàn bộ vào SQL Editor)
+
+```sql
+-- Chạy toàn bộ file này trong Supabase: SQL Editor > New query > dán > Run.
+-- Có thể chạy lại nhiều lần (idempotent).
+
+-- 1. Bảng thành viên đăng ký
+create table if not exists public.members (
+  id          uuid primary key default gen_random_uuid(),
+  full_name   text not null,
+  email       text not null,
+  student_id  text,
+  interest    text not null default 'general',
+  created_at  timestamptz not null default now(),
+  constraint members_full_name_len check (char_length(full_name) between 2 and 100),
+  constraint members_email_format  check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' and char_length(email) <= 200),
+  constraint members_student_len   check (student_id is null or char_length(student_id) <= 30),
+  constraint members_interest_ok   check (interest in ('general', 'web', 'ai', 'devops', 'design'))
+);
+
+-- Không cho đăng ký trùng email (so sánh không phân biệt hoa thường)
+create unique index if not exists members_email_unique on public.members (lower(email));
+
+-- 2. Bảng admin: ai có tên ở đây mới được xem danh sách
+create table if not exists public.admins (
+  user_id uuid primary key references auth.users (id) on delete cascade
+);
+
+-- 3. BẬT Row Level Security. Không bật = ai có khóa công khai cũng đọc được hết.
+alter table public.members enable row level security;
+alter table public.admins  enable row level security;
+
+-- 4. Quyền cấp ở mức bảng (RLS lọc thêm ở mức dòng)
+revoke all on public.members from anon, authenticated;
+revoke all on public.admins  from anon, authenticated;
+grant insert on public.members to anon, authenticated;   -- ai cũng đăng ký được
+grant select on public.members to authenticated;         -- chỉ người đăng nhập mới có thể đọc (và còn bị policy lọc)
+grant select on public.admins  to authenticated;         -- để admin tự kiểm tra mình có trong danh sách
+
+-- 5. Policy
+drop policy if exists "Ai cung dang ky duoc" on public.members;
+create policy "Ai cung dang ky duoc"
+  on public.members for insert
+  to anon, authenticated
+  with check (
+    char_length(full_name) between 2 and 100
+    and char_length(email) <= 200
+  );
+
+drop policy if exists "Chi admin duoc xem" on public.members;
+create policy "Chi admin duoc xem"
+  on public.members for select
+  to authenticated
+  using (exists (select 1 from public.admins a where a.user_id = (select auth.uid())));
+
+drop policy if exists "Admin xem dong cua minh" on public.admins;
+create policy "Admin xem dong cua minh"
+  on public.admins for select
+  to authenticated
+  using (user_id = (select auth.uid()));
+
+-- Không có policy UPDATE/DELETE: không ai sửa hoặc xóa được qua khóa công khai.
+
+-- 6. Thêm admin (CHẠY RIÊNG sau khi tạo user trong Authentication > Users):
+-- insert into public.admins (user_id)
+-- select id from auth.users where email = 'admin@example.com';
+```
+:::
+
+Phân quyền admin bằng bảng `admins`, không bằng `user_metadata` (người dùng tự sửa được).
 
 Đưa bản có Supabase lên mạng: `config.js` bị `.gitignore` chặn nên không có trên GitHub; nếu để nguyên, trang online sẽ hiện "Chưa cấu hình Supabase". Cách khuyến nghị:
 
-7. Trong cài đặt của nền tảng, đặt biến môi trường `SUPABASE_URL` (Project URL) và `SUPABASE_KEY` (publishable key). Đây là khóa công khai, không phải bí mật; `service_role` hay `sb_secret_` thì tuyệt đối không.
-8. Đặt Build command là `node build-config.mjs` và thư mục xuất bản là `dist`:
+8. Trong cài đặt của nền tảng, đặt biến môi trường `SUPABASE_URL` (Project URL) và `SUPABASE_KEY` (publishable key). Đây là khóa công khai, không phải bí mật; `service_role` hay `sb_secret_` thì tuyệt đối không.
+9. Đặt Build command là `node build-config.mjs` và thư mục xuất bản là `dist`:
 
 | Nền tảng | Build command | Thư mục xuất bản | Chỗ đặt biến |
 | --- | --- | --- | --- |
@@ -138,9 +198,9 @@ Chuyện admin: ở bước 5, tạo user bằng Authentication, Users, Add user
 | Cloudflare Pages (đường cũ) | `node build-config.mjs` | `dist` | Settings, Variables and Secrets (loại Text) |
 | GitHub Pages | Bước build trong GitHub Actions | `path: dist` | Settings, Secrets and variables, Actions, tab Variables |
 
-9. GitHub Pages cần thêm file workflow; bản mẫu đầy đủ nằm trong mục Deploy của README mẫu. Redeploy sau khi đặt biến, vì biến chỉ được đọc lúc build.
-10. Mở link online: dòng "Chưa cấu hình Supabase" phải biến mất, `/config.js` chỉ chứa khóa `sb_publishable_`. Gửi một đăng ký thử rồi đăng nhập `/admin.html`.
-11. Quay lại Supabase, Authentication, URL Configuration: đặt Site URL thành địa chỉ trang thật và thêm địa chỉ đó (có `/**`) vào Redirect URLs, giữ localhost nếu còn làm trên máy.
+10. GitHub Pages cần thêm file workflow; bản mẫu đầy đủ nằm trong mục Deploy của README mẫu. Redeploy sau khi đặt biến, vì biến chỉ được đọc lúc build.
+11. Mở link online: dòng "Chưa cấu hình Supabase" phải biến mất, `/config.js` chỉ chứa khóa `sb_publishable_`. Gửi một đăng ký thử rồi đăng nhập `/admin.html`.
+12. Quay lại Supabase, Authentication, URL Configuration: đặt Site URL thành địa chỉ trang thật và thêm địa chỉ đó (có `/**`) vào Redirect URLs, giữ localhost nếu còn làm trên máy.
 
 Cách thay thế đơn giản hơn nhưng kém gọn: `git add -f config.js` khi chắc chắn file chỉ có khóa công khai, rồi để Build command trống và thư mục xuất bản là gốc.
 
@@ -185,8 +245,7 @@ Nối form đăng ký với Supabase bằng supabase-js lấy từ CDN jsdelivr 
 Đọc URL và khóa từ window.APP_CONFIG trong config.js (tôi sẽ tự tạo file này, đừng tạo giúp).
 Chỉ insert vào bảng members (full_name, email, student_id, interest), KHÔNG gọi select sau insert.
 Nếu lỗi mã 23505 thì báo "email đã đăng ký". Nếu chưa có cấu hình thì hiện thông báo thân thiện.
-Viết schema.sql: bảng members, bảng admins, bật RLS, policy cho khách chỉ insert, chỉ admin được select.
-Giải thích từng policy bằng tiếng Việt đơn giản. Không dùng service_role ở bất kỳ đâu.
+Dùng đúng bảng members và admins đã tạo bằng SQL ở mốc 5, không đổi schema. Không dùng service_role ở bất kỳ đâu.
 ```
 
 Mốc 5, trang admin:
@@ -205,7 +264,7 @@ innerHTML với dữ liệu người dùng, bảng thiếu RLS, policy kiểu "u
 Liệt kê phát hiện kèm mức độ. KHÔNG tự sửa schema trên Supabase thật, chỉ đề xuất câu lệnh SQL để tôi đọc rồi tự chạy.
 ```
 
-Bạn phải tự kiểm tra: mở file `schema.sql` và đọc từng policy; chạy `curl` ẩn danh; xem lại `git status`; mở trang trên điện thoại.
+Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5; chạy `curl` ẩn danh; nhìn lại danh sách file trước khi commit; mở trang trên điện thoại.
 
 ::: danger Những việc KHÔNG giao cho agent
 - Dán `service_role`, secret key, mật khẩu admin hay token vào khung chat hoặc file trong repo.
@@ -232,10 +291,10 @@ Bạn phải tự kiểm tra: mở file `schema.sql` và đọc từng policy; c
 
 | Triệu chứng | Nguyên nhân thường gặp | Cách xử lý |
 | --- | --- | --- |
-| Form báo lỗi, Console có `new row violates row-level security policy` | Chưa chạy `schema.sql`, hoặc policy insert sai vai trò (`to anon`) | Chạy lại `schema.sql`; kiểm tra Authentication, Policies của bảng `members` |
+| Form báo lỗi, Console có `new row violates row-level security policy` | Chưa chạy khối SQL ở mốc 5, hoặc policy insert sai vai trò (`to anon`) | Chạy lại khối SQL; kiểm tra Authentication, Policies của bảng `members` |
 | Bấm gửi, thông báo thành công nhưng Table Editor trống | Đang trỏ nhầm project, hoặc ô bẫy bot bị trình duyệt tự điền | Kiểm tra `SUPABASE_URL` trong `config.js`; xóa autofill ô ẩn `website` |
 | Admin đăng nhập được nhưng danh sách trống | User chưa nằm trong bảng `admins`, hoặc policy select sai | Chạy lệnh `insert into public.admins ...` đúng email; đọc lại policy "Chi admin duoc xem" |
-| Local chạy, online trang không gửi được | `config.js` bị `.gitignore` chặn nên không được deploy | Dùng biến môi trường + `node build-config.mjs`, hoặc `git add -f config.js` nếu là khóa công khai |
+| Local chạy, online trang không gửi được | `config.js` bị `.gitignore` chặn nên không được deploy | Dùng biến môi trường + `node build-config.mjs` (có trong gói mẫu), hoặc `git add -f config.js` nếu là khóa công khai |
 | Console: `supabase is not defined` | Thẻ script CDN nằm sau `app.js`, hoặc mất mạng, hoặc bị chặn | Đặt script CDN trước `app.js`; thử mạng khác |
 | Console: `Invalid API key` | Dán nhầm khóa, thừa khoảng trắng, hoặc khóa đã bị xoay | Copy lại khóa công khai từ Project Settings, API Keys |
 | `build-config.mjs` báo "secret key" hoặc "service_role" | Bạn đặt nhầm khóa bí mật vào biến môi trường | Dừng lại, đặt khóa công khai; nếu khóa bí mật từng bị dán vào chat hoặc repo thì xoay ngay |
@@ -250,21 +309,7 @@ Bài được chấm trên 100 điểm theo sáu nhóm: chạy được qua link
 
 ## Tự kiểm tra
 
-1. Vì sao trang admin chỉ cần "ẩn" đường dẫn là chưa đủ an toàn?
-2. Khi form gửi lên Supabase, vì sao không nên gọi `select` ngay sau `insert` trong dự án này?
-3. Bạn phát hiện mình lỡ commit secret key lên repo công khai. Làm gì đầu tiên?
-4. Vì sao hiển thị dữ liệu người dùng nhập bằng `textContent` an toàn hơn `innerHTML`?
-5. Người chấm cài lỗi "xóa policy insert". Bạn thấy triệu chứng gì, và cách sửa nào là sai?
-
-<details><summary>Đáp án</summary>
-
-1. Ai biết hoặc đoán được đường dẫn đều mở được trang. Bảo vệ thật nằm ở backend: đăng nhập cộng RLS, khiến người không phải admin chỉ nhận về danh sách rỗng.
-2. Khách chỉ có quyền ghi, không có quyền đọc bảng. `select` sau `insert` sẽ bị RLS từ chối và làm cả thao tác báo lỗi, dù dữ liệu có thể đã vào.
-3. Xoay (rotate) khóa ngay trong dashboard để khóa cũ vô hiệu, rồi mới dọn lịch sử Git. Xóa file không đủ vì khóa vẫn nằm trong lịch sử commit.
-4. `textContent` luôn coi dữ liệu là chữ thường, còn `innerHTML` có thể chạy thẻ hoặc script mà người lạ gài vào trường họ tên (XSS).
-5. Triệu chứng: form báo lỗi, Console có `row-level security policy` khi insert. Cách sửa sai là tắt RLS hoặc dùng `service_role`. Cách đúng là tạo lại policy insert có điều kiện kiểm tra dữ liệu.
-
-</details>
+Năm câu hỏi tự kiểm tra (kèm đáp án) nằm ở [trang chấm điểm](09-mini-project-advanced.md); làm trước khi demo.
 
 ## Checklist hoàn thành
 
@@ -280,9 +325,13 @@ Bài được chấm trên 100 điểm theo sáu nhóm: chạy được qua link
 
 ## Tiếp theo
 
-**Tiếp theo:** [Tên miền, bảo mật, production](07-domain-security-production.md) (gắn domain riêng, rà soát bảo mật trước khi mở cho người dùng thật), rồi [Hoàn thiện và ra mắt](11-launch-polish.md). Nếu bạn làm sản phẩm bằng Lovable, Bolt, v0 hay Replit, đọc thêm [App builders](10-app-builders.md).
+Bước kế: [07 Tên miền, bảo mật, production](07-domain-security-production.md) (domain riêng, rà soát bảo mật), rồi [11 Hoàn thiện và ra mắt](11-launch-polish.md) khi bạn muốn gửi link cho người lạ.
 
-Khi sản phẩm lớn lên, nhìn vào bảng này để biết khi nào cần học thêm.
+::: details Tra cứu thêm
+- Làm sản phẩm bằng Lovable, Bolt, v0 hay Replit: [10 App-builder](10-app-builders.md).
+- Chấm điểm và nộp bài: [trang chấm điểm](09-mini-project-advanced.md).
+- Gặp lỗi: [Xử lý sự cố](08-troubleshooting.md); prompt mẫu: [Thư viện prompt](prompt-library.md); lệnh: [CLI cheatsheet](cli-cheatsheet.md); nền tảng: [Nền tảng hosting](platforms.md); lộ trình: [trang chủ track](index.md).
+- Khi sản phẩm lớn lên, bảng dưới cho biết lúc nào cần học thêm DevOps.
 
 | Dấu hiệu | Nên học |
 | --- | --- |
@@ -290,8 +339,7 @@ Khi sản phẩm lớn lên, nhìn vào bảng này để biết khi nào cần 
 | Mỗi lần sửa phải kiểm tra tay, sợ làm hỏng | CI/CD với GitHub Actions |
 | Nhiều người cùng sửa, cần môi trường thử riêng | Môi trường staging, preview, quản lý cấu hình |
 | Lượng người dùng lớn, cần nhiều bản chạy song song | Kubernetes, giám sát, logging |
-
-Tra cứu: [Xử lý sự cố](08-troubleshooting.md), [Thư viện prompt](prompt-library.md), [CLI cheatsheet](cli-cheatsheet.md), [Nền tảng hosting](platforms.md). Quay lại [trang chủ track](index.md) để xem lộ trình.
+:::
 
 Tài liệu chính thức (giao diện và gói free thay đổi, luôn đối chiếu trang chính thức):
 
@@ -299,7 +347,4 @@ Tài liệu chính thức (giao diện và gói free thay đổi, luôn đối c
 - Supabase, API keys (publishable và secret): https://supabase.com/docs/guides/api/api-keys
 - Supabase, đăng nhập bằng mật khẩu: https://supabase.com/docs/guides/auth/passwords
 - Supabase JavaScript client: https://supabase.com/docs/reference/javascript/installing
-- GitHub Pages: https://docs.github.com/en/pages
-- Vercel: https://vercel.com/docs
-- Netlify: https://docs.netlify.com/
-- Cloudflare Workers (static assets) và Pages: https://developers.cloudflare.com/workers/static-assets/ và https://developers.cloudflare.com/pages/
+- Hosting: xem danh sách link ở [bài 02 Hosting tĩnh](02-static-hosting.md).

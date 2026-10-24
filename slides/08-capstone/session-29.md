@@ -1,6 +1,6 @@
 # Slide buổi 29 – Architecture & Planning
 
-> **Tóm tắt:** Nhóm Capstone chốt requirement, vẽ kiến trúc, tạo repo từ starter-project, dựng GitHub Projects có backlog kèm tiêu chí hoàn thành và viết ba ADR đầu tiên. Bài lab đầy đủ và lệnh: [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md). Kịch bản dạy: [Kịch bản mentor buổi 29](../../mentors/sessions/session-29.md).
+> **Tóm tắt:** Nhóm Capstone chốt requirement, vẽ kiến trúc, tạo repo từ starter-project, dựng GitHub Projects có backlog kèm tiêu chí hoàn thành và viết ba ADR đầu tiên. Bài lab đầy đủ và lệnh: [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -114,7 +114,7 @@ flowchart LR
 
 ---
 
-## Slide 10: Demo - repo nhóm mẫu
+## Slide 10: Demo – repo nhóm mẫu
 
 - Tạo repo từ `starter-project/` bằng `cp -a` có dấu chấm cuối để giữ file ẩn
 - Chứng minh `.env` bị chặn bằng `git check-ignore -v`, không bằng niềm tin

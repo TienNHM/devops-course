@@ -1,6 +1,6 @@
 # Terminal 101
 
-Trang này dạy bạn những gì cần biết để dùng terminal trong khóa học: mở terminal, gõ lệnh, đọc kết quả và không làm hỏng máy. Đọc một lần khoảng 20 phút, sau đó giữ làm trang tra cứu.
+Trang này dạy bạn những gì cần biết để dùng terminal trong khóa học: mở terminal, gõ lệnh, đọc kết quả và không làm hỏng máy. Đọc một lần khoảng 20 phút, sau đó giữ làm trang tra cứu. Trước buổi 01 chỉ cần đọc các mục đến hết "Phím tắt cứu bạn" (khoảng 10 phút), phần còn lại đọc khi cần.
 
 > **Tóm tắt:** Terminal là cửa sổ để gõ lệnh cho máy tính. Biết 10 lệnh, phím Tab, mũi tên lên và Ctrl+C là đủ cho tuần 1. Cẩn thận với `rm -rf` và `sudo`.
 
@@ -14,18 +14,19 @@ Bình thường bạn bấm chuột để làm việc. Terminal cho phép làm c
 
 ## Mở terminal
 
-Có hai terminal bạn sẽ dùng:
+Có ba terminal bạn sẽ gặp:
 
 | Terminal | Mở bằng | Dùng khi nào |
 | --- | --- | --- |
-| PowerShell trong Windows Terminal | Bấm Start, gõ `Terminal`, Enter | Buổi 01, và các lệnh `wsl ...` ở buổi 02 |
+| Git Bash | Bấm Start, gõ `Git Bash`, Enter. Trong VS Code: menu Terminal > New Terminal, rồi chọn Git Bash ở mũi tên cạnh dấu `+` | Buổi 01 (có sẵn khi bạn cài Git for Windows, chưa cần WSL) |
 | Ubuntu (WSL) | Bấm Start, gõ `Ubuntu`, Enter. Hoặc trong Windows Terminal bấm mũi tên cạnh dấu `+` chọn Ubuntu-24.04 | Từ buổi 02 trở đi, gần như mọi lab |
+| PowerShell trong Windows Terminal | Bấm Start, gõ `Terminal`, Enter | Chỉ cho các lệnh `wsl ...` và kiểm tra Windows ở buổi 02 |
 
-Ubuntu chỉ có sau khi bạn cài WSL ở buổi 02, xem [Hướng dẫn cài đặt môi trường](setup-guide.md). Hai cửa sổ này dùng hai bộ lệnh khác nhau: lệnh Linux như `ls` và `cat` chỉ chạy trong Ubuntu. Nhìn dòng đầu cửa sổ để biết bạn đang ở đâu.
+Ubuntu chỉ có sau khi bạn cài WSL ở buổi 02, xem [Hướng dẫn cài đặt môi trường](setup-guide.md). Git Bash và Ubuntu đều dùng lệnh kiểu Linux (`ls`, `cat`, `mkdir`), còn PowerShell dùng bộ lệnh khác nên các lệnh trong bài buổi 01 sẽ báo lỗi ở đó. Nhìn dòng đầu cửa sổ để biết bạn đang ở đâu.
 
 ## Prompt là gì
 
-Khi mở Ubuntu, bạn thấy một dòng như sau:
+Khi mở Ubuntu, bạn thấy một dòng như sau (Git Bash hiện dạng `tien@LAPTOP MINGW64 ~` nhưng ý nghĩa tương tự):
 
 ```text
 tien@laptop:~$
@@ -44,7 +45,7 @@ Trong tài liệu này, dòng lệnh bạn cần gõ được viết không có 
 
 ## 10 lệnh đầu tiên
 
-Chạy lần lượt trong Ubuntu. Mỗi lệnh kèm kết quả bạn sẽ thấy (tên có thể khác).
+Chạy lần lượt trong Git Bash (buổi 01) hoặc Ubuntu (từ buổi 02). Mỗi lệnh kèm kết quả bạn sẽ thấy (tên có thể khác).
 
 `pwd` cho biết bạn đang đứng ở đâu:
 
@@ -187,11 +188,13 @@ Cam nghi: DevOps la lam viec cung nhau
 
 Hai lưu ý: dòng `EOF` kết thúc phải đứng sát lề trái; và `>` ghi đè file cũ, muốn nối thêm vào cuối file dùng `>>`.
 
+Không muốn gõ heredoc? Cách thay thế luôn dùng được: tạo file bằng VS Code (File > New File, đặt tên, lưu vào đúng thư mục), dán nội dung nằm giữa dòng `cat > ...` và dòng `EOF`, rồi lưu. Kết quả giống hệt.
+
 ## Soạn file: nano hoặc VS Code
 
 Có hai cách mở file để sửa nội dung.
 
-**nano** chạy ngay trong terminal, không cần cài:
+**nano** chạy ngay trong terminal Ubuntu, không cần cài (Git Bash ở buổi 01 thì dùng VS Code cho đơn giản):
 
 ```bash
 nano ghi-chu.txt
@@ -199,7 +202,7 @@ nano ghi-chu.txt
 
 Gõ nội dung, nhấn `Ctrl+O` rồi Enter để lưu, `Ctrl+X` để thoát. Các phím tắt luôn hiện ở hai dòng cuối màn hình (`^` nghĩa là phím Ctrl).
 
-**VS Code** dễ dùng hơn cho file dài. Sau khi đã cài WSL extension (buổi 02), từ Ubuntu gõ:
+**VS Code** dễ dùng hơn cho file dài. Từ Git Bash gõ được ngay nếu VS Code đã "Add to PATH"; trong Ubuntu thì cần cài WSL extension (buổi 02). Gõ:
 
 ```bash
 code ghi-chu.txt
@@ -235,7 +238,7 @@ Dòng `ls` cuối báo `No such file or directory`, nghĩa là thư mục thử 
 
 ## Tự thử: 5 phút
 
-Làm lần lượt trong Ubuntu, kiểm tra xong mỗi bước:
+Làm lần lượt trong Git Bash (hoặc Ubuntu nếu đã cài), kiểm tra xong mỗi bước:
 
 ```bash
 mkdir -p ~/devops-labs/lab-00

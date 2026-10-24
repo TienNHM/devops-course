@@ -128,7 +128,7 @@ Dùng khóa `needs` trong job muốn chạy sau; khi `test` đỏ thì job đó 
         run: docker build -t club-api:ci .
 ```
 
-Job này chỉ chạy khi `test` (cả hai biến thể matrix) và `validate` đều xanh. Docker có sẵn trên `ubuntu-latest`. Lời giải đầy đủ ở [Walkthrough tuần 8](../../mentors/walkthroughs/week-08.md); chỉ mở sau khi nộp bài.
+Job này chỉ chạy khi `test` (cả hai biến thể matrix) và `validate` đều xanh. Docker có sẵn trên `ubuntu-latest`. Lời giải đầy đủ ở [trang tuần 8](README.md); chỉ mở sau khi nộp bài.
 :::
 
 Ví dụ tham khảo trong repo giáo trình: `examples/github-actions/ci-basic.yml` và `examples/github-actions/ci-matrix.yml` (khác cấu trúc thư mục và danh sách phiên bản Node với bài này).

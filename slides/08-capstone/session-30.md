@@ -1,6 +1,6 @@
 # Slide buổi 30 – Implementation
 
-> **Tóm tắt:** Nhóm hoàn thiện CRUD API có test, giao diện web, Compose, CI trên Pull Request và publish image lên GHCR bằng PR nhỏ và review chéo, đạt mốc M2. Bài lab đầy đủ và lệnh: [Buổi 30 – Implementation](../../labs/week-15/session-30.md). Kịch bản dạy: [Kịch bản mentor buổi 30](../../mentors/sessions/session-30.md).
+> **Tóm tắt:** Nhóm hoàn thiện CRUD API có test, giao diện web, Compose, CI trên Pull Request và publish image lên GHCR bằng PR nhỏ và review chéo, đạt mốc M2. Bài lab đầy đủ và lệnh: [Buổi 30 – Implementation](../../labs/week-15/session-30.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -118,7 +118,7 @@ sequenceDiagram
 
 ---
 
-## Slide 10: Demo - một route, một PR, CI chặn merge
+## Slide 10: Demo – một route, một PR, CI chặn merge
 
 - Hiện trạng: starter-project chỉ có `GET`, `POST` trả 404
 - Tạo nhánh, thêm duy nhất `GET /api/members/:id` cùng một test

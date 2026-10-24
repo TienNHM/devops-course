@@ -7,7 +7,7 @@ Tuần 13/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 26/32
 > **Tóm tắt:** Trang phụ của buổi 26: kiến thức tìm hiểu thêm về tài nguyên và probe, ba thử thách L2, phá lỗi nâng cao với tình huống 10 và OOMKilled. Tất cả đều tùy chọn, làm sau khi xong lab bắt buộc.
 
 ::: tip Trang này dành cho ai
-Bạn đã xong checklist L1 của [Buổi 26 – Resource & Health](session-26.md) và còn thời gian. Mỗi thử thách có gợi ý theo bậc: hãy tự thử ít nhất 15 phút trước khi mở bậc 1, và thêm 15 phút nữa trước khi mở bậc 2. Lời giải đối chiếu nằm trong [Walkthrough tuần 13](../../mentors/walkthroughs/week-13.md), chỉ mở sau khi nộp bài. Mọi thử thách sửa `club-api` hoặc `postgres` đều phải khôi phục bằng `kubectl apply -f source/backend-deploy.yaml` và đưa Postgres về `--replicas=1`, nếu không buổi sau sẽ bắt đầu từ trạng thái hỏng.
+Bạn đã xong checklist L1 của [Buổi 26 – Resource & Health](session-26.md) và còn thời gian. Mỗi thử thách có gợi ý theo bậc: hãy tự thử ít nhất 15 phút trước khi mở bậc 1, và thêm 15 phút nữa trước khi mở bậc 2. Lời giải đối chiếu nằm trong [trang tuần 13](README.md), chỉ mở sau khi nộp bài. Mọi thử thách sửa `club-api` hoặc `postgres` đều phải khôi phục bằng `kubectl apply -f source/backend-deploy.yaml` và đưa Postgres về `--replicas=1`, nếu không buổi sau sẽ bắt đầu từ trạng thái hỏng.
 :::
 
 ## Tìm hiểu thêm {#tim-hieu-them}

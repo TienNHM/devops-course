@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Trang phụ của Buổi 13: ba thử thách L2 về Compose, tình huống phá lỗi đổi mật khẩu, bảng tra cứu các khóa compose.yaml và tài liệu tham khảo.
 
-Quay lại bài chính: [Buổi 13 – Docker Compose](session-13.md). Trang này không bắt buộc; chỉ làm khi đã hoàn thành checklist L1. Lời giải mẫu nằm ở [Đối chiếu đáp án tuần 7](../../mentors/walkthroughs/week-07.md) (mở sau khi nộp bài).
+Quay lại bài chính: [Buổi 13 – Docker Compose](session-13.md). Trang này không bắt buộc; chỉ làm khi đã hoàn thành checklist L1. Lời giải mẫu nằm ở [trang tuần 7](README.md) (mở sau khi nộp bài).
 
 ## Thử thách L2
 

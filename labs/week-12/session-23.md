@@ -307,7 +307,7 @@ Nộp vào `lab-23/` trong repo `devops-labs` theo `templates/lab-template.md`. 
 Buổi tiếp theo: [Buổi 24 – Kubernetes Services](session-24.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Ba thử thách L2 (script `inspect.sh`, phát hiện drift, chẩn đoán Deployment bí ẩn), cluster kind 3 node và các câu hỏi tình huống nằm ở [Buổi 23 – Thử thách nâng cao](session-23-challenge.md). Mỗi thử thách có gợi ý từng bậc; hãy tự thử 15 phút trước khi mở gợi ý. Lời giải đối chiếu nằm trong [Walkthrough tuần 12](../../mentors/walkthroughs/week-12.md) (mở sau khi nộp bài).
+Ba thử thách L2 (script `inspect.sh`, phát hiện drift, chẩn đoán Deployment bí ẩn), cluster kind 3 node và các câu hỏi tình huống nằm ở [Buổi 23 – Thử thách nâng cao](session-23-challenge.md). Mỗi thử thách có gợi ý từng bậc; hãy tự thử 15 phút trước khi mở gợi ý. Lời giải đối chiếu nằm trong [trang tuần 12](README.md) (mở sau khi nộp bài).
 :::
 
 ::: details Phá lỗi nâng cao

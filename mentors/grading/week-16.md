@@ -1,14 +1,14 @@
-# Chấm điểm tuần 16 – Capstone Testing & Defense
+# Hướng dẫn chấm tuần 16 – Capstone Testing & Defense
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 16](../../assignments/weekly/week-16.md). Đáp án và bằng chứng cần thấy: [Walkthrough tuần 16](../walkthroughs/week-16.md). Kịch bản dạy: [Buổi 31](../sessions/session-31.md), [Buổi 32](../sessions/session-32.md).
+Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 16](../../assignments/weekly/week-16.md). Đáp án: [Đáp án tuần 16](../walkthroughs/week-16.md). Kịch bản dạy: [buổi 31](../sessions/session-31.md), [buổi 32](../sessions/session-32.md).
 :::
 
-> **Tóm tắt:** Barem chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho bài tập tuần 16 (clean clone, ba sự cố trên kind, bảo mật, runbook, demo).
+> **Tóm tắt:** Barem 100 điểm cho bài tập tuần 16 (clean clone, ba sự cố trên kind, bảo mật, runbook, demo), lệnh kiểm tra nhanh, bằng chứng và câu hỏi vấn đáp, lỗi hay bị trừ điểm và phạm vi chấm.
 
-## Barem chấm
+## Barem
 
-Nguyên văn từ đề bài. Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
+Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
 
 | Tiêu chí | Đạt | Không đạt | Điểm |
 | --- | --- | --- | --- |
@@ -26,22 +26,7 @@ Nguyên văn từ đề bài. Tổng 100 điểm cho L1, cộng tối đa 10 đi
 | L2: Thử thách C (cải tiến và câu hỏi mở rộng) | Đủ số đề xuất có ưu tiên và ước lượng, hai câu mở rộng có lập luận cụ thể | Đề xuất chung chung, không bằng chứng, câu trả lời không nêu cách đo | +3 |
 | **Tối đa thưởng** | | | **+10** |
 
-Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0. L2 chỉ chấm khi L1 đã đạt từ 60 điểm trở lên. Nộp muộn bị trừ theo quy định trong `curriculum/assessment.md`; mentor không chấm nội dung đẩy sau hạn.
-
-## Lỗi hay bị trừ điểm
-
-- Dùng thư mục làm việc cũ thay vì clone mới, nên không phát hiện thiếu `.env.example` hoặc thiếu bước trong README.
-- `command-output.txt` chỉ có output cuối, thiếu trạng thái trước và trong lúc lỗi; hoặc output không có nhãn nên reviewer không biết thuộc sự cố nào.
-- Viết dự đoán sau khi đã thấy kết quả, hoặc ghi nguyên nhân gốc là triệu chứng (ví dụ "Pod ImagePullBackOff" thay vì "tag không tồn tại trong node kind").
-- Xem log của Pod cũ rồi kết luận "không có lỗi" trong sự cố C, vì không lấy đúng Pod mới; hoặc quên gọi trực tiếp vào Pod mới khi Service không gửi traffic tới Pod chưa Ready.
-- Không hoàn tác: để Deployment ở tag `9.9.9`, để Secret sai mật khẩu, hoặc để replica ở 3.
-- In mật khẩu thật hay mật khẩu thử nghiệm vào evidence, log, runbook hoặc ảnh chụp màn hình; commit `.env`, file Secret chứa giá trị thật, token hoặc private key.
-- Ghi "Đạt" trong bảng bảo mật nhưng không có output lệnh tương ứng; khai quét image nhưng không có kết quả quét.
-- Kết luận về hiệu năng mà không có số đo, hoặc nói thêm replica luôn làm nhanh hơn mà không giải thích nút thắt.
-- Runbook chứa lệnh chưa từng chạy, hoặc dùng tên Pod cố định thay vì chỉ cách lấy tên Pod thật.
-- Đưa file peer review vào repo công khai, hoặc lessons learned chung chung ("làm việc nhóm tốt hơn") không gắn với sự việc cụ thể.
-- Nhóm chạy thử demo bằng ảnh chụp thay vì lệnh thật, hoặc lệnh trong `demo-commands.md` không khớp tên service và nhãn trong manifest.
-- Nộp ảnh chụp thay cho file nguồn và log text; push thẳng vào `main`, không có PR hoặc không có người review.
+Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0. L2 chỉ chấm khi L1 đã đạt từ 60 điểm. Nộp muộn bị trừ theo quy định trong `curriculum/assessment.md`; mentor không chấm nội dung đẩy sau hạn.
 
 ## Lệnh kiểm tra nhanh
 
@@ -59,18 +44,18 @@ git ls-files | grep -i peer
 git log --oneline -n 20
 ```
 
-Điều cần thấy: thư mục đúng cấu trúc; số dòng nhãn `===` ít nhất 9 (ba sự cố nhân trước, trong, sau); có `uid=1000(node)`, khối `permissions`, bằng chứng tag `9.9.9` và `rollout undo`; log chạy thử của buổi 32 có mốc thời gian đầu và cuối; runbook không có tên Pod cố định; ba lệnh `git ls-files` không in gì (không có `.env`, khóa, peer review); lịch sử commit có commit theo từng nhiệm vụ.
+Điều cần thấy: thư mục đúng cấu trúc; số dòng nhãn `===` ít nhất 9 (ba sự cố nhân trước, trong, sau); có `uid=1000(node)`, khối `permissions`, bằng chứng tag `9.9.9` và `rollout undo`; log chạy thử của buổi 32 có mốc thời gian đầu và cuối; runbook không có tên Pod cố định; ba lệnh `git ls-files` cuối không in gì (không có `.env`, khóa, peer review); lịch sử commit có commit theo từng nhiệm vụ.
 
-Gợi ý chấm nhanh (từ walkthrough):
+Gợi ý chấm nhanh:
 
 - Yêu cầu học viên chạy lại một sự cố bất kỳ ngay tại chỗ và đọc to điều quan sát; người thực sự đã làm sẽ đi đúng thứ tự trạng thái, sự kiện, log, cấu hình.
 - Đối chiếu thời gian trong `date -Is` với lịch sử commit để thấy log có phải làm thật hay không.
 - Điểm cá nhân nên phản ánh khả năng giải thích một phần mình không trực tiếp viết.
 - Capstone chấm theo [Rubric Capstone](../../curriculum/capstone-rubric.md) tiêu chí 7 (Troubleshooting) và 10 (Demo và technical defense).
 
-## Dấu hiệu bài chép hoặc không hiểu, và câu hỏi vấn đáp
+## Bằng chứng và câu hỏi vấn đáp
 
-Nguyên văn từ hướng dẫn chấm trong [Walkthrough tuần 16](../walkthroughs/week-16.md). Chấm bằng bằng chứng text trong `evidence/`, đối chiếu với repo nhóm.
+Chấm bằng bằng chứng text trong `evidence/`, đối chiếu với repo nhóm.
 
 | Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- | --- |
@@ -80,6 +65,21 @@ Nguyên văn từ hướng dẫn chấm trong [Walkthrough tuần 16](../walkthr
 | Bảo mật và runbook | Output bốn lệnh kiểm tra; bảng 5 hạng mục trung thực; runbook đủ 5 mục dùng lệnh đã chạy | Ghi "Đạt" không có output, quét image khai nhưng không có kết quả, runbook dùng tên Pod cố định | "Dòng này trong kết quả `grep` là gì, vì sao chấp nhận?" "Vì sao liveness không gọi `/ready`?" |
 | Demo, bảo vệ, tự đánh giá | Log chạy thử có bấm giờ; `demo-commands.md` khớp tên service và nhãn; lessons learned gắn sự việc; có xác nhận đã nộp peer review | Lessons learned chung chung, lệnh không khớp manifest, peer review nằm trong repo | "Truy ngược từ Pod đang chạy về commit thế nào?" "Chuyện gì xảy ra khi xóa `postgres-0`? Khi xóa PVC?" |
 
-## Lưu ý về phạm vi chấm
+## Lỗi hay bị trừ điểm
 
-Đáp án năm câu hỏi kiểm tra kiến thức nằm ở phần "Đáp án năm câu hỏi kiểm tra" của [Walkthrough tuần 16](../walkthroughs/week-16.md). Hai bài lab của tuần dùng starter-project (hoặc repo capstone của nhóm) nên chấm bài tập tuần trên bằng chứng của từng học viên, không chấm lại bài lab nhóm. Nếu hai học viên cùng nhóm nộp evidence giống hệt từng dòng, kể cả dấu thời gian, hãy hỏi vấn đáp để xác nhận từng người đã tự chạy và tự ghi lại.
+- Dùng thư mục làm việc cũ thay vì clone mới, nên không phát hiện thiếu `.env.example` hoặc thiếu bước trong README.
+- `command-output.txt` chỉ có output cuối, thiếu trạng thái trước và trong lúc lỗi; hoặc output không có nhãn nên reviewer không biết thuộc sự cố nào.
+- Viết dự đoán sau khi đã thấy kết quả, hoặc ghi nguyên nhân gốc là triệu chứng (ví dụ "Pod ImagePullBackOff" thay vì "tag không tồn tại trong node kind").
+- Xem log của Pod cũ rồi kết luận "không có lỗi" trong sự cố C, vì không lấy đúng Pod mới; hoặc quên gọi trực tiếp vào Pod mới khi Service không gửi traffic tới Pod chưa Ready.
+- Không hoàn tác: để Deployment ở tag `9.9.9`, để Secret sai mật khẩu, hoặc để replica ở 3.
+- In mật khẩu thật hay mật khẩu thử nghiệm vào evidence, log, runbook hoặc ảnh chụp màn hình; commit `.env`, file Secret chứa giá trị thật, token hoặc private key.
+- Ghi "Đạt" trong bảng bảo mật nhưng không có output lệnh tương ứng; khai quét image nhưng không có kết quả quét.
+- Kết luận về hiệu năng mà không có số đo, hoặc nói thêm replica luôn làm nhanh hơn mà không giải thích nút thắt.
+- Runbook chứa lệnh chưa từng chạy, hoặc dùng tên Pod cố định thay vì chỉ cách lấy tên Pod thật.
+- Đưa file peer review vào repo công khai, hoặc lessons learned chung chung ("làm việc nhóm tốt hơn") không gắn với sự việc cụ thể.
+- Nhóm chạy thử demo bằng ảnh chụp thay vì lệnh thật, hoặc lệnh trong `demo-commands.md` không khớp tên service và nhãn trong manifest.
+- Nộp ảnh chụp thay cho file nguồn và log text; push thẳng vào `main`, không có PR hoặc không có người review.
+
+## Phạm vi chấm
+
+Đáp án năm câu hỏi kiểm tra kiến thức nằm ở mục "Đáp án năm câu hỏi kiểm tra" của [Đáp án tuần 16](../walkthroughs/week-16.md). Hai bài lab của tuần dùng starter-project (hoặc repo capstone của nhóm) nên chấm bài tập tuần trên bằng chứng của từng học viên, không chấm lại bài lab nhóm. Nếu hai học viên cùng nhóm nộp evidence giống hệt từng dòng, kể cả dấu thời gian, hãy hỏi vấn đáp để xác nhận từng người đã tự chạy và tự ghi lại.

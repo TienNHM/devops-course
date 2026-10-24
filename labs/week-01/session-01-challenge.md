@@ -30,7 +30,7 @@ Bắt đầu từ câu hỏi "lần deploy gần nhất mất bao lâu và vì s
 Chọn giải pháp nhỏ nhất giải quyết được vấn đề, ví dụ một workflow chạy test mỗi lần push trước khi nghĩ tới Kubernetes.
 :::
 
-Sau khi nộp bài, đối chiếu với [Đáp án Tuần 1](../../mentors/walkthroughs/week-01.md).
+Sau khi nộp bài, đối chiếu với [trang tuần 1](README.md).
 
 **Thử thách tính toán:** nhóm bạn push 15 lần mỗi ngày, mỗi lần deploy tay mất 10 phút. Tính chi phí mỗi tuần (5 ngày) và nói bước nào nên tự động hóa trước.
 

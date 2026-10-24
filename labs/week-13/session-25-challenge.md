@@ -7,7 +7,7 @@ Tuần 13/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 25/32
 > **Tóm tắt:** Trang phụ của buổi 25: kiến thức tìm hiểu thêm về ConfigMap và Secret, bài thêm rollout restart, hai thử thách L2 và phá lỗi nâng cao. Tất cả đều tùy chọn, làm sau khi xong lab bắt buộc.
 
 ::: tip Trang này dành cho ai
-Bạn đã xong checklist L1 của [Buổi 25 – Configuration Management](session-25.md) và còn thời gian. Các thử thách làm ở nhà. Mỗi thử thách có gợi ý theo bậc: hãy tự thử ít nhất 15 phút trước khi mở bậc 1, và thêm 15 phút nữa trước khi mở bậc 2. Lời giải đối chiếu (có đủ manifest) nằm trong [Walkthrough tuần 13](../../mentors/walkthroughs/week-13.md), chỉ mở sau khi nộp bài.
+Bạn đã xong checklist L1 của [Buổi 25 – Configuration Management](session-25.md) và còn thời gian. Các thử thách làm ở nhà. Mỗi thử thách có gợi ý theo bậc: hãy tự thử ít nhất 15 phút trước khi mở bậc 1, và thêm 15 phút nữa trước khi mở bậc 2. Lời giải đối chiếu (có đủ manifest) nằm trong [trang tuần 13](README.md), chỉ mở sau khi nộp bài.
 :::
 
 ## Tìm hiểu thêm {#tim-hieu-them}

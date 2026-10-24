@@ -307,7 +307,7 @@ Nộp vào thư mục `lab-26/` trong repo `devops-labs`, theo [mẫu lab](../..
 Buổi tiếp theo: [Buổi 27 – Storage & Ingress](../week-14/session-27.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Ba thử thách: Guaranteed QoS, liveness phụ thuộc database gây restart dây chuyền, và startup probe sai cổng. Gợi ý từng bậc và tiêu chí hoàn thành nằm ở [Buổi 26 – Thử thách nâng cao](session-26-challenge.md#thu-thach-l2). Hãy tự thử 15 phút trước khi mở gợi ý; lời giải đối chiếu ở [Walkthrough tuần 13](../../mentors/walkthroughs/week-13.md), chỉ mở sau khi nộp bài.
+Ba thử thách: Guaranteed QoS, liveness phụ thuộc database gây restart dây chuyền, và startup probe sai cổng. Gợi ý từng bậc và tiêu chí hoàn thành nằm ở [Buổi 26 – Thử thách nâng cao](session-26-challenge.md#thu-thach-l2). Hãy tự thử 15 phút trước khi mở gợi ý; lời giải đối chiếu ở [trang tuần 13](README.md), chỉ mở sau khi nộp bài.
 :::
 
 ::: details Phá lỗi nâng cao

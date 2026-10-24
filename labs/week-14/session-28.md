@@ -336,7 +336,7 @@ Nộp vào thư mục `lab-28/` trong repo `devops-labs` theo `templates/lab-tem
 Buổi tiếp theo: [Buổi 29 – Architecture & Planning](../week-15/session-29.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Ba thử thách (ba tình huống `scenario-07`, `08`, `09` chỉ nhận triệu chứng; sự cố trên ứng dụng thật `club-api`; viết report) kèm tiêu chí hoàn thành và gợi ý nằm ở [Buổi 28 – Thử thách nâng cao](session-28-challenge.md). Hãy tự thử 15 phút trước khi mở gợi ý; đáp án chỉ ở phía mentor, đối chiếu bằng [Walkthrough tuần 14](../../mentors/walkthroughs/week-14.md) sau khi nộp bài.
+Ba thử thách (ba tình huống `scenario-07`, `08`, `09` chỉ nhận triệu chứng; sự cố trên ứng dụng thật `club-api`; viết report) kèm tiêu chí hoàn thành và gợi ý nằm ở [Buổi 28 – Thử thách nâng cao](session-28-challenge.md). Hãy tự thử 15 phút trước khi mở gợi ý; đáp án chỉ ở phía mentor, đối chiếu bằng [trang tuần 14](README.md) sau khi nộp bài.
 :::
 
 ::: details Phá lỗi nâng cao

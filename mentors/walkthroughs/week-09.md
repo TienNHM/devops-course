@@ -1,18 +1,16 @@
-# Walkthrough tuần 9 – Automated Testing & Docker CI
+# Đáp án tuần 9 – Automated Testing & Docker CI
 
-::: warning Dành cho mentor và học viên đã nộp bài
-Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+::: warning Đáp án đối chiếu: học viên chỉ xem sau khi đã nộp bài tuần này
+Mentor dùng trang này để chấm bài. Tên tài khoản, run ID, SHA, digest và thời gian trên repo của học viên sẽ khác tài liệu; chấm theo log run và evidence thật của học viên.
 :::
 
 > **Tóm tắt:** Hướng dẫn giải Buổi 17 (unit và integration test, report, branch protection) và Buổi 18 (publish image lên GHCR bằng Buildx), kèm đáp án bài tập tuần 9 và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
 
-Chỉ đọc sau khi bạn đã tự làm xong bài lab và bài tập của tuần. Mục đích là đối chiếu cách nghĩ và cách điều tra, không phải chép lệnh: tên tài khoản, run ID, SHA, digest và thời gian trên repo của bạn sẽ khác tài liệu này, và mentor chấm theo log run và evidence thật của bạn.
+Dùng để đối chiếu cách nghĩ và cách điều tra, không phải để chép lệnh. Mỗi buổi có các phần: đáp án L1, lời giải L2, lời giải phần Phá lỗi và những hiểu lầm hay gặp. Cuối tài liệu là gợi ý cho bài tập tuần và hướng dẫn chấm. Bài gốc: [Buổi 17](../../labs/week-09/session-17.md), [Buổi 18](../../labs/week-09/session-18.md) và [bài tập tuần 9](../../assignments/weekly/week-09.md). Barem: [Hướng dẫn chấm tuần 9](../grading/week-09.md).
 
-Mỗi buổi có bốn phần: đáp án L1, lời giải L2, lời giải phần Phá lỗi và những hiểu lầm hay gặp. Cuối tài liệu là gợi ý cho bài tập tuần và hướng dẫn chấm. Đề gốc nằm ở [Buổi 17](../../labs/week-09/session-17.md), [Buổi 18](../../labs/week-09/session-18.md) và [bài tập tuần 9](../../assignments/weekly/week-09.md).
-
-Đã chạy kiểm tra thật: toàn bộ test của Buổi 17 (unit, integration với `postgres:17-alpine` ở cổng riêng, report JUnit, tình huống A). Chưa kiểm chứng được vì cần tài khoản GitHub thật: hành vi của GitHub Actions, branch protection, GHCR và cache `type=gha`. Phần đó được viết theo đề bài và tài liệu của action; tình huống B của Buổi 17 và hai tình huống của Buổi 18 mô tả theo log điển hình.
+Phạm vi đã kiểm chứng: toàn bộ test của Buổi 17 (unit, integration với `postgres:17-alpine` ở cổng riêng, report JUnit, tình huống A). Chưa kiểm chứng vì cần tài khoản GitHub thật: hành vi của GitHub Actions, branch protection, GHCR và cache `type=gha`; phần đó viết theo tài liệu của action. Tình huống B của Buổi 17 và hai tình huống của Buổi 18 mô tả theo log điển hình.
 
 ### Buổi 17 – Automated Testing
 
@@ -74,7 +72,7 @@ Kết quả phải giống chạy cả file.
 - Mật khẩu `ci-only-password` chỉ sống trong service container tạm; môi trường thật dùng GitHub Secrets.
 - Artifact đặt tên `test-results-integration`, khác `test-results-unit`, vì upload-artifact v4 yêu cầu tên duy nhất trong một run.
 
-**Thử thách 1 – nhánh lỗi.** Lời giải của đề đúng và đã chạy: đọc `schema` một lần bằng top-level await, chạy lại schema ở đầu `beforeEach`, rồi thêm test:
+**Thử thách 1 – nhánh lỗi.** Lời giải đã chạy: đọc `schema` một lần bằng top-level await, chạy lại schema ở đầu `beforeEach`, rồi thêm test:
 
 ```js
 test("GET /api/members returns 500 when table is missing", async (t) => {
@@ -174,14 +172,14 @@ Nguyên nhân gốc: job chạy trên runner nên service chỉ truy cập đư�
 
 #### Lời giải L2
 
-Lời giải tham khảo của đề đúng. Phần học viên phải tự giải thích từng dòng:
+Lời giải tham khảo. Phần học viên phải tự giải thích từng dòng:
 
 - **Matrix (`strategy.matrix.include`)** cho hai phần tử `club-api` và `club-web`, mỗi phần tử có `name` và `context`; `${{ matrix.name }}` đi vào `images`, `${{ matrix.context }}` vào `context`. Một job, hai lần chạy song song.
 - **Tag theo git tag**: cần cả hai thứ, `tags: ["v*"]` trong `on.push` và dòng `type=ref,event=tag` trong `metadata-action`. Thiếu một trong hai thì không có tag `v1.0.0`. Khi đẩy tag, `type=sha` vẫn sinh thêm tag `sha-`, nên mỗi image có đủ hai tag như tiêu chí.
 - **Cache**: `cache-from: type=gha,scope=...` và `cache-to: type=gha,scope=...,mode=max`. `mode=max` lưu cả layer của stage trung gian `dependencies` (chứa `npm ci`), nên lần sau bỏ qua `npm ci` nếu `package-lock.json` không đổi. Mỗi image một `scope`, nếu không hai job matrix ghi đè cache của nhau.
 - **Pull request chỉ build**: `if: github.event_name != 'pull_request'` cho bước login và `push: ${{ github.event_name != 'pull_request' }}`. Token của PR từ fork không có quyền ghi.
 
-Workflow L2 đầy đủ (lời giải tham khảo, chuyển từ bài Buổi 18). Trên sự kiện `pull_request`, GITHUB_TOKEN của PR từ fork không có quyền ghi nên không push và không login; build vẫn chạy để bắt lỗi Dockerfile sớm.
+Workflow L2 đầy đủ (lời giải tham khảo). Trên sự kiện `pull_request`, GITHUB_TOKEN của PR từ fork không có quyền ghi nên không push và không login; build vẫn chạy để bắt lỗi Dockerfile sớm.
 
 ```yaml
 name: Publish images
@@ -238,7 +236,7 @@ jobs:
           cache-to: type=gha,scope=${{ matrix.name }},mode=max
 ```
 
-Gợi ý từng bậc cho học viên bị kẹt (chuyển từ bài Buổi 18): matrix dùng `strategy.matrix.include` với hai phần tử có `name` và `context`; tag theo git tag cần `tags: ["v*"]` trong `on.push` và `type=ref,event=tag`; cache cần hai dòng `type=gha` (với matrix thêm `scope` riêng cho từng image); PR không push bằng biểu thức điều kiện cho `push` và `if: github.event_name != 'pull_request'` cho login; đẩy git tag bằng `git tag v1.0.0` rồi `git push origin v1.0.0`.
+Gợi ý từng bậc cho học viên bị kẹt: matrix dùng `strategy.matrix.include` với hai phần tử có `name` và `context`; tag theo git tag cần `tags: ["v*"]` trong `on.push` và `type=ref,event=tag`; cache cần hai dòng `type=gha` (với matrix thêm `scope` riêng cho từng image); PR không push bằng biểu thức điều kiện cho `push` và `if: github.event_name != 'pull_request'` cho login; đẩy git tag bằng `git tag v1.0.0` rồi `git push origin v1.0.0`.
 
 Cách tìm bằng chứng cache trong log lần chạy thứ hai: dòng có `CACHED` hoặc `importing cache manifest from gha`. Học viên phải ghi thời gian hai run kèm link và trích đúng dòng đó; số liệu trùng tài liệu hay trùng bạn khác là dấu hiệu bất thường.
 

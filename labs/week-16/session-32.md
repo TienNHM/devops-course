@@ -258,7 +258,7 @@ StatefulSet tạo lại Pod, PVC giữ dữ liệu, backend tạm thời fail re
 ::::
 
 :::: details Gợi ý bậc 3: đề xuất cải tiến
-Đề xuất nên cụ thể: "thêm quét lỗ hổng image vào CI, fail khi có lỗ hổng mức Critical" tốt hơn "cải thiện bảo mật". Lời giải mẫu nằm ở [Walkthrough tuần 16](../../mentors/walkthroughs/week-16.md); chỉ mở sau khi nộp bài.
+Đề xuất nên cụ thể: "thêm quét lỗ hổng image vào CI, fail khi có lỗ hổng mức Critical" tốt hơn "cải thiện bảo mật". Lời giải mẫu nằm ở [trang tuần 16](README.md); chỉ mở sau khi nộp bài.
 ::::
 :::
 

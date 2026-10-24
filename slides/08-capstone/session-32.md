@@ -89,7 +89,7 @@ sequenceDiagram
 
 ---
 
-## Slide 8: Demo outline của mentor
+## Slide 8: Demo
 
 - Compose: ba service `running`, `postgres` healthy, dữ liệu còn sau `down` rồi `up`; `down -v` sẽ làm mất dữ liệu
 - Kubernetes: scale lên 3 rồi về 2, xóa Pod và quan sát Pod mới do ReplicaSet tạo

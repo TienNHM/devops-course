@@ -12,7 +12,7 @@
 | 4. Mở workload bằng Service và DNS | [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md), Phần 1-3 | 1 giờ | `get endpoints`, `describe svc`, `nslookup` ba tên, `wget`, `curl` |
 | 5. Điều tra Service không có Endpoints | [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md), mục Phá lỗi nâng cao | 1 giờ | `get endpoints` ba thời điểm, so sánh selector và nhãn; mục trong `report.md` |
 
-Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo barem trong [Chấm điểm tuần 12](../../mentors/grading/week-12.md); bảng điểm ngắn nằm bên dưới.
+Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo barem; bảng điểm ngắn nằm bên dưới.
 
 ## Bối cảnh
 

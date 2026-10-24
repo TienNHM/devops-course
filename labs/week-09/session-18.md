@@ -300,7 +300,7 @@ Nộp vào `lab-18/` trong repo cá nhân theo [mẫu lab](../../templates/lab-t
 Buổi tiếp theo: [Buổi 19 – CD & Deployment Strategies](../week-10/session-19.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Trang riêng: [Buổi 18 – Thử thách thêm](session-18-challenge.md). Gồm publish thêm `club-web` bằng matrix, tag theo git tag `v*`, cache `type=gha` và PR chỉ build; có gợi ý từng bậc (tự thử 15 phút trước khi mở). Đối chiếu đáp án sau khi nộp bài: [Walkthrough tuần 9](../../mentors/walkthroughs/week-09.md).
+Trang riêng: [Buổi 18 – Thử thách thêm](session-18-challenge.md). Gồm publish thêm `club-web` bằng matrix, tag theo git tag `v*`, cache `type=gha` và PR chỉ build; có gợi ý từng bậc (tự thử 15 phút trước khi mở). Đối chiếu đáp án sau khi nộp bài: [trang tuần 9](README.md).
 :::
 
 ::: details Phá lỗi nâng cao

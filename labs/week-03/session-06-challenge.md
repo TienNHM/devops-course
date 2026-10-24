@@ -9,7 +9,7 @@ Trang này không bắt buộc. Hoàn thành [Làm lab của Buổi 06](session-
 ## Thử thách thêm (L2) {#thu-thach}
 
 ::: warning Tự thử trước khi mở gợi ý
-Chọn tối thiểu một thử thách. Tự thử 15 phút trước khi mở gợi ý. Lời giải đầy đủ nằm ở [Đối chiếu đáp án](../../mentors/walkthroughs/week-03.md), chỉ mở sau khi nộp bài.
+Chọn tối thiểu một thử thách. Tự thử 15 phút trước khi mở gợi ý. Lời giải đầy đủ nằm ở [trang tuần 3](README.md), chỉ mở sau khi nộp bài.
 :::
 
 **Thử thách 1: tự tạo conflict ở file thứ hai và giải thích.** Tạo conflict trong `docs/team.md` (hai người sửa cùng dòng) và resolve mà không mất dòng của ai. Viết vào `report.md` giải thích: vì sao Git báo conflict, bạn chọn kết quả nào và vì sao. Hoàn thành khi PR merged, lịch sử có merge commit, không còn conflict marker trong repo.

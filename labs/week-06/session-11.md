@@ -301,7 +301,7 @@ docker network rm lab-net club-net lab-net-x net-a net-b
 Buổi tiếp theo: [Buổi 12 – Persistent Storage](session-12.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Thử thách A (script chứng minh isolation tự chạy và tự dọn) và Thử thách B (Compose hai network) nằm ở [Thử thách thêm buổi 11](session-11-challenge.md). Mỗi thử thách có gợi ý từng bậc; tự thử 15 phút trước khi mở gợi ý. Đáp án đối chiếu (mở sau khi nộp bài): [Walkthrough tuần 6](../../mentors/walkthroughs/week-06.md).
+Thử thách A (script chứng minh isolation tự chạy và tự dọn) và Thử thách B (Compose hai network) nằm ở [Thử thách thêm buổi 11](session-11-challenge.md). Mỗi thử thách có gợi ý từng bậc; tự thử 15 phút trước khi mở gợi ý. Đáp án đối chiếu (mở sau khi nộp bài): [trang tuần 6](README.md).
 :::
 
 ::: details Phá lỗi nâng cao

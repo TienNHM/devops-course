@@ -312,7 +312,7 @@ cd ~/devops-labs/lab-03/source && echo "$(find club-site | wc -l) $(wc -l < mini
 
 ## Nộp bài
 
-Nộp vào thư mục `lab-03/` trong repo `devops-labs` theo [mẫu nộp lab](../../templates/lab-template.md). Chưa dùng được Git thì upload trên web GitHub hoặc làm theo mục "Git trong 10 phút" của [Bắt đầu từ đây](../../curriculum/getting-started.md); push và Pull Request thành thạo từ [Buổi 06 – Git & GitHub Workflow](../week-03/session-06.md). Chi tiết nhiệm vụ và bảng điểm: [Bài tập tuần 2](../../assignments/weekly/week-02.md).
+Nộp vào thư mục `lab-03/` trong repo `devops-labs` theo [mẫu nộp lab](../../templates/lab-template.md). Chưa dùng được Git thì upload trên web GitHub hoặc làm theo mục [Git trong 10 phút](../../curriculum/how-to-learn.md#git-10-phut); push và Pull Request thành thạo từ [Buổi 06 – Git & GitHub Workflow](../week-03/session-06.md). Chi tiết nhiệm vụ và bảng điểm: [Bài tập tuần 2](../../assignments/weekly/week-02.md).
 
 - [ ] `README.md` trả lời đủ 7 câu (vấn đề, kiến thức, các bước, kết quả, lỗi đã gặp, cách khắc phục, cải thiện) và ghi level đã làm (L1/L2).
 - [ ] `source/` có cây `club-site`, `mini-access.log` (và `log-report.sh` nếu làm L2); `evidence/command-output.txt` có lệnh và output của Phần 1 đến 3; `screenshots/` có ảnh terminal (ảnh không thay output text).

@@ -28,7 +28,7 @@ Tuần 9/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 17 và 18
 - [ ] Có repo cá nhân `devops-labs` ở chế độ **PUBLIC** (branch protection và GHCR miễn phí đều cần). Xem [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md).
 - [ ] WSL2 Ubuntu với Node.js 22, Git và Docker Desktop đang chạy; làm việc trong `~/devops-labs`, không dùng `/mnt/c`. Xem [Hướng dẫn cài môi trường](../../resources/setup-guide.md).
 - [ ] Repo giáo trình đã clone ở `~/devops-course`.
-- [ ] Đã quen cách mở pull request (xem mục "Git trong 10 phút" ở [Bắt đầu từ đây](../../curriculum/getting-started.md)).
+- [ ] Đã quen cách mở pull request (xem mục [Git trong 10 phút](../../curriculum/how-to-learn.md#git-10-phut)).
 
 ::: warning Hai điều hay làm kẹt trong tuần này
 Workflow đẩy image cần quyền `packages: write` ở cấp job, và package mới tạo trên GHCR mặc định private nên bạn phải đổi sang Public trước khi pull. Chi tiết ở Buổi 18.

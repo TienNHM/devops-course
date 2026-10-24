@@ -7,7 +7,7 @@ Tuần 9/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 17/32
 > **Tóm tắt:** Phần tùy chọn của Buổi 17: integration test với PostgreSQL thật, service container trong GitHub Actions, ba thử thách tự làm và hai tình huống phá lỗi nâng cao.
 
 ::: tip Trang này dành cho ai
-Chỉ làm sau khi bạn đã hoàn thành L1 của [Buổi 17 – Automated Testing](session-17.md). Mất khoảng 45 đến 60 phút, làm ở nhà. Cần Docker Desktop đang chạy. Đối chiếu đáp án sau khi nộp bài: [Walkthrough tuần 9](../../mentors/walkthroughs/week-09.md).
+Chỉ làm sau khi bạn đã hoàn thành L1 của [Buổi 17 – Automated Testing](session-17.md). Mất khoảng 45 đến 60 phút, làm ở nhà. Cần Docker Desktop đang chạy. Đối chiếu đáp án sau khi nộp bài: [trang tuần 9](README.md).
 :::
 
 ## Tìm hiểu thêm {#tim-hieu-them}

@@ -9,7 +9,7 @@ Trang này không bắt buộc. Hoàn thành [Làm lab của Buổi 05](session-
 ## Thử thách thêm (L2) {#thu-thach}
 
 ::: warning Tự thử trước khi mở gợi ý
-Chọn tối thiểu hai thử thách. Tự thử 15 phút trước khi mở gợi ý. Lời giải đầy đủ nằm ở [Đối chiếu đáp án](../../mentors/walkthroughs/week-03.md), chỉ mở sau khi nộp bài.
+Chọn tối thiểu hai thử thách. Tự thử 15 phút trước khi mở gợi ý. Lời giải đầy đủ nằm ở [trang tuần 3](README.md), chỉ mở sau khi nộp bài.
 :::
 
 **Thử thách A – Mô tả đường đi của request.** Viết trong `report.md` một đoạn 8 đến 12 dòng giải thích điều gì xảy ra từ lúc gõ `https://example.com/` tới lúc thấy trang, mỗi bước ghi lệnh nào trong bài chứng minh được. Hoàn thành khi có đủ DNS, TCP, TLS, HTTP và ít nhất ba lệnh làm chứng.

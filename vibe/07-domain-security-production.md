@@ -5,8 +5,8 @@
 ::: tip Bạn làm gì
 - **Kết quả:** web có địa chỉ riêng với HTTPS, secret nằm đúng chỗ, và một checklist bảo mật bạn đã đi hết trước khi gửi link cho người lạ.
 - **Thời gian:** 60 đến 90 phút (phần DNS có thể phải chờ vài phút đến vài giờ để lan truyền).
-- **Cần gì trước:** một sản phẩm đã có link công khai (làm xong [Dự án nhỏ](09-mini-project.md) là vừa) và tài khoản GitHub, nền tảng hosting.
-- **Module trước:** [Dự án nhỏ](09-mini-project.md).
+- **Cần gì trước:** một sản phẩm đã có link công khai (làm xong [02 Hosting tĩnh](02-static-hosting.md) là đủ; [09 Dự án mini](09-mini-project.md) không bắt buộc) và tài khoản GitHub, nền tảng hosting.
+- **Module trước:** [02 Hosting tĩnh](02-static-hosting.md) (Chặng 1). Làm được ngay sau Chặng 1, không cần Chặng 2.
 :::
 
 ## Bạn sẽ làm được gì

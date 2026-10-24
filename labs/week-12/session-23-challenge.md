@@ -7,7 +7,7 @@ Tuần 12/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 23/32
 > **Tóm tắt:** Trang phụ của buổi 23: kiến thức tìm hiểu thêm về kubectl, phá lỗi ImagePullBackOff, ba thử thách L2, cluster 3 node và câu hỏi tình huống. Tất cả đều tùy chọn, làm sau khi xong lab bắt buộc.
 
 ::: tip Trang này dành cho ai
-Bạn đã xong checklist L1 của [Buổi 23 – kubectl Fundamentals](session-23.md) và còn thời gian, hoặc bạn cần phần Phá lỗi cho bài tập tuần. Phần Phá lỗi nên làm sớm; các thử thách L2 làm ở nhà. Lời giải đối chiếu nằm trong [Walkthrough tuần 12](../../mentors/walkthroughs/week-12.md), chỉ mở sau khi nộp bài.
+Bạn đã xong checklist L1 của [Buổi 23 – kubectl Fundamentals](session-23.md) và còn thời gian, hoặc bạn cần phần Phá lỗi cho bài tập tuần. Phần Phá lỗi nên làm sớm; các thử thách L2 làm ở nhà. Lời giải đối chiếu nằm trong [trang tuần 12](README.md), chỉ mở sau khi nộp bài.
 :::
 
 ## Tìm hiểu thêm {#tim-hieu-them}

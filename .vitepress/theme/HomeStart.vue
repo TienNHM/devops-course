@@ -37,11 +37,11 @@ function reset() {
       <h2>Bạn là ai?</h2>
       <div class="who">
         <a class="who-card" :href="withBase('/curriculum/getting-started')">
-          <strong>Mình mới học DevOps</strong>
+          <strong>Mình muốn học DevOps bài bản</strong>
           <span>Bắt đầu từ trang hướng dẫn: cần gì, học thế nào, làm gì đầu tiên.</span>
         </a>
         <a class="who-card" :href="withBase('/vibe/')">
-          <strong>Mình đã biết lập trình / chỉ muốn đưa sản phẩm lên mạng nhanh</strong>
+          <strong>Mình chưa biết code, chỉ muốn có link nhanh (Vibe Deploy)</strong>
           <span>Đi đường tắt: đưa ứng dụng lên mạng trước, học sâu sau.</span>
         </a>
         <a class="who-card" :href="withBase('/mentors/')">
@@ -49,6 +49,7 @@ function reset() {
           <span>Kịch bản buổi dạy, barem chấm và đáp án tham khảo.</span>
         </a>
       </div>
+      <p class="who-note">Đã biết lập trình? Cứ học theo khóa và làm thêm mức L2 ở mỗi bài.</p>
     </section>
 
     <section class="block">
@@ -58,7 +59,7 @@ function reset() {
           <span class="n">1</span>
           <div>
             <strong>Cài môi trường</strong>
-            <p><a :href="withBase('/resources/setup-guide')">Hướng dẫn cài đặt</a>, làm một lần, khoảng 45 phút.</p>
+            <p>Làm <a :href="withBase('/curriculum/getting-started')">5 việc trước Buổi 01</a>, một lần, khoảng 30 phút.</p>
           </div>
         </li>
         <li>
@@ -127,6 +128,7 @@ a:hover { text-decoration: underline; }
 .who-card strong { font-size: 17px; line-height: 1.4; color: var(--vp-c-brand-1); }
 .who-card span { font-size: 14px; line-height: 1.6; color: var(--vp-c-text-2); }
 
+.who-note { margin: 16px 0 0; font-size: 14px; color: var(--vp-c-text-2); }
 .steps { list-style: none; margin: 0 0 20px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .steps li { display: flex; gap: 12px; margin: 0; align-items: flex-start; }
 .n {

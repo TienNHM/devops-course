@@ -7,7 +7,7 @@ Tuần 10/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 20/32 (tùy ch�
 > **Tóm tắt:** Phần nâng cao của buổi 20: quét có lọc, quét cấu hình, sinh SBOM, pin action theo SHA, workflow security.yml và bài phá lỗi security gate.
 
 ::: tip Chỉ làm khi đã xong L1
-Trang này không bắt buộc để qua buổi. Làm khi bạn đã hoàn thành checklist L1 của [Buổi 20](session-20.md) (vẫn dùng hàm `trivy` và file `club-api.tar` đã tạo ở bước Chuẩn bị). Đối chiếu đáp án mở sau khi nộp bài ở [Walkthrough tuần 10](../../mentors/walkthroughs/week-10.md). Thời gian ước lượng: Phần A 15 phút, Phần B 10 phút, Phần C 10 phút.
+Trang này không bắt buộc để qua buổi. Làm khi bạn đã hoàn thành checklist L1 của [Buổi 20](session-20.md) (vẫn dùng hàm `trivy` và file `club-api.tar` đã tạo ở bước Chuẩn bị). Đối chiếu đáp án mở sau khi nộp bài ở [trang tuần 10](README.md). Thời gian ước lượng: Phần A 15 phút, Phần B 10 phút, Phần C 10 phút.
 :::
 
 ## Phần A. Quét sâu hơn (15 phút)

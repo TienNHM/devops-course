@@ -297,7 +297,7 @@ Nộp vào `lab-20/` trong repo cá nhân theo [mẫu bài lab](../../templates/
 Buổi tiếp theo: [Buổi 21 – Kubernetes Introduction](../week-11/session-21.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-SBOM, quét với `--ignore-unfixed`, `trivy config`, pin action theo SHA và workflow `security.yml` (dependency review, quét image, SBOM giữ 30 ngày) nằm ở [Buổi 20 – Phần nâng cao](session-20-challenge.md), kèm gợi ý từng bậc. Tự thử 15 phút trước khi mở gợi ý. Đáp án đối chiếu mở sau khi nộp bài ở [Walkthrough tuần 10](../../mentors/walkthroughs/week-10.md).
+SBOM, quét với `--ignore-unfixed`, `trivy config`, pin action theo SHA và workflow `security.yml` (dependency review, quét image, SBOM giữ 30 ngày) nằm ở [Buổi 20 – Phần nâng cao](session-20-challenge.md), kèm gợi ý từng bậc. Tự thử 15 phút trước khi mở gợi ý. Đáp án đối chiếu mở sau khi nộp bài ở [trang tuần 10](README.md).
 :::
 
 ::: details Phá lỗi nâng cao

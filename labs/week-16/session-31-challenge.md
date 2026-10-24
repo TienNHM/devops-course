@@ -68,7 +68,7 @@ Một số ý tưởng đơn giản và an toàn: đổi `DB_HOST` trong ConfigM
 Mỗi ý có cách hoàn tác bằng `kubectl rollout undo` hoặc `kubectl apply -f` lại manifest gốc. Với trường mà manifest gốc không có, như `nodeSelector`, ưu tiên `rollout undo`.
 :::
 
-Lời giải mẫu (ví dụ đổi readiness path và các kịch bản khác) nằm ở [Walkthrough tuần 16](../../mentors/walkthroughs/week-16.md); chỉ mở sau khi bạn đã nộp bài.
+Lời giải mẫu (ví dụ đổi readiness path và các kịch bản khác) nằm ở [trang tuần 16](README.md); chỉ mở sau khi bạn đã nộp bài.
 
 ## Phá lỗi nâng cao: rollout treo mãi
 

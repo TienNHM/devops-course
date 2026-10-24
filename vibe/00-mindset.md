@@ -71,11 +71,11 @@ Bài này là bài vẽ bản đồ, làm trên giấy hoặc trong ghi chú.
    - Bạn sẽ thấy: một câu rõ ràng, ví dụ "Trang cho người lạ biết CLB làm gì và để lại email".
 2. Gạch dưới những phần cần: chỉ hiển thị thông tin (tĩnh), có lưu dữ liệu (cần database), có đăng nhập (cần xác thực).
    - Bạn sẽ thấy: danh sách 1 đến 3 mảnh ghép. Càng ít càng tốt.
-3. Đối chiếu bảng sau để biết nên đọc module nào tiếp.
+3. Đối chiếu bảng sau để biết sản phẩm của bạn cần những bài nào **về sau**. Dù kết quả là gì, bước tiếp theo của bạn vẫn là bài 01, rồi bài 02 (Chặng 1). Đừng nhảy sang bài khác trước.
 
-| Sản phẩm của bạn | Đi tới |
+| Sản phẩm của bạn | Sau Chặng 1 (00, 01, 02) cần thêm |
 | --- | --- |
-| Chỉ hiển thị thông tin | [02 Hosting tĩnh](02-static-hosting.md) |
+| Chỉ hiển thị thông tin | Không cần gì thêm: dừng ở Chặng 1 là đủ |
 | Cần gọi AI hoặc gửi email bằng khóa bí mật | [03 Fullstack serverless](03-fullstack-serverless.md) |
 | Cần lưu dữ liệu và đăng nhập | [04 Supabase](04-supabase.md) hoặc [05 Firebase](05-firebase.md) |
 
@@ -91,7 +91,7 @@ Bài này là bài vẽ bản đồ, làm trên giấy hoặc trong ghi chú.
 | Agent sửa một lỗi thì sinh ra ba lỗi khác | Yêu cầu quá rộng, nhiều thay đổi cùng lúc | Quay lại commit gần nhất, giao lại từng việc nhỏ |
 | Agent đề nghị "tắt kiểm tra cho chạy được" | Nó chọn đường tắt | Từ chối, yêu cầu tìm nguyên nhân gốc. Xem [Xử lý sự cố](08-troubleshooting.md) |
 | Lỡ dán khóa vào chat hoặc commit lên GitHub | Thao tác nhầm | Coi như khóa đã lộ: vào dịch vụ đó tạo khóa mới (rotate), vô hiệu khóa cũ, rồi mới dọn repo |
-| Không biết bắt đầu từ đâu | Quá nhiều lựa chọn công cụ | Đi theo đường siêu tốc ở [trang chủ track](index.md) |
+| Không biết bắt đầu từ đâu | Quá nhiều lựa chọn công cụ | Đi theo Chặng 1 ở [trang chủ track](index.md) |
 
 ## Tự kiểm tra
 
@@ -120,12 +120,14 @@ Bài này là bài vẽ bản đồ, làm trên giấy hoặc trong ghi chú.
 
 ## Tiếp theo
 
-- Đưa code vào kho an toàn: [01 Git và GitHub](01-git-github.md).
+Bước kế: [01 Git và GitHub](01-git-github.md), đưa code lên kho an toàn.
+
+::: details Tra cứu thêm
 - Chọn nơi deploy: [So sánh nền tảng](platforms.md).
 - Prompt mẫu: [Thư viện prompt](prompt-library.md).
-- Đã làm sản phẩm bằng Lovable, Bolt, v0 hay Replit: sau bài 01 có thể nhảy sang [10 App-builder](10-app-builders.md).
-- Toàn bộ lộ trình 3 chặng: [trang chủ track](index.md).
-
+- Đã làm sản phẩm bằng Lovable, Bolt, v0 hay Replit: sau bài 01 có thể đọc [10 App-builder](10-app-builders.md).
+- Toàn bộ lộ trình: [trang chủ track](index.md).
+:::
 
 ::: details Mở rộng (đọc sau, không bắt buộc): công cụ, vòng lặp với AI, cách giao việc, review diff
 

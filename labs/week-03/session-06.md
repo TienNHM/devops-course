@@ -31,7 +31,7 @@ Từ mới trong buổi (xem [Thuật ngữ](../../resources/glossary.md)):
 - **`.gitignore`**: danh sách file Git bỏ qua, như `.env`.
 - **Branch protection**: quy tắc GitHub bắt buộc PR và review trước khi vào `main`.
 
-Buổi 01 và trang [Bắt đầu từ đây](../../curriculum/getting-started.md) (mục "Git trong 10 phút") chỉ cho bản rút gọn để nộp bài; buổi này là nơi giải thích đầy đủ. Trên lớp, mentor demo trước; tự học thì làm thẳng phần [Làm lab](#hands-on-lab).
+Buổi 01 và trang [Git trong 10 phút](../../curriculum/how-to-learn.md#git-10-phut) chỉ cho bản rút gọn để nộp bài; buổi này là nơi giải thích đầy đủ. Trên lớp, mentor demo trước; tự học thì làm thẳng phần [Làm lab](#hands-on-lab).
 
 ## Vấn đề thực tế {#doc}
 

@@ -5,12 +5,12 @@ Trang này hướng dẫn mọi việc liên quan GitHub: tạo tài khoản, t�
 > **Tóm tắt:** Tạo tài khoản GitHub và bật 2FA, tạo repo devops-labs ở chế độ Public, cấu hình git, đăng nhập bằng SSH key hoặc gh, rồi clone repo giáo trình vào ~/devops-course.
 
 ::: tip Cần gì và khi nào
-- **Buổi 01**: chỉ cần mục 1 (tài khoản) và mục 2 (repo `devops-labs`). Nộp bài bằng cách upload trên web, chưa cần terminal.
+- **Trước Buổi 01** (cả phần chuẩn bị khoảng 30 phút, mục 1 và 2 chiếm khoảng 8 phút): mục 1 (tài khoản) và mục 2 (repo `devops-labs`). Nộp bài bằng cách upload trên web, chưa cần terminal.
 - **Buổi 02**: làm mục 3 (cấu hình git), mục 4 (đăng nhập) và mục 5 (clone repo giáo trình) trong Ubuntu.
 - **Buổi 06 trở đi**: push và Pull Request thành thạo.
 - **Buổi 18**: mục 6 (Actions, Packages, GHCR).
 
-Chưa quen gõ lệnh? Đọc [Terminal 101](terminal-101.md) trước. Cần cài Git: xem [Hướng dẫn cài đặt môi trường](setup-guide.md#can-ngay-tuan-1).
+Chưa quen gõ lệnh? Đọc [Terminal 101](terminal-101.md) trước (khoảng 10 phút cho phần cần ở buổi 01). Cần cài Git: xem [Hướng dẫn cài đặt môi trường](setup-guide.md#can-ngay-tuan-1).
 :::
 
 ## 1. Tạo tài khoản GitHub
@@ -36,11 +36,11 @@ Khóa học dùng GitHub Pages và GitHub Container Registry (GHCR) miễn phí,
 
 **Kiểm tra bạn đúng khi:** địa chỉ `https://github.com/TEN-GITHUB/devops-labs` mở được cả khi bạn đăng xuất (hoặc mở bằng cửa sổ ẩn danh), và có nhãn **Public** cạnh tên repo.
 
-Buổi 01, nộp bài bằng nút **Add file > Upload files** trên trang repo: kéo thả thư mục `lab-01` rồi bấm **Commit changes**. Muốn nộp bằng dòng lệnh: xem mục "Git trong 10 phút" của [Bắt đầu từ đây](../curriculum/getting-started.md).
+Buổi 01, nộp bài bằng nút **Add file > Upload files** trên trang repo: kéo thả thư mục `lab-01` rồi bấm **Commit changes**. Muốn nộp bằng dòng lệnh: xem mục [Git trong 10 phút](../curriculum/how-to-learn.md#git-10-phut).
 
 ## 3. Cấu hình git trên máy
 
-Làm trong Ubuntu (hoặc PowerShell nếu bạn muốn dùng git bên Windows). Thay tên và email bằng của bạn, dùng đúng email đã đăng ký GitHub (hoặc email `noreply` trong **Settings > Emails**):
+Làm trong Git Bash (nếu muốn cấu hình sớm, trước khi cài WSL) hoặc trong Ubuntu (từ Buổi 02; Git trong Ubuntu có cấu hình riêng, nên chạy lại các lệnh này ở đó). Thay tên và email bằng của bạn, dùng đúng email đã đăng ký GitHub (hoặc email `noreply` trong **Settings > Emails**):
 
 ```bash
 git config --global user.name "Họ Tên"
@@ -196,5 +196,5 @@ Chưa cần làm ở tuần 1. Khi tới phần CI/CD:
 ## Đi tiếp
 
 - Quay lại [Hướng dẫn cài đặt môi trường](setup-guide.md).
-- Mẫu hỏi mentor khi kẹt và mục "Git trong 10 phút": [Bắt đầu từ đây](../curriculum/getting-started.md).
+- Mẫu hỏi khi kẹt và mục "Git trong 10 phút": [Cách học khóa này](../curriculum/how-to-learn.md).
 - Lỗi khác về Git và SSH: [Xử lý sự cố cài đặt](troubleshooting-setup.md#git).

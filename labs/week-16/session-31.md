@@ -328,7 +328,7 @@ Nộp vào thư mục `lab-31/` trong repo `devops-labs`, theo [mẫu lab](../..
 Buổi tiếp theo: [Buổi 32 – Final Demo & Review](session-32.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Thiết kế một failure injection mới cho nhóm bên cạnh để họ chẩn đoán mà không biết trước nguyên nhân: chỉ gây một lỗi, hoàn tác bằng một đến hai lệnh, chỉ chạy trên cluster của nhóm nhận, nhóm nhận nộp báo cáo 5 mục trong 15 phút. Tiêu chí đầy đủ và gợi ý từng bậc ở [Buổi 31 – Thử thách nâng cao](session-31-challenge.md). Tự thử 15 phút trước khi mở gợi ý. Đối chiếu sau khi nộp bài: [Walkthrough tuần 16](../../mentors/walkthroughs/week-16.md).
+Thiết kế một failure injection mới cho nhóm bên cạnh để họ chẩn đoán mà không biết trước nguyên nhân: chỉ gây một lỗi, hoàn tác bằng một đến hai lệnh, chỉ chạy trên cluster của nhóm nhận, nhóm nhận nộp báo cáo 5 mục trong 15 phút. Tiêu chí đầy đủ và gợi ý từng bậc ở [Buổi 31 – Thử thách nâng cao](session-31-challenge.md). Tự thử 15 phút trước khi mở gợi ý. Đối chiếu sau khi nộp bài: [trang tuần 16](README.md).
 :::
 
 ::: details Phá lỗi nâng cao

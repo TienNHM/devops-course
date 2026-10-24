@@ -41,7 +41,7 @@ Kết quả mong đợi: 3 node `Ready` (`club-3-control-plane`, `club-3-worker`
 **Thử thách 2. Chứng minh cluster khỏe chỉ bằng kubectl.** Không dùng `docker`, cho thấy phiên bản Kubernetes và API Server khỏe. Tiêu chí: output hai lệnh và giải thích mỗi lệnh đọc từ thành phần nào.
 
 ::: details Gợi ý thử thách 2
-Chỉ cần hai lệnh: `kubectl version` (phần Server Version) và `kubectl get --raw '/readyz?verbose'`. Trong output thứ hai hãy tìm dòng nói về etcd. Cả hai đều là yêu cầu HTTPS tới API Server. Đối chiếu cách đọc kết quả với [Walkthrough tuần 11](../../mentors/walkthroughs/week-11.md) sau khi nộp bài.
+Chỉ cần hai lệnh: `kubectl version` (phần Server Version) và `kubectl get --raw '/readyz?verbose'`. Trong output thứ hai hãy tìm dòng nói về etcd. Cả hai đều là yêu cầu HTTPS tới API Server. Đối chiếu cách đọc kết quả với [trang tuần 11](README.md) sau khi nộp bài.
 :::
 
 **Thử thách 3. Đối chiếu cấu hình.** So `starter-project/k8s/kind-config.yaml` với file 3 node của bạn, giải thích `extraPortMappings` và nhãn `ingress-ready=true` trong 3-5 câu ở `report.md`.

@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Trang phụ của Buổi 14: giới hạn tài nguyên và log rotation, secret cho Postgres, backup và restore bằng pg_dump, cùng bốn thử thách L2 và bảng lỗi riêng.
 
-Quay lại bài chính: [Buổi 14 – Production-minded Compose](session-14.md). Trang này không bắt buộc; chỉ làm khi đã xong checklist L1. Lời giải mẫu nằm ở [Đối chiếu đáp án tuần 7](../../mentors/walkthroughs/week-07.md) (mở sau khi nộp bài). Làm trong `~/devops-labs/lab-14/source`, trên nền `compose.yaml` đã có healthcheck của Buổi 14.
+Quay lại bài chính: [Buổi 14 – Production-minded Compose](session-14.md). Trang này không bắt buộc; chỉ làm khi đã xong checklist L1. Lời giải mẫu nằm ở [trang tuần 7](README.md) (mở sau khi nộp bài). Làm trong `~/devops-labs/lab-14/source`, trên nền `compose.yaml` đã có healthcheck của Buổi 14.
 
 ## Kiến thức nền
 

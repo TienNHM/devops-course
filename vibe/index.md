@@ -7,7 +7,7 @@ Bạn nhờ AI (Claude Code, Cursor, Lovable, Bolt...) viết xong một trang w
 Track này **độc lập** với 16 tuần DevOps của khóa: bạn không cần học Docker hay Kubernetes trước, và không cần làm các tuần của khóa chính. Khi sản phẩm lớn lên và cần thêm, phần cuối trang này chỉ bạn nên quay lại học gì.
 
 ::: tip Bắt đầu ở đây
-**Bắt đầu: đọc [00 Tư duy](00-mindset.md)** (10 phút). Rồi đi theo lộ trình 3 chặng ở dưới, từ trên xuống, không cần chọn đường. Thuật ngữ lạ thì tra [Thuật ngữ](../resources/glossary.md).
+**Đường tắt 1 buổi chiều (khoảng 3 đến 4 giờ): chỉ làm Chặng 1.** Bạn kết thúc với một link công khai mở được từ điện thoại. Bắt đầu bằng [00 Tư duy](00-mindset.md) (10 phút), rồi 01, rồi 02. Chưa có file web nào để đưa lên? Tải trang mẫu [vibe-static-site.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-static-site.zip), hoặc nhờ một chatbot AI (ví dụ Claude, ChatGPT) viết cho bạn một file `index.html` đơn giản. Chặng 2 và 3 là tùy chọn, làm vào buổi khác khi bạn thật sự cần. Thuật ngữ lạ thì tra [Thuật ngữ](../resources/glossary.md).
 :::
 
 ## Bạn sẽ làm được gì
@@ -26,7 +26,7 @@ Sau track này, bạn có thể:
 | --- | --- |
 | Sinh viên chưa từng code, muốn làm sản phẩm bằng AI | Không cần nền tảng, mọi khái niệm giải thích bằng ví dụ đời thường |
 | Người đã dùng Lovable, Bolt, v0, Replit và muốn "mang sản phẩm ra khỏi nền tảng" | Có phần repo, domain, export, tránh phụ thuộc một nơi |
-| Thành viên CLB cần đưa landing page, form đăng ký, trang sự kiện lên mạng | Có dự án mini hoàn chỉnh ở [09 Dự án mini](09-mini-project.md) (Chặng 3) |
+| Thành viên CLB cần đưa landing page, form đăng ký, trang sự kiện lên mạng | Có dự án tổng hợp ở [09 Dự án mini](09-mini-project.md) (tùy chọn, sau Chặng 1 và 2) |
 | Người đang học DevOps và muốn có link demo nhanh | Làm Chặng 1 là có link; cuối trang có cầu nối quay lại khóa chính |
 
 ## Điều kiện cần (gần như bằng 0)
@@ -36,41 +36,50 @@ Sau track này, bạn có thể:
 - Biết gõ tiếng Việt vào khung chat. Có AI agent thì tốt, chưa có vẫn học được.
 - Không cần thẻ ngân hàng. Mọi ví dụ ưu tiên gói miễn phí, bạn tự quyết định nếu muốn trả tiền.
 
-## Lộ trình tuyến tính: 3 chặng
+## Lộ trình: 1 chặng bắt buộc, 2 chặng tùy chọn
 
-Đi theo thứ tự, mỗi chặng kết thúc bằng một sản phẩm nhìn thấy được. Tick vào ô khi xong từng bước.
+Mỗi chặng kết thúc bằng một sản phẩm nhìn thấy được. Chỉ **Chặng 1** là đường chính. Chặng 2 và 3 không bắt buộc: đi tiếp khi bạn cần database, đăng nhập hoặc một dự án thật. Tick vào ô khi xong từng bước.
 
 ```mermaid
 flowchart LR
-    A["Chặng 1: Có link công khai"] --> B["Chặng 2: Thêm database và đăng nhập"]
-    B --> C["Chặng 3: Hoàn thiện dự án thật"]
-    C --> D["Cầu nối sang khóa DevOps"]
+    A["Chặng 1: Có link công khai (đường tắt 1 buổi chiều)"] -.->|"tùy chọn, khi cần database"| B["Chặng 2: Database và đăng nhập"]
+    A -.->|"tùy chọn, khi mở cho người lạ"| C["Chặng 3: Tên miền, bảo mật, ra mắt"]
+    B -.-> C
+    C -.->|"tùy chọn"| P["Dự án tổng hợp 09"]
 ```
 
-### Chặng 1. Có link công khai (khoảng 3 giờ)
+| Chặng | Trạng thái | Thời lượng | Làm khi nào |
+| --- | --- | --- | --- |
+| 1. Có link công khai | **Bắt buộc**, đủ cho một buổi chiều | 3 đến 4 giờ | Luôn luôn |
+| 2. Database và đăng nhập | Tùy chọn | khoảng 2 giờ | Sản phẩm cần lưu dữ liệu hoặc có tài khoản người dùng |
+| 3. Tên miền, bảo mật, ra mắt | Tùy chọn | khoảng 3 giờ | Bạn muốn domain riêng và gửi link cho người lạ |
 
-Kết quả: trang web của bạn có đường link mở được từ điện thoại của bạn bè. Chưa có database, chưa có đăng nhập.
+### Chặng 1. Có link công khai (đường tắt 1 buổi chiều, khoảng 3 đến 4 giờ)
+
+Kết quả: trang web của bạn có đường link mở được từ điện thoại của bạn bè. Chưa có database, chưa có đăng nhập. Không cần biết code, không cần cài Node.
 
 - [ ] [00 Tư duy](00-mindset.md): hiểu deploy là gì, thuộc 7 quy tắc sống còn (10 phút đọc).
 - [ ] [01 Git và GitHub](01-git-github.md): đưa code lên GitHub bằng GitHub Desktop, không lộ secret.
-- [ ] [02 Hosting tĩnh](02-static-hosting.md): deploy lên GitHub Pages (chỉ cần một nền tảng), có link công khai.
+- [ ] [02 Hosting tĩnh](02-static-hosting.md): deploy lên GitHub Pages (chỉ cần một nền tảng), có link công khai. Bài này có link tải sẵn trang mẫu nếu bạn chưa có file nào.
 
-### Chặng 2. Thêm database và đăng nhập (khoảng 2 giờ)
+Xong ba bài này là bạn đã đạt mục tiêu của buổi chiều. Phần còn lại dưới đây dùng khi cần.
 
-Kết quả: sản phẩm lưu được dữ liệu và có đăng nhập, bật đúng lớp bảo vệ. Chọn **một** trong hai.
+### Chặng 2 (tùy chọn). Thêm database và đăng nhập (khoảng 2 giờ)
+
+Làm khi sản phẩm cần lưu dữ liệu (form đăng ký, danh sách) hoặc có đăng nhập. Kết quả: sản phẩm lưu được dữ liệu, bật đúng lớp bảo vệ. Chọn **một** trong hai.
 
 - [ ] [04 Supabase](04-supabase.md): database SQL, đăng nhập, RLS (khuyến nghị cho người mới).
 - [ ] hoặc [05 Firebase](05-firebase.md): Firestore, Auth, Rules.
 
-Cần gọi API có khóa bí mật (AI, email) từ phía server thì đọc thêm [03 Fullstack serverless](03-fullstack-serverless.md) trước khi làm Chặng 2.
+Cần gọi API có khóa bí mật (AI, email) từ phía server thì đọc thêm [03 Fullstack serverless](03-fullstack-serverless.md); bài này chỉ là tùy chọn, không phải điều kiện của bài 04.
 
-### Chặng 3. Hoàn thiện dự án thật (khoảng 3 giờ)
+### Chặng 3 (tùy chọn). Tên miền, bảo mật, ra mắt (khoảng 3 giờ)
 
-Kết quả: một landing page CLB hoàn chỉnh có domain, bảo mật, sẵn sàng gửi link cho người lạ.
+Làm khi bạn muốn domain riêng và sẵn sàng gửi link cho người lạ. Bài 07 và 11 làm được ngay sau Chặng 1, không cần Chặng 2.
 
-- [ ] [09 Dự án mini](09-mini-project.md): ráp mọi thứ thành một sản phẩm thật.
 - [ ] [07 Domain, bảo mật, production](07-domain-security-production.md): domain, HTTPS, secret, chi phí.
 - [ ] [11 Hoàn thiện và ra mắt](11-launch-polish.md): chống spam form, preview khi chia sẻ link, checklist go-live.
+- [ ] Dự án tổng hợp (tùy chọn): [09 Dự án mini](09-mini-project.md) gộp bài 01, 02, 04 và 07 thành một landing page CLB hoàn chỉnh. Cần đã làm bài 04 (hoặc 05).
 
 ### Tra cứu (đọc khi cần, không nằm trên đường chính)
 
@@ -94,7 +103,7 @@ Kết quả: một landing page CLB hoàn chỉnh có domain, bảo mật, sẵn
 | [06 AI agent và deploy](06-ai-agent-deploy.md) | Claude Code, Cursor, MCP, CLI | 75 phút | Agent giúp deploy mà bạn vẫn giữ quyền quyết định |
 | [07 Domain, bảo mật, production](07-domain-security-production.md) | Domain, HTTPS, secret, chi phí, giám sát | 60 phút | Sản phẩm sẵn sàng cho người dùng thật |
 | [08 Xử lý sự cố](08-troubleshooting.md) | Lỗi thường gặp khi deploy | Tra cứu | Biết đọc log và sửa từng bước |
-| [09 Dự án mini](09-mini-project.md) | Landing page CLB hoàn chỉnh | 120 phút | Một sản phẩm thật, có domain, có form |
+| [09 Dự án mini](09-mini-project.md) | Dự án tổng hợp: landing page CLB (tùy chọn) | 3 đến 4 giờ | Một sản phẩm thật, có domain, có form |
 | [10 App-builder](10-app-builders.md) | Lovable, Bolt, v0, Replit: xuất code, repo riêng, rà bảo mật | 75 phút | Sản phẩm từ app-builder chạy trên nền tảng bạn kiểm soát |
 | [11 Hoàn thiện và ra mắt](11-launch-polish.md) | Chống spam form, SEO và preview khi chia sẻ, analytics, backup, checklist go-live | 90 đến 120 phút | Sản phẩm sẵn sàng gửi link cho người lạ |
 
@@ -108,14 +117,14 @@ Ví dụ chạy được nằm trong thư mục `examples/vibe/` của repo:
 
 | Ví dụ | Dùng với |
 | --- | --- |
-| [static-site](../examples/vibe/static-site/README.md) | Hosting tĩnh, module 02 |
+| [static-site](../examples/vibe/static-site/README.md) | Hosting tĩnh, module 02 (tải sẵn: `vibe-static-site.zip`) |
 | [vercel-api](../examples/vibe/vercel-api/README.md) | Vercel Function, module 03 |
 | [netlify-function](../examples/vibe/netlify-function/README.md) | Netlify Function, module 03 |
 | [cloudflare-workers-static](../examples/vibe/cloudflare-workers-static/README.md) | Cloudflare Workers với static assets (đường chính), module 02 và 03 |
 | [cloudflare-pages-function](../examples/vibe/cloudflare-pages-function/README.md) | Cloudflare Pages Functions (đường cũ), module 03 |
 | [supabase](../examples/vibe/supabase/README.md) | Database và RLS, module 04 |
 | [firebase](../examples/vibe/firebase/README.md) | Firebase, module 05 |
-| [club-landing](../examples/vibe/club-landing/README.md) | Dự án mini, module 09 và 11 |
+| [club-landing](../examples/vibe/club-landing/README.md) | Dự án mini, module 09 và 11 (tải sẵn: `vibe-club-landing.zip`) |
 
 ## Cách dùng track này cùng AI agent
 
@@ -144,7 +153,7 @@ Xem toàn cảnh ở [Bắt đầu từ đây](../curriculum/getting-started.md)
 
 ## Tiếp theo
 
-Bắt đầu với [00 Tư duy: từ prompt tới production](00-mindset.md), rồi đi theo Chặng 1. Mỗi module kết thúc bằng mục "Tiếp theo" trỏ tới bài kế.
+Bắt đầu với [00 Tư duy: từ prompt tới production](00-mindset.md), rồi đi theo Chặng 1. Mỗi module kết thúc bằng mục "Tiếp theo" trỏ tới đúng một bài kế.
 
 ## Tài liệu chính thức
 

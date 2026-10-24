@@ -1,25 +1,25 @@
-# Chấm bài tuần 3 – Networking & Git Collaboration
+# Hướng dẫn chấm – Tuần 3
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm bài; học viên không cần đọc. Đề bài: [Bài tập tuần 3](../../assignments/weekly/week-03.md). Đáp án gợi ý: [Walkthrough tuần 3](../walkthroughs/week-03.md).
+Trang này dành cho người chấm, học viên không cần đọc. Bài tập của học viên: [Bài tập tuần 3](../../assignments/weekly/week-03.md). Đáp án: [Đáp án Tuần 3](../walkthroughs/week-03.md). Kịch bản buổi: [Kịch bản Buổi 05](../sessions/session-05.md), [Kịch bản Buổi 06](../sessions/session-06.md).
 :::
 
-> **Tóm tắt:** Barem chi tiết, lỗi hay bị trừ điểm, bằng chứng cần kiểm tra và câu hỏi vấn đáp cho bài tập tuần 3 (Buổi 05 mạng, Buổi 06 Git).
+> **Tóm tắt:** Thang điểm chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh, bằng chứng cần thấy và câu hỏi vấn đáp cho bài tập tuần 3 (Buổi 05 mạng, Buổi 06 Git). Tổng 100 điểm L1, thưởng tối đa 10 điểm L2.
 
-## Barem chi tiết
+## Thang điểm
 
 Tổng 100 điểm cho phần L1, cộng tối đa 10 điểm thưởng cho L2 (tổng không vượt quá 110).
 
 | Tiêu chí | Mức đạt | Mức không đạt | Điểm |
 | --- | --- | --- | --- |
-| Nhiệm vụ 1: thông tin IP, ping, DNS | Đủ lệnh, output thật, ping 4 gói thành công, chỉ đúng DNS resolver và đối chiếu `resolv.conf` | Thiếu lệnh, output giả hoặc không khớp máy, không giải thích được ping IP không cần DNS | 15 |
+| Nhiệm vụ 1: thông tin IP, ping, DNS | Đủ lệnh, output thật, ping 4 gói thành công, chỉ đúng DNS resolver và đối chiếu `resolv.conf`, giải thích khác biệt `getent hosts` và `nslookup` | Thiếu lệnh, output giả hoặc không khớp máy, không giải thích được ping IP không cần DNS | 15 |
 | Nhiệm vụ 2: chẩn đoán kết nối và `ss` | Có hai chế độ bind, port conflict kèm PID, ba loại lỗi `curl` với giải thích đúng | Thiếu một loại lỗi, nhầm nguyên nhân (ví dụ coi timeout là refused) | 15 |
 | Nhiệm vụ 2: script `diagnose.sh` | Chạy đúng ba kịch bản cho ba kết luận khác nhau, kiểm tra tham số | Script lỗi cú pháp, luôn cho cùng một kết luận | 10 |
 | Nhiệm vụ 3: repo sạch, `.gitignore`, secret | `.env` không nằm trong `git ls-files`, `check-ignore` chứng minh đúng | `.env` hoặc secret có trong lịch sử | 10 |
 | Nhiệm vụ 3: branch, commit, PR | Mỗi nhiệm vụ một branch, thông điệp commit rõ, PR có mô tả đủ ba ý | Commit thẳng vào `main`, thông điệp mơ hồ, PR trống | 15 |
 | Nhiệm vụ 3: review | Có review thật của bạn khác, ít nhất một comment cụ thể | Không có review hoặc review chỉ là "LGTM" tự phê | 5 |
 | Nhiệm vụ 4: merge conflict | Có `CONFLICT (content)` thật, file cuối giữ hợp lý cả hai bên, không còn marker | Còn marker, mất nội dung một bên, giả lập conflict bằng cách sửa tay lịch sử | 10 |
-| Nhiệm vụ 4: hoàn tác an toàn | Dùng `git revert`, giải thích đúng vì sao không `reset` + `force push` cho nhánh chung | Dùng `reset --hard` hoặc `--force` trên nhánh đã push | 5 |
+| Nhiệm vụ 4: hoàn tác an toàn | Dùng `git revert`, giải thích đúng vì sao không `reset` rồi `force push` cho nhánh chung | Dùng `reset --hard` hoặc `--force` trên nhánh đã push | 5 |
 | Câu hỏi kiểm tra kiến thức | Trả lời đúng ý và dùng bằng chứng của chính bài làm; mỗi câu 2 điểm | Trả lời chép tài liệu hoặc sai khái niệm | 10 |
 | Chất lượng báo cáo và khả năng chạy lại | README trả lời đủ 7 câu hỏi, người khác chạy lại được script và các lệnh theo hướng dẫn | Thiếu README, lệnh không chạy lại được | 5 |
 | **Tổng L1** | | | **100** |
@@ -36,8 +36,9 @@ Tổng 100 điểm cho phần L1, cộng tối đa 10 điểm thưởng cho L2 (
 - Thông điệp commit mơ hồ (`update`, `fix`, `abc`) hoặc một commit khổng lồ chứa mọi thứ.
 - Còn marker conflict trong file, hoặc "giải quyết" conflict bằng cách xóa hết phần của một bên.
 - Dùng `git reset --hard` hoặc `git push --force` trên nhánh chung.
-- Commit `.env`, token, private key hoặc mật khẩu thật. Lỗi này bị trừ nặng và phải xử lý theo hướng dẫn xoay (rotate) secret.
+- Commit `.env`, token, private key hoặc mật khẩu thật. Lỗi này bị trừ nặng và phải xử lý theo hướng dẫn đổi (rotate) secret.
 - Script `diagnose.sh` không quote biến, không kiểm tra tham số, hoặc chỉ chạy được trên máy của bạn vì dùng đường dẫn tuyệt đối.
+- Dùng `tee` thay vì `tee -a` nên evidence cũ bị ghi đè.
 - Để server Python chạy nền sau khi làm xong và để lại tiến trình chiếm port.
 - PR không có mô tả hoặc tự approve mà không có người review.
 
@@ -51,13 +52,14 @@ git log --all --oneline -- .env
 grep -rn '^<<<<<<<\|^=======\|^>>>>>>>' lab-06/ || echo "Khong con conflict marker"
 git log --oneline --graph --all | head -n 30
 ls lab-05/evidence lab-06/evidence
+ss -ltnp | grep -c ':9000' || true
 ```
 
-Ý nghĩa: không file `.env` nào trong `git ls-files` và `git log --all -- .env` không in commit nào; không còn marker; lịch sử có nhiều branch tính năng nhập vào `main` qua merge; thư mục evidence có đủ file theo đề.
+Ý nghĩa: không file `.env` nào trong `git ls-files` và `git log --all -- .env` không in commit nào; không còn marker; lịch sử có nhiều branch tính năng nhập vào `main` qua merge; thư mục evidence có đủ file theo đề. Lệnh `ss` cuối chạy trên máy học viên, kết quả mong đợi là `0` (không còn server Python giữ port 9000).
 
-## Hướng dẫn chấm cho mentor (bằng chứng, dấu hiệu bài chép, câu hỏi vấn đáp)
+## Bằng chứng và câu hỏi vấn đáp theo tiêu chí
 
-Điểm tối đa của một tiêu chí bị trừ hết nếu bằng chứng không kiểm chứng được. Hãy mở file thật trong `evidence/`, đừng chỉ đọc README.
+Hãy mở file thật trong `evidence/`, đừng chỉ đọc README.
 
 | Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- | --- |
@@ -72,4 +74,9 @@ ls lab-05/evidence lab-06/evidence
 | Câu hỏi kiểm tra (10) | Câu trả lời có ví dụ từ output của chính bài làm | Trả lời giống nhau từng chữ với bài khác hoặc với tài liệu; sai khái niệm | Chọn một câu và yêu cầu học viên minh họa bằng lệnh ngay trên máy. |
 | README và khả năng chạy lại (5) | README trả lời đủ 7 câu; người khác chạy lại được script theo hướng dẫn | Script dùng đường dẫn tuyệt đối của máy cá nhân; README sao chép đề | Chạy `diagnose.sh` từ thư mục khác và xem còn chạy được không. |
 
-Kiểm tra chéo giữa các file: PID, IP và thời gian trong `command-output.txt`, `diagnose-output.txt` và `report.md` phải khớp nhau. Phần thưởng L2: Thử thách A cần output `GH006` hoặc `GH013`; Thử thách B cần mỗi bước có dòng trích thật; Thử thách C cần hai lần chạy hook, một bị chặn và một qua.
+## Lưu ý khi chấm
+
+- Kiểm tra chéo giữa các file: PID, IP và thời gian trong `command-output.txt`, `diagnose-output.txt` và `report.md` phải khớp nhau.
+- Phần thưởng L2: Thử thách A cần output `GH006` hoặc `GH013` trong `protection-output.txt` và `report.md` nêu một hạn chế (ví dụ quyền bypass của admin); Thử thách B cần mỗi bước có dòng trích thật; Thử thách C cần hai lần chạy hook, một bị chặn với mã thoát khác 0 và một qua.
+- Repo private trên gói miễn phí có thể không bật được branch protection; chấp nhận nếu học viên ghi lý do và làm thử thách C thay thế.
+- Nếu học viên làm một mình, chấp nhận việc tự đóng hai vai ở Nhiệm vụ 4, nhưng PR của Nhiệm vụ 3 vẫn phải có một bạn review thật.

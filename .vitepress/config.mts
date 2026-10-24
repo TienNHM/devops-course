@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
@@ -35,14 +35,21 @@ const phases = courseTree()
 function learningSidebar(): Item[] {
   const start = group('Bắt đầu từ đây', [
     page('Bắt đầu từ đây', '/curriculum/getting-started'),
+    page('Cách học', '/curriculum/how-to-learn'),
     page('Cài đặt máy', '/resources/setup-guide'),
     page('Lộ trình 16 tuần', '/curriculum/syllabus'),
-    page('Chuẩn đầu ra', '/curriculum/learning-outcomes'),
-    page('Cách đánh giá', '/curriculum/assessment'),
-    page('Dự án cuối khóa (Capstone)', '/assignments/capstone/'),
-    page('Tiêu chí chấm Capstone', '/curriculum/capstone-rubric'),
-    page('Đánh giá kỹ thuật', '/curriculum/technical-assessment'),
   ])
+  const about = group(
+    'Về khóa học',
+    [
+      page('Chuẩn đầu ra', '/curriculum/learning-outcomes'),
+      page('Cách đánh giá', '/curriculum/assessment'),
+      page('Dự án cuối khóa (Capstone)', '/assignments/capstone/'),
+      page('Tiêu chí chấm Capstone', '/curriculum/capstone-rubric'),
+      page('Đánh giá kỹ thuật', '/curriculum/technical-assessment'),
+    ],
+    { collapsed: true },
+  )
   const stages = phases.map((phase, i) =>
     group(
       phase.title,
@@ -50,7 +57,7 @@ function learningSidebar(): Item[] {
       { collapsed: i > 0 },
     ),
   )
-  return present([start, ...stages])
+  return present([start, ...stages, about])
 }
 
 const slideDecks: { dir: string; name: string }[] = [
@@ -132,8 +139,18 @@ function mentorsSidebar(): Item[] {
         { collapsed: true },
       ),
     )
+  // Trang mentors/*.md chưa có trong danh sách cố định thì tự thêm (tiêu đề lấy từ H1)
+  const known = new Set([
+    'index', 'README', 'handbook', 'session-runbook', 'launch-checklist', 'pilot-plan', 'repo-governance',
+  ])
+  const extra = readdirSync(join(root, 'mentors'))
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => f.replace(/\.md$/, ''))
+    .filter((n) => !known.has(n))
+    .sort()
+    .map((n) => page(h1(`mentors/${n}.md`), `/mentors/${n}`))
   return present([
-    group('Bắt đầu', [page('Tổng quan', '/mentors/'), page('Hướng dẫn mentor', '/mentors/handbook')]),
+    group('Bắt đầu', [page('Tổng quan', '/mentors/'), page('Hướng dẫn mentor', '/mentors/handbook'), ...extra]),
     group('Lên lớp', [
       page('Quy trình mỗi buổi', '/mentors/session-runbook'),
       page('Đáp án: mục lục', '/mentors/walkthroughs/'),
@@ -148,32 +165,39 @@ function mentorsSidebar(): Item[] {
 }
 
 function vibeSidebar(): Item[] {
+  // Trang mẹ; nếu có file "<tên>-advanced.md" thì hiện thêm mục "Nâng cao" ngay dưới trang mẹ
+  const vp = (text: string, link: string): Item | null => {
+    const main = page(text, link)
+    if (!main) return null
+    const adv = page(`${text} (nâng cao)`, `${link}-advanced`)
+    return adv ? { ...main, collapsed: true, items: [adv] } : main
+  }
   return present([
     group('Bắt đầu', [
-      page('Tổng quan', '/vibe/'),
-      page('Tư duy Vibe Deploy', '/vibe/00-mindset'),
-      page('Git và GitHub', '/vibe/01-git-github'),
-      page('Đưa web tĩnh lên mạng', '/vibe/02-static-hosting'),
+      vp('Tổng quan', '/vibe/'),
+      vp('Tư duy Vibe Deploy', '/vibe/00-mindset'),
+      vp('Git và GitHub', '/vibe/01-git-github'),
+      vp('Đưa web tĩnh lên mạng', '/vibe/02-static-hosting'),
     ]),
-    group('Thêm database và đăng nhập', [
-      page('Fullstack serverless', '/vibe/03-fullstack-serverless'),
-      page('Supabase', '/vibe/04-supabase'),
-      page('Firebase', '/vibe/05-firebase'),
+    group('Thêm database và đăng nhập (chọn MỘT: Supabase hoặc Firebase)', [
+      vp('Supabase (bài 04)', '/vibe/04-supabase'),
+      vp('Firebase (bài 05)', '/vibe/05-firebase'),
     ]),
     group('Dự án thật', [
-      page('Dự án nhỏ', '/vibe/09-mini-project'),
-      page('Tên miền, bảo mật, production', '/vibe/07-domain-security-production'),
-      page('Hoàn thiện và ra mắt', '/vibe/11-launch-polish'),
+      vp('Dự án nhỏ', '/vibe/09-mini-project'),
+      vp('Tên miền, bảo mật, production', '/vibe/07-domain-security-production'),
+      vp('Hoàn thiện và ra mắt', '/vibe/11-launch-polish'),
     ]),
     group(
       'Tra cứu và nâng cao',
       [
-        page('Deploy cùng AI agent', '/vibe/06-ai-agent-deploy'),
-        page('App builders', '/vibe/10-app-builders'),
-        page('Xử lý sự cố', '/vibe/08-troubleshooting'),
-        page('Nền tảng hosting', '/vibe/platforms'),
-        page('Thư viện prompt', '/vibe/prompt-library'),
-        page('CLI cheatsheet', '/vibe/cli-cheatsheet'),
+        vp('Fullstack serverless', '/vibe/03-fullstack-serverless'),
+        vp('Deploy cùng AI agent', '/vibe/06-ai-agent-deploy'),
+        vp('App builders', '/vibe/10-app-builders'),
+        vp('Xử lý sự cố', '/vibe/08-troubleshooting'),
+        vp('Nền tảng hosting', '/vibe/platforms'),
+        vp('Thư viện prompt', '/vibe/prompt-library'),
+        vp('CLI cheatsheet', '/vibe/cli-cheatsheet'),
       ],
       { collapsed: true },
     ),
@@ -314,15 +338,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
           { text: 'Dự án mẫu', link: '/starter-project/' },
         ],
       },
-      {
-        text: 'Mentor',
-        items: [
-          { text: 'Tổng quan', link: '/mentors/' },
-          { text: 'Kịch bản từng buổi', link: '/mentors/session-runbook' },
-          { text: 'Hướng dẫn chấm', link: '/mentors/handbook' },
-          { text: 'Đáp án', link: '/mentors/walkthroughs/' },
-        ],
-      },
+      { text: 'Mentor', link: '/mentors/' },
     ],
     sidebar: {
       '/curriculum/': learningSidebar(),

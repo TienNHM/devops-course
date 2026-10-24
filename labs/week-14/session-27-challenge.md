@@ -7,7 +7,7 @@ Tuần 14/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 27/32
 > **Tóm tắt:** Trang phụ của buổi 27: kiến thức tìm hiểu thêm về storage và Ingress, ba thử thách L2 (vòng đời PV, Retain, host thứ hai) và hai tình huống phá lỗi. Tất cả đều tùy chọn.
 
 ::: tip Trang này dành cho ai
-Bạn đã xong checklist L1 của [Buổi 27 – Storage & Ingress](session-27.md) và còn thời gian, hoặc bạn cần phần Phá lỗi cho bài tập tuần. Hãy tự thử 15 phút trước khi mở gợi ý. Lời giải đối chiếu nằm trong [Walkthrough tuần 14](../../mentors/walkthroughs/week-14.md), chỉ mở sau khi nộp bài.
+Bạn đã xong checklist L1 của [Buổi 27 – Storage & Ingress](session-27.md) và còn thời gian, hoặc bạn cần phần Phá lỗi cho bài tập tuần. Hãy tự thử 15 phút trước khi mở gợi ý. Lời giải đối chiếu nằm trong [trang tuần 14](README.md), chỉ mở sau khi nộp bài.
 :::
 
 ## Tìm hiểu thêm {#tim-hieu-them}

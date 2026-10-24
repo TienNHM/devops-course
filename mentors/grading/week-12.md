@@ -1,14 +1,14 @@
-# Chấm điểm tuần 12 – kubectl và Services
+# Hướng dẫn chấm tuần 12 – kubectl và Services
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 12](../../assignments/weekly/week-12.md). Đáp án và bằng chứng cần thấy: [Walkthrough tuần 12](../walkthroughs/week-12.md). Kịch bản dạy: [Buổi 23](../sessions/session-23.md), [Buổi 24](../sessions/session-24.md).
+Trang này dành cho người chấm. Đề bài: [Bài tập tuần 12](../../assignments/weekly/week-12.md). Đáp án và bằng chứng cần thấy: [Đáp án tuần 12](../walkthroughs/week-12.md). Bài học: [Buổi 23 – kubectl Fundamentals](../../labs/week-12/session-23.md) và [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md).
 :::
 
 > **Tóm tắt:** Barem chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho bài tập tuần 12 (notice-board, Service, DNS, hai tình huống lỗi).
 
-## Barem chấm
+## Barem chi tiết
 
-Nguyên văn từ đề bài. Tổng 100 điểm, cộng tối đa 10 điểm L2.
+Tổng 100 điểm, cộng tối đa 10 điểm L2. L2 chỉ chấm khi L1 từ 70 điểm. Môi trường chuẩn: cluster kind `club`, context `kind-club`; workload chấm là `notice-board` trong namespace `club-dev`.
 
 | Tiêu chí | Đạt | Không đạt | Điểm |
 | --- | --- | --- | --- |
@@ -53,16 +53,16 @@ kubectl apply -f lab-23/source/ --dry-run=server
 
 Điều cần thấy: `READY 3/3`, đúng 3 Pod `Running`, `get endpoints` có đúng 3 địa chỉ cổng `80`, `CLUSTER-IP` khớp ClusterIP trong evidence `nslookup`, hai lệnh `diff` in `no drift`, và `apply --dry-run=server` không báo lỗi (chứng minh manifest chạy từ thư mục sạch).
 
-Gợi ý chấm nhanh (từ walkthrough):
+Gợi ý chấm nhanh:
 
 - Đối chiếu ClusterIP, tên Pod và IP giữa các file evidence: những giá trị này phải nhất quán trong cùng một lần làm; không nhất quán là dấu hiệu bài ghép hoặc tự gõ.
 - Kiểm tra `kubectl diff` sạch: học viên có thể chạy lại trên máy của mình với repo đã nộp.
-- Điểm L2 chỉ tính khi L1 từ 70: thử thách A cần ba lần chạy kèm mã thoát; thử thách B cần cả lần thất bại và thành công kèm `resolv.conf`; thử thách C cần bảng so sánh có lệnh thật.
+- Điểm L2: thử thách A cần ba lần chạy kèm mã thoát; thử thách B cần cả lần thất bại và thành công kèm `resolv.conf`; thử thách C cần bảng so sánh có lệnh thật.
 - Lưu ý khi chấm bài làm trong `source/`: nếu `exported.yaml` hay file lỗi nằm cạnh `notice-board.yaml`, thì `kubectl apply -f lab-23/source/` sẽ áp dụng cả chúng; đây là một lý do đề yêu cầu `broken/`.
 
 ## Dấu hiệu bài chép hoặc không hiểu, và câu hỏi vấn đáp
 
-Nguyên văn từ hướng dẫn chấm trong walkthrough, bổ sung bằng chứng cần thấy ở [Walkthrough tuần 12](../walkthroughs/week-12.md).
+Bằng chứng cần thấy cho từng nhiệm vụ nằm ở mục "Hướng dẫn chấm cho mentor" của [Đáp án tuần 12](../walkthroughs/week-12.md).
 
 | Tiêu chí | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- |

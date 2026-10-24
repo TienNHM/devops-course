@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Trang tùy chọn của Buổi 07: ba thử thách L2 có gợi ý từng bậc, bài phá lỗi cổng bận và trùng tên, kèm phần đọc thêm về luồng docker run. Làm ở nhà sau khi xong lab bắt buộc.
 
-Quay lại bài chính: [Buổi 07 – Container Fundamentals](session-07.md). Lời giải đầy đủ nằm ở [Walkthrough tuần 4](../../mentors/walkthroughs/week-04.md), chỉ mở sau khi nộp bài.
+Quay lại bài chính: [Buổi 07 – Container Fundamentals](session-07.md). Lời giải đầy đủ nằm ở [trang tuần 4](README.md), chỉ mở sau khi nộp bài.
 
 ## Thử thách thêm (L2, tùy chọn)
 

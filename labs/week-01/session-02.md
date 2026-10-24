@@ -55,7 +55,7 @@ flowchart LR
   subgraph Windows11["Windows 11"]
     WT["Windows Terminal"]
     VSC["VS Code - giao diện"]
-    DD["Docker Desktop - buổi sau"]
+    DD["Docker Desktop - Buổi 07"]
   end
   subgraph WSL2["WSL2 - nhân Linux thật"]
     UB["Ubuntu + bash"]
@@ -168,22 +168,32 @@ Kết quả mong đợi: `git version 2.43.x` (hoặc mới hơn) và danh sách
 
 ### Phần 4 – Chạy script kiểm tra môi trường, ở lớp (10 phút)
 
-Giáo trình có sẵn `resources/check-env.sh`. Nếu chưa có thư mục `~/devops-course`, clone repo giáo trình theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md). Chạy script và lưu log làm bằng chứng:
+Giáo trình có sẵn `resources/check-env.sh`. Chép repo giáo trình về `~/devops-course` (bỏ qua nếu thư mục đã có, khi đó chỉ cần `git pull`):
+
+```bash
+cd ~
+git clone https://github.com/TienNHM/devops-course.git ~/devops-course
+ls ~/devops-course
+```
+
+Số `2` sau tên script nghĩa là "kiểm tra tới Buổi 02". Chạy script và lưu log làm bằng chứng:
 
 ```bash
 cd ~/devops-course
-bash resources/check-env.sh > ~/devops-labs/lab-02/evidence/command-output.txt 2>&1
+bash resources/check-env.sh 2 > ~/devops-labs/lab-02/evidence/command-output.txt 2>&1
 code=$?
 echo "exit code: $code" >> ~/devops-labs/lab-02/evidence/command-output.txt
 cat ~/devops-labs/lab-02/evidence/command-output.txt
 ```
 
-Kết quả mong đợi (rút gọn): dòng WSL, git, curl là `[ OK ]`; các công cụ của tuần sau như docker, kubectl, kind, node còn `[ THIEU ]`; cuối cùng là `exit code: 1`. Mã thoát 1 ở tuần này là đúng thiết kế, nó chỉ thành 0 khi bạn cài đủ công cụ (Docker từ [Buổi 07 – Container Fundamentals](../week-04/session-07.md) trở đi).
+Kết quả mong đợi (rút gọn): các dòng WSL, git, curl là `[ OK ]`; docker, kubectl chỉ hiện `[ DE SAU ]`; dòng `KET QUA: đủ công cụ bắt buộc tới buổi 2`; cuối cùng là `exit code: 0`.
+
+Ghi chú: công cụ của buổi sau sẽ được kiểm tra khi tới buổi đó (Docker để dành cho Buổi 07 – Container Fundamentals, Buổi 08 là Docker CLI; kubectl và kind ở Buổi 21). Khi đó bạn chạy lại script với số buổi tương ứng, ví dụ `bash resources/check-env.sh 7`. Nếu thấy `[ THIEU ]` ở git hoặc curl thì cài theo gợi ý trên dòng đó rồi chạy lại.
 
 Hai lưu ý: gán `code=$?` ngay sau khi chạy script để lấy đúng mã thoát (nếu đi qua `| tee` thì `$?` là mã thoát của `tee`, luôn là 0 và log sẽ ghi sai); và đây là script chỉ đọc thông tin, không đổi máy bạn.
 
 ::: tip Kiểm tra: bạn đúng khi
-File log không rỗng, có dòng `exit code:` ở cuối và các dòng WSL, git, curl là `[ OK ]`.
+File log không rỗng, có dòng `exit code: 0` ở cuối và các dòng WSL, git, curl là `[ OK ]`.
 :::
 
 ### Phần 5 – SSH key và GitHub, làm ở nhà (20 phút)
@@ -207,15 +217,22 @@ ssh -T git@github.com
 
 Lần đầu SSH hỏi xác nhận fingerprint của máy chủ: đối chiếu với fingerprint công bố trong tài liệu GitHub (xem Tài liệu tham khảo) rồi gõ `yes`. Kết quả mong đợi: "Hi TEN_GITHUB! You've successfully authenticated, but GitHub does not provide shell access." Mã thoát 1 của lệnh này là bình thường.
 
-Cuối cùng nối thư mục local với repo `devops-labs` bằng SSH (an toàn cho cả thư mục mới lẫn repo đã clone bằng HTTPS):
+Cuối cùng nối thư mục trong WSL với repo `devops-labs` trên GitHub. Lưu ý: Git Bash (Buổi 01) và Ubuntu (WSL) có thư mục home KHÁC nhau, nên `lab-01` bạn làm ở Buổi 01 chưa nằm trong WSL. Cách an toàn nhất là clone repo từ GitHub về (repo đã có `README` và `lab-01` bạn đã tải lên ở Buổi 01), rồi đưa `lab-02` vào:
 
 ```bash
+if git -C ~/devops-labs rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git -C ~/devops-labs remote set-url origin git@github.com:TEN_GITHUB/devops-labs.git
+else
+  mv ~/devops-labs ~/devops-labs-wip
+  git clone git@github.com:TEN_GITHUB/devops-labs.git ~/devops-labs
+  cp -r ~/devops-labs-wip/lab-02 ~/devops-labs/
+fi
 cd ~/devops-labs
-git rev-parse --is-inside-work-tree 2>/dev/null || git init
-git remote get-url origin 2>/dev/null || git remote add origin git@github.com:TEN_GITHUB/devops-labs.git
-git remote set-url origin git@github.com:TEN_GITHUB/devops-labs.git
 git remote -v
+ls
 ```
+
+Kết quả mong đợi: `ls` thấy `lab-01` (nếu bạn đã đưa lên GitHub ở Buổi 01), `lab-02` và `README.md`. Chưa đưa `lab-01` lên GitHub? Không sao, nộp `lab-01` sau bằng cách chép từ `/mnt/c/Users/TEN_WINDOWS/devops-labs/lab-01` (đây là ngoại lệ được dùng `/mnt/c`): `cp -r /mnt/c/Users/TEN_WINDOWS/devops-labs/lab-01 ~/devops-labs/`.
 
 ::: tip Kiểm tra: bạn đúng khi
 `ssh -T git@github.com` in dòng "successfully authenticated" và `git remote -v` hiện hai dòng `origin ... (fetch)` và `(push)` dạng `git@github.com:`. Bị `Permission denied (publickey)` hoặc cảnh báo quyền file? Xem [Gặp lỗi?](#gap-loi).
@@ -259,6 +276,8 @@ lsb_release -ds && git config --global core.autocrlf && ssh -T git@github.com 2>
 | `code: command not found` trong Ubuntu | Chưa cài VS Code trên Windows hoặc PATH Windows bị tắt | Cài VS Code (chọn Add to PATH), rồi khởi động lại WSL (xem cảnh báo bên dưới bảng) |
 | `E: Unable to locate package` hoặc `Temporary failure resolving` | Chưa chạy `apt update` hoặc WSL mất mạng/DNS | `sudo apt update`, kiểm tra Internet; nếu vẫn lỗi DNS thì khởi động lại WSL |
 | Log ghi `exit code: 0` trong khi có dòng `[ THIEU ]` | Đọc `$?` sau `\| tee` nên lấy mã thoát của `tee` | Chạy lại đúng khối lệnh ở Phần 4, gán `code=$?` ngay sau lệnh chạy script |
+| `exit code: 1` và có dòng `[ THIEU ]` ở git hoặc curl | Chưa cài git hoặc curl trong Ubuntu | Làm theo gợi ý trên dòng `[ THIEU ]` (ví dụ `sudo apt install -y curl`), rồi chạy lại Phần 4 |
+| `git clone` báo `destination path ... already exists` | Đã clone từ trước | `cd ~/devops-course && git pull`, không clone lại |
 
 ::: danger Chỉ dùng khi thật sự cần
 `wsl --shutdown` tắt mọi distro WSL đang chạy và làm mất công việc chưa lưu trong đó. Lưu file và đóng VS Code trước khi chạy, và đừng chạy khi Docker Desktop đang làm việc quan trọng.
@@ -315,6 +334,7 @@ Buổi tiếp theo: [Buổi 03 – Linux CLI](../week-02/session-03.md).
 | --- | --- | --- | --- |
 | Filesystem Linux (ext4) | `/home/TEN_BAN/` (viết tắt `~`) | `\\wsl$\Ubuntu\home\TEN_BAN` (hoặc `\\wsl.localhost\Ubuntu\...`) | Mã nguồn, Docker build context, mọi lab |
 | Ổ đĩa Windows | `/mnt/c/Users/...` | `C:\Users\...` | Chỉ để trao đổi file (ảnh chụp, tải về) |
+| `git push` báo `rejected`, `fetch first` hoặc `unrelated histories` | Thư mục WSL được `git init` riêng, còn repo GitHub đã có README hoặc `lab-01` | Đừng `git init` ở thư mục mới: clone repo về như ở Phần 5 rồi chép `lab-02` vào; hoặc `git pull --rebase origin main` nếu đã nối remote |
 
 Truy cập chéo qua `/mnt/c` đi qua một lớp mạng 9P nên chậm hơn nhiều với thao tác nhiều file nhỏ như `npm install` hay `git status`, đồng thời quyền file (chmod) và ký tự xuống dòng hay gây lỗi. Bảng WSL1, WSL2 và máy ảo, bảng terminal và shell, sơ đồ SSH tới GitHub và lời giải thích sơ đồ kiến trúc nằm ở [Buổi 02 – Thử thách thêm](session-02-challenge.md).
 :::

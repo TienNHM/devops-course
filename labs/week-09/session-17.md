@@ -330,7 +330,7 @@ Nộp vào `lab-17/` trong repository cá nhân theo [mẫu lab](../../templates
 Buổi tiếp theo: [Buổi 18 – Docker CI Pipeline](session-18.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Trang riêng: [Buổi 17 – Thử thách thêm](session-17-challenge.md). Gồm integration test với PostgreSQL thật, service container trong Actions, ba thử thách tự làm có gợi ý từng bậc. Cần xong L1 trước. Đối chiếu đáp án sau khi nộp bài: [Walkthrough tuần 9](../../mentors/walkthroughs/week-09.md).
+Trang riêng: [Buổi 17 – Thử thách thêm](session-17-challenge.md). Gồm integration test với PostgreSQL thật, service container trong Actions, ba thử thách tự làm có gợi ý từng bậc. Cần xong L1 trước. Đối chiếu đáp án sau khi nộp bài: [trang tuần 9](README.md).
 :::
 
 ::: details Phá lỗi nâng cao

@@ -1,10 +1,21 @@
-# Chấm điểm tuần 6 – Networking & Storage
+# Hướng dẫn chấm – Tuần 6
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm; học viên không cần đọc. Bài tập học viên: [Bài tập tuần 6](../../assignments/weekly/week-06.md). Đáp án mẫu: [Walkthrough tuần 6](../walkthroughs/week-06.md). Kịch bản dạy: [Buổi 11](../sessions/session-11.md), [Buổi 12](../sessions/session-12.md).
+Trang này dành cho người chấm, học viên không cần đọc. Bài tập học viên: [Bài tập tuần 6](../../assignments/weekly/week-06.md). Đáp án mẫu: [Đáp án tuần 6](../walkthroughs/week-06.md). Kịch bản buổi: [Buổi 11](../sessions/session-11.md), [Buổi 12](../sessions/session-12.md).
 :::
 
-## Barem chấm
+> **Tóm tắt:** Thang điểm 100 cho 5 nhiệm vụ L1 của tuần 6 (cộng tối đa 10 điểm thưởng L2), các lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho từng tiêu chí.
+
+## Phạm vi bài nộp
+
+Bài nộp gồm hai thư mục trong repo cá nhân `devops-labs`:
+
+- `lab-11/`: Nhiệm vụ 1 đến 3 (Buổi 11, Phần 1 đến 4); Phần 5 (tự phá lỗi `DB_HOST=localhost`) được ghi trong `report.md`.
+- `lab-12/`: Nhiệm vụ 4 và 5 (Buổi 12, Phần 1 đến 5).
+
+Thử thách L2 lấy từ hai trang thử thách thêm: Thử thách A của Buổi 11 (script isolation), Thử thách B của Buổi 11 và Thử thách A của Buổi 12 (Compose), Thử thách C (điều tra lỗi: `DB_HOST=localhost` hoặc tình huống 04).
+
+## Thang điểm
 
 Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
 
@@ -68,7 +79,7 @@ grep -c "latest" lab-11/source/*.yaml lab-12/source/*.yaml 2>/dev/null
 
 Dòng cuối mong đợi in `0` cho mỗi file compose (không dùng image `latest`).
 
-## Hướng dẫn chấm theo tiêu chí
+## Câu hỏi vấn đáp và dấu hiệu bài chép
 
 | Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- | --- |
@@ -82,11 +93,9 @@ Dòng cuối mong đợi in `0` cho mỗi file compose (không dùng image `late
 | Quy trình nộp (10) | PR có nhận xét cụ thể | Review chỉ ghi "OK"; push thẳng vào `main` | Reviewer đã chạy lại lệnh nào? |
 | L2 (thưởng) | Script PASS hoặc FAIL, thoát khác 0 khi sai, tự dọn, hai lần chạy; Compose với `web` không phân giải được `postgres`; báo cáo 5 mục có log | Script chỉ chạy được khi có can thiệp tay; `web` vẫn thấy `postgres` do để chung network; dùng `localhost` trong `wget` rồi ghi nhận "API hỏng" | Compose của bạn khác `docker run` ở chỗ nào về network? `down` khác `down -v` thế nào? |
 
-## Câu hỏi vấn đáp
-
 Gợi ý chung khi vấn đáp: nhờ học viên mô tả bằng lời đường đi của một gói tin từ `curl` trên host tới Postgres (host, port mapping, API, DNS nhúng, Postgres), và giải thích hậu quả của `docker volume rm` với bản backup của chính họ. Bài hiểu thật nói được lỗi nằm ở đâu khi hai đường dẫn (mount và `data_directory`) khác nhau.
 
-Năm câu hỏi kiểm tra kiến thức của bài tập (học viên trả lời trong `report.md`; đáp án mẫu ở [Walkthrough tuần 6](../walkthroughs/week-06.md)):
+Năm câu hỏi kiểm tra kiến thức của bài tập (học viên trả lời trong `report.md`; đáp án mẫu ở [Đáp án tuần 6](../walkthroughs/week-06.md)):
 
 1. API trong container có `DB_HOST=localhost` và log báo `ECONNREFUSED 127.0.0.1:5432` dù Postgres đang chạy. Vì sao lỗi xảy ra, và bạn kiểm tra gì đầu tiên?
 2. `-p 127.0.0.1:13000:3000` khác `-p 13000:3000` ở điểm nào về bảo mật? Khi nào bạn không cần `-p` cho một container?

@@ -7,7 +7,7 @@ Tuần 10/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 19/32 (tùy ch�
 > **Tóm tắt:** Phần tùy chọn của buổi 19: chặn tag không tồn tại, nối script vào workflow_dispatch với runner an toàn, tài liệu bổ sung và bài phá lỗi mật khẩu database.
 
 ::: tip Chỉ làm khi đã xong L1
-Trang này không bắt buộc. Làm khi bạn đã hoàn thành checklist L1 của [Buổi 19](session-19.md). Đối chiếu đáp án mở sau khi nộp bài ở [Walkthrough tuần 10](../../mentors/walkthroughs/week-10.md).
+Trang này không bắt buộc. Làm khi bạn đã hoàn thành checklist L1 của [Buổi 19](session-19.md). Đối chiếu đáp án mở sau khi nộp bài ở [trang tuần 10](README.md).
 :::
 
 ## Thử thách L2: deploy an toàn

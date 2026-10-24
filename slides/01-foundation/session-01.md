@@ -1,6 +1,6 @@
 # Slide buổi 01 – DevOps Introduction
 
-> **Tóm tắt:** Hiểu DevOps là văn hóa và quy trình, vẽ đường đi của code từ laptop đến server bằng Mermaid, chỉ ra điểm nghẽn thủ công và cách tự động hóa bằng CI/CD và IaC. Bài lab tương ứng: [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md). Kịch bản dạy: [Kịch bản mentor Buổi 01](../../mentors/sessions/session-01.md).
+> **Tóm tắt:** Hiểu DevOps là văn hóa và quy trình, vẽ đường đi của code từ laptop đến server bằng Mermaid, chỉ ra điểm nghẽn thủ công và cách tự động hóa bằng CI/CD và IaC. Bài lab tương ứng: [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -135,7 +135,7 @@ flowchart LR
 - Viết một sơ đồ Mermaid 4 bước thành file `.mmd`, dán vào mermaid.live để thấy hình
 - Commit file, thêm một dòng "Chạy test", rồi xem `git diff`
 - Điểm cần nhớ: sơ đồ là text, nằm trong Git, review được
-- Mã commit của bạn sẽ khác mentor, đó là bình thường
+- Mã commit của bạn sẽ khác ví dụ trên màn hình, đó là bình thường
 
 ---
 

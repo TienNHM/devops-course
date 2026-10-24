@@ -16,7 +16,7 @@
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-29/` và `lab-30/`.
 **Đề bài và mốc:** [Đề bài Capstone](../capstone/README.md), [Milestones](../capstone/milestones.md) (bài tập này tương ứng mốc M1 và M2).
 **Mẫu nộp bài:** [Mẫu nộp bài lab](../../templates/lab-template.md).
-Mentor chấm theo barem trong [Chấm điểm tuần 15](../../mentors/grading/week-15.md); bảng điểm ngắn nằm bên dưới.
+Mentor chấm theo barem; bảng điểm ngắn nằm bên dưới.
 
 ## Bảng điểm ngắn
 

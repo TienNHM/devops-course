@@ -38,7 +38,7 @@ Trên lớp, mentor demo trước; tự học thì làm thẳng phần [Làm lab
 
 Backend API của CLB chạy tốt trên máy bạn Hùng với Node.js 22. Bạn Lan clone về, dùng Node 18 và `npm install` ra bộ thư viện khác, API lỗi ngay lúc khởi động. Mentor muốn đưa API lên máy chung của CLB thì phải cài đúng Node, đúng thư viện, đúng biến môi trường, mỗi lần một kiểu. Buổi 07 bạn đã biết container giải quyết bài toán này, nhưng container chỉ chạy được khi có image.
 
-Thứ mô tả cách tạo image đó là Dockerfile: một file văn bản nằm cùng mã nguồn, ghi lại công thức. Có file này trong Git, ai cũng build ra image giống nhau, CI/CD cũng dùng lại đúng công thức đó (Buổi 13 trở đi). Hôm nay bạn viết Dockerfile đầu tiên cho `club-api`; làm image nhỏ, nhanh, an toàn hơn để dành cho [Buổi 10 – Image Optimization](session-10.md).
+Thứ mô tả cách tạo image đó là Dockerfile: một file văn bản nằm cùng mã nguồn, ghi lại công thức. Có file này trong Git, ai cũng build ra image giống nhau, CI/CD cũng dùng lại đúng công thức đó (Buổi 15 trở đi). Hôm nay bạn viết Dockerfile đầu tiên cho `club-api`; làm image nhỏ, nhanh, an toàn hơn để dành cho [Buổi 10 – Image Optimization](session-10.md).
 
 ## Khái niệm cốt lõi
 

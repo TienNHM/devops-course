@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Làm việc nhóm với feature branch, Pull Request, code review, xử lý merge conflict đúng cách và bảo vệ nhánh main bằng branch protection.
 
-Lệnh chi tiết của lab nằm trong bài học: [Buổi 06 – Git & GitHub Workflow](../../labs/week-03/session-06.md). Kịch bản dạy: [Kịch bản mentor buổi 06](../../mentors/sessions/session-06.md).
+Lệnh chi tiết của lab nằm trong bài học: [Buổi 06 – Git & GitHub Workflow](../../labs/week-03/session-06.md).
 
 ## Slide 1: Mục tiêu buổi học
 

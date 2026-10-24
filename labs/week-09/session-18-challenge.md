@@ -7,7 +7,7 @@ Tuần 9/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 18/32
 > **Tóm tắt:** Phần tùy chọn của Buổi 18: publish hai image bằng matrix, tag theo git tag, cache type=gha, PR chỉ build, cùng hai tình huống phá lỗi nâng cao với GHCR.
 
 ::: tip Trang này dành cho ai
-Chỉ làm sau khi bạn đã hoàn thành L1 của [Buổi 18 – Docker CI Pipeline](session-18.md). Làm ở nhà, khoảng 60 phút. Đối chiếu đáp án sau khi nộp bài: [Walkthrough tuần 9](../../mentors/walkthroughs/week-09.md).
+Chỉ làm sau khi bạn đã hoàn thành L1 của [Buổi 18 – Docker CI Pipeline](session-18.md). Làm ở nhà, khoảng 60 phút. Đối chiếu đáp án sau khi nộp bài: [trang tuần 9](README.md).
 :::
 
 ## Thử thách tự làm (L2)

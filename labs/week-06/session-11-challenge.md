@@ -11,7 +11,7 @@ Chỉ làm khi bạn đã xong phần L1 của [Buổi 11 – Container Networki
 ## Thử thách L2
 
 ::: warning Tự thử 15 phút trước khi mở gợi ý
-Gợi ý chia thành hai bậc: bậc 1 chỉ hướng, bậc 2 gần như cho cách làm. Đáp án đối chiếu (mở sau khi nộp bài): [Walkthrough tuần 6](../../mentors/walkthroughs/week-06.md).
+Gợi ý chia thành hai bậc: bậc 1 chỉ hướng, bậc 2 gần như cho cách làm. Đáp án đối chiếu (mở sau khi nộp bài): [trang tuần 6](README.md).
 :::
 
 ### Thử thách A – Chứng minh isolation bằng một script

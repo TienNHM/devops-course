@@ -1,14 +1,14 @@
-# Chấm điểm tuần 2 – Linux Essentials
+# Hướng dẫn chấm – Tuần 2
 
 ::: warning Dành cho mentor
-Trang này dành cho người chấm, học viên không cần đọc. Đề bài: [Bài tập tuần 2](../../assignments/weekly/week-02.md). Đáp án: [Walkthrough tuần 2](../walkthroughs/week-02.md). Kịch bản buổi: [Buổi 03](../sessions/session-03.md), [Buổi 04](../sessions/session-04.md).
+Trang này dành cho người chấm, học viên không cần đọc. Bài tập của học viên: [Bài tập tuần 2](../../assignments/weekly/week-02.md). Đáp án: [Đáp án Tuần 2](../walkthroughs/week-02.md). Kịch bản buổi: [Kịch bản Buổi 03](../sessions/session-03.md), [Kịch bản Buổi 04](../sessions/session-04.md).
 :::
 
-> **Tóm tắt:** Barem chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh và câu hỏi vấn đáp cho bài tập tuần 2 (nguyên văn từ bài tập và walkthrough).
+> **Tóm tắt:** Thang điểm chi tiết, lỗi hay bị trừ điểm, bằng chứng cần thấy và câu hỏi vấn đáp cho bài tập tuần 2 (Linux CLI và Linux Administration). Tổng 100 điểm L1, thưởng tối đa 10 điểm L2.
 
-## Barem chấm chi tiết
+## Thang điểm
 
-Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
+Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2 (chỉ chấm khi L1 đạt từ 60 điểm).
 
 | Tiêu chí | Đạt | Không đạt | Điểm |
 | --- | --- | --- | --- |
@@ -29,13 +29,15 @@ Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
 
 Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0.
 
+Quy ước chung cho cả bài: mọi con số trong bài nộp phải tái hiện được khi mentor chạy lại lệnh học viên ghi. Bài tập dùng tên user, group, thư mục khác với bài lab (`clbops`, `clb-ops1` thay cho `clbdev`, `clb-dev1`, và `club-workspace` thay cho `club-site`), nên bài chép nguyên tên từ lab là dấu hiệu không tự làm.
+
 ## Lỗi hay bị trừ điểm
 
 - Làm việc trong `/mnt/c` hoặc evidence không chứng minh được vị trí làm việc (thiếu `pwd`).
 - Ghi đè file bằng `>` thay vì `>>`, làm `backend.conf` chỉ còn 1 dòng.
 - Đếm với `uniq -c` mà không `sort`, hoặc không kiểm tra tổng bằng `wc -l`.
 - Lọc 5xx bằng `grep " 5"` thay vì kiểm tra đúng cột mã HTTP; số liệu trong `log-answers.md` không kèm lệnh.
-- Chép nguyên tên user, group và lệnh từ bài lab (`clbdev`, `clb-dev1`) thay vì dùng đúng tên của bài tập này.
+- Chép nguyên tên user, group và lệnh từ bài lab (`clbdev`, `clb-dev1`) thay vì dùng đúng tên của bài tập.
 - Điền ma trận dự đoán sau khi đã chạy lệnh, hoặc không commit riêng phần dự đoán.
 - Dùng `chmod 777` hoặc `chmod -R 777` ở bất kỳ bước nào.
 - Quên `-a` trong `usermod -aG`, làm user mất các group khác.
@@ -47,27 +49,40 @@ Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
 - Evidence là ảnh chụp thay cho text, hoặc output gõ tay thay vì chạy lệnh thật.
 - Push thẳng vào `main`, không có PR hoặc review chỉ ghi "OK".
 
-## Hướng dẫn chấm, lệnh kiểm tra nhanh và câu hỏi vấn đáp
+## Lệnh kiểm tra nhanh
 
-Dùng barem trong [bài tập tuần 2](../../assignments/weekly/week-02.md). Quy ước chung cho cả bài: mọi con số trong bài nộp phải tái hiện được khi mentor chạy lại lệnh học viên ghi.
+Clone repo nộp, rồi chạy trong thư mục trống:
+
+```bash
+bash commands-task1.sh
+find club-workspace -type d | wc -l
+find club-workspace -type f | wc -l
+find club-workspace -name "*.conf"
+grep -rn "3000" club-workspace
+wc -l club-workspace/backend/config/backend.conf
+```
+
+Kết quả mong đợi: `11`, `7`, hai dòng `.conf`, hai dòng `grep` (mỗi dòng có tên file và số dòng), `2`. Rồi chạy lại các pipeline trên `my-access.log` và kiểm tra tổng bằng `wc -l` (15). Với Nhiệm vụ 3, so `git log` của `permissions-matrix.md` với thời điểm chạy lệnh trong evidence. Quét secret trước khi nộp dùng hai lệnh ở phần Bằng chứng của bài tập tuần.
+
+## Bằng chứng và câu hỏi vấn đáp theo tiêu chí
 
 | Tiêu chí | Bằng chứng cần thấy trong evidence | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
 | --- | --- | --- | --- |
-| Workspace (15 điểm) | Đủ năm phép kiểm tra: 11 thư mục, 7 file, 2 file conf, hai dòng của grep, backend.conf có 2 dòng; `commands-task1.sh` chạy lại dựng được cây | Số đếm đúng nhưng không có script lệnh; script không quote `meeting notes`; `backend.conf` 1 dòng | "Giải thích dòng mkdir có dấu ngoặc nhọn." "Nếu thiếu dấu nháy ở thư mục meeting notes thì điều gì xảy ra?" |
+| Workspace (15 điểm) | Đủ năm phép kiểm tra: 11 thư mục, 7 file, 2 file conf, hai dòng của grep, `backend.conf` có 2 dòng; `commands-task1.sh` chạy lại dựng được cây | Số đếm đúng nhưng không có script lệnh; script không quote `meeting notes`; `backend.conf` 1 dòng | "Giải thích dòng `mkdir` có dấu ngoặc nhọn." "Nếu thiếu dấu nháy ở thư mục `meeting notes` thì điều gì xảy ra?" |
 | Phân tích log (20 điểm) | `my-access.log` 15 dòng, 4 IP, IP nhiều nhất không hòa; tổng theo IP và theo mã đều 15; 5xx lọc theo cột 9; `stderr.txt`; `log-answers.md` mỗi dòng có lệnh | Log mô tả không khớp điều kiện; con số trong `log-answers.md` không tái hiện được; lọc 5xx bằng grep lỏng; giải thích thiếu `sort` giống nguyên văn lab | "Vì sao `uniq` cần `sort` trước?" "Sửa `$9` thành `$8` thì kết quả đổi thế nào và vì sao?" "Số 6 lỗi 5xx của bạn lấy bằng lệnh nào?" |
 | Thư mục chung (20 điểm) | `id` của 3 user; `ls -ld` thấy `drwxrws---` và `drwxrwx---`; 5 hành động đúng kết quả; commit dự đoán có trước (so sánh thời gian commit với thời gian trong evidence); đã dọn kèm mã thoát khác 0 | Tên `clbdev`, `clb-dev1` chép từ lab; ma trận có "Khớp" toàn bộ mà không giải thích; không có `git log` cho thấy commit trước | "Vì sao hành động 5 thất bại dù ops2 thuộc cùng group?" "Bỏ umask 007 ở hành động 1 thì hành động 2 ra sao?" "Vì sao không dùng 777?" |
-| Process (10 điểm) | PPID của hai process khớp số `echo $$`; `pgrep -af` trước và sau mỗi tín hiệu; `exit code: 1` cuối; không dùng `pkill sleep` | PPID không khớp `$$`; thiếu bước chứng minh còn sống sau SIGTERM; process-notes thiếu số hiệu tín hiệu | "Vì sao bước 5 thất bại?" "SIGKILL khác SIGTERM ở điểm nào về phía process?" |
-| show-config.sh (10 điểm) | Bốn lần chạy với mã 1, 0, 0 và cặp trước và sau export; `grep -c` bằng 0; `file` không báo CRLF; `.gitignore` có `.env` | In ra giá trị mật khẩu; mã thoát đọc sau `tee`; không có `.env.example` | "Vì sao lần 4 đầu tiên thất bại?" "Khác nhau giữa `A=1 lenh` và `export A=1` là gì?" |
+| Process (10 điểm) | PPID của hai process khớp số `echo $$`; `pgrep -af` trước và sau mỗi tín hiệu; `exit code: 1` cuối; không dùng `pkill sleep` | PPID không khớp `$$`; thiếu bước chứng minh còn sống sau SIGTERM; `process-notes.md` thiếu số hiệu tín hiệu | "Vì sao bước 5 thất bại?" "SIGKILL khác SIGTERM ở điểm nào về phía process?" |
+| show-config.sh (10 điểm) | Bốn lần chạy với mã 1, 0, 0 và cặp trước và sau `export`; `grep -c` bằng 0; `file` không báo CRLF; `.gitignore` có `.env` | In ra giá trị mật khẩu; mã thoát đọc sau `tee`; không có `.env.example` | "Vì sao lần 4 đầu tiên thất bại?" "Khác nhau giữa `A=1 lenh` và `export A=1` là gì?" |
 | 5 câu hỏi (10 điểm) | Câu trả lời bằng lời, có lệnh khi được hỏi | Trả lời giống nguyên văn đề hoặc đáp án lab | Chọn một câu và đổi số liệu hoặc tên (ví dụ quyền `750`) để hỏi lại |
 | README và report (5 điểm) | 7 câu; một lỗi thật và cách điều tra; hash commit dự đoán; mức L1 hoặc L2 | Lỗi bịa, không có cách điều tra | "Kể lại lỗi này bạn thấy lần đầu ở lệnh nào?" |
 | Kỷ luật repo (5 điểm) | Evidence text có dòng chú thích nhiệm vụ; lệnh quét secret không in dòng nào | Evidence chỉ là ảnh; có `.env` thật | "Làm sao bạn chắc không có secret trong repo?" |
 | Quy trình nộp (5 điểm) | PR với hai nhận xét cụ thể; reviewer có chạy lại một phép kiểm tra | Review chỉ ghi "OK" | "Reviewer đã chạy lại phép kiểm tra nào?" |
 
-Lưu ý chấm:
+## Lưu ý khi chấm
 
 - Cách nhanh để kiểm chứng: clone repo nộp, chạy `bash commands-task1.sh` trong thư mục trống rồi chạy năm phép kiểm tra; chạy lại các lệnh pipeline trên `my-access.log`.
 - Nhiệm vụ 3 có thứ tự thời gian: so `git log` của `permissions-matrix.md` với thời điểm chạy lệnh trong evidence. Ma trận điền sau khi chạy nhận điểm 0 cho phần dự đoán.
 - Mã thoát: bài đọc `$?` sau `| tee` sẽ ghi `exit code: 0` cho lệnh thật sự thất bại. Đối chiếu với nội dung output ngay phía trên.
 - Lệnh dọn dẹp: kiểm tra `getent` có mã thoát khác 0 (không tìm thấy user, group) thì mới coi là đã dọn.
-- Bài có `chmod 777` ở bất kỳ bước nào hoặc `pkill sleep` nhận điểm không cho phần vi phạm, theo barem.
+- Bài có `chmod 777` ở bất kỳ bước nào hoặc `pkill sleep` nhận điểm không cho phần vi phạm.
 - Điểm L2 chỉ cộng khi L1 đạt từ 60. Với Thử thách C, kiểm tra evidence chứng minh user không mất group phụ.

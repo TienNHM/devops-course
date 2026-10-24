@@ -20,12 +20,12 @@ Tài liệu này mở rộng [CONTRIBUTING](https://github.com/TienNHM/devops-co
 | `examples/` | Ví dụ lệnh, workflow, tình huống lỗi | Technical Mentor |
 | `templates/` | Mẫu lab, assignment, project, ADR, peer review | Program Lead |
 | `resources/` | Setup guide, cheatsheet, tài liệu tham khảo | Lab Assistant, Technical Mentor duyệt |
-| `mentors/` | Sổ tay, kịch bản buổi, barem chấm, đáp án (walkthroughs) | Program Lead |
+| `mentors/` | Sổ tay, kịch bản buổi, hướng dẫn chấm, đáp án | Program Lead |
 | `.github/workflows/` | CI và publish mẫu | Technical Mentor |
 
 Mỗi phần nội dung nên có một chủ sở hữu rõ ràng để hỏi khi có thay đổi. Danh sách này cập nhật mỗi kỳ.
 
-### 1.1 Quy ước cấu trúc mới
+### 1.1 Quy ước cấu trúc
 
 Nội dung được sắp theo người học và tuần học, nội dung của người dạy tách riêng:
 
@@ -37,14 +37,14 @@ Nội dung được sắp theo người học và tuần học, nội dung của
 | Bài tập tuần | `assignments/weekly/week-XX.md` | Học viên | Bài tập là nộp lại bằng chứng của lab, đầu trang có bảng nhiệm vụ |
 | Slide | `slides/<deck>/session-NN.md` | Học viên, mentor | Chỉ khái niệm, sơ đồ, demo outline, recap; không chép lệnh lab |
 | Kịch bản buổi | `mentors/sessions/session-NN.md` | Mentor | Demo của mentor, câu hỏi cho lớp, khung thời gian, ghi chú giảng viên |
-| Barem chấm | `mentors/grading/week-XX.md` | Mentor | Barem chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh, câu hỏi vấn đáp |
+| Hướng dẫn chấm | `mentors/grading/week-XX.md` | Mentor | Barem chi tiết của tuần, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh, câu hỏi vấn đáp |
 | Đáp án | `mentors/walkthroughs/week-XX.md` | Mentor, học viên sau khi nộp bài | Nằm trong website, hub tuần link tới |
 | Tra cứu | `resources/` (setup-guide, setup-github, terminal-101, glossary, troubleshooting-setup, cheatsheets) | Học viên | `setup-guide.md` là nguồn duy nhất cho các bước cài |
 | Mentor-only | `solutions/mentor-only/` | Mentor | Ngoài build (`srcExclude`), nên chuyển repo private |
 
 Mọi trang trong `mentors/` mở đầu bằng khối `::: warning Dành cho mentor`. Trang học viên không chứa "Demo của mentor", "Câu hỏi mentor nên hỏi lớp", khung thời gian giảng viên, lời giải L2 hay barem; các phần đó nằm ở `mentors/`.
 
-Môi trường thống nhất mọi trang phải khớp: repo giáo trình clone vào `~/devops-course` trong WSL; repo cá nhân `devops-labs` để public; cluster kind tên `club`, context `kind-club` (từ buổi 21); `postgres:17-alpine`; image `club-api:1.0.0`, `club-web:1.0.0`; namespace `club`; service Compose `frontend`, `backend`, `postgres`; port web 8080.
+Môi trường thống nhất mọi trang phải khớp: repo giáo trình clone vào `~/devops-course` (WSL, hoặc Git Bash ở buổi 01); repo cá nhân `devops-labs` để public; cluster kind tên `club`, context `kind-club` (từ buổi 21); `postgres:17-alpine`; image `club-api:1.0.0`, `club-web:1.0.0`; namespace `club`; service Compose `frontend`, `backend`, `postgres`; port web 8080.
 
 
 ## 2. Quy trình thay đổi nội dung
@@ -110,7 +110,7 @@ Khi sửa một bài học, đi hết danh sách này trong cùng một PR:
 - [ ] Slide `slides/<deck>/session-NN.md` khớp khái niệm, không chép lệnh lab.
 - [ ] Bài tập tuần `assignments/weekly/week-XX.md`: bảng nhiệm vụ trỏ đúng Phần của lab.
 - [ ] Kịch bản `mentors/sessions/session-NN.md` khớp demo và thời gian mới.
-- [ ] Barem `mentors/grading/week-XX.md` và đáp án `mentors/walkthroughs/week-XX.md` khớp bài tập, lệnh kiểm tra nhanh còn chạy đúng.
+- [ ] Hướng dẫn chấm `mentors/grading/week-XX.md` và đáp án `mentors/walkthroughs/week-XX.md` khớp bài tập, lệnh kiểm tra nhanh còn chạy đúng.
 - [ ] Nếu đổi bước cài: sửa `resources/setup-guide.md` (nguồn duy nhất), các trang khác chỉ link.
 - [ ] Nếu đổi thuật ngữ: cập nhật `resources/glossary.md`.
 - [ ] Nếu đổi phiên bản công cụ, tên image, namespace hoặc tên cluster: rà toàn repo theo môi trường thống nhất ở mục 1.1.
@@ -164,6 +164,9 @@ Quy tắc:
 - Không ghi chi tiết nhạy cảm về đáp án.
 
 ## 5. Repo private chứa đáp án (solutions)
+
+> Phạm vi: `mentors/walkthroughs/` (hướng dẫn giải từng tuần) được xuất bản công khai trên site để học viên đối chiếu SAU KHI nộp bài tuần đó. Chỉ `solutions/mentor-only/` (bản tham chiếu capstone, answer key, đáp án tình huống lỗi) cần nằm ở repo private.
+
 
 Đáp án, bản "fixed" của tình huống lỗi và hướng dẫn xử lý chi tiết không được nằm trong repo công khai của giáo trình, vì học viên có thể đọc trước và làm mất mục đích của phần Break và L2.
 
@@ -304,4 +307,4 @@ Học viên và cựu học viên được khuyến khích đóng góp: sửa l�
 - [ ] Bản phát hành mới nhất đã được tag và có CHANGELOG đầy đủ.
 - [ ] Tool refresh của kỳ tới đã có Issue và người phụ trách.
 - [ ] Bảo đảm CI xanh, site tài liệu build được và triển khai được.
-- [ ] Danh sách mentor và lịch đào tạo mentor mới (xem [Sổ tay mục 17](handbook.md)) đã bàn giao.
+- [ ] Danh sách mentor và lịch đào tạo mentor mới (xem [Tuyển và đào tạo mentor](mentor-onboarding.md)) đã bàn giao.

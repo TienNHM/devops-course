@@ -1,6 +1,6 @@
 # Slide buổi 08 – Docker CLI
 
-> **Tóm tắt:** Dùng thành thạo Docker CLI để chạy, kiểm tra, debug, dừng, xóa container và đẩy image lên registry cục bộ, rồi chẩn đoán lỗi port bận và container thoát ngay. Bài lab đầy đủ: [Buổi 08](../../labs/week-04/session-08.md). Kịch bản mentor: [Kịch bản Buổi 08](../../mentors/sessions/session-08.md).
+> **Tóm tắt:** Dùng thành thạo Docker CLI để chạy, kiểm tra, debug, dừng, xóa container và đẩy image lên registry cục bộ, rồi chẩn đoán lỗi port bận và container thoát ngay. Bài lab đầy đủ: [Buổi 08](../../labs/week-04/session-08.md).
 
 ## Slide 1: Mục tiêu buổi học
 

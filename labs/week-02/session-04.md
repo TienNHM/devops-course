@@ -301,7 +301,7 @@ stat -c '%A %U %G' /srv/club-shared
 
 ## Nộp bài
 
-Nộp vào `lab-04/` trong repo `devops-labs` theo [mẫu nộp lab](../../templates/lab-template.md). Chưa dùng được Git thì upload trên web GitHub hoặc làm theo mục "Git trong 10 phút" của [Bắt đầu từ đây](../../curriculum/getting-started.md); push và Pull Request thành thạo từ [Buổi 06 – Git & GitHub Workflow](../week-03/session-06.md). Chi tiết nhiệm vụ và bảng điểm: [Bài tập tuần 2](../../assignments/weekly/week-02.md).
+Nộp vào `lab-04/` trong repo `devops-labs` theo [mẫu nộp lab](../../templates/lab-template.md). Chưa dùng được Git thì upload trên web GitHub hoặc làm theo mục [Git trong 10 phút](../../curriculum/how-to-learn.md#git-10-phut); push và Pull Request thành thạo từ [Buổi 06 – Git & GitHub Workflow](../week-03/session-06.md). Chi tiết nhiệm vụ và bảng điểm: [Bài tập tuần 2](../../assignments/weekly/week-02.md).
 
 - [ ] `README.md` trả lời đủ 7 câu (vấn đề, kiến thức, các bước, kết quả, lỗi đã gặp, cách khắc phục, cải thiện) và ghi level đã làm (L1/L2).
 - [ ] `evidence/command-output.txt` có output của `id`, `ls -ld /srv/club-shared`, thử quyền của ba user, `ps`, `kill` và thí nghiệm biến môi trường; `screenshots/` có ảnh kèm (không thay log).

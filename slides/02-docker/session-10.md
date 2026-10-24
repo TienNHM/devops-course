@@ -1,6 +1,6 @@
 # Slide buổi 10 – Image Optimization
 
-> **Tóm tắt:** Làm image nhỏ hơn, build nhanh hơn, an toàn hơn bằng layer cache, .dockerignore, multi-stage, non-root user và tagging, rồi chứng minh bằng số liệu. Bài lab đầy đủ: [Buổi 10](../../labs/week-05/session-10.md). Kịch bản dạy: [Kịch bản mentor buổi 10](../../mentors/sessions/session-10.md).
+> **Tóm tắt:** Làm image nhỏ hơn, build nhanh hơn, an toàn hơn bằng layer cache, .dockerignore, multi-stage, non-root user và tagging, rồi chứng minh bằng số liệu. Bài lab đầy đủ: [Buổi 10](../../labs/week-05/session-10.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -90,13 +90,12 @@ flowchart LR
 
 ---
 
-## Slide 9: Demo của mentor (outline)
+## Slide 9: Demo
 
 - Baseline: build `Dockerfile.naive` của `hello-node`, image trên 1 GB (ví dụ `1.6GB`).
 - Thêm `big.bin` và `.env` giả: `transferring context` khoảng 31 MB, `cat /app/.env` trong image in ra mật khẩu giả.
 - Sửa code, build lại naive: `COPY . .` và `RUN npm install` chạy lại, không có `CACHED`.
 - Thêm `.dockerignore` và build `Dockerfile.optimized`: khoảng 200-250 MB, không còn `.env`, chạy `uid=1000`.
-- Chi tiết từng bước: [Kịch bản mentor buổi 10](../../mentors/sessions/session-10.md).
 
 ---
 

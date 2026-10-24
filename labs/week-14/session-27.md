@@ -319,7 +319,7 @@ Nộp vào thư mục `lab-27/` trong repo `devops-labs` theo `templates/lab-tem
 Buổi tiếp theo: [Buổi 28 – Kubernetes Operations](session-28.md).
 
 ::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Ba thử thách đầy đủ, kèm tiêu chí hoàn thành và gợi ý từng bậc, nằm ở [Buổi 27 – Thử thách nâng cao](session-27-challenge.md). Hãy tự thử 15 phút trước khi mở gợi ý; lời giải ở [Walkthrough tuần 14](../../mentors/walkthroughs/week-14.md) (mở sau khi nộp bài).
+Ba thử thách đầy đủ, kèm tiêu chí hoàn thành và gợi ý từng bậc, nằm ở [Buổi 27 – Thử thách nâng cao](session-27-challenge.md). Hãy tự thử 15 phút trước khi mở gợi ý; lời giải ở [trang tuần 14](README.md) (mở sau khi nộp bài).
 Gồm: vòng đời PV/PVC, chuyển PV sang `Retain`, và Ingress cho host thứ hai `api.club.localhost`.
 :::
 

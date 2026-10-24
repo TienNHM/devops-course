@@ -82,7 +82,7 @@ flowchart LR
 
 ---
 
-## Slide 8: Demo outline - dự đoán, phá, quan sát, sửa
+## Slide 8: Demo – dự đoán, phá, quan sát, sửa
 
 - Trạng thái khỏe: hai Pod `club-api` `1/1`, API trả JSON có Alice và Bob
 - Xóa Pod backend: Pod chuyển `Terminating`, Pod mới `ContainerCreating` rồi `Running`

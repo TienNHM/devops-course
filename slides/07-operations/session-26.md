@@ -113,13 +113,13 @@ sequenceDiagram
 
 ---
 
-## Slide 9: Demo của mentor (outline)
+## Slide 9: Demo
 
 - Xem requests, limits và QoS hiện tại của `club-api`.
 - Tắt database (scale StatefulSet về 0): quan sát READY chuyển `1/1` sang `0/1`, RESTARTS giữ nguyên, Endpoints của `backend` rỗng.
 - Bật database lại: hai IP trở về Endpoints, không Pod nào bị restart.
 - Câu hỏi: nếu liveness trỏ `/ready` thì bước tắt database sẽ khác gì?
-- Lệnh đầy đủ nằm ở trang dành cho mentor, không chép lại trên slide.
+- Lệnh chi tiết do người hướng dẫn chạy trực tiếp trên cluster; bạn quan sát và ghi lại dự đoán của mình.
 
 ---
 

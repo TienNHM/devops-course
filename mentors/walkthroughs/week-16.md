@@ -1,26 +1,20 @@
-# Walkthrough tuần 16 – Capstone: kiểm thử, gỡ lỗi và bảo vệ
+# Đáp án tuần 16 – Capstone: kiểm thử, gỡ lỗi và bảo vệ
 
-::: warning Dành cho mentor và học viên đã nộp bài
-Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+::: warning Đáp án đối chiếu: học viên chỉ xem sau khi đã nộp bài tuần này
+Mentor dùng để chấm và hướng dẫn. Tuần 16 là phần chứng minh khả năng vận hành: giá trị nằm ở dự đoán, quan sát và chẩn đoán của chính nhóm, không nằm ở việc có cùng câu chữ với trang này. Hãy đọc sau khi nhóm đã tự làm và đã demo, rồi đối chiếu chứ không chép.
 :::
 
-> **Tóm tắt:** Hướng dẫn giải buổi 31 (clean clone, ba sự cố trên kind, bảo mật, runbook) và buổi 32 (demo, bảo vệ kỹ thuật), kèm checklist Definition of Done, lỗi tích hợp thường gặp và bảng chấm cho mentor.
+> **Tóm tắt:** Đáp án buổi 31 (clean clone, ba sự cố trên kind, bảo mật, runbook) và buổi 32 (demo, bảo vệ kỹ thuật), kèm checklist Definition of Done, lời giải L2, hiểu lầm hay gặp và đáp án năm câu hỏi kiểm tra.
 
-## Cách dùng tài liệu này
+- Lệnh và kết quả mong đợi bám theo hai bài lab: [buổi 31](../../labs/week-16/session-31.md) và [buổi 32](../../labs/week-16/session-32.md); bài tập tuần ở [Bài tập tuần 16](../../assignments/weekly/week-16.md). Tiêu chí tổng thể: [đề bài Capstone](../../assignments/capstone/README.md), [hướng dẫn demo](../../assignments/capstone/demo-guide.md) và [rubric](../../curriculum/capstone-rubric.md). Cách chấm: [Hướng dẫn chấm tuần 16](../grading/week-16.md).
+- Trang này không đưa mã nguồn hoàn chỉnh của hệ thống. Capstone dùng mã của chính nhóm; ở đây chỉ có cách tiếp cận, checklist và cách chẩn đoán.
+- Học viên viết dự đoán trước khi chạy lệnh. Dự đoán sai không bị trừ điểm; dự đoán viết sau khi đã thấy kết quả mới bị trừ.
 
-Tài liệu này được công bố sau khi tuần 16 kết thúc. Hãy đọc nó sau khi nhóm đã tự làm và đã demo, rồi đối chiếu chứ không chép. Tuần 16 là phần chứng minh khả năng vận hành: giá trị nằm ở dự đoán, quan sát và chẩn đoán của chính bạn, không nằm ở việc có cùng câu chữ với tài liệu này.
+Mức kiểm chứng: phần Compose và hành vi của API đã chạy với PostgreSQL 17 trong container tạm. Các hiện tượng trên Kubernetes (rolling update, readiness, Secret, events) suy ra từ manifest của starter-project và các bài lab; chuỗi sự kiện chi tiết có thể khác đôi chút giữa các phiên bản, nên mentor chạy thử mọi kịch bản gây lỗi trước khi giao.
 
-- Lệnh và kết quả mong đợi bám theo hai bài lab: [buổi 31](../../labs/week-16/session-31.md) và [buổi 32](../../labs/week-16/session-32.md); bài tập tuần ở [Bài tập tuần 16](../../assignments/weekly/week-16.md). Tiêu chí tổng thể: [đề bài Capstone](../../assignments/capstone/README.md), [hướng dẫn demo](../../assignments/capstone/demo-guide.md) và [rubric](../../curriculum/capstone-rubric.md).
-- Tài liệu này không đưa mã nguồn hoàn chỉnh của hệ thống. Capstone dùng mã của chính nhóm; ở đây chỉ có cách tiếp cận, checklist và cách chẩn đoán.
-- Trong bài làm, hãy viết dự đoán trước khi chạy lệnh. Dự đoán sai không bị trừ điểm; dự đoán viết sau khi đã thấy kết quả mới bị trừ.
+## Buổi 31 – Testing & Troubleshooting
 
-Về mức độ kiểm chứng: phần Compose và hành vi của API đã được chạy lại với PostgreSQL 17 trong container tạm. Các hiện tượng trên Kubernetes (rolling update, readiness, Secret, events) được suy ra từ manifest của starter-project và các bài lab; cụm kind chưa được dựng lại khi viết tài liệu này, nên chuỗi sự kiện chi tiết có thể khác đôi chút giữa các phiên bản.
-
----
-
-### Buổi 31 – Testing & Troubleshooting
-
-#### Đáp án các nhiệm vụ L1
+### Đáp án các phần lab
 
 **Phần 1 – Clean clone với Compose.** Mục tiêu là tìm ra điều "chỉ chạy trên máy tôi". Chuỗi kiểm tra và cách đọc kết quả:
 
@@ -38,11 +32,11 @@ Về mức độ kiểm chứng: phần Compose và hành vi của API đã đư
 
 **Phần 2 – Triển khai lên kind.** Trình tự đúng: build image có tag phiên bản (`club-api:1.0.0`, `club-web:1.0.0`), `kind load docker-image` (thêm `--name` nếu cluster không có tên mặc định), tạo namespace, tạo Secret bằng lệnh với `--dry-run=client -o yaml | kubectl apply -f -` (không có file chứa mật khẩu trong Git), apply ConfigMap, PostgreSQL, backend, frontend, Ingress, rồi chờ `kubectl rollout status deployment/club-api -n club`.
 
-Một bước mà bài lab ban đầu thiếu và đã được bổ sung: nạp schema. Trên Kubernetes, `init.sql` không tự chạy vì không có volume nào gắn nó vào PostgreSQL. Với PVC mới, nếu bỏ qua bước này thì mọi Pod đều Ready (`/ready` chỉ chạy `SELECT 1`) nhưng `/api/members` trả 500. Lệnh nạp: `kubectl exec -i -n club postgres-0 -- psql -U club -d clubdb < database/init.sql`. Tình huống này là một ví dụ tốt cho troubleshooting log: triệu chứng "Pod Ready nhưng API 500", bằng chứng `kubectl logs` của Pod có lỗi quan hệ `members` không tồn tại, nguyên nhân gốc là DB chưa có bảng.
+Nạp schema: trên Kubernetes, `init.sql` không tự chạy vì không có volume nào gắn nó vào PostgreSQL. Với PVC mới, nếu bỏ qua bước này thì mọi Pod đều Ready (`/ready` chỉ chạy `SELECT 1`) nhưng `/api/members` trả 500. Lệnh nạp: `kubectl exec -i -n club postgres-0 -- psql -U club -d clubdb < database/init.sql`. Đây là một ví dụ tốt cho troubleshooting log: triệu chứng "Pod Ready nhưng API 500", bằng chứng `kubectl logs` của Pod có lỗi quan hệ `members` không tồn tại, nguyên nhân gốc là DB chưa có bảng.
 
-Đo độ trễ: năm lần `curl -w "%{http_code} %{time_total}s\n"` đều phải trả 200, thường vài mili giây đến vài chục mili giây. Với 50 request tuần tự, tổng thời gian của 2 replica và 3 replica gần nhau, vì mỗi lúc chỉ có một request được xử lý, nút thắt là `curl`, Ingress và một PostgreSQL duy nhất. Nếu số của bạn khác, hãy nêu bằng chứng cho nút thắt bạn nghĩ tới (ví dụ so thời gian khi gọi thẳng `port-forward` với khi gọi qua Ingress). Cuối bước đo phải `kubectl scale ... --replicas=2`.
+Đo độ trễ: năm lần `curl -w "%{http_code} %{time_total}s\n"` đều phải trả 200, thường vài mili giây đến vài chục mili giây. Với 50 request tuần tự, tổng thời gian của 2 replica và 3 replica gần nhau, vì mỗi lúc chỉ có một request được xử lý, nút thắt là `curl`, Ingress và một PostgreSQL duy nhất. Nếu số của học viên khác, họ cần nêu bằng chứng cho nút thắt họ nghĩ tới (ví dụ so thời gian khi gọi thẳng `port-forward` với khi gọi qua Ingress). Cuối bước đo phải `kubectl scale ... --replicas=2`.
 
-**Phần 3 – Ba sự cố.** Với mỗi sự cố, dưới đây là đáp án mẫu dạng troubleshooting log 5 trường (ASCII để dán vào file nộp). Phần "Dự đoán trước" của bạn phải là của chính bạn.
+**Phần 3 – Ba sự cố.** Với mỗi sự cố, dưới đây là đáp án mẫu dạng troubleshooting log 5 trường (ASCII để dán vào file nộp). Phần "Dự đoán trước" phải là của chính học viên.
 
 Sự cố A, xóa một Pod backend:
 
@@ -56,7 +50,7 @@ Cach sua: khong can sua
 Phong tranh: giu it nhat 2 replica va readiness probe dung de Service chi gui traffic toi Pod san sang
 ```
 
-Điều cần giải thích trong `report.md`: người dùng không thấy lỗi vì Service chỉ chọn Pod đã Ready và còn một Pod phục vụ. Lưu ý trung thực: vì cập nhật danh sách endpoint không tức thời, có thể thấy một vài mã 502 hoặc 503 thoáng qua; nếu thấy thì ghi lại đúng như quan sát thay vì sửa cho khớp lý thuyết.
+Điều cần giải thích trong `report.md`: người dùng không thấy lỗi vì Service chỉ chọn Pod đã Ready và còn một Pod phục vụ. Trung thực: vì cập nhật danh sách endpoint không tức thời, có thể thấy một vài mã 502 hoặc 503 thoáng qua; nếu thấy thì ghi lại đúng như quan sát thay vì sửa cho khớp lý thuyết.
 
 Sự cố B, sai tag image:
 
@@ -84,7 +78,7 @@ Cach sua: tao lai Secret voi mat khau goc, kubectl rollout restart deployment/cl
 Phong tranh: khong sua Secret bang tay tren cluster dang chay; thu thay doi tren moi truong test, co smoke test sau deploy
 ```
 
-Ba điểm dễ sai của sự cố này: (1) phải xem log của Pod mới, không phải `kubectl logs deployment/club-api` vì lệnh đó có thể chọn Pod cũ; (2) `/ready` không in log lỗi, chỉ route `/api/members` mới ghi lỗi, và request qua Ingress không tới Pod chưa Ready, nên phải gọi trực tiếp vào Pod bằng `kubectl exec`; (3) sau khi khôi phục Secret phải `rollout restart` vì biến môi trường chỉ đọc khi container khởi động. Mật khẩu gốc lưu trong biến shell `ORIG_PW` và không được in ra evidence; nếu lệnh của bạn hiển thị, che bằng `***`.
+Ba điểm dễ sai của sự cố này: (1) phải xem log của Pod mới, không phải `kubectl logs deployment/club-api` vì lệnh đó có thể chọn Pod cũ; (2) `/ready` không in log lỗi, chỉ route `/api/members` mới ghi lỗi, và request qua Ingress không tới Pod chưa Ready, nên phải gọi trực tiếp vào Pod bằng `kubectl exec`; (3) sau khi khôi phục Secret phải `rollout restart` vì biến môi trường chỉ đọc khi container khởi động. Mật khẩu gốc lưu trong biến shell `ORIG_PW` và không được in ra evidence; nếu lệnh hiển thị, che bằng `***`.
 
 Chín đoạn output có nhãn (trước, trong, sau cho từng sự cố) là yêu cầu bắt buộc. Cách làm gọn: viết một hàm shell in dòng nhãn, ví dụ `=== Su co B - trong luc loi ===`, rồi chạy lệnh với `tee -a evidence/command-output.txt`. Kết thúc bằng `kubectl get pods -n club` khỏe mạnh và một `curl` trả 200.
 
@@ -97,7 +91,7 @@ Chín đoạn output có nhãn (trước, trong, sau cho từng sự cố) là y
 | `docker run --rm club-api:1.0.0 id` | `uid=1000(node)` | `uid=0` là Không đạt |
 | `grep -n -A3 "^permissions" .github/workflows/*.yml` | Có khối `permissions`, chỉ cấp quyền cần thiết | Thiếu khối nghĩa là workflow dùng quyền mặc định rộng hơn cần |
 
-Bảng 5 hạng mục trong `report.md` nên có trạng thái trung thực. Hạng mục quét image: nếu chưa chạy Trivy thì ghi "Chưa làm" kèm lý do và kế hoạch, thay vì ghi "Đạt". Hạng mục pin phiên bản: kiểm tra `image:` trong `compose.yaml` và `k8s/` không dùng `latest` làm tag duy nhất (starter-project dùng `postgres:17-alpine`, `club-api:1.0.0`).
+Bảng 5 hạng mục trong `report.md` phải có trạng thái trung thực. Hạng mục quét image: nếu chưa chạy Trivy thì ghi "Chưa làm" kèm lý do và kế hoạch, thay vì ghi "Đạt". Hạng mục pin phiên bản: kiểm tra `image:` trong `compose.yaml` và `k8s/` không dùng `latest` làm tag duy nhất (starter-project dùng `postgres:17-alpine`, `club-api:1.0.0`).
 
 **Phần 5 – Runbook.** Mỗi mục một lệnh đã chạy thật, kèm "khi nào dùng" và kết quả mong đợi, và chỉ cách lấy tên Pod thay vì cố định tên:
 
@@ -111,9 +105,9 @@ Bảng 5 hạng mục trong `report.md` nên có trạng thái trung thực. H�
 
 Runbook không được chứa mật khẩu, token hay tên Pod cố định như `club-api-7d9f8b6c5-abcde`.
 
-#### Lời giải phần L2
+### Lời giải L2
 
-Thử thách là thiết kế một failure injection mới cho nhóm bạn. Các ý dưới đây không nằm trong gợi ý của bài lab và đều có một lệnh gây lỗi, một lệnh hoàn tác (chưa chạy lại trên kind khi viết tài liệu, hãy tự chạy thử trước khi giao):
+Thử thách là thiết kế một failure injection mới cho nhóm bạn. Các ý dưới đây không nằm trong gợi ý của bài lab và đều có một lệnh gây lỗi, một lệnh hoàn tác (hãy tự chạy thử trước khi giao):
 
 | Kịch bản | Cách gây | Triệu chứng người nhận thấy | Nguyên nhân gốc | Hoàn tác |
 | --- | --- | --- | --- | --- |
@@ -121,9 +115,7 @@ Thử thách là thiết kế một failure injection mới cho nhóm bạn. Cá
 | Sai tên key trong Secret | Đổi `key` trong `secretKeyRef` sang tên không có | Pod mới ở `CreateContainerConfigError`, Pod cũ vẫn phục vụ | Key không tồn tại trong Secret | `kubectl rollout undo deployment/club-api -n club` |
 | Sai cổng của readiness | Đổi `port` của readinessProbe sang cổng khác | Pod mới `0/1`, event báo probe bị từ chối kết nối | Probe gọi cổng ứng dụng không lắng nghe | `kubectl rollout undo deployment/club-api -n club` |
 
-**Lời giải mẫu bổ sung: đổi đường dẫn readiness.** Đây là ví dụ đã có trong bài lab cũ (chưa chạy lại trên kind khi viết tài liệu, hãy tự chạy thử trước khi giao).
-
-Gây lỗi:
+Ví dụ đổi đường dẫn readiness. Gây lỗi:
 
 ```bash
 kubectl patch deployment club-api -n club --type=json \
@@ -132,11 +124,11 @@ kubectl patch deployment club-api -n club --type=json \
 
 Triệu chứng: Pod mới `Running` nhưng `0/1` Ready, rollout bị kẹt, Pod cũ vẫn phục vụ. `kubectl describe pod` cho thấy `Readiness probe failed: HTTP probe failed with statuscode: 404`. Sửa: `kubectl rollout undo deployment/club-api -n club`. Phòng tránh: kiểm thử probe bằng `curl` trong Pod trước khi đưa vào manifest, và để CI chạy `kubectl apply --dry-run=client` cho cú pháp.
 
-Các ý tưởng khác trong gợi ý của bài lab: đổi `DB_HOST` trong ConfigMap thành `postgress` (xem lời giải Phá lỗi bên dưới), đặt memory limit rất thấp để Pod bị `OOMKilled`, đặt `nodeSelector` không tồn tại để Pod `Pending`. Mỗi ý có cách hoàn tác bằng `kubectl rollout undo` hoặc `kubectl apply -f` lại manifest gốc; với trường mà manifest gốc không có, như `nodeSelector`, ưu tiên `rollout undo`.
+Các ý tưởng khác: đổi `DB_HOST` trong ConfigMap thành `postgress` (xem mục điều tra bên dưới), đặt memory limit rất thấp để Pod bị `OOMKilled`, đặt `nodeSelector` không tồn tại để Pod `Pending`. Mỗi ý có cách hoàn tác bằng `kubectl rollout undo` hoặc `kubectl apply -f` lại manifest gốc; với trường mà manifest gốc không có, như `nodeSelector`, ưu tiên `rollout undo`.
 
 Cách chấm báo cáo 5 mục của nhóm nhận: có đi từ trạng thái, sự kiện, log tới cấu hình không (và có bỏ bước nào không); nguyên nhân gốc có phân biệt với triệu chứng không; có lệnh và output làm bằng chứng không; cách sửa có đúng cách hoàn tác không. Một chẩn đoán tốt bắt đầu bằng `kubectl get endpoints` khi Pod đều Ready mà vẫn lỗi.
 
-#### Lời giải phần Phá lỗi và debug: `DB_HOST` sai chính tả
+### Điều tra `DB_HOST` sai chính tả
 
 Triệu chứng nhận được: rollout treo, Pod mới `0/1`, web vẫn dùng được. Cây điều tra:
 
@@ -147,7 +139,7 @@ Triệu chứng nhận được: rollout treo, Pod mới `0/1`, web vẫn dùng 
 
 Nguyên nhân gốc: tên host trong ConfigMap sai nên DNS trong cluster không phân giải được, không phải lỗi code. Sửa: `kubectl apply -f k8s/configmap.yaml`, `kubectl rollout restart deployment/club-api -n club`, `kubectl rollout status ...`. Phòng tránh: giữ cấu hình trong Git và apply từ file thay vì `patch` tay, ghi log lý do khi `/ready` thất bại, thêm smoke test sau deploy.
 
-#### Những hiểu lầm hay gặp ở buổi 31
+### Hiểu lầm hay gặp ở buổi 31
 
 | Hiểu lầm | Thực tế |
 | --- | --- |
@@ -159,11 +151,9 @@ Nguyên nhân gốc: tên host trong ConfigMap sai nên DNS trong cluster không
 | "Ghi `ImagePullBackOff` là nguyên nhân gốc" | Đó là triệu chứng; nguyên nhân gốc là tag không tồn tại hoặc chưa `kind load` |
 | "Quét `grep password` ra dòng nào cũng là lộ secret" | Phải đọc từng dòng; văn bản mô tả khác giá trị thật |
 
----
+## Buổi 32 – Final Demo & Review
 
-### Buổi 32 – Final Demo & Review
-
-#### Đáp án các nhiệm vụ L1
+### Đáp án các phần lab
 
 **Checklist Definition of Done để kiểm tra trước demo.** Đối chiếu từng mục với bằng chứng chạy được bằng một lệnh hoặc một thao tác, theo mục 5 của [đề bài Capstone](../../assignments/capstone/README.md):
 
@@ -180,7 +170,7 @@ Nguyên nhân gốc: tên host trong ConfigMap sai nên DNS trong cluster không
 | Không secret trong lịch sử Git | `git log -p --all` quét, `git ls-files` | Chỉ xóa file ở commit sau mà không rotate |
 | Mỗi người có PR và review | `git shortlog -sn --no-merges`, danh sách PR | Review chỉ ghi "OK" |
 
-**Cách chia việc cho buổi demo.** Mỗi thành viên ít nhất một đoạn theo bảng phút của [demo-guide](../../assignments/capstone/demo-guide.md). Phân công hợp lý theo kinh nghiệm: người làm Compose nói phần Compose, nhưng khi bảo vệ mentor có thể chỉ định ai cũng được, nên cả nhóm luyện đổi vai ở buổi 31.
+**Chia việc cho buổi demo.** Mỗi thành viên ít nhất một đoạn theo bảng phút của [demo-guide](../../assignments/capstone/demo-guide.md). Người làm Compose nói phần Compose, nhưng khi bảo vệ mentor có thể chỉ định ai cũng được, nên cả nhóm luyện đổi vai ở buổi 31.
 
 **Trạng thái xuất phát.** Chọn một trong hai và thống nhất: (a) cluster có sẵn, image đã nạp, chưa apply manifest để triển khai trên màn hình; (b) đã triển khai, chỉ trình bày kiểm tra. Nếu chọn (a), nhớ có bước nạp schema vào `postgres-0` trong kịch bản, nếu không API sẽ trả 500 ngay giữa buổi demo.
 
@@ -194,11 +184,26 @@ Nguyên nhân gốc: tên host trong ConfigMap sai nên DNS trong cluster không
 | Sai mật khẩu DB | Pod mới `0/1`; `kubectl logs` của Pod mới | Log có lỗi xác thực; Pod cũ vẫn phục vụ | Khôi phục Secret, `rollout restart` |
 | Readiness fail | `kubectl describe pod`; `kubectl get endpoints backend -n club` | Probe trả 404 hoặc bị từ chối; endpoints thiếu Pod mới | `rollout undo` hoặc sửa đường dẫn probe |
 
-Cấu trúc câu trả lời nên theo ba bước kết luận, lý do, bằng chứng (lệnh hoặc file). Nếu quá hai phút chưa xong, nói rõ và chuyển sang video dự phòng; không xóa sạch làm lại mà không giải thích.
+Cấu trúc câu trả lời theo ba bước kết luận, lý do, bằng chứng (lệnh hoặc file). Nếu quá hai phút chưa xong, nói rõ và chuyển sang video dự phòng; không xóa sạch làm lại mà không giải thích.
 
 **Peer review và lessons learned.** Nhận xét tốt nêu sự việc cụ thể (PR, Issue, commit) và hành vi quan sát được; nhận xét kém chung chung hoặc đánh giá con người. Lessons learned tốt gắn với một sự việc, ví dụ "PR đổi tên trường làm cột Name trống vì không có smoke test với DB thật" thay vì "làm việc nhóm tốt hơn".
 
-#### Lời giải phần L2
+### Gợi ý câu trả lời bảo vệ kỹ thuật
+
+Dùng cấu trúc kết luận, lý do, bằng chứng. Phần bằng chứng là lệnh hoặc file trong repo của nhóm, nên bảng sau chỉ gợi ý hướng; học viên không nên đọc thuộc.
+
+| Câu hỏi | Kết luận và lý do ngắn | Bằng chứng ở đâu |
+| --- | --- | --- |
+| Liveness khác readiness? | Readiness quyết định Pod có nhận traffic không; liveness quyết định Pod có bị restart không. Liveness không nên phụ thuộc DB | Phần `readinessProbe` và `livenessProbe` trong `k8s/backend.yaml` |
+| `down` khác `down -v`? | `down` giữ volume, `down -v` xóa volume nên mất dữ liệu | `compose.yaml` (volume `postgres-data`), thử lại bằng `docker volume ls` |
+| Backend gọi PostgreSQL bằng tên gì? | `postgres`, phân giải bằng DNS nội bộ của network `club-network` (hoặc Service `postgres` trên k8s) | `DB_HOST` trong `compose.yaml` và `k8s/configmap.yaml` |
+| Secret có thực sự bí mật? | Không; Secret chỉ mã hóa base64, bảo vệ bằng phân quyền, mã hóa at-rest và quản lý bằng công cụ chuyên dụng | `kubectl get secret club-secrets -n club -o yaml` (chỉ làm trên môi trường test) |
+| Truy ngược từ Pod về commit? | Tag image là SHA hoặc phiên bản gắn với commit | `kubectl describe pod` cho thấy image; đối chiếu tag trên GHCR và `git log` |
+| Dữ liệu còn khi xóa Pod PostgreSQL? Khi xóa PVC? | Xóa Pod: còn, vì StatefulSet gắn lại PVC. Xóa PVC: mất | `kubectl get pvc -n club` |
+| Vì sao dùng `GITHUB_TOKEN`? | Token sinh tự động, hết hạn khi job kết thúc, chỉ có quyền đã khai báo | Khối `permissions` trong `publish.yml` |
+| Rolling update giữ Pod cũ thế nào? | Chỉ tắt Pod cũ khi Pod mới Ready; `maxSurge` là số Pod thêm, `maxUnavailable` là số Pod được phép không sẵn sàng | Quan sát khi sự cố B; `kubectl rollout undo` để rollback |
+
+### Lời giải L2
 
 **Failure injection tự chọn: xóa Pod PostgreSQL.** Lệnh mẫu:
 
@@ -209,9 +214,9 @@ kubectl get pods -n club -w
 curl -s http://club.localhost/api/members
 ```
 
-Tên Pod `postgres-0` giả định StatefulSet tên `postgres`; hãy lấy tên thật từ `kubectl get pods`. Trong lúc Pod chưa Ready, `curl` có thể trả lỗi 500 hoặc 502 vài giây, sau đó hồi phục. Dự đoán đúng gồm ba điều: Pod `postgres-0` được tạo lại bởi StatefulSet; dữ liệu còn vì PVC `postgres-pvc` không bị xóa và Pod mới gắn lại đúng PVC đó; người dùng thấy lỗi vài giây khi Pod chưa Ready (API trả 500 hoặc 502), sau đó hồi phục. Quan sát thêm đã gặp khi kiểm chứng với starter-project: khi PostgreSQL ngắt kết nối đột ngột, tiến trình backend có thể thoát vì pool chưa xử lý sự kiện `error`, nên có thể thấy `RESTARTS` của Pod `club-api` tăng thêm 1. Bằng chứng cần nộp: `kubectl get pvc -n club` trước và sau (cùng một PVC, trạng thái `Bound`), dữ liệu truy vấn được trước và sau. Không xóa PVC trong thử thách này; xóa PVC là hành động mất dữ liệu có chủ ý.
+Tên Pod `postgres-0` giả định StatefulSet tên `postgres`; lấy tên thật từ `kubectl get pods`. Dự đoán đúng gồm ba điều: Pod `postgres-0` được tạo lại bởi StatefulSet; dữ liệu còn vì PVC `postgres-pvc` không bị xóa và Pod mới gắn lại đúng PVC đó; người dùng thấy lỗi vài giây khi Pod chưa Ready (API trả 500 hoặc 502), sau đó hồi phục. Quan sát thêm với starter-project: khi PostgreSQL ngắt kết nối đột ngột, tiến trình backend có thể thoát vì pool chưa xử lý sự kiện `error`, nên có thể thấy `RESTARTS` của Pod `club-api` tăng thêm 1. Bằng chứng cần nộp: `kubectl get pvc -n club` trước và sau (cùng một PVC, trạng thái `Bound`), dữ liệu truy vấn được trước và sau. Không xóa PVC trong thử thách này; xóa PVC là hành động mất dữ liệu có chủ ý.
 
-**Đề xuất cải tiến có ưu tiên.** Ví dụ danh sách đạt yêu cầu (mỗi mục phải kèm bằng chứng và ước lượng của riêng bạn):
+**Đề xuất cải tiến có ưu tiên.** Ví dụ danh sách đạt yêu cầu (mỗi mục phải kèm bằng chứng và ước lượng của riêng học viên):
 
 | Thứ tự | Đề xuất | Vấn đề quan sát được | Công sức ước lượng | Ưu tiên |
 | --- | --- | --- | --- | --- |
@@ -228,28 +233,13 @@ Tên Pod `postgres-0` giả định StatefulSet tên `postgres`; hãy lấy tên
 1. Nút thắt đầu tiên: một instance PostgreSQL duy nhất cùng kích thước connection pool mặc định của thư viện (mỗi backend giữ tối đa một số kết nối cố định), và `GET /api/members` trả toàn bộ danh sách không phân trang. Kiểm chứng bằng cách đo: số kết nối đang dùng trong PostgreSQL (`pg_stat_activity`), thời gian truy vấn khi bảng lớn, và chạy tải song song (nhiều request đồng thời, không phải vòng lặp tuần tự) để so thời gian theo số replica.
 2. Chuyển từ kind sang cluster thật: image registry (kéo từ GHCR thay vì `kind load`, cần `imagePullSecrets` nếu image riêng tư); Secret (quản lý bằng công cụ chuyên dụng hoặc secret manager, không tạo tay bằng `kubectl create`; nhớ Secret chỉ mã hóa base64, không phải mã hóa); Ingress (domain thật, TLS, nhiều replica của ingress controller); lưu trữ (StorageClass động, sao lưu định kỳ, có thể dùng cơ sở dữ liệu quản lý thay vì một StatefulSet một instance).
 
-#### Lời giải phần Phá lỗi và debug: mất dữ liệu sau `down -v`
+### Điều tra mất dữ liệu sau `down -v`
 
 Cây điều tra: (1) `docker volume ls`: `postgres-data` có thời điểm tạo mới; (2) xem lịch sử lệnh của terminal để tìm cờ `-v`; (3) `docker compose logs postgres`: thấy khởi tạo database mới và chạy `init.sql`. Nguyên nhân gốc: `-v` xóa named volume, dữ liệu nằm trong volume chứ không nằm trong container. Phòng tránh: chỉ dùng `down` bình thường, có script seed để dựng lại dữ liệu demo, sao lưu bằng `pg_dump` trước thao tác nguy hiểm, không dọn dẹp ngay trước demo.
 
-Tình huống 2, lệnh bất ngờ lỗi trước mặt mentor: nói to điều thấy, đọc log và events, nêu giả thuyết, kiểm chứng. Quá hai phút thì chuyển sang video dự phòng và nói rõ lý do.
+Khi một lệnh bất ngờ lỗi trước mặt mentor: nói to điều thấy, đọc log và events, nêu giả thuyết, kiểm chứng. Quá hai phút thì chuyển sang video dự phòng và nói rõ lý do.
 
-#### Gợi ý câu trả lời bảo vệ kỹ thuật
-
-Dùng cấu trúc kết luận, lý do, bằng chứng. Phần bằng chứng là lệnh hoặc file trong repo của nhóm mình, nên bảng sau chỉ gợi ý hướng; không nên đọc thuộc.
-
-| Câu hỏi | Kết luận và lý do ngắn | Bằng chứng ở đâu |
-| --- | --- | --- |
-| Liveness khác readiness? | Readiness quyết định Pod có nhận traffic không; liveness quyết định Pod có bị restart không. Liveness không nên phụ thuộc DB | Phần `readinessProbe` và `livenessProbe` trong `k8s/backend.yaml` |
-| `down` khác `down -v`? | `down` giữ volume, `down -v` xóa volume nên mất dữ liệu | `compose.yaml` (volume `postgres-data`), thử lại bằng `docker volume ls` |
-| Backend gọi PostgreSQL bằng tên gì? | `postgres`, phân giải bằng DNS nội bộ của network `club-network` (hoặc Service `postgres` trên k8s) | `DB_HOST` trong `compose.yaml` và `k8s/configmap.yaml` |
-| Secret có thực sự bí mật? | Không; Secret chỉ mã hóa base64, bảo vệ bằng phân quyền, mã hóa at-rest và quản lý bằng công cụ chuyên dụng | `kubectl get secret club-secrets -n club -o yaml` (chỉ làm trên môi trường test) |
-| Truy ngược từ Pod về commit? | Tag image là SHA hoặc phiên bản gắn với commit | `kubectl describe pod` cho thấy image; đối chiếu tag trên GHCR và `git log` |
-| Dữ liệu còn khi xóa Pod PostgreSQL? Khi xóa PVC? | Xóa Pod: còn, vì StatefulSet gắn lại PVC. Xóa PVC: mất | `kubectl get pvc -n club` |
-| Vì sao dùng `GITHUB_TOKEN`? | Token sinh tự động, hết hạn khi job kết thúc, chỉ có quyền đã khai báo | Khối `permissions` trong `publish.yml` |
-| Rolling update giữ Pod cũ thế nào? | Chỉ tắt Pod cũ khi Pod mới Ready; `maxSurge` là số Pod thêm, `maxUnavailable` là số Pod được phép không sẵn sàng | Quan sát khi sự cố B; `kubectl rollout undo` để rollback |
-
-#### Những hiểu lầm hay gặp ở buổi 32
+### Hiểu lầm hay gặp ở buổi 32
 
 | Hiểu lầm | Thực tế |
 | --- | --- |
@@ -259,46 +249,26 @@ Dùng cấu trúc kết luận, lý do, bằng chứng. Phần bằng chứng l�
 | "Đưa peer review vào repo cho minh bạch" | Chỉ mentor đọc; không đưa vào repo công khai |
 | "Dọn dẹp bằng `down -v` trước demo cho sạch" | Mất dữ liệu demo; chỉ dọn khi có script seed |
 
----
+## Bài tập tuần
 
-### Bài tập tuần
+Gợi ý cách làm cho [Bài tập tuần 16](../../assignments/weekly/week-16.md). Evidence luôn là output lệnh thật có dòng nhãn, ảnh chỉ bổ sung.
 
-Phần này gợi ý cách làm cho [bài tập tuần 16](../../assignments/weekly/week-16.md). Evidence luôn là output lệnh thật có dòng nhãn, ảnh chỉ bổ sung.
-
-#### Nhiệm vụ L1
-
-1. **Clean clone.** Dùng bảng của Phần 1 buổi 31 làm khung. Danh sách "điểm README cần sửa" phải cụ thể (tên bước, tên biến), hoặc ghi "không phát hiện" kèm lý do bạn tin như vậy.
+1. **Clean clone.** Dùng bảng của Phần 1 buổi 31 làm khung. Danh sách "điểm README cần sửa" phải cụ thể (tên bước, tên biến), hoặc ghi "không phát hiện" kèm lý do học viên tin như vậy.
 2. **kind và độ trễ.** Evidence đủ: `kind get clusters`, `kubectl config current-context`, `kubectl get nodes`, `docker image ls club-api`, `kubectl rollout status`, `kubectl get pods,svc,ingress -n club`, năm dòng `curl -w`, hai kết quả `time`. Lưu ý bước nạp schema và việc trả replica về 2.
 3. **Ba sự cố.** Dùng ba log mẫu của Phần 3 buổi 31 để so cấu trúc. Kiểm tra: dự đoán viết trước, nguyên nhân gốc không phải là triệu chứng, đủ chín đoạn output có nhãn, kết thúc ở trạng thái khỏe mạnh.
 4. **Bảo mật và runbook.** Dùng bảng 4 lệnh và bảng runbook ở trên. Nếu chưa quét image, ghi "Chưa làm" trung thực.
 5. **Demo và tự đánh giá.** `demo-commands.md` mỗi lệnh một dòng chú thích; log chạy thử có `date -Is` đầu và cuối; `links.md` có link PR đã review, run Actions xanh, package GHCR; lessons learned gắn với sự việc; peer review nộp riêng cho mentor.
 
-#### Nhiệm vụ L2
+Thử thách L2:
 
-- **A.** Xem bảng kịch bản ở lời giải L2 buổi 31 và tiêu chí chấm báo cáo của nhóm nhận. Cần có output bạn tự chạy thử và hoàn tác trước khi giao.
+- **A.** Xem bảng kịch bản ở lời giải L2 buổi 31 và tiêu chí chấm báo cáo của nhóm nhận. Cần có output học viên tự chạy thử và hoàn tác trước khi giao.
 - **B.** Xem lời giải L2 buổi 32. Bắt buộc có dự đoán ghi trước, `kubectl get pvc` trước và sau, tên Pod lấy từ `kubectl get pods`.
-- **C.** Dùng bảng cải tiến mẫu làm khung; số giờ phải là ước lượng của bạn và nêu cách ước lượng.
+- **C.** Dùng bảng cải tiến mẫu làm khung; số giờ phải là ước lượng của học viên và nêu cách ước lượng.
 
-#### Đáp án năm câu hỏi kiểm tra
+### Đáp án năm câu hỏi kiểm tra
 
 1. Clone mới chỉ có những gì nằm trong Git và README, trong khi máy làm việc có trạng thái ẩn. Hai ví dụ: thiếu `.env.example` khiến `docker compose up` báo thiếu `DB_PASSWORD`; image chưa `kind load` nên Pod `ImagePullBackOff`.
 2. Readiness probe (`/ready`) chạy `SELECT 1` nên fail khi sai mật khẩu, khiến Service loại Pod khỏi danh sách endpoint; liveness probe (`/health`) chỉ báo tiến trình còn sống nên vẫn 200 và Pod không bị restart. Pod cũ vẫn Ready nên người dùng chưa thấy lỗi.
 3. Chạy `kubectl rollout restart deployment/club-api -n club`, vì biến môi trường từ Secret chỉ được đọc khi container khởi động. Xác nhận mà không in mật khẩu: so sánh băm hoặc độ dài (ví dụ in `sha256sum` của giá trị trong Pod và của giá trị trong Secret, hoặc đơn giản là gọi `/api/members` trả 200 và Pod `1/1`).
 4. `down` giữ named volume nên dữ liệu còn; `down -v` xóa volume nên mất. Xóa Pod `postgres-0` thì dữ liệu còn, vì StatefulSet tạo lại Pod và gắn lại PVC `postgres-pvc`; PVC là thành phần quyết định.
 5. Ví dụ với Dockerfile multi-stage: kết luận (image cuối chỉ chứa runtime và `node_modules` production), lý do (giảm kích thước và bề mặt tấn công), bằng chứng (`grep -n -E '^FROM' backend/Dockerfile`, `docker history`). Với CI: kết luận (PR chạy ba lớp kiểm tra), lý do, bằng chứng (`ci.yml` và tab Actions).
-
----
-
-### Hướng dẫn chấm cho mentor
-
-Chấm bằng bằng chứng text trong `evidence/`, đối chiếu với repo nhóm. Điểm cá nhân nên phản ánh khả năng giải thích một phần mình không trực tiếp viết.
-
-| Tiêu chí | Bằng chứng cần thấy trong evidence/ | Dấu hiệu bài chép hoặc không hiểu | Câu hỏi vấn đáp |
-| --- | --- | --- | --- |
-| Clean clone và Compose | `pwd` và `git log` ở thư mục mới; `docker compose ps` có `healthy`; ba mã smoke test; chuỗi `down`, `up`, đọc lại; danh sách điểm README cần sửa cụ thể | Dùng thư mục cũ, không có nhận xét README, kết luận dữ liệu còn nhưng dùng `-v` | "Làm sao tôi biết bạn không dùng kiến thức ngoài README?" "Vì sao cần chờ `/ready`?" |
-| kind và độ trễ | Context bắt đầu bằng `kind-`; image có tag phiên bản; mọi Pod Ready; 5 dòng `curl -w`; hai số `time`; replica trả về 2 | Dùng `latest`, số liệu không có lệnh `time`, kết luận "thêm replica nhanh hơn" không có số đo | "Vì sao hai số gần nhau?" "Muốn thấy lợi ích của replica thì đo thế nào?" |
-| Ba sự cố | Chín đoạn output có nhãn; troubleshooting log 5 trường kèm dự đoán; Secret gốc được khôi phục; kết thúc khỏe mạnh | Dự đoán giống hệt đáp án, nguyên nhân gốc là triệu chứng, xem log của Pod cũ rồi kết luận không lỗi | "Vì sao Pod mới `0/1` mà không restart?" "Sao bạn gọi trực tiếp vào Pod mới?" "Sau khi sửa Secret làm gì tiếp?" |
-| Bảo mật và runbook | Output bốn lệnh kiểm tra; bảng 5 hạng mục trung thực; runbook đủ 5 mục dùng lệnh đã chạy | Ghi "Đạt" không có output, quét image khai nhưng không có kết quả, runbook dùng tên Pod cố định | "Dòng này trong kết quả `grep` là gì, vì sao chấp nhận?" "Vì sao liveness không gọi `/ready`?" |
-| Demo, bảo vệ, tự đánh giá | Log chạy thử có bấm giờ; `demo-commands.md` khớp tên service và nhãn; lessons learned gắn sự việc; có xác nhận đã nộp peer review | Lessons learned chung chung, lệnh không khớp manifest, peer review nằm trong repo | "Truy ngược từ Pod đang chạy về commit thế nào?" "Chuyện gì xảy ra khi xóa `postgres-0`? Khi xóa PVC?" |
-
-Mẹo kiểm tra nhanh: yêu cầu học viên chạy lại một sự cố bất kỳ ngay tại chỗ và đọc to điều quan sát; người thực sự đã làm sẽ đi đúng thứ tự trạng thái, sự kiện, log, cấu hình. Đối chiếu thời gian trong `date -Is` với lịch sử commit để thấy log có phải làm thật hay không. Nhớ rằng Capstone chấm theo [rubric](../../curriculum/capstone-rubric.md) tiêu chí 7 (Troubleshooting) và 10 (Demo và technical defense).

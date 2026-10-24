@@ -262,7 +262,7 @@ Nộp vào `lab-24/` trong repo `devops-labs` theo `templates/lab-template.md`. 
 Buổi tiếp theo: [Buổi 25 – Configuration Management](../week-13/session-25.md).
 
 :::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Mỗi thử thách có tiêu chí hoàn thành. Hãy tự thử 15 phút trước khi mở gợi ý; lời giải nằm trong [Walkthrough tuần 12](../../mentors/walkthroughs/week-12.md) (mở sau khi nộp bài).
+Mỗi thử thách có tiêu chí hoàn thành. Hãy tự thử 15 phút trước khi mở gợi ý; lời giải nằm trong [trang tuần 12](README.md) (mở sau khi nộp bài).
 
 **Thử thách 1 – Service viết tay.** Tự viết `source/backend-svc-lab.yaml` tạo Service `backend-lab` cho backend, `port: 8080`, `targetPort: 3000`, ClusterIP. Không copy từ `backend.yaml`. Tiêu chí: `kubectl get endpoints backend-lab` có hai địa chỉ cổng 3000, `wget -qO- http://backend-lab:8080/health` từ Pod debug trả JSON healthy, và `report.md` giải thích vì sao client gọi 8080 nhưng Pod nghe 3000.
 

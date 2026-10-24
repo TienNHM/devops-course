@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Trang tùy chọn của Buổi 08: hai tình huống dựng sẵn (cổng bận, container thoát ngay), thử thách smoke test, các lệnh bổ sung và bài phá lỗi nhầm cổng. Làm ở nhà sau khi xong lab bắt buộc.
 
-Quay lại bài chính: [Buổi 08 – Docker CLI](session-08.md). Lời giải đầy đủ nằm ở [Walkthrough tuần 4](../../mentors/walkthroughs/week-04.md), chỉ mở sau khi nộp bài.
+Quay lại bài chính: [Buổi 08 – Docker CLI](session-08.md). Lời giải đầy đủ nằm ở [trang tuần 4](README.md), chỉ mở sau khi nộp bài.
 
 ::: warning Tự thử 15 phút trước khi mở gợi ý
 Gợi ý xếp từng bậc, từ nhẹ tới rõ. Mentor chỉ đưa triệu chứng; bạn phải tự tìm nguyên nhân gốc.

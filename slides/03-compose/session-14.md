@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Nâng `compose.yaml` từ mức chạy được lên mức đáng tin cậy: healthcheck, thứ tự khởi động, restart, giới hạn tài nguyên, secrets, logging, backup và restore.
 
-Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md). Kịch bản demo và ghi chú giảng viên nằm ở trang dành cho mentor.
+Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md).
 
 ## Slide 1: Mục tiêu buổi học
 

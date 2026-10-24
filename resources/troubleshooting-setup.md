@@ -249,4 +249,4 @@ export NO_PROXY="localhost,127.0.0.1"
 
 ## Khi vẫn chưa giải quyết được
 
-Hỏi trên kênh của lớp theo mẫu ở mục 7 của [Hướng dẫn học khóa này](../curriculum/getting-started.md): nêu triệu chứng, lệnh đã chạy, log đầy đủ và những gì đã thử. Đính kèm kết quả `check-env.sh` và `check-env.ps1`.
+Hỏi trên kênh của lớp theo mẫu ở mục [Cách xin giúp đỡ](../curriculum/how-to-learn.md#cach-xin-giup): nêu triệu chứng, lệnh đã chạy, log đầy đủ và những gì đã thử. Đính kèm kết quả `check-env.sh` và `check-env.ps1`.

@@ -73,6 +73,24 @@ Chọn một hoặc nhiều thử thách, mỗi thử thách cộng tối đa 5 
 | CI đơn giản | Thêm GitHub Actions chạy `node --check` cho các file JS và tìm chuỗi `sb_secret_` trong repo, fail nếu có | Là cầu nối sang khóa DevOps chính, xem mục Tiếp theo bên dưới |
 | Agent qua MCP | Dùng MCP server của Supabase để agent đọc cấu trúc bảng ở chế độ chỉ đọc, kiểm tra thiếu RLS | Xem [bài AI agent và deploy](06-ai-agent-deploy.md). Dùng project thử, không dùng dữ liệu thật |
 
+## Tự kiểm tra
+
+1. Vì sao trang admin chỉ cần "ẩn" đường dẫn là chưa đủ an toàn?
+2. Khi form gửi lên Supabase, vì sao không nên gọi `select` ngay sau `insert` trong dự án này?
+3. Bạn phát hiện mình lỡ commit secret key lên repo công khai. Làm gì đầu tiên?
+4. Vì sao hiển thị dữ liệu người dùng nhập bằng `textContent` an toàn hơn `innerHTML`?
+5. Người chấm cài lỗi "xóa policy insert". Bạn thấy triệu chứng gì, và cách sửa nào là sai?
+
+<details><summary>Đáp án</summary>
+
+1. Ai biết hoặc đoán được đường dẫn đều mở được trang. Bảo vệ thật nằm ở backend: đăng nhập cộng RLS, khiến người không phải admin chỉ nhận về danh sách rỗng.
+2. Khách chỉ có quyền ghi, không có quyền đọc bảng. `select` sau `insert` sẽ bị RLS từ chối và làm cả thao tác báo lỗi, dù dữ liệu có thể đã vào.
+3. Xoay (rotate) khóa ngay trong dashboard để khóa cũ vô hiệu, rồi mới dọn lịch sử Git. Xóa file không đủ vì khóa vẫn nằm trong lịch sử commit.
+4. `textContent` luôn coi dữ liệu là chữ thường, còn `innerHTML` có thể chạy thẻ hoặc script mà người lạ gài vào trường họ tên (XSS).
+5. Triệu chứng: form báo lỗi, Console có `row-level security policy` khi insert. Cách sửa sai là tắt RLS hoặc dùng `service_role`. Cách đúng là tạo lại policy insert có điều kiện kiểm tra dữ liệu.
+
+</details>
+
 ## Tiếp theo
 
 Bước kế tiếp trong lộ trình: [Tên miền, bảo mật, production](07-domain-security-production.md), rồi [Hoàn thiện và ra mắt](11-launch-polish.md).

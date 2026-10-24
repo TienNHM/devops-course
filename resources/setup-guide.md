@@ -2,7 +2,7 @@
 
 Trang này là nguồn duy nhất cho các bước cài đặt của cả khóa. Các bài lab chỉ trỏ về đây, không chép lại. Làm theo thứ tự, mỗi phần có mục "Kiểm tra bạn đã cài đúng". Khi gặp lỗi, xem [Xử lý sự cố cài đặt](troubleshooting-setup.md).
 
-> **Tóm tắt:** Tuần 1 chỉ cần Git, VS Code và GitHub. WSL2 + Ubuntu cài ở buổi 02, Docker Desktop ở buổi 07, kubectl + kind ở buổi 21. Cài đúng lúc, không cài trước.
+> **Tóm tắt:** Tuần 1 chỉ cần Git, VS Code và GitHub. WSL2 + Ubuntu cài ở buổi 02, Docker Desktop ở buổi 07 (Container Fundamentals; buổi 08 là Docker CLI), kubectl + kind ở buổi 21. Cài đúng lúc, không cài trước. Phần chuẩn bị cho buổi 01 mất khoảng 30 phút.
 
 ## Cài gì, khi nào
 
@@ -22,16 +22,16 @@ Nếu bạn đang chuẩn bị cho buổi 01, chỉ làm phần [Cần ngay tu�
 
 ## Cần ngay tuần 1
 
-Ba thứ: Git, VS Code, tài khoản GitHub. Tất cả cài trên Windows, chưa cần WSL.
+Ba thứ: Git, VS Code, tài khoản GitHub, tổng cộng khoảng 30 phút (cùng với việc đọc [Terminal 101](terminal-101.md)). Tất cả cài trên Windows, chưa cần WSL. Mọi lệnh kiểm tra ở tuần 1 chạy trong **Git Bash** (đi kèm Git for Windows): bấm Start, gõ `Git Bash`; không dùng PowerShell.
 
 ### Git cho Windows
 
 1. Tải Git for Windows từ https://git-scm.com/download/win và cài, giữ các lựa chọn mặc định.
-2. Mở PowerShell (hoặc Windows Terminal) và kiểm tra.
+2. Mở Git Bash (Start, gõ `Git Bash`) và kiểm tra.
 
 **Kiểm tra bạn đã cài đúng:**
 
-```powershell
+```bash
 git --version
 ```
 
@@ -48,15 +48,15 @@ git version 2.4x.x.windows.1
 
 **Kiểm tra bạn đã cài đúng:**
 
-```powershell
+```bash
 code --version
 ```
 
-Kết quả mong đợi: ba dòng, dòng đầu là số phiên bản như `1.9x.x`.
+Kết quả mong đợi: ba dòng, dòng đầu là số phiên bản như `1.9x.x`. Báo `code: command not found`? Mở lại Git Bash sau khi cài, hoặc cài lại VS Code và chọn "Add to PATH".
 
 ### Tài khoản GitHub
 
-Tạo tài khoản, bật 2FA, tạo repo `devops-labs` (Public), cấu hình `git config` và đăng nhập: làm theo [Tài khoản GitHub và repo devops-labs](setup-github.md). Chưa biết terminal? Đọc [Terminal 101](terminal-101.md) trước.
+Tạo tài khoản, bật 2FA, tạo repo `devops-labs` (Public), cấu hình `git config` và đăng nhập: làm theo [Tài khoản GitHub và repo devops-labs](setup-github.md). Chưa biết terminal? Đọc [Terminal 101](terminal-101.md) trước (khoảng 10 phút cho phần cần ở buổi 01).
 
 ## Bật ảo hóa
 
@@ -146,7 +146,7 @@ Lần đầu VS Code tự cài VS Code Server vào WSL. **Kiểm tra bạn đã 
 
 ## Docker Desktop
 
-Buổi 07.
+Buổi 07 (Container Fundamentals). Buổi 08 là Docker CLI, dùng lại bản cài này.
 
 1. Tải từ https://docs.docker.com/desktop/setup/install/windows-install/ và cài, chọn **Use WSL 2 instead of Hyper-V** nếu được hỏi.
 2. Khởi động Docker Desktop, chấp nhận điều khoản theo quy định của cá nhân/tổ chức bạn (Docker Desktop có điều kiện cấp phép riêng cho doanh nghiệp lớn; sinh viên và dùng cá nhân thường được miễn phí, hãy đọc điều khoản hiện hành).
@@ -301,7 +301,7 @@ bash resources/check-env.sh 2
 KET QUA: đủ công cụ bắt buộc tới buổi 21. Cảnh báo: 0
 ```
 
-Chụp kết quả `check-env.sh` đưa vào bài lab buổi 02 như bằng chứng. Nếu còn `[ THIEU ]` ở công cụ bắt buộc, đọc [Xử lý sự cố cài đặt](troubleshooting-setup.md) trước khi hỏi mentor (và hỏi theo mẫu ở [Hướng dẫn học khóa này](../curriculum/getting-started.md)).
+Chụp kết quả `check-env.sh` đưa vào bài lab buổi 02 như bằng chứng. Nếu còn `[ THIEU ]` ở công cụ bắt buộc, đọc [Xử lý sự cố cài đặt](troubleshooting-setup.md) trước khi hỏi mentor (và hỏi theo mẫu ở [Cách học khóa này](../curriculum/how-to-learn.md#cach-xin-giup)).
 
 ## Máy 8 GB và giới hạn RAM
 

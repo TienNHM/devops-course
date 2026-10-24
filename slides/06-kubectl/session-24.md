@@ -1,6 +1,6 @@
 # Slide buổi 24 – Kubernetes Services
 
-> **Tóm tắt:** Dùng Service (ClusterIP, NodePort, LoadBalancer) và DNS nội bộ của Kubernetes để nối Frontend với Backend, rồi chẩn đoán Service có Endpoints rỗng. Lệnh lab: [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md). Kịch bản dạy: [Kịch bản mentor buổi 24](../../mentors/sessions/session-24.md).
+> **Tóm tắt:** Dùng Service (ClusterIP, NodePort, LoadBalancer) và DNS nội bộ của Kubernetes để nối Frontend với Backend, rồi chẩn đoán Service có Endpoints rỗng. Lệnh lab: [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -122,7 +122,7 @@ flowchart TD
 
 ---
 
-## Slide 10: Demo outline – Service và Endpoints
+## Slide 10: Demo – Service và Endpoints
 
 - Xem các Service trong namespace `club`: `backend`, `club-web`, `postgres`.
 - Endpoints của `backend` có hai địa chỉ `10.244.x.x:3000`, trùng IP hai Pod API.

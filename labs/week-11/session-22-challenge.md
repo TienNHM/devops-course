@@ -7,7 +7,7 @@ Tuần 11/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 22/32
 > **Tóm tắt:** Hai thử thách tùy chọn sau buổi 22: tự viết Deployment canary dùng chung Service backend, và kiểm soát rolling update bằng maxSurge và maxUnavailable với 4 replicas.
 
 ::: warning Trước khi làm
-Cần xong phần lab bắt buộc ở [Buổi 22 – Pods & Deployments](session-22.md): cluster `club` đang chạy, `club-api` READY 2/2, image `club-api:1.0.1` đã nạp. Tự thử khoảng 15 phút trước khi mở gợi ý. Lời giải đầy đủ nằm ở [Walkthrough tuần 11](../../mentors/walkthroughs/week-11.md), mở sau khi nộp bài.
+Cần xong phần lab bắt buộc ở [Buổi 22 – Pods & Deployments](session-22.md): cluster `club` đang chạy, `club-api` READY 2/2, image `club-api:1.0.1` đã nạp. Tự thử khoảng 15 phút trước khi mở gợi ý. Lời giải đầy đủ nằm ở [trang tuần 11](README.md), mở sau khi nộp bài.
 :::
 
 ## Thử thách 1. Tự viết Deployment canary

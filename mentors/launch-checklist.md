@@ -12,7 +12,7 @@ Quy tắc: một mục chỉ được tick khi có người khác ngoài tác gi
 
 ## Giai đoạn 0: Điều kiện nền
 
-- [ ] Có Program Lead, tối thiểu 2 Technical Mentor và 2 Lab Assistant đã qua [đào tạo](handbook.md).
+- [ ] Có Program Lead, tối thiểu 2 Technical Mentor và 2 Lab Assistant đã qua [đào tạo](mentor-onboarding.md).
 - [ ] Máy "mới" để kiểm tra: một máy Windows 11 hoặc máy ảo chưa cài môi trường phát triển, ghi lại cấu hình (RAM, CPU, ổ đĩa).
 - [ ] Repo giáo trình truy cập được, nhánh chính ổn định, CI xanh.
 - [ ] Repo đáp án private đã tạo và chỉ mentor có quyền (xem [Quản lý repo giáo trình](repo-governance.md)).
@@ -26,7 +26,7 @@ Quy tắc: một mục chỉ được tick khi có người khác ngoài tác gi
 - [ ] Lab tuần 1 (SDLC, deployment workflow, cài WSL2) hoàn thành.
 - [ ] Lab Linux Essentials (tuần 2) hoàn thành, mọi lệnh chạy được trong WSL.
 - [ ] Lab Networking và Git Collaboration (tuần 3) hoàn thành, gồm tạo PR và giải conflict trên GitHub thật.
-- [ ] Mọi assignment tuần 1 đến 3 có đề rõ ràng và rubric.
+- [ ] Mọi assignment tuần 1 đến 3 có đề rõ ràng và barem chấm.
 
 ## Giai đoạn 2: Docker (Tuần 4 đến 7)
 
@@ -62,10 +62,10 @@ Quy tắc: một mục chỉ được tick khi có người khác ngoài tác gi
 
 ## Giai đoạn 5: Capstone và vận hành khóa
 
-- [ ] [Capstone](../assignments/capstone/README.md) có đề, các mốc, rubric và tiêu chí chấm theo [cách đánh giá](../curriculum/assessment.md).
+- [ ] [Capstone](../assignments/capstone/README.md) có đề, các mốc, barem chấm và tiêu chí chấm theo [cách đánh giá](../curriculum/assessment.md).
 - [ ] Một mentor tự làm capstone từ `starter-project` (thêm POST, PUT, DELETE cho `/api/members`, test, CI, Compose, Kubernetes) trong thời gian hợp lý cho nhóm 3 đến 4 người.
 - [ ] Mẫu báo cáo, demo và technical defense sẵn sàng.
-- [ ] GitHub Projects, Milestones, nhãn và Discussions đã thiết lập theo [Sổ tay mục 12](handbook.md).
+- [ ] GitHub Projects, Milestones, nhãn và Discussions đã thiết lập theo phần Quản lý tiến độ bằng GitHub Projects ở [Hướng dẫn chấm bài](grading-guide.md).
 - [ ] Templates `lab-template.md`, `assignment-template.md`, `project-template.md` dùng được.
 - [ ] Lịch office hour hằng tuần đã xác định.
 
@@ -81,7 +81,7 @@ Quy tắc: một mục chỉ được tick khi có người khác ngoài tác gi
 
 ## Giai đoạn 7: Sẵn sàng khai giảng
 
-- [ ] Phòng học, mạng và image pre-pull theo [Runbook](session-runbook.md) đã kiểm tra tại phòng thật.
+- [ ] Phòng học, mạng và image pre-pull theo [Quy trình một buổi học](session-runbook.md) đã kiểm tra tại phòng thật.
 - [ ] Danh sách học viên, nhóm, người phụ trách, máy cấu hình thấp đã rà.
 - [ ] Thông báo khai giảng, yêu cầu chuẩn bị trước (tài khoản GitHub, bật ảo hóa, cài WSL2) đã gửi.
 - [ ] Phương án dự phòng mạng, máy, người trực đã chuẩn bị.

@@ -1,6 +1,6 @@
 # Slide buổi 09 – Dockerfile
 
-> **Tóm tắt:** Viết, build và chạy Dockerfile cho Node.js API của CLB; hiểu build context, ENV, CMD và ENTRYPOINT, và chẩn đoán lỗi build do sai thư mục. Bài lab đầy đủ: [Buổi 09](../../labs/week-05/session-09.md). Kịch bản dạy: [Kịch bản mentor buổi 09](../../mentors/sessions/session-09.md).
+> **Tóm tắt:** Viết, build và chạy Dockerfile cho Node.js API của CLB; hiểu build context, ENV, CMD và ENTRYPOINT, và chẩn đoán lỗi build do sai thư mục. Bài lab đầy đủ: [Buổi 09](../../labs/week-05/session-09.md).
 
 ## Slide 1: Mục tiêu buổi học
 
@@ -93,11 +93,12 @@ flowchart LR
 
 ---
 
-## Slide 9: Demo của mentor (outline)
+## Slide 9: Demo
 
-- Chạy `Dockerfile.naive` của `hello-node`, gọi `/health`.
-- Mồi cho Buổi 10: sửa một dòng mã rồi build lại thì chậm; container chạy bằng root; image rất nặng. Chỉ nêu hiện tượng, chưa giải thích.
-- Chi tiết các bước: [Kịch bản mentor buổi 09](../../mentors/sessions/session-09.md).
+- Build `Dockerfile.naive` của `hello-node`, chạy container và gọi `/health`.
+- Sửa một dòng mã rồi build lại: bước cài dependency chạy lại từ đầu.
+- Xem `docker image ls` và `docker exec ... id`: image rất nặng, container chạy bằng root.
+- Ba hiện tượng này chưa cần giải thích; [Buổi 10](session-10.md) sẽ trả lời vì sao.
 
 ---
 

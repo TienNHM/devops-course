@@ -65,6 +65,26 @@ claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_r
 
 Sau đó mở Claude Code, gõ `/mcp`, chọn supabase rồi chọn Authenticate để đăng nhập qua trình duyệt (bạn tự làm bước này; không dán token vào chat). Mở rộng quyền ghi chỉ khi bạn đang làm trên project dev và đã commit mọi thứ lên Git.
 
+## Tạo admin đầu tiên cho một trang quản trị
+
+Nếu web của bạn có trang admin (như [club-landing](../examples/vibe/club-landing/README.md)), làm theo thứ tự này, ít phụ thuộc vào email nhất:
+
+1. Authentication, mục Providers (hoặc Sign In / Providers), bấm Email, xem công tắc **Confirm email**. Bật nghĩa là user phải bấm link trong email mới đăng nhập được.
+2. Authentication, mục Users, Add user, Create new user: nhập email, mật khẩu mạnh, tích **Auto Confirm User**. Cách này không gửi email nào nên không đụng giới hạn ở trên.
+3. Tắt "Allow new users to sign up" nếu web không cần người lạ tự tạo tài khoản. Theo tài liệu, khi tắt thì chỉ user đã có mới đăng nhập được.
+4. Đánh dấu user là admin bằng một dòng trong bảng `admins` (chạy trong SQL Editor, đổi email):
+
+```sql
+insert into public.admins (user_id)
+select id from auth.users where email = 'admin@example.com';
+```
+
+Policy chỉ cần hỏi "`auth.uid()` có trong bảng `admins` không", như ở bước 2. Muốn thêm hay bớt admin chỉ cần thêm hay xóa một dòng.
+
+Vì sao **không** dùng `user_metadata` (cột `raw_user_meta_data`) để phân quyền: chính người dùng sửa được nó bằng `supabase.auth.updateUser()`, nên policy kiểu "metadata nói role là admin thì cho xem" để ai đăng nhập cũng tự phong mình làm admin chỉ bằng một dòng JavaScript. Nếu muốn đưa quyền vào token JWT, dùng `app_metadata` (người dùng không sửa được), nhưng thay đổi chỉ có hiệu lực sau khi token làm mới. Người mới nên chọn bảng `admins`: dễ đọc, dễ kiểm tra, có hiệu lực ngay.
+
+Site URL và Redirect URLs khi chạy local và khi lên domain thật: xem bảng trong [README của club-landing](../examples/vibe/club-landing/README.md). Đăng nhập bằng mật khẩu không chuyển hướng nên hay chạy được dù quên cấu hình, nhưng mọi email Supabase gửi đi (xác nhận, đặt lại mật khẩu) vẫn dùng Site URL, nên đổi nó ngay khi có domain.
+
 ## Tiếp theo
 
 Quay lại [Supabase](04-supabase.md), hoặc sang [Dự án nhỏ](09-mini-project.md) để ráp mọi thứ lại.

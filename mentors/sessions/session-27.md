@@ -1,22 +1,33 @@
-# Kịch bản mentor – Buổi 27: Storage & Ingress
+# Kịch bản buổi 27 – Storage & Ingress
 
 ::: warning Dành cho mentor
-Trang này dành cho người dạy; học viên không cần đọc. Bài học viên: [Buổi 27 – Storage & Ingress](../../labs/week-14/session-27.md). Thử thách thêm: [Buổi 27 – Thử thách nâng cao](../../labs/week-14/session-27-challenge.md). Slide: [Slide buổi 27](../../slides/07-operations/session-27.md). Đáp án: [Walkthrough tuần 14](../walkthroughs/week-14.md). Chấm bài: [Chấm bài tuần 14](../grading/week-14.md).
+Trang này dành cho người dạy, học viên không cần đọc. Bài học viên: [Buổi 27 – Storage & Ingress](../../labs/week-14/session-27.md). Thử thách thêm: [Buổi 27 – Thử thách nâng cao](../../labs/week-14/session-27-challenge.md). Slide: [Slide buổi 27](../../slides/07-operations/session-27.md). Đáp án và chấm điểm: [Đáp án tuần 14](../walkthroughs/week-14.md), [Hướng dẫn chấm tuần 14](../grading/week-14.md).
 :::
 
-> **Tóm tắt:** Kịch bản dạy buổi 27: khung thời gian, demo PVC và Ingress từng bước, câu hỏi cho lớp và ghi chú giảng viên theo từng slide.
+> **Tóm tắt:** Kịch bản buổi 27: khung thời gian, demo PVC và Ingress từng bước, câu hỏi cho lớp, ghi chú theo từng slide và lưu ý riêng cho người dạy.
 
-## Khung thời gian buổi
+## Khung thời gian
 
-Mỗi buổi 120 phút: 15' ôn tập, 30' kiến thức và demo, 60' thực hành, 15' review. Buổi đầu của tuần dành nhiều thời gian hơn cho khái niệm và demo; buổi thứ hai dồn vào thực hành, thử thách L2 và review bài làm.
+Buổi 120 phút: 15' ôn tập, 30' kiến thức và demo, 60' thực hành, 15' review. Buổi đầu của tuần dành nhiều thời gian cho khái niệm và demo.
 
-Phân bổ gợi ý cho phần 30 phút kiến thức và demo (theo ghi chú trong slide cũ): mở đầu 2 phút, vấn đề dữ liệu biến mất 2 phút, vấn đề chỉ có port-forward 2 phút, ba đối tượng storage 3 phút, reclaim policy và binding mode 3 phút, StatefulSet 2 phút, Ingress và controller 3 phút, kiến trúc truy cập 3 phút, vòng đời PVC 2 phút, recap 2 phút. Demo khoảng 15 phút. Lab 60 phút: chuẩn bị và Phần 1 khoảng 10 phút, Postgres và xóa Pod khoảng 20 phút, backend và frontend khoảng 10 phút, ingress-nginx khoảng 15 phút.
+Phần 30 phút kiến thức và demo: mở đầu 2', dữ liệu biến mất 2', chỉ có port-forward 2', ba đối tượng storage 3', reclaim policy và binding mode 3', StatefulSet 2', Ingress và controller 3', kiến trúc truy cập 3', vòng đời PVC 2', recap 2'; demo khoảng 15'.
 
-Ghi chú về bài học viên đã cải tổ: cluster `club` tạo ở buổi 21 bằng `kind-config.yaml` nên đã có port mapping; học viên không xóa cluster mà chỉ xóa namespace `club` làm lại sạch (để thấy PVC `Pending`). Các tình huống A, B, C nằm ở mục "Phá lỗi nâng cao" của trang thử thách.
+| Phần của lab | Thời lượng |
+| --- | --- |
+| Chuẩn bị | 5' |
+| Phần 1 – Làm sạch namespace, nạp image, thấy PVC `Pending` | 8' |
+| Phần 2 – Postgres với PVC và `init.sql` | 12' |
+| Phần 3 – Xóa Pod, dữ liệu còn | 8' |
+| Phần 4 – Backend và frontend | 10' |
+| Phần 5 – ingress-nginx và truy cập qua `club.localhost` | 15' |
 
-## Demo của mentor
+Cluster `club` tạo ở buổi 21 bằng `kind-config.yaml` nên đã có port mapping; học viên không xóa cluster mà chỉ xóa namespace `club` để làm lại sạch và thấy PVC `Pending`. Các tình huống phá lỗi nằm ở mục Phá lỗi nâng cao của trang thử thách.
 
-Mục đích: cho cả lớp thấy dữ liệu sống sót qua việc xóa Pod, và Ingress là "bảng chỉ đường". Dùng cluster đã tạo sẵn (hoặc tạo ở phần Chuẩn bị của lab). Thời lượng khoảng 15 phút trong 30 phút lý thuyết.
+## Kịch bản buổi
+
+### Demo của mentor (khoảng 15 phút)
+
+Mục đích: cho lớp thấy dữ liệu sống sót qua việc xóa Pod, và Ingress là "bảng chỉ đường". Dùng cluster đã tạo sẵn.
 
 1. Quan sát StorageClass:
 
@@ -79,72 +90,89 @@ kubectl get pvc,pv -n club
 kubectl delete pod demo-writer -n club
 ```
 
-Kết quả mong đợi: PVC chuyển `Bound`, có một PV tên dạng `pvc-xxxxxxxx`. Sau đó apply lại Pod rồi `kubectl exec -n club demo-writer -- cat /data/log.txt` thấy hai dòng ngày giờ: dữ liệu còn nguyên. Hỏi lớp: "Nếu giờ xóa PVC thì file còn không?"
+Kết quả mong đợi: PVC chuyển `Bound`, có một PV tên dạng `pvc-xxxxxxxx`. Apply lại Pod rồi `kubectl exec -n club demo-writer -- cat /data/log.txt` thấy hai dòng ngày giờ: dữ liệu còn nguyên. Lệnh `exec` chỉ chạy được sau khi apply lại Pod. Hỏi lớp: "Nếu giờ xóa PVC thì file còn không?"
 
-4. Dọn dẹp demo: `kubectl delete pod demo-writer -n club --ignore-not-found` rồi `kubectl delete pvc demo-pvc -n club`. Cho lớp thấy `kubectl get pv` không còn PV tương ứng (reclaimPolicy Delete).
+4. Dọn demo: `kubectl delete pod demo-writer -n club --ignore-not-found` rồi `kubectl delete pvc demo-pvc -n club`. Cho lớp thấy `kubectl get pv` không còn PV tương ứng (reclaimPolicy `Delete`).
 
-5. Ingress: giải thích file `starter-project/k8s/ingress.yaml` từng dòng (`ingressClassName`, `host`, hai `path`). Hỏi lớp: "Nếu đổi thứ tự hai path, `/api/members` đi đâu?" (Vẫn tới backend vì path dài hơn thắng.)
+5. Ingress: giải thích `starter-project/k8s/ingress.yaml` từng dòng (`ingressClassName`, `host`, hai `path`). Hỏi lớp: "Nếu đổi thứ tự hai path, `/api/members` đi đâu?" (Vẫn tới backend vì path dài hơn thắng.)
 
-## Câu hỏi mentor nên hỏi lớp
-
-Gom từ demo và ghi chú slide, theo thứ tự xuất hiện:
+### Câu hỏi cho lớp
 
 1. "Ở Compose, ta giải quyết việc dữ liệu mất khi container chết bằng gì?" (Named volume.)
 2. "Nếu có 10 dịch vụ, bạn mở 10 cổng port-forward?" Dẫn sang Ingress.
 3. "Developer thường tạo đối tượng nào trong ba đối tượng PV, PVC, StorageClass?" (PVC.)
-4. "Vì sao binding mode là WaitForFirstConsumer? Cluster 3 node mà PV được tạo trước khi biết Pod chạy ở node nào thì sai ở đâu?" (PV local có thể nằm ở node khác Pod.)
+4. "Vì sao binding mode là WaitForFirstConsumer?" (PV local có thể nằm ở node khác với node Pod được xếp lịch.)
 5. "Ingress khác Service LoadBalancer thế nào?" (Ingress ở tầng HTTP, host và path; LoadBalancer ở tầng TCP/UDP.)
 6. "PVC Pending ở bước hai có phải lỗi không?" (Không, chỉ đang chờ Pod.)
-7. "Giờ xóa PVC thì file còn không?" (Với policy Delete: mất.)
+7. "Giờ xóa PVC thì file còn không?" (Với policy `Delete`: mất.)
 8. "Nếu đổi thứ tự hai path thì `/api/members` đi đâu?" (Vẫn tới backend, vì path dài hơn thắng.)
 9. Cuối buổi: "Hôm nay xóa PVC rồi apply lại `postgres.yaml`, database rỗng. Vì sao?"
 
-## Ghi chú giảng viên theo slide
+## Ghi chú theo slide
 
-Nguyên văn từ ghi chú trong slide cũ, theo thứ tự slide cũ.
+Slide buổi 27 có 14 slide.
 
-**Mục tiêu buổi học.** 2 phút. Nhấn: buổi này làm cho Club Management thành một ứng dụng thật, có dữ liệu bền và một cổng vào duy nhất.
+### Slide 1: Mục tiêu buổi học
 
-**Vấn đề 1 – dữ liệu biến mất.** 2 phút. Liên hệ phần volume ở Docker/Compose và Tình huống 04 database mất dữ liệu. Hỏi: "Ở Compose, ta giải quyết việc này bằng gì?" (Named volume.)
+2 phút. Nhấn: buổi này làm cho Club Management thành một ứng dụng thật, có dữ liệu bền và một cổng vào duy nhất.
 
-**Vấn đề 2 – chỉ có port-forward.** 2 phút. Câu hỏi: "Nếu có 10 dịch vụ, bạn mở 10 cổng port-forward?" Dẫn sang Ingress.
+### Slide 2: Hai vấn đề của Club Management
 
-**Ba đối tượng storage.** 3 phút. Ví von: PVC là phiếu đặt chỗ, PV là chỗ ngồi thật, StorageClass là nhà hàng tự xếp chỗ. Hỏi: "Developer thường tạo đối tượng nào?" (PVC.)
+4 phút. Liên hệ phần volume ở Docker và Compose, và tình huống 04 database mất dữ liệu. Hỏi: "Ở Compose, ta giải quyết việc này bằng gì?" (Named volume.) Rồi: "Nếu có 10 dịch vụ, bạn mở 10 cổng port-forward?" Dẫn sang Ingress.
 
-**Reclaim policy và binding mode.** 3 phút. Câu hỏi: "Cluster 3 node mà PV được tạo trước khi biết Pod chạy ở node nào thì sai ở đâu?" (PV local có thể nằm ở node khác Pod.)
+### Slide 3: Ba đối tượng storage
 
-**Vì sao database dùng StatefulSet.** 2 phút. Nhiều replica thì dùng `volumeClaimTemplates` để mỗi Pod có PVC riêng; lab dùng 1 replica nên PVC tường minh để nhìn rõ từng đối tượng.
+3 phút. Ví von: PVC là phiếu đặt chỗ, PV là chỗ ngồi thật, StorageClass là nhà hàng tự xếp chỗ. Hỏi: "Developer thường tạo đối tượng nào?" (PVC.)
 
-**Ingress và Ingress controller.** 3 phút. Câu hỏi: "Ingress khác Service LoadBalancer thế nào?" (Ingress ở tầng HTTP, host và path; LoadBalancer ở tầng TCP/UDP.)
+### Slide 4: Reclaim policy và binding mode
 
-**Kiến trúc truy cập.** Đi theo một request `GET http://club.localhost/api/members`, 3 phút. Nhấn: `.localhost` luôn trỏ về 127.0.0.1; Docker map port 80 của máy vào node kind nhờ `extraPortMappings`.
+3 phút. Câu hỏi: "Cluster 3 node mà PV được tạo trước khi biết Pod chạy ở node nào thì sai ở đâu?" (PV local có thể nằm ở node khác Pod.) Nhấn PVC `Pending` lúc mới tạo là bình thường.
 
-**Vòng đời PVC khi tạo Pod.** 2 phút. Câu hỏi: "PVC Pending ở bước hai có phải lỗi không?" (Không, chỉ đang chờ Pod.)
+### Slide 5: Vì sao database dùng StatefulSet
 
-**Demo 1 – StorageClass và PVC Pending.** Tạo `demo-pvc` 100Mi bằng `kubectl apply -n club -f -` với heredoc như trong demo ở trên. 4 phút. Hỏi lớp: "Pending ở đây là lỗi không?" Sau đó chuyển slide tiếp. Lỗi hay gặp: `get pvc` báo not found vì chưa tạo `demo-pvc`.
+2 phút. Nhiều replica thì dùng `volumeClaimTemplates` để mỗi Pod có PVC riêng; lab dùng 1 replica nên PVC tường minh để nhìn rõ từng đối tượng.
 
-**Demo 2 – dữ liệu sống sót qua xóa Pod.** Pod `demo-writer` dùng `busybox:1.36`, ghi `date` vào `/data/log.txt`. 5 phút. Lưu ý lệnh `exec` chỉ chạy được sau khi apply lại Pod. Hỏi: "Giờ xóa PVC thì file còn không?"
+### Slide 6: Ingress và Ingress controller
 
-**Lab L1 – tạo cluster có port mapping.** Học viên làm trong WSL. 5 phút. Nếu có cluster `club` cũ mà thiếu port mapping, `kind delete cluster --name club` rồi tạo lại (lệnh này xóa mọi workload trong cluster đó). Lỗi hay gặp: port 80 bị chiếm, hoặc quên nạp image vào kind.
+3 phút. Câu hỏi: "Ingress khác Service LoadBalancer thế nào?" Nhấn: chỉ tạo Ingress mà không cài controller thì không có gì xảy ra.
 
-**Lab L1 – Postgres với PVC.** 5 phút. Nếu `postgres-0` vào CrashLoopBackOff và log báo thư mục data không rỗng: thiếu `PGDATA` trỏ thư mục con. Starter đã đặt sẵn; học viên tự chỉnh YAML mới gặp lỗi này.
+### Slide 7: Kiến trúc truy cập
 
-**Lab L1 – xóa Pod, dữ liệu còn.** Chờ Pod `Running` rồi mới truy vấn (`kubectl get pods -n club -w`). 4 phút. Số 3 đúng nếu học viên đã insert thêm một dòng ở bước trước; hỏi lớp nếu kết quả khác. Lỗi hay gặp: gọi `exec` quá sớm khi Pod chưa Ready.
+Đi theo một request `GET http://club.localhost/api/members` (3 phút). Nhấn: `.localhost` luôn trỏ về 127.0.0.1; Docker map port 80 của máy vào node kind nhờ `extraPortMappings`.
 
-**Lab L1 – cài ingress-nginx và gọi qua host.** Lần đầu kéo image có thể mất 1-2 phút, tranh thủ giải thích file `k8s/ingress.yaml` từng dòng. 6 phút. Hỏi: "Nếu đổi thứ tự hai path thì /api/members đi đâu?" (Vẫn tới backend, vì path dài hơn thắng.)
+### Slide 8: Vòng đời PVC khi tạo Pod
 
-**Debug – PVC Pending mãi.** Mentor tạo `broken-pvc` với `storageClassName: fast-ssd` (YAML trong mục Phá lỗi nâng cao của trang thử thách). Học viên chỉ nhận triệu chứng. 4 phút. Liên hệ Tình huống 09 Pod Pending.
+2 phút. Câu hỏi: "PVC Pending ở bước hai có phải lỗi không?" (Không, chỉ đang chờ Pod.)
 
-**Debug – Ingress 404, 503 và Connection refused.** Cho lớp thử `curl http://127.0.0.1/api/members` không có header Host để thấy 404. 4 phút. Thứ tự debug theo lớp: PVC, Pod, Service và endpoints, Ingress, cuối cùng log controller.
+### Slide 9: Demo 1 – StorageClass và PVC Pending
 
-**Thử thách L2.** Cho học viên L2 làm độc lập. Cảnh báo: xóa PVC với policy `Delete` làm mất dữ liệu vĩnh viễn, phải chạy lại `init.sql`. Với local-path và Retain, dữ liệu nằm trên node nên phải dọn thủ công.
+Tạo `demo-pvc` 100Mi theo bước 1 và 2 của demo (4 phút). Hỏi lớp: "Pending ở đây là lỗi không?" Lỗi hay gặp: `get pvc` báo not found vì chưa tạo `demo-pvc`.
 
-**Recap.** 2 phút. Hỏi lại: "Hôm nay xóa PVC rồi apply lại postgres.yaml, database rỗng. Vì sao?" Nhắc nộp `lab-27/` gồm `report.md` và evidence.
+### Slide 10: Demo 2 – dữ liệu sống sót qua xóa Pod
+
+Bước 3 và 4 của demo (5 phút). Pod `demo-writer` dùng `busybox:1.36`, ghi `date` vào `/data/log.txt`. Hỏi: "Giờ xóa PVC thì file còn không?"
+
+### Slide 11: Lab L1 – các bước
+
+Phát khung thời gian ở bảng trên. Phần 1: nếu `docker ps` không có `0.0.0.0:80->80/tcp` thì mới phải tạo lại cluster (`kind delete cluster --name club` rồi tạo lại, lệnh này xóa mọi workload trong cluster). Phần 2: nếu `postgres-0` vào CrashLoopBackOff và log báo thư mục data không rỗng thì thiếu `PGDATA` trỏ thư mục con; starter đã đặt sẵn, học viên tự chỉnh YAML mới gặp. Phần 3: chờ Pod `Running` rồi mới truy vấn; số đếm là 3 nếu học viên đã insert thêm một dòng. Phần 5: lần đầu kéo image ingress-nginx mất 1-2 phút, tranh thủ giải thích `k8s/ingress.yaml` từng dòng. Lỗi hay gặp: port 80 bị chiếm, quên nạp image vào kind, curl thiếu header Host.
+
+### Slide 12: Debug – PVC Pending, Ingress 404, 503
+
+4 phút. Mentor tạo `broken-pvc` với `storageClassName: fast-ssd` (YAML ở mục Phá lỗi nâng cao của trang thử thách); học viên chỉ nhận triệu chứng. Cho lớp thử `curl http://127.0.0.1/api/members` không có header Host để thấy 404. Thứ tự debug theo lớp: PVC, Pod, Service và endpoints, Ingress, cuối cùng log controller. Liên hệ tình huống 09 Pod Pending.
+
+### Slide 13: Thử thách L2
+
+Cho học viên L2 làm độc lập. Cảnh báo: xóa PVC với policy `Delete` làm mất dữ liệu vĩnh viễn, phải chạy lại `init.sql`. Với local-path và `Retain`, dữ liệu nằm trên node nên phải dọn thủ công.
+
+### Slide 14: Recap
+
+2 phút. Hỏi lại: "Hôm nay xóa PVC rồi apply lại `postgres.yaml`, database rỗng. Vì sao?" Nhắc nộp `lab-27/` gồm `report.md` và evidence.
 
 ## Lưu ý riêng cho người dạy
 
-- Cluster `club` đã có từ buổi 21 và có port mapping; trước buổi chạy `docker ps --filter name=club-control-plane --format '{{.Ports}}'` trên máy demo để chắc có `0.0.0.0:80->80/tcp`. Máy nào thiếu thì tạo lại theo `starter-project/k8s/kind-config.yaml`.
-- Học viên cần xóa namespace `club` làm lại sạch ở đầu lab (vì tuần 13 đã dựng sẵn Postgres và API). Nhắc: chỉ xóa `club`, không xóa namespace `kube-system` hay `ingress-nginx`.
-- Dự án ingress-nginx đã thông báo ngừng bảo trì từ tháng 3/2026; bản ghim `controller-v1.12.1` vẫn chạy tốt cho lab local. Hỏi lớp nếu muốn bàn về Gateway API như hướng đi mới.
-- Bằng chứng PVC `Pending` bắt buộc trong bài tập: nếu học viên bỏ bước xóa namespace thì không có dòng `Pending` của `postgres-pvc`; cho phép dùng `demo-pvc` ở thử thách hoặc dòng Events "waiting for first consumer".
-- Thử thách 3 (host thứ hai) không cần cài thêm gì: `api.club.localhost` cũng trỏ về 127.0.0.1 trên trình duyệt; với `curl` luôn dùng header Host.
+- Trước buổi, chạy `docker ps --filter name=club-control-plane --format '{{.Ports}}'` trên máy demo để chắc có `0.0.0.0:80->80/tcp`. Máy nào thiếu thì tạo lại theo `starter-project/k8s/kind-config.yaml`.
+- Học viên xóa namespace `club` làm lại sạch ở đầu lab (vì tuần 13 đã dựng sẵn Postgres và API). Nhắc: chỉ xóa `club`, không xóa `kube-system` hay `ingress-nginx`.
+- Dự án ingress-nginx đã thông báo ngừng bảo trì từ tháng 3/2026; bản ghim `controller-v1.12.1` vẫn chạy tốt cho lab local. Nếu lớp quan tâm, bàn về Gateway API như hướng đi mới.
+- Bằng chứng PVC `Pending` là bắt buộc trong bài tập: học viên làm đúng Phần 1 sẽ có dòng `Pending` của `demo-pvc`; chấp nhận thêm dòng Events "waiting for first consumer".
+- Thử thách host thứ hai không cần cài thêm gì: `api.club.localhost` cũng trỏ về 127.0.0.1 trên trình duyệt; với `curl` luôn dùng header Host.
+- Buổi 28 bắt đầu bằng việc `club-api` (2 replicas) đang chạy trong `club`: cuối buổi kiểm tra `kubectl -n club get pods`.
