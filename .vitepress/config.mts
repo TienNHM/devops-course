@@ -161,7 +161,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
           { text: 'Lịch học', link: '/curriculum/schedule' },
           { text: 'Capstone', link: '/assignments/capstone/' },
           { text: 'Dành cho mentor', link: '/mentors/' },
-          { text: 'Walkthrough (đáp án)', link: '/solutions/walkthroughs/' },
+          { text: 'Walkthrough (đáp án)', link: '/mentors/walkthroughs/' },
           { text: 'Starter project', link: '/starter-project/' },
           { text: '10 tình huống lỗi', link: '/examples/troubleshooting-scenarios' },
           { text: 'Setup guide', link: '/resources/setup-guide' },
@@ -193,7 +193,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
       '/mentors/': flatSidebar('mentors', 'Dành cho mentor'),
       '/vibe/': flatSidebar('vibe', 'Vibe Deploy'),
       '/solutions/': [
-        { text: 'Walkthrough', items: [{ text: 'Giới thiệu', link: '/solutions/' }, { text: 'Mục lục 16 tuần', link: '/solutions/walkthroughs/' }, ...weekNums.map((n) => ({ text: `Tuần ${n}`, link: `/solutions/walkthroughs/week-${n}` }))] },
+        { text: 'Walkthrough', items: [{ text: 'Giới thiệu', link: '/solutions/' }, { text: 'Mục lục 16 tuần', link: '/mentors/walkthroughs/' }, ...weekNums.map((n) => ({ text: `Tuần ${n}`, link: `/mentors/walkthroughs/week-${n}` }))] },
       ],
       '/resources/': [
         {
