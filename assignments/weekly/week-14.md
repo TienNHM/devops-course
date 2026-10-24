@@ -12,7 +12,7 @@
 | 4. Chẩn đoán ba lỗi | [Buổi 28 – Kubernetes Operations](../../labs/week-14/session-28.md), Phần 3-5 | 1,5 giờ | Events, `logs --previous`, `Last State`, `FailedScheduling`, lệnh dọn dẹp |
 | 5. Troubleshooting report | [Buổi 28 – Kubernetes Operations](../../labs/week-14/session-28.md), mục Nộp bài | 0,5 giờ | `lab-28/report.md` với ít nhất hai sự cố theo mẫu 5 mục |
 
-Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo barem; bảng điểm ngắn nằm bên dưới.
+Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo bảng điểm; bảng điểm ngắn nằm bên dưới.
 
 **Hạn nộp:** trước buổi đầu tiên của tuần 15.
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-27/` và `lab-28/`.
@@ -177,7 +177,7 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục "Câu hỏi kiểm tra" c�
 2. Hoàn thành `lab-27/` và `lab-28/` theo cấu trúc ở trên, commit nhiều lần với thông điệp rõ ràng.
 3. Mở Pull Request vào `main` của repo cá nhân; mô tả PR ghi rõ đã làm L1 hay cả L2.
 4. Nhờ một bạn review theo [mẫu peer review](../../templates/peer-review-template.md); sửa theo góp ý hợp lý.
-5. Sau khi PR có review, mentor chấm theo barem.
+5. Sau khi PR có review, mentor chấm theo bảng điểm.
 6. Hạn nộp: trước buổi đầu tiên của tuần 15. Nộp muộn cần báo mentor trước hạn.
 
 ## Checklist trước khi nộp

@@ -16,6 +16,7 @@ Tuần 4/16 · Giai đoạn 2 – Containerization · Buổi 07/32
 - [ ] Làm xong [Buổi 06 – Git & GitHub Workflow](../week-03/session-06.md) và đã cài môi trường theo [Hướng dẫn cài đặt](../../resources/setup-guide.md) (WSL2 Ubuntu, Docker Desktop).
 - [ ] Có tài khoản GitHub và repo `devops-labs` (public) theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md).
 - [ ] Mở được terminal WSL Ubuntu; chưa quen thì xem [Terminal 101](../../resources/terminal-101.md).
+- [ ] Chạy `bash ~/devops-course/resources/check-env.sh 7` để biết mình thiếu gì (Docker Desktop phải đang mở)
 
 **Sản phẩm phải nộp** (thư mục `lab-07/` trong `devops-labs`):
 

@@ -33,7 +33,7 @@ Tổng 100 điểm, cộng tối đa 10 điểm thưởng từ L2 (trần cuối
 | Vệ sinh và quy trình | 5 |
 | L2 thử thách 1, 2, 3 (thưởng) | 4, 4, 2 |
 
-Barem chi tiết dành cho người chấm nằm ở mentor; bạn chỉ cần đảm bảo mỗi tiêu chí hoàn thành dưới đây có evidence thật đi kèm.
+Bảng điểm chi tiết dành cho người chấm nằm ở mentor; bạn chỉ cần đảm bảo mỗi tiêu chí hoàn thành dưới đây có evidence thật đi kèm.
 
 ## Quy ước làm việc
 

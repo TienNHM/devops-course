@@ -1,5 +1,5 @@
-# File cấu hình thật (chứa URL/khóa của bạn) không được commit mặc định.
-config.js
+# config.js KHÔNG bị chặn: file chỉ chứa Project URL và khóa công khai (publishable/anon), an toàn nhờ RLS.
+# Không bao giờ đặt service_role hoặc secret key vào đó. Dùng cách build nâng cao thì thêm lại dòng config.js.
 
 # Biến môi trường và khóa
 .env

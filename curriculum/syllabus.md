@@ -81,11 +81,11 @@ Tóm tắt: điểm Final Project tối thiểu 60/100, hoàn thành ít nhất 
 
 ::: details Mở bảng chi tiết từng buổi (nội dung và lab của 32 buổi)
 
-### Phase 1 – Engineering Foundation
+### Giai đoạn 1 – Nền tảng
 
 Tuần 1–3 · 6 buổi · 12 giờ · Linux, Terminal, Networking, Git, GitHub
 
-| Buổi | Chủ đề | Nội dung | Hands-on Lab |
+| Buổi | Chủ đề | Nội dung chính | Lab thực hành |
 | --- | --- | --- | --- |
 | [01](../labs/week-01/session-01.md) | DevOps Introduction | SDLC, DevOps culture, Dev vs Ops, CI/CD, Infrastructure as Code, deployment lifecycle | Vẽ quy trình triển khai một ứng dụng từ máy lập trình đến server |
 | [02](../labs/week-01/session-02.md) | Development Environment | Windows, WSL2, Linux, Terminal, Shell, package manager, filesystem | Cài WSL2 Ubuntu, thiết lập môi trường thực hành |
@@ -94,7 +94,7 @@ Tuần 1–3 · 6 buổi · 12 giờ · Linux, Terminal, Networking, Git, GitHub
 | [05](../labs/week-03/session-05.md) | Networking Fundamentals | IP, subnet, DNS, TCP/UDP, port, HTTP/HTTPS, localhost, loopback | Dùng `ping`, `curl`, `nslookup`, `ss` kiểm tra kết nối |
 | [06](../labs/week-03/session-06.md) | Git & GitHub Workflow | Repository, commit, branch, merge, PR, conflict, code review, `.gitignore` | Tạo repository nhóm, thực hành feature branch và Pull Request |
 
-**Deliverables**
+**Sản phẩm bàn giao**
 
 - Repository cá nhân
 - Linux CLI Cheat Sheet
@@ -102,11 +102,11 @@ Tuần 1–3 · 6 buổi · 12 giờ · Linux, Terminal, Networking, Git, GitHub
 - Báo cáo thực hành networking
 - Pull Request đầu tiên được review
 
-### Phase 2 – Docker & Containerization
+### Giai đoạn 2 – Docker
 
 Tuần 4–7 · 8 buổi · 16 giờ · Docker, Dockerfile, Image, Volume, Network, Compose
 
-| Buổi | Chủ đề | Nội dung | Hands-on Lab |
+| Buổi | Chủ đề | Nội dung chính | Lab thực hành |
 | --- | --- | --- | --- |
 | [07](../labs/week-04/session-07.md) | Container Fundamentals | VM vs Container, Docker Architecture, Docker Engine, Image, Container, Registry | Cài Docker Desktop, chạy container Nginx |
 | [08](../labs/week-04/session-08.md) | Docker CLI | `docker run`, `ps`, `exec`, `inspect`, `logs`, `stop`, `rm`, `pull`, `push` | Chạy, kiểm tra và debug một container |
@@ -117,7 +117,7 @@ Tuần 4–7 · 8 buổi · 16 giờ · Docker, Dockerfile, Image, Volume, Netwo
 | [13](../labs/week-07/session-13.md) | Docker Compose | Compose YAML, services, depends_on, environment, networks, volumes | Khởi chạy Frontend + API + PostgreSQL |
 | [14](../labs/week-07/session-14.md) | Production-minded Compose | Healthcheck, restart, resource limits, secrets, logging, troubleshooting | Hoàn thiện hệ thống Compose, xử lý lỗi database chưa sẵn sàng |
 
-**Deliverables**
+**Sản phẩm bàn giao**
 
 - Dockerfile cho ứng dụng
 - .dockerignore
@@ -125,11 +125,11 @@ Tuần 4–7 · 8 buổi · 16 giờ · Docker, Dockerfile, Image, Volume, Netwo
 - PostgreSQL volume persistence
 - Tài liệu giải thích kiến trúc container
 
-### Phase 3 – CI/CD & Automation
+### Giai đoạn 3 – CI/CD
 
 Tuần 8–10 · 6 buổi · 12 giờ · GitHub Actions, GHCR, automated testing, image publishing, pipeline security
 
-| Buổi | Chủ đề | Nội dung | Hands-on Lab |
+| Buổi | Chủ đề | Nội dung chính | Lab thực hành |
 | --- | --- | --- | --- |
 | [15](../labs/week-08/session-15.md) | CI/CD Fundamentals | Continuous Integration, Delivery, Deployment, Pipeline, Artifact, Runner, Trigger | Vẽ CI/CD pipeline cho ứng dụng |
 | [16](../labs/week-08/session-16.md) | GitHub Actions Basics | Workflow, YAML, Events, Jobs, Steps, Runner, Marketplace Actions | Viết workflow tự động chạy khi push code |
@@ -138,7 +138,7 @@ Tuần 8–10 · 6 buổi · 12 giờ · GitHub Actions, GHCR, automated testing
 | [19](../labs/week-10/session-19.md) | CD & Deployment Strategies | Continuous Deployment, environment, secrets, approval, rollback, deployment strategy | Viết workflow/script deploy image lên môi trường local |
 | [20](../labs/week-10/session-20.md) | Pipeline Security | Least Privilege, permissions, secret management, dependency scanning, SBOM, image scanning | Kiểm tra workflow permissions và quét image |
 
-**Deliverables**
+**Sản phẩm bàn giao**
 
 - .github/workflows/ci.yml
 - .github/workflows/publish.yml
@@ -146,11 +146,11 @@ Tuần 8–10 · 6 buổi · 12 giờ · GitHub Actions, GHCR, automated testing
 - Test report
 - Tài liệu giải thích pipeline
 
-### Phase 4 – Kubernetes & kubectl
+### Giai đoạn 4 – Kubernetes
 
 Tuần 11–14 · 8 buổi · 16 giờ · Kubernetes, kubectl, Workloads, Networking, Storage, Troubleshooting
 
-| Buổi | Chủ đề | Nội dung | Hands-on Lab |
+| Buổi | Chủ đề | Nội dung chính | Lab thực hành |
 | --- | --- | --- | --- |
 | [21](../labs/week-11/session-21.md) | Kubernetes Introduction | Container orchestration, architecture, Control Plane, Worker Node, API Server, Scheduler, etcd, kubelet | Cài kind và tạo cluster local |
 | [22](../labs/week-11/session-22.md) | Pods & Deployments | Pod lifecycle, YAML manifest, ReplicaSet, Deployment, labels, selectors | Deploy API lên Kubernetes |
@@ -161,7 +161,7 @@ Tuần 11–14 · 8 buổi · 16 giờ · Kubernetes, kubectl, Workloads, Networ
 | [27](../labs/week-14/session-27.md) | Storage & Ingress | PV, PVC, StorageClass, Ingress Controller, HTTP routing | Deploy PostgreSQL với PVC và cấu hình ingress |
 | [28](../labs/week-14/session-28.md) | Kubernetes Operations | Rollout, rollback, scale, events, troubleshooting, CrashLoopBackOff, ImagePullBackOff | Phá lỗi một cluster mẫu và khôi phục hệ thống |
 
-**Deliverables**
+**Sản phẩm bàn giao**
 
 - Kubernetes Deployment manifests
 - Service manifests
@@ -170,18 +170,18 @@ Tuần 11–14 · 8 buổi · 16 giờ · Kubernetes, kubectl, Workloads, Networ
 - Ingress
 - Troubleshooting report
 
-### Phase 5 – Capstone Project
+### Giai đoạn 5 – Dự án cuối khóa
 
 Tuần 15–16 · 4 buổi · 8 giờ · Hoàn thiện sản phẩm, kiểm thử, trình bày, đánh giá
 
-| Buổi | Chủ đề | Nội dung | Hands-on Lab |
+| Buổi | Chủ đề | Nội dung chính | Lab thực hành |
 | --- | --- | --- | --- |
 | [29](../labs/week-15/session-29.md) | Architecture & Planning | Requirement, architecture, container design, CI/CD design, task breakdown | Thiết kế kiến trúc và chia task cho nhóm |
 | [30](../labs/week-15/session-30.md) | Implementation | Docker, Compose, Kubernetes, GitHub Actions, testing | Hoàn thiện dự án |
 | [31](../labs/week-16/session-31.md) | Testing & Troubleshooting | Deployment test, failure injection, logs, security checklist, performance basics | Kiểm thử và khắc phục các lỗi được giao |
 | [32](../labs/week-16/session-32.md) | Final Demo & Review | Product demo, pipeline walkthrough, architecture presentation, lessons learned | Trình bày sản phẩm và bảo vệ kỹ thuật |
 
-**Deliverables**
+**Sản phẩm bàn giao**
 
 - Repository nhóm hoàn chỉnh
 - README + Architecture Diagram

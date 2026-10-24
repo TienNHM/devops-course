@@ -155,7 +155,7 @@ Tiêu chí: có diff trước và sau, giải thích đúng về `status`, `mana
 
 ### Thử thách 3 – Chẩn đoán Deployment bí ẩn
 
-Chạy lệnh sau ở namespace `club-dev`, tìm nguyên nhân gốc và sửa cho Pod chạy ổn định, chỉ dùng `get`, `describe`, `logs`:
+Chạy lệnh sau ở namespace `club-dev`, tìm nguyên nhân gốc chỉ bằng `get`, `describe`, `logs` (phần chẩn đoán), rồi sửa bằng lệnh kubectl bạn chọn để Pod chạy ổn định:
 
 ```bash
 kubectl create deployment mystery --image=busybox:1.36 -n club-dev
@@ -185,16 +185,16 @@ nodes:
   - role: worker
   - role: worker
 EOF
-kind create cluster --name club-3n --config source/kind-3-nodes.yaml
+kind create cluster --name club-3 --config source/kind-3-nodes.yaml
 kubectl config get-contexts
 ```
 
-Kết quả mong đợi: context mới `kind-club-3n` và `kubectl get nodes --context kind-club-3n` thấy 3 node `Ready`. Từ đây luôn thêm `--context kind-club-3n` vào lệnh (hoặc `kubectl config use-context kind-club-3n`, rồi nhớ đổi lại `kind-club` khi xong).
+Kết quả mong đợi: context mới `kind-club-3` và `kubectl get nodes --context kind-club-3` thấy 3 node `Ready`. Từ đây luôn thêm `--context kind-club-3` vào lệnh (hoặc `kubectl config use-context kind-club-3`, rồi nhớ đổi lại `kind-club` khi xong).
 
 Tiêu chí: tạo namespace `club` trong cluster này, apply `demo-web` với `replicas: 6`, rồi dùng `-o wide` hoặc `-o custom-columns` cho thấy Pod nằm trên các node khác nhau; đếm số Pod mỗi node bằng jsonpath và `sort | uniq -c`.
 
 ::: danger Dọn đúng cluster
-Khi xong, xóa đúng cluster thử nghiệm: `kind delete cluster --name club-3n`. Kiểm tra lại tên bằng `kind get clusters` trước khi xóa; tuyệt đối không xóa cluster `club` của khóa học.
+Khi xong, xóa đúng cluster thử nghiệm: `kind delete cluster --name club-3`. Kiểm tra lại tên bằng `kind get clusters` trước khi xóa; tuyệt đối không xóa cluster `club` của khóa học.
 :::
 
 ## Câu hỏi tình huống thêm

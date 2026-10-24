@@ -21,10 +21,15 @@
     <button type="submit">Gửi đăng ký</button>
   </form>
   <p id="status" role="status"></p>
+  <hr>
+  <button id="probe" type="button">Thử đọc danh sách như người lạ</button>
+  <p id="probeResult" role="status"></p>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-    import { SUPABASE_URL, SUPABASE_KEY } from './config.js'
+
+    const SUPABASE_URL = 'https://YOUR_REF.supabase.co'      // THAY bằng Project URL của bạn
+    const SUPABASE_KEY = 'sb_publishable_YOUR_KEY_HERE'      // THAY bằng publishable key (KHÔNG phải secret key)
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
     const status = document.getElementById('status')
@@ -36,6 +41,15 @@
       const { error } = await supabase.from('signups').insert(data)
       status.textContent = error ? 'Lỗi: ' + error.message : 'Đã gửi. Cảm ơn bạn!'
       if (!error) e.target.reset()
+    })
+
+    document.getElementById('probe').addEventListener('click', async () => {
+      const { data, error } = await supabase.from('signups').select('*')
+      document.getElementById('probeResult').textContent = error
+        ? 'Bị chặn (' + error.message + '). Đạt: người lạ không đọc được.'
+        : data.length === 0
+          ? 'Nhận về danh sách rỗng. Đạt.'
+          : 'CẢNH BÁO: người lạ đọc được ' + data.length + ' dòng. RLS đang sai!'
     })
   </script>
 </body>

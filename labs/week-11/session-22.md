@@ -176,7 +176,7 @@ Deployment `club-api` READY 2/2 và cả ba lệnh `curl` trả đúng như trê
 
 ### Phần 4. Rolling update và rollback (15 phút)
 
-1. Tạo phiên bản 1.0.1. Nên đổi nhẹ code để thấy khác biệt (ví dụ trong `backend/app.js` đổi `service: "club-api"` thành `service: "club-api-v2"` ở endpoint `/health`); chưa muốn sửa thì thay lệnh build bằng `docker tag club-api:1.0.0 club-api:1.0.1`.
+1. Tạo phiên bản 1.0.1. Nên đổi nhẹ code để thấy khác biệt (ví dụ trong `backend/app.js` đổi `service: "club-api"` thành `service: "club-api-v2"` ở endpoint `/health`); chưa muốn sửa thì thay lệnh build bằng `docker tag club-api:1.0.0 club-api:1.0.1`. Nếu đã sửa `app.js`, hoàn tác sau buổi bằng `git checkout backend/app.js` (bài test của backend kiểm tra đúng tên `club-api`).
 
    ```bash
    docker build -t club-api:1.0.1 ./backend

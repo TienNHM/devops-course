@@ -193,7 +193,7 @@ git push -u origin week-06
 ```
 
 4. Nhờ một bạn trong CLB review. Reviewer để ít nhất 2 nhận xét cụ thể (một điểm tốt, một điểm cần sửa) trên PR, nên thử chạy lại ít nhất một lệnh trong evidence. Bạn sửa theo nhận xét hợp lý và trả lời từng nhận xét.
-5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo barem trên, không chấm nội dung đẩy sau hạn.
+5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo bảng điểm trên, không chấm nội dung đẩy sau hạn.
 
 Hạn nộp: trước buổi đầu tiên của tuần 07. Nộp muộn sẽ bị trừ theo quy định trong `curriculum/assessment.md`.
 

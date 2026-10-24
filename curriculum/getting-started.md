@@ -9,7 +9,7 @@ Khóa này dạy bạn đưa một ứng dụng web từ máy tính của mình 
 ::: tip Làm đủ 5 việc, theo thứ tự
 - [ ] **Tài khoản GitHub và 2FA** (khoảng 5 phút). Tạo tài khoản và bật xác thực hai lớp, xem mục 1 của [Tài khoản GitHub và repo devops-labs](../resources/setup-github.md).
 - [ ] **Repo `devops-labs`** (khoảng 3 phút). Tạo repo cá nhân tên `devops-labs`, chọn chế độ **Public** (cần để dùng GitHub Pages và GHCR miễn phí về sau), xem mục 2 của trang trên.
-- [ ] **Cài Git** (khoảng 7 phút). Windows: tải Git for Windows từ git-scm.com, giữ lựa chọn mặc định (bản này kèm Git Bash). macOS và Linux thường đã có sẵn. Xem [Hướng dẫn cài đặt môi trường](../resources/setup-guide.md#can-ngay-tuan-1).
+- [ ] **Cài Git** (khoảng 7 phút). Windows: tải Git for Windows từ git-scm.com, giữ lựa chọn mặc định (bản này kèm Git Bash). macOS và Linux thường đã có sẵn. Xem [Hướng dẫn cài đặt môi trường](../resources/setup-guide.md#can-ngay-tuan-1). Mở Git Bash, chạy `git config --global user.name "Ten Ban"` và `git config --global user.email "email-github@example.com"` (một lần duy nhất). Buổi 01 nộp bằng web thì chưa cần, nhưng làm sớm đỡ gặp lỗi `Author identity unknown` sau này.
 - [ ] **Cài Visual Studio Code** (khoảng 5 phút), chọn "Add to PATH" khi cài.
 - [ ] **Đọc [Terminal 101](../resources/terminal-101.md)** (khoảng 10 phút, phần mở Git Bash và 10 lệnh đầu). Buổi 01 gõ lệnh trong Git Bash: bấm Start, gõ `Git Bash`.
 

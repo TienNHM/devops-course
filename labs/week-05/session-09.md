@@ -15,6 +15,7 @@ Tuần 5/16 · Giai đoạn 2 – Containerization · Buổi 09/32
 - [ ] Đã xong [Buổi 08 – Docker CLI](../week-04/session-08.md); Docker Desktop đang chạy với WSL2
 - [ ] Môi trường đã cài theo [Hướng dẫn cài đặt](../../resources/setup-guide.md), repo cá nhân `devops-labs` theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md)
 - [ ] Repo giáo trình nằm ở `~/devops-course` trong WSL (có `starter-project/backend`)
+- [ ] Docker Desktop phải đang mở (biểu tượng cá voi ở khay hệ thống ổn định). Chạy `bash ~/devops-course/resources/check-env.sh 9` để biết mình thiếu gì
 
 **Sản phẩm phải nộp** (thư mục `lab-09/` trong `devops-labs`):
 - `README.md` và `report.md` theo mẫu, ghi mức đã làm (L1 hoặc L2)

@@ -6,25 +6,26 @@ Gồm:
 
 - `schema.sql`: tạo 3 bảng `signups`, `members`, `admins` và bật RLS.
 - `policies.sql`: thu hồi quyền mặc định, cấp lại tối thiểu và tạo policy.
-- `web/index.html`: form đăng ký dùng `supabase-js`, chạy được không cần build.
-- `web/config.example.js`: mẫu cấu hình. Sao chép thành `config.js` và điền URL cùng publishable key của project DEV.
+- `web/index.html`: một file duy nhất, có form đăng ký dùng `supabase-js` và nút thử đọc như người lạ. Chạy được không cần build, không cần file cấu hình: chỉ sửa hai dòng `SUPABASE_URL` và `SUPABASE_KEY` ở đầu đoạn script.
 
 ## Chạy thử
 
 1. Tạo một project Supabase riêng để học (không dùng project thật).
 2. Mở SQL Editor, dán `schema.sql`, bấm Run. Dán tiếp `policies.sql`, bấm Run.
-3. Lấy Project URL và publishable key ở nút Connect hoặc Settings, mục API Keys. Điền vào `web/config.js`.
+3. Lấy Project URL và publishable key ở nút Connect hoặc Settings, mục API Keys. Mở `web/index.html`, thay hai giá trị `SUPABASE_URL` và `SUPABASE_KEY` (hai dòng có chữ THAY).
 4. Chạy web tĩnh cục bộ:
 
 ```bash
 npx serve web
 ```
 
-5. Mở địa chỉ hiện ra, gửi một đăng ký. Vào Table Editor, bảng `signups`, bạn sẽ thấy dòng mới.
+5. Mở địa chỉ hiện ra, gửi một đăng ký. Vào Table Editor, bảng `signups`, bạn sẽ thấy dòng mới. Bấm nút **Thử đọc danh sách như người lạ**: kết quả phải là "Bị chặn" hoặc "danh sách rỗng".
+
+Không có terminal? Đưa `index.html` lên GitHub Pages theo [bài 02](../../../vibe/02-static-hosting.md) rồi mở link công khai.
 
 ## Kiểm tra RLS bằng cách gọi API không đăng nhập
 
-Thay `YOUR_PROJECT_REF` và `YOUR_PUBLISHABLE_KEY` bằng giá trị của bạn (chỉ dùng khóa công khai):
+Cách không cần terminal: nút thử trên trang, hoặc dán `https://YOUR_PROJECT_REF.supabase.co/rest/v1/signups?select=*&apikey=YOUR_PUBLISHABLE_KEY` vào tab ẩn danh (phải ra `[]` hoặc lỗi quyền). Cho ai quen terminal, dùng curl. Thay `YOUR_PROJECT_REF` và `YOUR_PUBLISHABLE_KEY` bằng giá trị của bạn (chỉ dùng khóa công khai):
 
 ```bash
 # Đọc signups khi chưa đăng nhập: mong đợi mảng rỗng hoặc lỗi quyền, KHÔNG được thấy email của ai

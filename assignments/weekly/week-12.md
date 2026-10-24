@@ -12,7 +12,7 @@
 | 4. Mở workload bằng Service và DNS | [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md), Phần 1-3 | 1 giờ | `get endpoints`, `describe svc`, `nslookup` ba tên, `wget`, `curl` |
 | 5. Điều tra Service không có Endpoints | [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md), mục Phá lỗi nâng cao | 1 giờ | `get endpoints` ba thời điểm, so sánh selector và nhãn; mục trong `report.md` |
 
-Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo barem; bảng điểm ngắn nằm bên dưới.
+Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo bảng điểm; bảng điểm ngắn nằm bên dưới.
 
 ## Bối cảnh
 
@@ -216,7 +216,7 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục cuối của `lab-24/report
 2. Commit hai thư mục `lab-23/` và `lab-24/` theo cấu trúc ở trên (commit nhỏ, thông điệp rõ ràng).
 3. Mở Pull Request vào nhánh chính của repository cá nhân, mô tả ngắn các nhiệm vụ đã làm và level (L1 hay L2).
 4. Nhờ ít nhất một bạn review và xử lý nhận xét của bạn đó; review cần có ít nhất một góp ý cụ thể về evidence hoặc manifest.
-5. Mentor chấm theo barem sau khi PR đã được review.
+5. Mentor chấm theo bảng điểm sau khi PR đã được review.
 
 Hạn nộp: trước buổi đầu tiên của tuần 13. Nộp muộn bị trừ điểm theo quy định chung ở [Đánh giá và chấm điểm](../../curriculum/assessment.md).
 

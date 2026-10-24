@@ -13,6 +13,7 @@ Tuần 7/16 · Giai đoạn 2 – Containerization · Buổi 13/32
   - [ ] Đã làm xong [Buổi 12 – Persistent Storage](../week-06/session-12.md) (Dockerfile, network, volume).
   - [ ] Docker Desktop đang chạy, terminal WSL mở trong `~` (xem [Hướng dẫn cài đặt](../../resources/setup-guide.md)).
   - [ ] Có repo cá nhân `devops-labs` (public) và đã clone giáo trình vào `~/devops-course` (xem [Tài khoản GitHub và repo](../../resources/setup-github.md)).
+  - [ ] Chạy `bash ~/devops-course/resources/check-env.sh 13` để biết mình thiếu gì.
 - **Sản phẩm phải nộp:** `README.md`, `evidence/command-output.txt`, `report.md` trong `lab-13/`, kèm `source/` (có `compose.yaml` và `.env.example`, không có `.env`) và ảnh giao diện trong `screenshots/`.
 - **Đi tới:** Đọc (bên dưới) > [Làm lab](#hands-on-lab) > [Gặp lỗi?](#gap-loi) > [Tự kiểm tra](#tu-kiem-tra) > [Nộp bài](#nop-bai). Kẹt? Nhảy tới [Gặp lỗi?](#gap-loi).
 

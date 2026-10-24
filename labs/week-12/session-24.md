@@ -11,7 +11,7 @@ Tuần 12/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 24/32
 - **Thời gian thật:** đọc 15 phút, lab bắt buộc 60 phút, thử thách và phá lỗi làm ở nhà.
 - **Cần chuẩn bị:**
   - [ ] Cluster kind `club` đang chạy, context `kind-club`; đã học [Buổi 23 – kubectl Fundamentals](session-23.md).
-  - [ ] Image `club-api:1.0.0`, `club-web:1.0.0` đã nạp vào kind; namespace `club` có Postgres, API, web từ [Buổi 22 – Pods & Deployments](../week-11/session-22.md).
+  - [ ] Image `club-api:1.0.0` đã nạp vào kind (`club-web:1.0.0` build ở Chuẩn bị); namespace `club` có Postgres và API từ [Buổi 22 – Pods & Deployments](../week-11/session-22.md); Frontend `club-web` bạn dựng ngay ở phần Chuẩn bị.
   - [ ] Môi trường theo [Hướng dẫn cài đặt](../../resources/setup-guide.md); repo `devops-labs` theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md).
 - **Phải nộp:** `README.md` (7 câu của mẫu, ghi L1 hay L2); `evidence/command-output.txt` (`get svc`, `get endpoints backend`, `nslookup` ba tên, `curl` qua port-forward); `report.md` về Endpoints rỗng; `screenshots/` ít nhất một ảnh.
 - **Đi nhanh:** Đọc > [Làm lab](#hands-on-lab) > [Gặp lỗi?](#gap-loi) > [Tự kiểm tra](#tu-kiem-tra) > [Nộp bài](#nop-bai). Kẹt? Nhảy tới [Gặp lỗi?](#gap-loi).
@@ -92,7 +92,18 @@ kubectl config set-context --current --namespace=club
 kubectl get pods
 ```
 
-Kết quả mong đợi: `postgres-0`, hai Pod `club-api-...`, một Pod `club-web-...` đều `Running` và `1/1`. Thiếu Pod thì apply lại trong `starter-project/k8s/` theo thứ tự: `namespace.yaml`, `configmap.yaml`, Secret (từ `secret.example.yaml` với password của bạn), `postgres.yaml`, `backend.yaml`, `frontend.yaml`. Namespace mặc định đã đặt là `club` nên không cần `-n club`; sau lab có thể đặt lại `default`. Lệnh quan trọng thì ghi vào bằng chứng: `kubectl get svc | tee -a evidence/command-output.txt`.
+Kết quả mong đợi: `postgres-0` và hai Pod `club-api-...` đều `Running` `1/1`; chưa có `club-web`. Buổi 22 chỉ deploy API, nên dựng Frontend ngay bây giờ (Service `backend` đã có nên Nginx của frontend phân giải được tên `backend`):
+
+```bash
+cd ~/devops-course/starter-project
+docker build -t club-web:1.0.0 ./frontend
+kind load docker-image club-web:1.0.0 --name club
+kubectl apply -f k8s/frontend.yaml
+kubectl rollout status deployment/club-web --timeout=120s
+cd ~/devops-labs/lab-24
+```
+
+Thiếu `postgres-0` hoặc `club-api` thì quay lại [Buổi 22 – Pods & Deployments](../week-11/session-22.md) (Secret `club-secrets` tạo bằng `kubectl create secret generic`, đừng apply `secret.example.yaml`). Namespace mặc định đã đặt là `club` nên không cần `-n club`; sau lab có thể đặt lại `default`. Lệnh quan trọng thì ghi vào bằng chứng: `kubectl get svc | tee -a evidence/command-output.txt`.
 
 ### Phần 1 – Đọc Service của backend (10 phút)
 
@@ -145,7 +156,7 @@ exit
 Kết quả mong đợi:
 - Cả ba tên cùng trả về một ClusterIP (Pod debug cùng namespace `club` nên tên ngắn được mở rộng nhờ search domain).
 - `resolv.conf` có `search club.svc.cluster.local svc.cluster.local cluster.local` và `nameserver 10.96.0.10` (rút gọn).
-- `{"status":"healthy","service":"club-api"}` và một mảng JSON thành viên (`[]` nếu chưa có dữ liệu mẫu). API không trả tên Pod nên cân bằng tải được quan sát bằng log ở Phần 4.
+- `{"status":"healthy","service":"club-api"}` và một mảng JSON thành viên (Alice, Bob nếu đã nạp `init.sql` ở buổi 22). API không trả tên Pod nên cân bằng tải được quan sát bằng log ở Phần 4.
 
 ::: tip Kiểm tra: bạn đúng khi
 Ba lệnh `nslookup` cho cùng một địa chỉ và `/health` trả `healthy`. Nếu `nslookup` ra IP nhưng `wget` lỗi, xem [Gặp lỗi?](#gap-loi).

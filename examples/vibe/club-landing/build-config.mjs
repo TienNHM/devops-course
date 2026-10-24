@@ -1,4 +1,5 @@
 // Tạo config.js từ biến môi trường và gom các file công khai vào thư mục dist/.
+// Tùy chọn (nâng cao). Mặc định bạn chỉ cần đổi tên config.example.js thành config.js và commit.
 // Dùng trên Vercel, Netlify, Cloudflare Pages, GitHub Actions. Không cần cài thêm gói nào.
 //
 //   node build-config.mjs            -> tạo dist/ (index.html, admin.html, app.js, admin.js, style.css, config.js)

@@ -13,11 +13,11 @@
 
 Thời lượng ước tính: 60 đến 90 phút.
 
-- Tạo một project Supabase dành cho học tập, tạo bảng và xem dữ liệu bằng Table Editor.
-- Phân biệt khóa công khai (publishable, hay anon cũ) với khóa bí mật (secret, hay service_role cũ) và biết khóa nào được phép nằm trong code web.
-- Bật Row Level Security (RLS), viết policy cho bảng đăng ký và tự kiểm tra bằng cách gọi API khi chưa đăng nhập.
-- Nối web tĩnh với Supabase bằng supabase-js, và cấu hình Site URL, Redirect URLs để đăng nhập chạy được sau khi lên domain thật.
-- Biết khi nào nên dùng Supabase CLI và vì sao chỉ cho AI agent kết nối Supabase MCP ở chế độ read-only trên project dev.
+- Tạo project Supabase học tập, tạo bảng và xem dữ liệu bằng Table Editor.
+- Phân biệt khóa công khai (publishable, hay anon cũ) với khóa bí mật (secret, hay service_role cũ).
+- Bật RLS, viết policy và tự kiểm tra bằng nút thử đọc như người lạ.
+- Nối web tĩnh với Supabase bằng supabase-js, cấu hình Site URL và Redirect URLs.
+- Biết vì sao agent chỉ nên kết nối Supabase MCP ở chế độ read-only trên project dev.
 
 ## Khái niệm trong 5 phút
 
@@ -172,49 +172,43 @@ Bạn sẽ thấy: URL dạng `https://YOUR_REF.supabase.co` và một khóa b�
 
 ### Bước 4. Nối web tĩnh với supabase-js
 
-Tạo `config.js` (không cần giấu vì chỉ chứa khóa công khai, nhưng vẫn tuyệt đối không dán secret key vào đây):
+Bạn không cần tự viết code. Dưới đây là một file `index.html` hoàn chỉnh (form, gửi dữ liệu, nút thử RLS). Bạn chỉ sửa **hai dòng** có chữ `THAY`.
 
-```js
-export const SUPABASE_URL = 'https://YOUR_REF.supabase.co'
-export const SUPABASE_KEY = 'sb_publishable_YOUR_KEY_HERE'
+1. Trong thư mục `club-landing` của repo (hoặc thư mục web của bạn), tạo file mới tên `index.html` (GitHub Desktop: mở thư mục bằng Notepad hoặc VS Code), dán toàn bộ nội dung lấy ở trang liên kết bên dưới.
+2. Thay `SUPABASE_URL` bằng Project URL và `SUPABASE_KEY` bằng publishable key đã lấy ở Bước 3. Giữ nguyên dấu nháy đơn.
+3. Lưu file, commit và push bằng GitHub Desktop, đợi GitHub Pages cập nhật, rồi mở link của bạn.
+
+Mở trang [file index.html hoàn chỉnh](04-supabase-index-html.md), sao chép toàn bộ khối mã vào file `index.html` của bạn, rồi quay lại đây.
+
+Cách thử: mở link GitHub Pages của bạn (hoặc link Vercel, Netlify...). Mở file trực tiếp từ ổ đĩa đôi khi cũng chạy, nhưng nếu không thấy gì thì dùng link công khai cho chắc. Bản có cấu trúc nhiều file (`config.js`, `app.js`...) nằm ở [club-landing](../examples/vibe/club-landing/README.md) và gói tải về của [bài 09](09-mini-project.md). Nhờ AI agent viết lại giao diện cũng được, miễn là nó giữ đúng hai giá trị URL và publishable key.
+
+Bạn sẽ thấy: điền form, bấm Gửi, dòng mới xuất hiện trong Table Editor, bảng `signups`.
+
+### Bước 5. Kiểm tra RLS khi chưa đăng nhập
+
+Đây là bước nhiều người bỏ qua và là bước đáng tiền nhất. Bạn đóng vai kẻ lạ chỉ có URL và publishable key. Không cần terminal.
+
+**Cách 1 (dễ nhất):** trên trang vừa dựng, bấm nút **Thử đọc danh sách như người lạ**. Bạn sẽ thấy: dòng "Bị chặn" hoặc "danh sách rỗng", cả hai đều là đạt. Nếu thấy chữ CẢNH BÁO, dừng lại: kiểm tra RLS đã bật chưa và policy có `using (true)` cho `anon` hay không.
+
+**Cách 2 (thanh địa chỉ):** mở một tab ẩn danh, dán đường dẫn sau (đổi hai chỗ viết hoa cho đúng của bạn) rồi Enter:
+
+```text
+https://YOUR_REF.supabase.co/rest/v1/signups?select=*&apikey=sb_publishable_YOUR_KEY_HERE
 ```
 
-Trong trang HTML:
+Kết quả đúng: `[]` hoặc một thông báo lỗi quyền (permission denied). Nếu trình duyệt đòi thêm header, hãy dùng Cách 1.
 
-```html
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-  import { SUPABASE_URL, SUPABASE_KEY } from './config.js'
+Table Editor trong dashboard chạy bằng quyền admin nên luôn thấy dữ liệu, đừng dùng nó để kiểm tra RLS. Chỉ phép thử bằng publishable key mới phản ánh đúng điều người lạ thấy.
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
-
-  const { error } = await supabase
-    .from('signups')
-    .insert({ full_name: 'Nguyen Van A', email: 'a@example.com' })
-
-  console.log(error ? error.message : 'Đã gửi')
-</script>
-```
-
-Chú ý: không gọi `.select()` ngay sau `.insert()` với khách chưa đăng nhập. `.select()` đòi quyền đọc lại dòng vừa tạo, mà khách không có quyền đó (đúng ý ta), nên cả lệnh báo lỗi vi phạm RLS và dòng không được lưu.
-
-Cách thử: đẩy `index.html` và `config.js` lên GitHub rồi mở link GitHub Pages của bạn (mở file trực tiếp từ ổ đĩa không chạy được vì trình duyệt chặn `import` giữa các file). Ai có Node.js có thể chạy `npx serve .` để thử trên máy. Nhờ AI agent viết sẵn trang form hoàn chỉnh cũng được, miễn là nó dùng đúng hai giá trị URL và publishable key.
-
-Bạn sẽ thấy: gửi form xong, dòng mới xuất hiện trong Table Editor, bảng `signups`.
-
-### Bước 5. Kiểm tra RLS bằng cách gọi API khi chưa đăng nhập
-
-Đây là bước nhiều người bỏ qua và là bước đáng tiền nhất. Bạn đóng vai kẻ lạ chỉ có URL và publishable key.
+::: details Cho ai quen terminal: kiểm tra bằng curl
 
 ```bash
-# Thử đọc danh sách đăng ký như người lạ
 curl "https://YOUR_REF.supabase.co/rest/v1/signups?select=*" \
   -H "apikey: sb_publishable_YOUR_KEY_HERE"
 ```
 
-Bạn sẽ thấy: mảng rỗng `[]` (hoặc lỗi quyền). Nếu thấy email của người khác, dừng ngay, kiểm tra xem RLS đã bật chưa và policy có `using (true)` cho `anon` hay không.
-
-Bạn cũng có thể thử trong trình duyệt: Dashboard có công cụ Table Editor chạy bằng quyền admin nên luôn thấy dữ liệu, đừng dùng nó để kiểm tra RLS. Chỉ phép thử bằng publishable key mới phản ánh đúng điều người lạ thấy.
+Mong đợi mảng rỗng `[]` hoặc lỗi quyền. Nếu thấy email của người khác, dừng ngay và kiểm tra RLS.
+:::
 
 ### Bước 6. Bật đăng nhập và cấu hình URL chuyển hướng
 
@@ -234,8 +228,6 @@ const { error } = await supabase.auth.signInWithOtp({
 
 Bạn sẽ thấy: email chứa link, bấm vào thì quay về đúng trang của bạn và đã đăng nhập. Nếu bị đưa về `localhost`, bạn quên đổi Site URL.
 
-Lưu ý nhỏ: dịch vụ gửi email mặc định của Supabase chỉ phù hợp để thử. Theo [tài liệu SMTP](https://supabase.com/docs/guides/auth/auth-smtp) (kiểm tra 10/2026) nó chỉ gửi tới địa chỉ thuộc nhóm của dự án, khoảng 2 email mỗi giờ và có thể đổi không báo trước. Sản phẩm thật cần cấu hình nhà cung cấp email riêng.
-
 Nếu web có trang quản trị cần tài khoản admin, cách tạo admin an toàn (không phụ thuộc email) nằm ở [Supabase nâng cao](04-supabase-advanced.md).
 
 ### Bước 7. Đọc thêm khi cần: Storage, Edge Functions, CLI, MCP
@@ -248,7 +240,7 @@ Dán prompt sau cho agent (Claude Code, Cursor, Copilot agent...). Prompt đã c
 
 ```text
 Bối cảnh: tôi đang làm web đăng ký CLB bằng HTML + supabase-js, backend là Supabase (project DEV, KHÔNG phải production).
-Tôi sẽ tự cung cấp Project URL và publishable key qua file config.js. Bạn không bao giờ cần và không được hỏi secret key, service_role key hay mật khẩu database.
+Tôi sẽ tự điền Project URL và publishable key vào hai hằng số đầu file. Bạn không bao giờ cần và không được hỏi secret key, service_role key hay mật khẩu database.
 
 Việc cần làm:
 1. Viết file supabase/migrations/001_init.sql tạo bảng signups (full_name, email, message, created_at) và members (user_id tham chiếu auth.users).
@@ -268,7 +260,7 @@ Bạn phải tự kiểm tra sau khi agent làm xong:
 - Mở file SQL và tìm chữ `enable row level security` cho từng bảng.
 - Tìm `using (true)` và `to anon`: mỗi chỗ phải có lý do chính đáng.
 - Tìm chữ `service_role` hoặc `sb_secret` trong toàn bộ repo (Tìm kiếm của trình soạn thảo). Phải không có kết quả.
-- Gọi API bằng `curl` như Bước 5 để chứng minh người lạ không đọc được dữ liệu riêng.
+- Bấm nút thử đọc như người lạ (Bước 5) để chứng minh người lạ không đọc được dữ liệu riêng.
 
 ::: danger Không giao cho agent
 - Dán secret key, service_role key, mật khẩu database hay token cá nhân vào prompt hoặc file.
@@ -307,7 +299,7 @@ Bạn phải tự kiểm tra sau khi agent làm xong:
 1. Chỉ publishable key (hoặc anon key cũ) được nằm ở frontend. Secret key và service_role không bao giờ, vì chúng bỏ qua RLS.
 2. Mọi người có URL và publishable key đều đọc, ghi, xóa được toàn bộ bảng qua API.
 3. Mảng rỗng, không lỗi. Đây là hành vi đúng: RLS đóng mặc định, bạn cần thêm policy để mở đúng phần cần mở.
-4. Table Editor chạy bằng quyền quản trị nên luôn thấy dữ liệu. Phải thử bằng publishable key qua `curl` hoặc supabase-js khi chưa đăng nhập.
+4. Table Editor chạy bằng quyền quản trị nên luôn thấy dữ liệu. Phải thử bằng publishable key khi chưa đăng nhập (nút thử trên trang, hoặc dán URL REST kèm apikey).
 5. Authentication, URL Configuration: đổi Site URL thành địa chỉ thật và thêm địa chỉ thật vào Redirect URLs.
 6. Dùng project dev, đặt `project_ref` để giới hạn một project, bật `read_only=true`, giữ duyệt tay từng lệnh, không dùng với production, không dán secret vào prompt.
 
@@ -317,7 +309,7 @@ Bạn phải tự kiểm tra sau khi agent làm xong:
 
 - [ ] Đã tạo project Supabase dành cho học tập và lưu mật khẩu database trong trình quản lý mật khẩu.
 - [ ] Đã chạy khối SQL ở Bước 2, mọi bảng trong `public` đều hiện RLS enabled.
-- [ ] Đã dùng `curl` với publishable key khi chưa đăng nhập và xác nhận không đọc được dữ liệu riêng.
+- [ ] Đã bấm nút thử đọc như người lạ (hoặc dán URL REST kèm apikey) và xác nhận không đọc được dữ liệu riêng.
 - [ ] Web chỉ chứa publishable key; tìm trong repo không có `service_role` hay `sb_secret`.
 - [ ] File `.env` (nếu có) nằm trong `.gitignore`.
 - [ ] Đã đặt Site URL và Redirect URLs đúng cho cả localhost và domain thật.
@@ -341,6 +333,4 @@ Tài liệu chính thức:
 - [API keys](https://supabase.com/docs/guides/api/api-keys)
 - [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - [Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls)
-- [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started)
-- [Supabase MCP](https://supabase.com/docs/guides/getting-started/mcp)
 - [Giá và giới hạn](https://supabase.com/pricing)

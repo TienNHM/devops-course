@@ -7,40 +7,50 @@
 
 **Thời gian:** 10 phút đọc, 5 phút làm phần "Thực hành". Phần mở rộng ở cuối là đọc sau, không bắt buộc.
 
-**Đây là bước đầu của Chặng 1 "Có link công khai"** (00, 01, 02). Track này độc lập với khóa DevOps 16 tuần. Trang tra cứu thuật ngữ: [Thuật ngữ](../resources/glossary.md) (deploy, hosting, domain, HTTPS, frontend, backend, database, build, serverless, env var, diff).
+**Đây là bước đầu của Chặng 1 "Có link công khai"** (00, 01, 02). Track này độc lập với khóa DevOps 16 tuần. Thuật ngữ lạ: [Thuật ngữ](../resources/glossary.md).
 :::
 
 ## Bạn sẽ làm được gì
 
-- Giải thích deploy, hosting, domain, env var bằng ví von đời thường.
-- Phân biệt frontend, backend, database, web tĩnh và web động.
+- Giải thích deploy, repo, secret bằng ví von đời thường.
+- Biết sản phẩm của mình là web tĩnh hay cần thêm backend và database.
 - Thuộc 7 quy tắc sống còn để không lộ secret, không mất tiền, không bị AI "nói dối".
+
+## Chưa có AI nào? Làm thế này
+
+Bạn không cần công cụ trả tiền. Mở một chatbot AI miễn phí (ví dụ Claude hoặc ChatGPT), nhờ nó viết một file `index.html` đơn giản cho sản phẩm của bạn. Hoặc tải trang mẫu [vibe-static-site.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-static-site.zip) và dùng luôn ở bài 02.
 
 ## Khái niệm trong 5 phút
 
-### Deploy là mở cửa hàng
+Chỉ cần nhớ 3 từ cho bài này: deploy, repo, secret.
 
-Bạn làm xong món đồ trong bếp nhà mình (code chạy trên laptop). Chưa ai thấy được. **Deploy** là mang món đồ ra mặt phố, mở cửa, để khách bước vào.
+| Đời thường | Thuật ngữ | Ý nghĩa |
+| --- | --- | --- |
+| Mang món đồ từ bếp nhà ra mặt phố, mở cửa đón khách | **Deploy** | Đưa sản phẩm từ laptop lên Internet để người khác mở được bằng link |
+| Sổ lưu mọi phiên bản công thức | **Repo** (kho code trên Git và GitHub) | Nơi cất code và lịch sử thay đổi, quay lại được khi hỏng |
+| Két sắt | **Secret** (mật khẩu, khóa, lưu trong env var) | Thứ không được treo ngoài cửa: không dán vào chat, không đưa vào repo |
+
+Bạn làm xong món đồ trong bếp nhà mình (code chạy trên laptop) thì chưa ai thấy được. Deploy là mở cửa cho khách bước vào.
+
+Quy tắc ngón tay cái: **nếu làm được bằng web tĩnh (chỉ là các file có sẵn) thì đừng thêm backend và database.** Mỗi mảnh ghép thêm vào là thêm một chỗ có thể hỏng và một chỗ có thể bị tấn công.
+
+::: details Các thuật ngữ còn lại: hosting, domain, HTTPS, frontend, backend, database, build, serverless, log
+
+Tra đầy đủ ở [Thuật ngữ](../resources/glossary.md). Tóm tắt:
 
 | Đời thường | Thuật ngữ | Ý nghĩa |
 | --- | --- | --- |
 | Mặt bằng thuê | Hosting | Máy tính của người khác chạy sản phẩm của bạn 24/7 |
 | Địa chỉ nhà | Domain | Tên dễ nhớ như `clb-cua-toi.com` trỏ tới mặt bằng đó |
 | Biển hiệu có khóa | HTTPS | Kết nối được mã hóa, trình duyệt hiện ổ khóa |
-| Két sắt | Env var (biến môi trường) | Nơi cất mật khẩu và khóa, không treo ngoài cửa |
 | Sổ nhật ký cửa hàng | Log | Ghi lại chuyện gì xảy ra, đọc khi có sự cố |
-| Sổ lưu mọi phiên bản công thức | Git và GitHub | Lịch sử thay đổi, quay lại được khi hỏng |
-
-Các thuật ngữ này đều có trong [Thuật ngữ](../resources/glossary.md).
-
-### Các mảnh ghép của một ứng dụng
 
 - **Frontend**: phần khách nhìn thấy (trang, nút, form). Chạy trong trình duyệt của khách. Viết bằng HTML, CSS, JavaScript.
 - **Backend**: phần "trong bếp" xử lý việc khách không được thấy (kiểm tra đăng nhập, gửi email, gọi AI). Chạy trên server.
 - **Database**: kho lưu dữ liệu lâu dài (danh sách người đăng ký, bài viết).
 - **Static (tĩnh)**: chỉ là các file có sẵn, server chỉ việc đưa file cho khách. Rẻ, nhanh, an toàn, nhiều nơi cho host miễn phí.
 - **Dynamic (động)**: có backend và thường có database, kết quả phụ thuộc người dùng.
-- **Build**: bước "đóng gói" biến code nguồn thành file chạy được (ví dụ gom và nén code). Web HTML thuần không cần build. Các framework như React, Next.js, Vite thì cần.
+- **Build**: bước "đóng gói" biến code nguồn thành file chạy được. Web HTML thuần không cần build. React, Next.js, Vite thì cần.
 - **Serverless**: bạn chỉ viết từng hàm nhỏ, nhà cung cấp lo server. Hợp với backend nhẹ.
 
 ```mermaid
@@ -51,7 +61,7 @@ flowchart LR
     B --> K["Dịch vụ ngoài: AI, email"]
 ```
 
-Quy tắc ngón tay cái: **nếu làm được bằng web tĩnh thì đừng thêm backend.** Mỗi mảnh ghép thêm vào là thêm một chỗ có thể hỏng và một chỗ có thể bị tấn công.
+:::
 
 ### 7 quy tắc sống còn
 
@@ -113,7 +123,7 @@ Bài này là bài vẽ bản đồ, làm trên giấy hoặc trong ghi chú.
 
 ## Checklist hoàn thành
 
-- [ ] Tôi giải thích được deploy, hosting, domain, env var bằng ví dụ của mình.
+- [ ] Tôi giải thích được deploy, repo, secret bằng ví dụ của mình.
 - [ ] Tôi biết sản phẩm của mình là tĩnh hay cần backend và database.
 - [ ] Tôi thuộc 7 quy tắc sống còn (có thể chép ra giấy dán cạnh màn hình).
 - [ ] Tôi biết module nào đọc tiếp.

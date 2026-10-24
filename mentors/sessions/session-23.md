@@ -89,7 +89,7 @@ Slide buổi 23 có 14 slide.
 Thử thách nằm ở [Thử thách nâng cao](../../labs/week-12/session-23-challenge.md); lời giải (kể cả script `inspect.sh`) ở [Đáp án tuần 12](../walkthroughs/week-12.md).
 
 - Thử thách 3 (Deployment bí ẩn): gợi ý nhìn `Last State` và Exit Code trong `describe`. Đáp án: `sh` thoát ngay vì không có stdin, dẫn tới CrashLoopBackOff; sửa bằng thêm `-- sleep 3600`.
-- Thử thách 4 (cluster 3 node) là tùy chọn và tạo cluster riêng `club-3n`; nhắc học viên không xóa nhầm cluster `club`. Kiểm tra bằng `kind get clusters` trước khi xóa.
+- Thử thách 4 (cluster 3 node) là tùy chọn và tạo cluster riêng `club-3`; nhắc học viên không xóa nhầm cluster `club`. Kiểm tra bằng `kind get clusters` trước khi xóa.
 
 ## Lưu ý riêng cho người dạy
 

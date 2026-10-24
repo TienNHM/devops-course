@@ -16,6 +16,7 @@ Tuần 11/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 21/32
 - [ ] Docker Desktop đang chạy và bật tích hợp WSL2 (xem [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md)); đã cài `kubectl` và `kind` (mục 7 và 8 của hướng dẫn đó)
 - [ ] Đã clone repo giáo trình vào `~/devops-course` trong WSL và có repo `devops-labs` (xem [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md))
 - [ ] Đã xong [Buổi 20 – Pipeline Security](../week-10/session-20.md); máy 8 GB thì tắt Compose trước (`docker compose down`)
+- [ ] Chạy `bash ~/devops-course/resources/check-env.sh 21` để biết mình thiếu gì
 
 **Sản phẩm phải nộp** (thư mục `lab-21/` trong `devops-labs`):
 

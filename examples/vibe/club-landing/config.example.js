@@ -1,5 +1,5 @@
-// Sao chép file này thành config.js rồi điền giá trị của bạn:
-//   cp config.example.js config.js
+// Đổi tên file này thành config.js (hoặc sao chép: cp config.example.js config.js),
+// rồi thay hai giá trị SUPABASE_URL và SUPABASE_KEY. File config.js được phép commit lên GitHub.
 //
 // CHỈ dùng khóa công khai (Publishable key "sb_publishable_..." hoặc khóa "anon" kiểu cũ).
 // TUYỆT ĐỐI KHÔNG dán secret key ("sb_secret_...") hay "service_role" vào file này.

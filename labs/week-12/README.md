@@ -28,8 +28,8 @@ Khoảng 2 giờ đọc và 2 giờ lab bắt buộc ở trên lớp hoặc tự
 ## Checklist chuẩn bị cho cả tuần
 
 - [ ] Docker Desktop đang chạy và `kubectl get nodes` thấy node `Ready` (context `kind-club`).
-- [ ] Namespace `club` có Postgres, hai Pod `club-api`, một Pod `club-web` đều `Running` (từ [Buổi 22 – Pods & Deployments](../week-11/session-22.md)).
-- [ ] Image `club-api:1.0.0`, `club-web:1.0.0` đã nạp vào kind.
+- [ ] Namespace `club` có Postgres và hai Pod `club-api` đều `Running` (từ [Buổi 22 – Pods & Deployments](../week-11/session-22.md)); `club-web` sẽ được dựng ở đầu buổi 24.
+- [ ] Image `club-api:1.0.0` đã nạp vào kind (`club-web:1.0.0` build ở buổi 24).
 - [ ] Repo `devops-labs` (public) sẵn sàng theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md); cài đặt theo [Hướng dẫn cài đặt](../../resources/setup-guide.md).
 - [ ] Cổng 8081 và 8082 trên máy còn trống (8080 thường bị Compose chiếm).
 

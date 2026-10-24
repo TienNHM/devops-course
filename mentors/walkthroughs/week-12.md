@@ -119,7 +119,7 @@ Lưu ý: `kubectl diff` trả exit code 1 khi có khác biệt, nên dùng đư�
 
   Pod `Running` và `RESTARTS` không tăng. Sửa đúng cách là đưa lệnh vào manifest (`command`), không tạo bằng lệnh.
 
-**Thử thách 4: cluster 3 node `club-3n` (tùy chọn).** `kind create cluster --name club-3n --config source/kind-3-nodes.yaml` (1 control-plane, 2 worker) tạo context `kind-club-3n`; từ đây luôn thêm `--context kind-club-3n`. Tạo namespace `club`, apply `demo-web` với `replicas: 6`, rồi `kubectl get pods -n club -o wide --context kind-club-3n` cho thấy Pod rải trên hai worker (control plane có taint nên không nhận Pod ứng dụng). Dọn đúng cluster: `kind get clusters` rồi `kind delete cluster --name club-3n`; không xóa cluster `club`, và `kubectl config use-context kind-club` sau đó.
+**Thử thách 4: cluster 3 node `club-3` (tùy chọn).** `kind create cluster --name club-3 --config source/kind-3-nodes.yaml` (1 control-plane, 2 worker) tạo context `kind-club-3`; từ đây luôn thêm `--context kind-club-3`. Tạo namespace `club`, apply `demo-web` với `replicas: 6`, rồi `kubectl get pods -n club -o wide --context kind-club-3` cho thấy Pod rải trên hai worker (control plane có taint nên không nhận Pod ứng dụng). Dọn đúng cluster: `kind get clusters` rồi `kind delete cluster --name club-3`; không xóa cluster `club`, và `kubectl config use-context kind-club` sau đó.
 
 #### Lời giải phần Phá lỗi: ImagePullBackOff
 

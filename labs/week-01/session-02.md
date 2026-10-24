@@ -334,24 +334,17 @@ Buổi tiếp theo: [Buổi 03 – Linux CLI](../week-02/session-03.md).
 | --- | --- | --- | --- |
 | Filesystem Linux (ext4) | `/home/TEN_BAN/` (viết tắt `~`) | `\\wsl$\Ubuntu\home\TEN_BAN` (hoặc `\\wsl.localhost\Ubuntu\...`) | Mã nguồn, Docker build context, mọi lab |
 | Ổ đĩa Windows | `/mnt/c/Users/...` | `C:\Users\...` | Chỉ để trao đổi file (ảnh chụp, tải về) |
-| `git push` báo `rejected`, `fetch first` hoặc `unrelated histories` | Thư mục WSL được `git init` riêng, còn repo GitHub đã có README hoặc `lab-01` | Đừng `git init` ở thư mục mới: clone repo về như ở Phần 5 rồi chép `lab-02` vào; hoặc `git pull --rebase origin main` nếu đã nối remote |
+
+Nếu `git push` báo `rejected`, `fetch first` hoặc `unrelated histories`: thư mục WSL được `git init` riêng trong khi repo GitHub đã có README hoặc `lab-01`. Đừng `git init` ở thư mục mới: clone repo về như ở Phần 5 rồi chép `lab-02` vào, hoặc `git pull --rebase origin main` nếu đã nối remote.
 
 Truy cập chéo qua `/mnt/c` đi qua một lớp mạng 9P nên chậm hơn nhiều với thao tác nhiều file nhỏ như `npm install` hay `git status`, đồng thời quyền file (chmod) và ký tự xuống dòng hay gây lỗi. Bảng WSL1, WSL2 và máy ảo, bảng terminal và shell, sơ đồ SSH tới GitHub và lời giải thích sơ đồ kiến trúc nằm ở [Buổi 02 – Thử thách thêm](session-02-challenge.md).
 :::
 
-::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Tự viết script kiểm tra môi trường của riêng bạn thay vì chỉ chạy bản có sẵn, mở rộng nó (node, npm, make, kiểm tra quyền key), viết dotfiles có `install.sh` chạy lặp an toàn và giải thích bằng lời. Đề bài đầy đủ, gợi ý từng bậc và bản script rút gọn nằm ở [Buổi 02 – Thử thách thêm](session-02-challenge.md). Tự thử 15 phút trước khi mở gợi ý.
-:::
-
-::: details Phá lỗi nâng cao
-Tự phá rồi tự sửa lỗi quyền file SSH key, trên một khóa thử `~/.ssh/test_key` để không đụng tới khóa thật, cùng tình huống ảo hóa chưa bật: xem [Buổi 02 – Thử thách thêm](session-02-challenge.md).
+::: details Thử thách thêm và phá lỗi nâng cao (L2, tùy chọn, làm ở nhà)
+Tự viết script kiểm tra môi trường của riêng bạn, mở rộng nó (node, npm, make, kiểm tra quyền key), viết dotfiles có `install.sh` chạy lặp an toàn, và tự phá rồi sửa lỗi quyền file SSH key trên khóa thử `~/.ssh/test_key` (không đụng khóa thật). Đề bài đầy đủ, gợi ý từng bậc và bản script rút gọn nằm ở [Buổi 02 – Thử thách thêm](session-02-challenge.md). Tự thử 15 phút trước khi mở gợi ý.
 :::
 
 ::: details Tài liệu tham khảo
 - [Cài đặt WSL (Microsoft Learn)](https://learn.microsoft.com/windows/wsl/install)
-- [Làm việc qua các filesystem trong WSL](https://learn.microsoft.com/windows/wsl/filesystems)
-- [Phát triển trong WSL với VS Code](https://code.visualstudio.com/docs/remote/wsl)
 - [Tạo SSH key mới và thêm vào ssh-agent (GitHub Docs)](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-- [Thêm SSH key vào tài khoản GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
-- [Tài liệu Git](https://git-scm.com/doc)
 :::

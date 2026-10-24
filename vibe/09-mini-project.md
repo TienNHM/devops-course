@@ -59,10 +59,10 @@ Chức năng bắt buộc:
 Ràng buộc bảo mật (không thương lượng):
 
 - RLS bật cho mọi bảng. Khách chỉ được insert, không đọc, không sửa, không xóa.
-- Chỉ dùng khóa công khai trong code frontend. `config.js` thật hoặc `.env` không nằm trong lịch sử Git.
+- Chỉ dùng khóa công khai (publishable hoặc anon) trong code frontend; `config.js` chỉ chứa Project URL và khóa này. Không có `service_role` hay secret key trong repo và lịch sử Git; `.env` (nếu có) không được commit.
 - Không dán dữ liệu thành viên thật vào AI để "nhờ xử lý".
 
-**Mẫu tham chiếu đã chạy được:** tải gói [vibe-club-landing.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-club-landing.zip) (có `index.html`, `admin.html`, `app.js`, `admin.js`, `schema.sql`, `config.example.js`), giải nén để so sánh sau mỗi mốc. Mã nguồn cũng có ở [examples/vibe/club-landing](../examples/vibe/club-landing/README.md). Hãy tự làm trước, mở mẫu để đối chiếu sau. Ai không muốn tự làm giao diện có thể bắt đầu thẳng từ gói mẫu này và bỏ qua mốc 1.
+**Mẫu tham chiếu đã chạy được:** tải gói [vibe-club-landing.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-club-landing.zip) (có `index.html`, `admin.html`, `app.js`, `admin.js`, `schema.sql`, `config.example.js`), giải nén để so sánh sau mỗi mốc. Trong gói chỉ có `config.example.js` (không có `config.js` thật): để chạy, bạn đổi tên `config.example.js` thành `config.js` rồi điền URL và khóa công khai của mình ở mốc 5. Mã nguồn cũng có ở [examples/vibe/club-landing](../examples/vibe/club-landing/README.md). Hãy tự làm trước, mở mẫu để đối chiếu sau. Ai không muốn tự làm giao diện có thể bắt đầu thẳng từ gói mẫu này và bỏ qua mốc 1.
 
 ## Thực hành từng bước
 
@@ -92,13 +92,13 @@ Tiêu chí: không có lỗi đỏ trong Console (nhấn F12), bạn chỉ ra đ
 
 ### Mốc 3: Đưa lên GitHub (15 phút)
 
-**Đã học ở [bài 01 Git và GitHub](01-git-github.md), làm lại theo bài đó** (GitHub Desktop, tạo `.gitignore` trước khi commit). Điểm riêng của dự án: `.gitignore` phải có thêm dòng `config.js` (chỗ sẽ chứa khóa Supabase của bạn). Tên repo gợi ý: `club-landing`.
+**Đã học ở [bài 01 Git và GitHub](01-git-github.md), làm lại theo bài đó** (GitHub Desktop, tạo `.gitignore` trước khi commit). Điểm riêng của dự án: `.gitignore` chỉ cần chặn `.env` và `node_modules/`; **không** chặn `config.js`, vì file này chỉ chứa khóa công khai và cần lên GitHub để trang online chạy. Tên repo gợi ý: `club-landing`.
 
 Tiêu chí: tìm trong repo chữ `secret` và `service_role` không ra kết quả nào.
 
 ### Mốc 4: Deploy bản tĩnh (20 phút)
 
-**Đã học ở [bài 02 Hosting tĩnh](02-static-hosting.md), làm lại theo bài đó** (GitHub Pages là đủ). Mốc này chỉ cần bản tĩnh chưa có Supabase, nên chưa có `config.js` và chưa cần build. Ở mốc 5 bạn sẽ đổi sang cách build có cấu hình để bản online có khóa công khai.
+**Đã học ở [bài 02 Hosting tĩnh](02-static-hosting.md), làm lại theo bài đó** (GitHub Pages là đủ). Mốc này chỉ cần bản tĩnh chưa có Supabase, nên chưa có `config.js`. Ở mốc 5 bạn thêm `config.js` rồi push lại, hosting tự deploy bản mới.
 
 Tiêu chí: link mở được trên thiết bị khác (thử bằng điện thoại dùng 4G), và có ít nhất 2 lần deploy trong lịch sử.
 
@@ -109,10 +109,10 @@ Tiêu chí: link mở được trên thiết bị khác (thử bằng điện th
 1. **Đã học ở [bài 04 Supabase](04-supabase.md), Bước 1 và Bước 3:** tạo project Supabase, lấy Project URL và publishable key.
 2. Mở SQL Editor, chép khối SQL trong mục gập bên dưới (bảng `members` và `admins`, bật RLS, policy) vào và bấm Run. Đây cũng là nội dung file `schema.sql` trong gói mẫu.
 3. Kiểm tra RLS đã bật cho cả hai bảng `members`, `admins` (Table Editor, nhãn RLS enabled).
-4. Tạo `config.js` từ `config.example.js` (có trong gói mẫu), chỉ điền URL và khóa công khai.
+4. Trong thư mục dự án, **đổi tên** `config.example.js` (có trong gói mẫu) thành `config.js`, mở bằng trình soạn thảo và thay hai giá trị `SUPABASE_URL` và `SUPABASE_KEY` bằng URL và khóa công khai của bạn. Đừng đụng tới dòng nào khác. Nếu tự làm bằng agent thì tự tạo `config.js` có hai giá trị đó.
 5. Nhờ agent nối form với `supabase-js` (prompt ở mục sau). Chạy local, gửi một đăng ký thử, kiểm tra dòng đó xuất hiện trong Table Editor.
 6. Tạo user admin và thêm vào bảng `admins`, làm trang `admin.html` đăng nhập và xem danh sách. Cách tạo admin an toàn: mục "Tạo admin đầu tiên" ở [Supabase nâng cao](04-supabase-advanced.md).
-7. Thử "tấn công" chính mình theo [bài 04, Bước 5](04-supabase.md): đọc `members` bằng khóa công khai, không đăng nhập. Phải ra rỗng.
+7. Thử "tấn công" chính mình theo [bài 04, Bước 5](04-supabase.md): đọc `members` bằng khóa công khai, không đăng nhập (tab ẩn danh, đổi `signups` thành `members` trong URL). Phải ra rỗng hoặc lỗi quyền.
 
 ::: details SQL cho bảng members và admins (chép toàn bộ vào SQL Editor)
 
@@ -185,10 +185,20 @@ create policy "Admin xem dong cua minh"
 
 Phân quyền admin bằng bảng `admins`, không bằng `user_metadata` (người dùng tự sửa được).
 
-Đưa bản có Supabase lên mạng: `config.js` bị `.gitignore` chặn nên không có trên GitHub; nếu để nguyên, trang online sẽ hiện "Chưa cấu hình Supabase". Cách khuyến nghị:
+Đưa bản có Supabase lên mạng (mặc định, đơn giản nhất):
 
-8. Trong cài đặt của nền tảng, đặt biến môi trường `SUPABASE_URL` (Project URL) và `SUPABASE_KEY` (publishable key). Đây là khóa công khai, không phải bí mật; `service_role` hay `sb_secret_` thì tuyệt đối không.
-9. Đặt Build command là `node build-config.mjs` và thư mục xuất bản là `dist`:
+8. Commit cả `config.js` rồi push, như bạn đã deploy ở mốc 4. Không cần build, không cần đặt biến môi trường. Hosting tự cập nhật sau vài phút.
+9. Vì sao commit `config.js` là an toàn: file chỉ có Project URL và khóa công khai (`sb_publishable_...` hoặc `anon`). Trang chạy trong trình duyệt nên khách luôn xem được khóa này (Xem nguồn trang, tab Network), Supabase thiết kế như vậy; quyền thật nằm ở RLS. Còn `service_role` hay `sb_secret_` thì bỏ qua RLS: tuyệt đối không đặt vào repo, kể cả repo riêng tư.
+10. Mở link online: dòng "Chưa cấu hình Supabase" phải biến mất. Gửi một đăng ký thử rồi đăng nhập `/admin.html`.
+11. Quay lại Supabase, Authentication, URL Configuration: đặt Site URL thành địa chỉ trang thật và thêm địa chỉ đó (có `/**`) vào Redirect URLs, giữ localhost nếu còn làm trên máy.
+
+::: details Nâng cao: tạo config lúc build (không commit config.js)
+
+Cách này dành cho ai muốn đổi khóa mà không sửa code, hoặc muốn repo không chứa giá trị cấu hình nào. Nó cần dùng terminal một chút.
+
+1. Thêm dòng `config.js` vào `.gitignore` (và xóa `config.js` khỏi Git nếu đã commit).
+2. Trong cài đặt của nền tảng, đặt biến môi trường `SUPABASE_URL` (Project URL) và `SUPABASE_KEY` (publishable key). Đây là khóa công khai, không phải bí mật.
+3. Đặt Build command là `node build-config.mjs` và thư mục xuất bản là `dist` (script này có trong gói mẫu, tự tạo `dist/` với `config.js` và từ chối chạy nếu thấy secret key). Redeploy sau khi đặt biến, vì biến chỉ được đọc lúc build.
 
 | Nền tảng | Build command | Thư mục xuất bản | Chỗ đặt biến |
 | --- | --- | --- | --- |
@@ -198,13 +208,10 @@ Phân quyền admin bằng bảng `admins`, không bằng `user_metadata` (ngư�
 | Cloudflare Pages (đường cũ) | `node build-config.mjs` | `dist` | Settings, Variables and Secrets (loại Text) |
 | GitHub Pages | Bước build trong GitHub Actions | `path: dist` | Settings, Secrets and variables, Actions, tab Variables |
 
-10. GitHub Pages cần thêm file workflow; bản mẫu đầy đủ nằm trong mục Deploy của README mẫu. Redeploy sau khi đặt biến, vì biến chỉ được đọc lúc build.
-11. Mở link online: dòng "Chưa cấu hình Supabase" phải biến mất, `/config.js` chỉ chứa khóa `sb_publishable_`. Gửi một đăng ký thử rồi đăng nhập `/admin.html`.
-12. Quay lại Supabase, Authentication, URL Configuration: đặt Site URL thành địa chỉ trang thật và thêm địa chỉ đó (có `/**`) vào Redirect URLs, giữ localhost nếu còn làm trên máy.
+GitHub Pages cần thêm file workflow; bản mẫu đầy đủ nằm trong mục Deploy của [README mẫu](../examples/vibe/club-landing/README.md). Mở `/config.js` trên link online để chắc chỉ thấy khóa `sb_publishable_`.
+:::
 
-Cách thay thế đơn giản hơn nhưng kém gọn: `git add -f config.js` khi chắc chắn file chỉ có khóa công khai, rồi để Build command trống và thư mục xuất bản là gốc.
-
-Tiêu chí: một đăng ký thử từ link công khai (bản đã build, không phải localhost) xuất hiện trong Supabase; `curl` ẩn danh đọc `members` trả về rỗng; admin đăng nhập thì thấy danh sách.
+Tiêu chí: một đăng ký thử từ link công khai (không phải localhost) xuất hiện trong Supabase; đọc `members` bằng URL REST kèm apikey khi chưa đăng nhập trả về rỗng hoặc lỗi quyền; admin đăng nhập thì thấy danh sách.
 
 ### Mốc 6: Domain và HTTPS (20 phút)
 
@@ -234,7 +241,7 @@ Mốc 2, hiểu code:
 Mốc 3, chuẩn bị GitHub:
 
 ```text
-Tạo .gitignore cho dự án web tĩnh này: chặn config.js, .env, .env.*, node_modules.
+Tạo .gitignore cho dự án web tĩnh này: chặn .env, .env.*, node_modules. KHÔNG chặn config.js (file này chỉ chứa khóa công khai).
 Sau đó chạy git status và liệt kê file sẽ được commit. KHÔNG chạy git push, tôi sẽ tự đẩy.
 ```
 
@@ -264,7 +271,7 @@ innerHTML với dữ liệu người dùng, bảng thiếu RLS, policy kiểu "u
 Liệt kê phát hiện kèm mức độ. KHÔNG tự sửa schema trên Supabase thật, chỉ đề xuất câu lệnh SQL để tôi đọc rồi tự chạy.
 ```
 
-Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5; chạy `curl` ẩn danh; nhìn lại danh sách file trước khi commit; mở trang trên điện thoại.
+Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5; thử đọc `members` ẩn danh bằng URL REST; nhìn lại danh sách file trước khi commit; mở trang trên điện thoại.
 
 ::: danger Những việc KHÔNG giao cho agent
 - Dán `service_role`, secret key, mật khẩu admin hay token vào khung chat hoặc file trong repo.
@@ -279,7 +286,7 @@ Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5;
 | Việc cần kiểm tra | Cách kiểm tra | Đạt khi |
 | --- | --- | --- |
 | RLS bật | Table Editor, nhãn RLS của từng bảng | Cả `members` và `admins` đã bật |
-| Khách không đọc được | `curl` ẩn danh tới `/rest/v1/members` | Trả về `[]` hoặc bị từ chối |
+| Khách không đọc được | Dán vào tab ẩn danh: `https://YOUR_REF.supabase.co/rest/v1/members?select=*&apikey=KHÓA_CÔNG_KHAI` | Trả về `[]` hoặc bị từ chối |
 | Khách không sửa/xóa được | Thử `PATCH` hoặc `DELETE` bằng khóa công khai | Không có dòng nào bị đổi |
 | Không có khóa bí mật trong repo | Tìm `sb_secret_`, `service_role`, `.env` trong repo và `git log -p` | Không có kết quả |
 | XSS | Đăng ký thử với họ tên là một đoạn thẻ HTML in đậm, xem ở admin | Hiện nguyên chữ, không in đậm |
@@ -294,10 +301,10 @@ Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5;
 | Form báo lỗi, Console có `new row violates row-level security policy` | Chưa chạy khối SQL ở mốc 5, hoặc policy insert sai vai trò (`to anon`) | Chạy lại khối SQL; kiểm tra Authentication, Policies của bảng `members` |
 | Bấm gửi, thông báo thành công nhưng Table Editor trống | Đang trỏ nhầm project, hoặc ô bẫy bot bị trình duyệt tự điền | Kiểm tra `SUPABASE_URL` trong `config.js`; xóa autofill ô ẩn `website` |
 | Admin đăng nhập được nhưng danh sách trống | User chưa nằm trong bảng `admins`, hoặc policy select sai | Chạy lệnh `insert into public.admins ...` đúng email; đọc lại policy "Chi admin duoc xem" |
-| Local chạy, online trang không gửi được | `config.js` bị `.gitignore` chặn nên không được deploy | Dùng biến môi trường + `node build-config.mjs` (có trong gói mẫu), hoặc `git add -f config.js` nếu là khóa công khai |
+| Local chạy, online trang không gửi được | `config.js` chưa được commit và push (hoặc còn bị `.gitignore` chặn) | Xóa dòng `config.js` khỏi `.gitignore`, commit và push lại; hoặc dùng cách nâng cao tạo config lúc build |
 | Console: `supabase is not defined` | Thẻ script CDN nằm sau `app.js`, hoặc mất mạng, hoặc bị chặn | Đặt script CDN trước `app.js`; thử mạng khác |
 | Console: `Invalid API key` | Dán nhầm khóa, thừa khoảng trắng, hoặc khóa đã bị xoay | Copy lại khóa công khai từ Project Settings, API Keys |
-| `build-config.mjs` báo "secret key" hoặc "service_role" | Bạn đặt nhầm khóa bí mật vào biến môi trường | Dừng lại, đặt khóa công khai; nếu khóa bí mật từng bị dán vào chat hoặc repo thì xoay ngay |
+| `build-config.mjs` báo "secret key" hoặc "service_role" (cách nâng cao) | Bạn đặt nhầm khóa bí mật vào biến môi trường | Dừng lại, đặt khóa công khai; nếu khóa bí mật từng bị dán vào chat hoặc repo thì xoay ngay |
 | Vài tuần sau, form báo lỗi hoặc admin không tải được | Project Supabase gói free bị tạm dừng vì ít hoạt động | Vào dashboard Supabase, bấm khôi phục (restore) project; đọc trang Project Pausing để biết điều kiện hiện hành |
 | Trang hosting hiện 404 | Thư mục xuất bản sai, hoặc file không tên `index.html` | Kiểm tra Publish/Output directory trỏ đúng thư mục chứa `index.html` |
 
@@ -315,10 +322,10 @@ Năm câu hỏi tự kiểm tra (kèm đáp án) nằm ở [trang chấm điểm
 
 - [ ] Có link công khai mở được trên điện thoại, HTTPS có ổ khóa.
 - [ ] Form đăng ký lưu được vào bảng `members`, email trùng được xử lý.
-- [ ] RLS bật cho `members` và `admins`; `curl` ẩn danh đọc `members` ra rỗng.
+- [ ] RLS bật cho `members` và `admins`; đọc `members` ẩn danh (URL REST kèm apikey) ra rỗng hoặc lỗi quyền.
 - [ ] Trang admin đăng nhập xem được danh sách; chưa đăng nhập thì không thấy dữ liệu.
 - [ ] Repo và lịch sử Git không chứa secret key, `service_role`, `.env`.
-- [ ] `.gitignore` chặn `config.js` và `.env`.
+- [ ] `.gitignore` chặn `.env`; `config.js` chỉ có URL và khóa công khai, không có `service_role` hay secret key.
 - [ ] README có cách chạy, cấu hình, deploy và link demo.
 - [ ] Đã điền bài nộp và trả lời đủ 5 câu hỏi giải thích.
 - [ ] Biết cách xử lý ít nhất một lỗi thật đã gặp.

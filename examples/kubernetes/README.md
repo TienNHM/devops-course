@@ -144,9 +144,10 @@ PVC có thể ở trạng thái `Pending` cho đến khi Pod đầu tiên dùng 
 
 ### 08: Ingress
 
-Cài ingress-nginx cho kind. Lệnh `kubectl apply` đúng phiên bản nằm trong tài liệu chính thức của kind tại https://kind.sigs.k8s.io/docs/user/ingress/ (hãy làm theo mục ingress-nginx), sau đó đợi controller sẵn sàng:
+Cài ingress-nginx bản dành cho kind (cùng phiên bản với Buổi 27; trang kind không còn hướng dẫn riêng cho ingress-nginx, xem [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/)), rồi đợi controller sẵn sàng:
 
 ```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/kind/deploy.yaml
 kubectl -n ingress-nginx wait --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller --timeout=120s
 kubectl apply -f 08-ingress.yaml

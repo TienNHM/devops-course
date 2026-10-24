@@ -135,9 +135,11 @@ Kết quả mong đợi: `STATUS` là `Pending`, và Events nói `waiting for fi
 
 ```bash
 kubectl apply -f k8s/configmap.yaml
-kubectl create secret generic club-secrets -n club --from-literal=db-password='lab-local-pass-27'
+read -rsp "DB password (local): " DB_PASS; echo
+kubectl create secret generic club-secrets -n club --from-literal=db-password="$DB_PASS"
+unset DB_PASS
 kubectl apply -f k8s/postgres.yaml
-kubectl wait -n club --for=condition=Ready pod/postgres-0 --timeout=120s
+kubectl rollout status statefulset/postgres -n club --timeout=120s
 kubectl get pvc,pv -n club | tee -a "$EV"
 ```
 
@@ -170,6 +172,7 @@ Kết quả mong đợi: ba dòng gồm Alice, Bob và dòng của bạn.
 ```bash
 kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;" | tee -a "$EV"
 kubectl delete pod postgres-0 -n club
+sleep 5   # đợi StatefulSet tạo lại Pod, nếu không kubectl wait báo NotFound
 kubectl wait -n club --for=condition=Ready pod/postgres-0 --timeout=120s
 kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;" | tee -a "$EV"
 kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT email FROM members WHERE name='Ban';" | tee -a "$EV"
@@ -278,6 +281,7 @@ kubectl get pvc postgres-pvc -n club -o jsonpath='{.status.phase}{"\n"}' && curl
 | `ErrImageNeverPull` hoặc `ImagePullBackOff` ở backend | Quên `kind load docker-image` vào đúng cluster | Nạp lại: `kind load docker-image club-api:1.0.0 --name club` |
 | `curl` tới `127.0.0.1` báo `Connection refused` | Cluster thiếu `extraPortMappings` (cột PORTS của `docker ps` không có `80->80`), hoặc port 80 bị chiếm | Tạo lại cluster với `k8s/kind-config.yaml` (hộp danger ở Chuẩn bị); tắt chương trình đang dùng port 80 |
 | Controller `Pending` | Node thiếu nhãn `ingress-ready=true` | Tạo lại cluster đúng cấu hình |
+| `apply` Ingress báo `failed calling webhook "validate.nginx.ingress.kubernetes.io"` | Controller vừa `Ready`, webhook chưa nhận kết nối | Đợi 15-30 giây rồi `kubectl apply -f k8s/ingress.yaml` lại |
 | Ingress có nhưng trả 404 | Sai header Host, hoặc thiếu `ingressClassName: nginx` | Gọi đúng `-H "Host: club.localhost"`; `kubectl get ingressclass` |
 | Ingress trả 503 `Service Temporarily Unavailable` | Ingress trỏ tới Service không tồn tại hoặc Service không có Pod Ready | `kubectl describe ingress club -n club` (cột Backends báo lỗi endpoints), `kubectl get svc,endpoints -n club`; khôi phục bằng `kubectl apply -f k8s/ingress.yaml` |
 

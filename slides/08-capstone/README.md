@@ -4,7 +4,7 @@
 
 ## Slide dùng để làm gì
 
-Slide dành cho mentor chiếu trên lớp để dẫn dắt; học viên làm theo bài Lab, không cần đọc slide trước. Slide chỉ giữ khung khái niệm, sơ đồ, demo outline và recap. Lệnh thực hành nằm trong bài Lab.
+Slide dành cho mentor chiếu trên lớp để dẫn dắt; học viên làm theo bài Lab, không cần đọc slide trước. Slide chỉ giữ khung khái niệm, sơ đồ, phần demo và recap. Lệnh thực hành nằm trong bài Lab.
 
 ## Các buổi trong bộ slide
 

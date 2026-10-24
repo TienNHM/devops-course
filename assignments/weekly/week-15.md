@@ -16,7 +16,7 @@
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-29/` và `lab-30/`.
 **Đề bài và mốc:** [Đề bài Capstone](../capstone/README.md), [Milestones](../capstone/milestones.md) (bài tập này tương ứng mốc M1 và M2).
 **Mẫu nộp bài:** [Mẫu nộp bài lab](../../templates/lab-template.md).
-Mentor chấm theo barem; bảng điểm ngắn nằm bên dưới.
+Mentor chấm theo bảng điểm; bảng điểm ngắn nằm bên dưới.
 
 ## Bảng điểm ngắn
 
@@ -200,7 +200,7 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục "Câu hỏi kiểm tra" c�
 2. Hoàn thành `lab-29/` và `lab-30/` theo cấu trúc ở trên, commit nhiều lần với thông điệp rõ ràng. Phần việc của nhóm vẫn đi qua PR vào repo nhóm; repo cá nhân chỉ chứa bằng chứng và link.
 3. Mở Pull Request vào `main` của repo cá nhân; mô tả PR ghi rõ đã làm L1 hay cả L2, kèm link repo nhóm và Project board.
 4. Nhờ một bạn review theo [mẫu peer review](../../templates/peer-review-template.md); sửa theo góp ý hợp lý.
-5. Sau khi PR có review, mentor chấm theo barem trên, đối chiếu với lịch sử PR và commit trong repo nhóm.
+5. Sau khi PR có review, mentor chấm theo bảng điểm trên, đối chiếu với lịch sử PR và commit trong repo nhóm.
 6. Hạn nộp: trước buổi đầu tiên của tuần 16. Nộp muộn cần báo mentor trước hạn.
 
 ## Checklist trước khi nộp

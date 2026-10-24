@@ -72,8 +72,10 @@ Bảng SDLC chi tiết và so sánh Dev với Ops nằm trong mục "Tìm hiểu
 
 **Đề bài:** vẽ quy trình triển khai một ứng dụng từ máy lập trình đến server. Mức L1, bắt buộc, 60 phút. Chạy lệnh trong Git Bash (WSL chưa cài ở buổi này; không dùng PowerShell).
 
-::: tip Không muốn gõ heredoc? Tạo file bằng VS Code
-Các Phần 1 đến 4 dùng `cat > tên-file <<'EOF' ... EOF` (heredoc) để ghi nhiều dòng vào file. Cách thay thế cho mọi Phần: mở thư mục `devops-labs` bằng VS Code (`code .` trong Git Bash, hoặc File > Open Folder), tạo file đúng tên trong `lab-01/source/`, dán phần nội dung nằm giữa dòng `cat > ...` và dòng `EOF`, rồi lưu. Kết quả giống hệt.
+**Cách tạo file trong buổi này:** mở thư mục `devops-labs` bằng VS Code (gõ `code .` trong Git Bash, hoặc File > Open Folder), chuột phải thư mục `lab-01/source` > New File, đặt đúng tên, dán nội dung trong khối mã của từng Phần, rồi lưu (Ctrl+S).
+
+::: details Cách nhanh cho người quen terminal: heredoc
+Thay cho VS Code, bạn có thể ghi file bằng một lệnh. Đặt dòng `cat > lab-01/source/ten-file <<'EOF'` trước nội dung và dòng `EOF` (đứng riêng một dòng, không có khoảng trắng đầu dòng) sau nội dung. Nếu terminal hiện dấu `>` ở đầu dòng và không chạy tiếp, nghĩa là nó vẫn đang chờ dòng `EOF`: gõ `EOF` rồi Enter, hoặc bấm Ctrl+C để hủy và làm lại.
 :::
 
 ### Chuẩn bị (5 phút)
@@ -83,15 +85,17 @@ mkdir -p devops-labs && cd devops-labs
 mkdir -p lab-01/source lab-01/screenshots lab-01/evidence
 git --version
 ls lab-01
+pwd
 ```
 
-Đã clone repo `devops-labs` từ GitHub? Bỏ dòng đầu, `cd` vào thư mục repo rồi chạy tiếp (repo trống sẽ in cảnh báo "You appear to have cloned an empty repository", đó là bình thường). Nếu lệnh lỗi, xem [Gặp lỗi?](#gap-loi).
+Đã clone repo `devops-labs` từ GitHub? Bỏ dòng đầu, `cd` vào thư mục repo rồi chạy tiếp (repo trống in cảnh báo "You appear to have cloned an empty repository" là bình thường). Nếu lệnh lỗi, xem [Gặp lỗi?](#gap-loi). Lệnh `pwd` cho biết thư mục `devops-labs` nằm ở đâu. Trong Git Bash thường là `/c/Users/TEN-BAN/devops-labs`, tức là `C:\Users\TEN-BAN\devops-labs` trong Windows. Gõ `explorer .` để mở đúng thư mục này bằng Windows Explorer (nhớ dấu chấm). Lưu ý: Git Bash và Ubuntu (WSL, cài ở Buổi 02) có hai thư mục home khác nhau, nên file tạo ở đây chưa thấy được từ Ubuntu.
 
 Kết quả mong đợi (số phiên bản có thể khác):
 
 ```text
 git version 2.45.1
 evidence  screenshots  source
+/c/Users/TEN-BAN/devops-labs
 ```
 
 ::: tip Kiểm tra: bạn đúng khi
@@ -100,30 +104,29 @@ evidence  screenshots  source
 
 ### Phần 1 – Chọn ứng dụng và liệt kê các bước (10 phút)
 
-Ứng dụng của bạn là Club Management gồm frontend (Nginx), backend (Node.js, cổng 3000) và database (PostgreSQL). Tạo file ghi các bước triển khai thủ công:
+Ứng dụng của bạn là Club Management gồm frontend (Nginx), backend (Node.js, cổng 3000) và database (PostgreSQL). Tạo file `lab-01/source/steps.md` ghi các bước triển khai thủ công. Bảng dưới đã có đủ 6 cột để Phần 3 chỉ việc điền tiếp:
 
-```bash
-cat > lab-01/source/steps.md <<'EOF'
+```markdown
 # Các bước triển khai thủ công
 
-| Bước | Ai làm | Đầu vào | Đầu ra |
-| --- | --- | --- | --- |
-| 1. Viết code | Dev | Yêu cầu | Source code |
-EOF
+| Bước | Ai làm | Đầu vào | Đầu ra | Rủi ro | Tự động hóa được không |
+| --- | --- | --- | --- | --- | --- |
+| 1. Viết code | Dev | Yêu cầu | Source code | (điền ở Phần 3) | (điền ở Phần 3) |
 ```
 
-Không dùng heredoc thì tạo `steps.md` bằng VS Code và dán nội dung. Mở file và bổ sung tối thiểu 8 dòng nữa: commit, build, test, đóng gói, gửi lên server, cấu hình biến môi trường (ví dụ `DB_PASSWORD`), chạy ứng dụng, kiểm tra `/health`. Mỗi dòng phải đủ bốn cột. Vì sao: bảng "ai, đầu vào, đầu ra" làm lộ ra khoảng trống mà sơ đồ đẹp thường che giấu.
+Bổ sung tối thiểu 8 dòng nữa: commit, build, test, đóng gói, gửi lên server, cấu hình biến môi trường (ví dụ `DB_PASSWORD`), chạy ứng dụng, kiểm tra `/health`. Ở Phần 1, điền bốn cột đầu (Bước, Ai làm, Đầu vào, Đầu ra) cho mọi dòng; hai cột cuối để dành cho Phần 3. Vì sao: bảng "ai, đầu vào, đầu ra" làm lộ ra khoảng trống mà sơ đồ đẹp thường che giấu.
 
 ::: tip Kiểm tra: bạn đúng khi
-`grep -c '^|' lab-01/source/steps.md` in 11 trở lên (9 dòng bước cộng dòng tiêu đề và dòng phân cách) và không ô nào để trống.
+`grep -c '^|' lab-01/source/steps.md` in 11 trở lên (9 dòng bước cộng dòng tiêu đề và dòng phân cách) và bốn cột đầu của mọi dòng đều có nội dung.
 :::
 
 ### Phần 2 – Vẽ sơ đồ thủ công bằng Mermaid (15 phút)
 
 Chuyển bảng thành sơ đồ. Đặt mọi nhãn trong dấu nháy kép, nếu không sơ đồ dễ lỗi cú pháp (xem [Gặp lỗi?](#gap-loi)):
 
-```bash
-cat > lab-01/source/manual-workflow.mmd <<'EOF'
+Tạo file `lab-01/source/manual-workflow.mmd`:
+
+```text
 flowchart LR
     A["Dev: viết code"] --> B["Dev: nén và gửi file"]
     B --> C["Ops: giải nén trên server"]
@@ -134,10 +137,14 @@ flowchart LR
     G -- "Lỗi" --> H["Hỏi lại dev"]
     H --> D
     G -- "OK" --> I["Hoàn tất"]
-EOF
 ```
 
-(Thay cho heredoc: tạo `manual-workflow.mmd` bằng VS Code, dán nội dung giữa dòng `cat` và dòng `EOF`.) Dán nội dung vào mermaid.live hoặc xem trước trong VS Code, chụp ảnh lưu vào `lab-01/screenshots/manual-workflow.png`. Vì sao: vòng lặp lỗi chính là chi phí ẩn của quy trình thủ công, hãy nhìn nó bằng mắt.
+Dán nội dung vào [mermaid.live](https://mermaid.live) để xem sơ đồ, rồi lưu ảnh vào `lab-01/screenshots/manual-workflow.png` theo hướng dẫn "Lưu ảnh sơ đồ" ngay dưới. Vì sao: vòng lặp lỗi chính là chi phí ẩn của quy trình thủ công, hãy nhìn nó bằng mắt.
+
+**Lưu ảnh sơ đồ (làm cho cả hai sơ đồ):**
+
+1. Trên mermaid.live, bấm Actions > PNG để tải ảnh về (thường vào thư mục Downloads). Cách khác: bấm Win+Shift+S rồi kéo chọn vùng sơ đồ, ảnh được lưu trong thư mục Screenshots của Windows.
+2. Gõ `explorer .` trong Git Bash (đang ở `devops-labs`) để mở thư mục, vào `lab-01\screenshots`, kéo ảnh vào đó và đổi tên đúng như đề bài. Kiểm tra bằng `ls lab-01/screenshots`.
 
 ::: tip Kiểm tra: bạn đúng khi
 Sơ đồ vẽ ra được (không báo Syntax error) với đúng 9 nút, có vòng lặp từ "Hỏi lại dev" về "Cài dependency", mỗi nút ghi rõ `Dev:` hoặc `Ops:`.
@@ -145,16 +152,14 @@ Sơ đồ vẽ ra được (không báo Syntax error) với đúng 9 nút, có v
 
 ### Phần 3 – Đánh dấu điểm nghẽn (10 phút)
 
-Với mỗi bước trong `steps.md`, thêm cột "Rủi ro" và "Tự động hóa được không". Gợi ý nhận diện điểm nghẽn: bước phụ thuộc vào trí nhớ của một người, bước chờ người khác, bước dễ sai khi làm tay, bước lặp lại nhiều lần. Chọn 3 bước nghẽn nhất (tạo `bottlenecks.md` bằng lệnh dưới đây, hoặc bằng VS Code và dán nội dung):
+Với mỗi bước trong `steps.md`, điền hai cột cuối "Rủi ro" và "Tự động hóa được không". Gợi ý nhận diện điểm nghẽn: bước phụ thuộc vào trí nhớ của một người, bước chờ người khác, bước dễ sai khi làm tay, bước lặp lại nhiều lần. Chọn 3 bước nghẽn nhất (tạo `lab-01/source/bottlenecks.md` với nội dung dưới đây):
 
-```bash
-cat > lab-01/source/bottlenecks.md <<'EOF'
+```markdown
 # Ba điểm nghẽn
 
 1. Cài dependency trên server: dễ lệch phiên bản. Giải pháp: build image trong CI.
 2. (điền tiếp)
 3. (điền tiếp)
-EOF
 ```
 
 Vì sao: tự động hóa tùy tiện không có giá trị, bạn phải biết bước nào đau nhất rồi mới chọn công cụ.
@@ -167,8 +172,9 @@ Vì sao: tự động hóa tùy tiện không có giá trị, bạn phải biế
 
 Vẽ sơ đồ mới, mỗi điểm nghẽn ở Phần 3 được thay bằng một bước tự động:
 
-```bash
-cat > lab-01/source/automated-workflow.mmd <<'EOF'
+Tạo file `lab-01/source/automated-workflow.mmd`:
+
+```text
 flowchart LR
     A["Dev: push code"] --> B["CI: build và test"]
     B --> C{"Test đạt?"}
@@ -178,10 +184,9 @@ flowchart LR
     E --> F["Registry: lưu image có phiên bản"]
     F --> G["Deploy từ file cấu hình"]
     G --> H["Health check"]
-EOF
 ```
 
-Tạo file bằng heredoc hoặc bằng VS Code như trên. Bổ sung ít nhất một bước bạn thấy còn thiếu (ví dụ rollback, thông báo cho nhóm) rồi chụp ảnh lưu vào `lab-01/screenshots/automated-workflow.png`.
+Bổ sung ít nhất một bước bạn thấy còn thiếu (ví dụ rollback, thông báo cho nhóm) rồi lưu ảnh vào `lab-01/screenshots/automated-workflow.png` (cách lưu ở Phần 2).
 
 ::: tip Kiểm tra: bạn đúng khi
 Sơ đồ có CI build và test, cổng kiểm thử có nhánh "không đạt", đóng gói image, registry, deploy, health check và một bước do bạn tự thêm.
@@ -243,7 +248,8 @@ ls lab-01/source lab-01/screenshots lab-01/evidence && grep -c '^|' lab-01/sourc
 | Bạn cùng bàn "triển khai" theo sơ đồ nhưng cứ hỏi "lệnh nào, Node bản mấy, mật khẩu ở đâu" | Kiến thức nằm trong đầu một người (tribal knowledge), chưa được viết ra | Ghi mọi câu hỏi đó thành file trong Git (README, `compose.yaml`, `.env.example`) |
 | Trả lời "DevOps là Docker và Kubernetes" | Nhầm công cụ với văn hóa và quy trình | Nhắc lại bốn nguyên tắc: cộng tác, tự động hóa, đo lường, phản hồi |
 | Tự động hóa mọi thứ nhưng không nêu điểm nghẽn | Chọn công cụ trước khi hiểu vấn đề | Quay lại Phần 3, ưu tiên bước đau nhất |
-| `mkdir -p` hoặc `cat > ... <<'EOF'` báo lỗi | Đang chạy trong PowerShell | Mở Git Bash (Start, gõ `Git Bash`), xem [Terminal 101](../../resources/terminal-101.md). Hoặc tạo file bằng VS Code như hộp ở đầu Hands-on lab |
+| Terminal hiện dấu `>` ở đầu dòng và không chạy tiếp | Dùng heredoc nhưng chưa gõ dòng `EOF` kết thúc, terminal vẫn chờ nhập | Gõ `EOF` rồi Enter, hoặc bấm Ctrl+C để hủy. Dễ hơn: tạo file bằng VS Code |
+| `mkdir -p` hoặc `cat > ... <<'EOF'` báo lỗi | Đang chạy trong PowerShell | Mở Git Bash (Start, gõ `Git Bash`), xem [Terminal 101](../../resources/terminal-101.md). Hoặc tạo file bằng VS Code như hướng dẫn đầu Hands-on lab |
 | `Author identity unknown` khi `git commit` | Chưa cấu hình `user.name`, `user.email` | Chạy `git config user.name "Ten Ban"` và `git config user.email "email-github@example.com"` trong repo |
 | `git push` báo `no upstream branch` hoặc bị từ chối | Chưa đặt upstream hoặc chưa đăng nhập GitHub | Chạy `git push -u origin HEAD`, kiểm tra `git remote -v`, đăng nhập bằng Git Credential Manager. Không dán token vào file nào |
 | `command-output.txt` rỗng | Quên chuyển hướng đầu ra vào file | Chạy lại khối lệnh ở Phần 5, kiểm tra bằng `cat` |

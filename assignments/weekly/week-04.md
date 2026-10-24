@@ -92,7 +92,7 @@ lab-08/
 2. Thêm hai thư mục `lab-07/` và `lab-08/` theo cấu trúc trên, commit với thông điệp rõ ràng.
 3. Push nhánh và mở Pull Request vào nhánh chính của repo cá nhân. Mô tả PR nêu đã làm L1 hay L2.
 4. Nhờ một bạn review. Reviewer để lại ít nhất hai nhận xét cụ thể (một điểm tốt, một điểm cần cải thiện) và bạn phản hồi hoặc sửa theo.
-5. Gửi link PR cho mentor. Mentor chấm theo barem trên PR và để lại nhận xét.
+5. Gửi link PR cho mentor. Mentor chấm theo bảng điểm trên PR và để lại nhận xét.
 6. **Hạn nộp:** trước buổi đầu tiên của tuần 5.
 
 ## Checklist trước khi nộp

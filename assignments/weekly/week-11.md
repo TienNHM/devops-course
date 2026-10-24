@@ -100,4 +100,4 @@ Mọi output phải là kết quả thật từ máy của bạn (tên node, has
 - [ ] Không commit `.env`, mật khẩu, token hay file Secret chứa giá trị thật
 - [ ] PR đã được ít nhất một bạn review và nộp trước hạn
 
-Giảng viên chấm theo barem chi tiết riêng; học viên không cần đọc.
+Giảng viên chấm theo bảng điểm chi tiết riêng; học viên không cần đọc.

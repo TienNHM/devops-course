@@ -1,6 +1,6 @@
 # Club Landing: landing page CLB có đăng ký thành viên
 
-> **Tóm tắt:** Landing page CLB, form đăng ký lưu vào Supabase bằng khóa công khai, trang admin đăng nhập xem danh sách, bảo vệ bằng Row Level Security. Chạy local không cần build; bản deploy dùng một bước build nhỏ để nhúng khóa công khai.
+> **Tóm tắt:** Landing page CLB, form đăng ký lưu vào Supabase bằng khóa công khai, trang admin đăng nhập xem danh sách, bảo vệ bằng Row Level Security. Không cần build: đổi tên `config.example.js` thành `config.js`, điền URL và khóa công khai, rồi commit cùng code.
 
 Đây là dự án mẫu cho [bài Mini project](../../../vibe/09-mini-project.md). Bạn có thể dùng nguyên bản hoặc nhờ AI agent tạo lại theo ý mình rồi so sánh.
 
@@ -12,9 +12,9 @@
 | `admin.html`, `admin.js` | Trang quản trị: đăng nhập, xem danh sách, tải CSV |
 | `style.css` | Giao diện chung, responsive, tự đổi sáng/tối |
 | `schema.sql` | Bảng `members`, bảng `admins`, bật RLS và các policy |
-| `config.example.js` | Mẫu cấu hình, chỉ có placeholder |
-| `build-config.mjs` | Tạo `config.js` từ biến môi trường và gom file công khai vào `dist/` lúc build; có chế độ `--local` |
-| `.gitignore` | Chặn `config.js`, `.env` và `dist/` bị commit nhầm |
+| `config.example.js` | Mẫu cấu hình. Đổi tên thành `config.js` rồi điền URL và khóa công khai (gói zip chỉ có file mẫu này) |
+| `build-config.mjs` | Tùy chọn, nâng cao: tạo `config.js` từ biến môi trường và gom file công khai vào `dist/` lúc build; có chế độ `--local` |
+| `.gitignore` | Chặn `.env` và `dist/` bị commit nhầm. `config.js` KHÔNG bị chặn vì chỉ chứa khóa công khai |
 
 ## Kiến trúc
 
@@ -37,17 +37,21 @@ Khách chỉ ghi được (insert). Chỉ tài khoản có tên trong bảng `ad
 3. Vào Table Editor, kiểm tra hai bảng `members` và `admins` đều hiện nhãn RLS đã bật.
 4. Tạo admin đầu tiên, xem mục "Admin đầu tiên và Supabase Auth" ngay bên dưới.
 5. Lấy URL và khóa công khai: vào Project Settings, mục API Keys (hoặc nút Connect). Copy Project URL và **Publishable key** (`sb_publishable_...`). Dự án cũ có thể chỉ có khóa `anon` kiểu cũ, dùng được tương tự.
-6. Tạo cấu hình cho máy của bạn bằng một trong hai cách:
+6. Tạo cấu hình: **đổi tên** `config.example.js` thành `config.js`, mở bằng trình soạn thảo và thay hai giá trị `SUPABASE_URL` và `SUPABASE_KEY`.
 
 ```bash
-# Cách 1: sao chép mẫu rồi sửa tay hai giá trị
+# Dòng lệnh tương đương (Git Bash, macOS, Linux); trên Windows có thể đổi tên bằng File Explorer
 cp config.example.js config.js
-
-# Cách 2: dùng chính script của bản deploy (Git Bash, macOS, Linux)
-SUPABASE_URL="https://YOUR-PROJECT-REF.supabase.co" SUPABASE_KEY="YOUR_PUBLISHABLE_KEY" node build-config.mjs --local
 ```
 
-Không bao giờ dán secret key hay `service_role` vào đây. Script sẽ từ chối nếu phát hiện.
+::: details Nâng cao: tạo config.js bằng script từ biến môi trường
+
+```bash
+SUPABASE_URL="https://YOUR-PROJECT-REF.supabase.co" SUPABASE_KEY="YOUR_PUBLISHABLE_KEY" node build-config.mjs --local
+```
+:::
+
+Không bao giờ dán secret key hay `service_role` vào đây. Script build (nếu dùng) sẽ từ chối khi phát hiện.
 
 ## Admin đầu tiên và Supabase Auth
 
@@ -98,16 +102,17 @@ Nếu chưa có `config.js`, trang vẫn mở và hiện thông báo "Chưa cấ
 
 ## Deploy
 
-Điểm cần nhớ: `config.js` bị `.gitignore` chặn nên **không có trên GitHub**, và hosting lấy code từ GitHub. Nếu deploy thư mục gốc như bài tĩnh thông thường, trang online sẽ hiện "Chưa cấu hình Supabase". Có hai cách, chọn một.
+Mặc định rất đơn giản: `config.js` chỉ chứa Project URL và khóa công khai nên được commit cùng code. Commit, push, rồi deploy thư mục gốc như một trang tĩnh thông thường (GitHub Pages, Vercel, Netlify, Cloudflare). Không cần build, không cần biến môi trường.
 
-| Cách | Làm gì | Khi nào dùng |
-| --- | --- | --- |
-| A. Biến môi trường + build (khuyến nghị) | Đặt `SUPABASE_URL`, `SUPABASE_KEY` trong cài đặt của nền tảng. Build command `node build-config.mjs`, thư mục xuất bản `dist` | Không commit giá trị nào vào Git, đổi khóa không cần sửa code |
-| B. Commit config.js | Kiểm tra `config.js` chỉ chứa khóa công khai, rồi `git add -f config.js`. Không build, thư mục xuất bản là gốc | Muốn đơn giản nhất, hoặc không muốn dùng bước build |
+Vì sao commit `config.js` là an toàn: trang chạy trong trình duyệt của khách nên khóa công khai **luôn** nhìn thấy được (Xem nguồn trang, tab Network). Supabase thiết kế nó như vậy, và quyền thật nằm ở RLS. Ngược lại `service_role` hoặc `sb_secret_` bỏ qua RLS: đặt vào repo hay frontend là trao quyền admin database cho cả thế giới. Tuyệt đối không, kể cả repo riêng tư.
+
+Kiểm tra sau deploy: mở link, trang chủ không còn dòng "Chưa cấu hình Supabase"; mở `/config.js` thấy đúng URL và khóa `sb_publishable_`; gửi một đăng ký thử rồi đăng nhập `/admin.html`. Sau đó đặt Site URL và Redirect URLs theo bảng ở mục Admin đầu tiên.
+
+::: details Nâng cao: tạo config lúc build (không commit config.js)
+
+Dùng khi bạn muốn đổi khóa mà không sửa code, hoặc repo không chứa giá trị cấu hình nào. Thêm `config.js` vào `.gitignore`, đặt `SUPABASE_URL`, `SUPABASE_KEY` (và tùy chọn `CLUB_NAME`) trong cài đặt nền tảng, Build command `node build-config.mjs`, thư mục xuất bản `dist`. Redeploy sau khi đặt biến, vì biến chỉ được đọc lúc build.
 
 `node build-config.mjs` (không có `--local`) tạo thư mục `dist/` chỉ gồm `index.html`, `admin.html`, `app.js`, `admin.js`, `style.css` và `config.js`. `schema.sql`, README, script build không bị đưa lên mạng. Script từ chối chạy nếu thấy `sb_secret_` hoặc khóa có role `service_role`.
-
-Vì sao đưa khóa công khai vào bản deploy là an toàn: trang chạy trong trình duyệt của khách nên khóa này **luôn** nhìn thấy được (Xem nguồn trang, tab Network). Supabase thiết kế nó như vậy, và quyền thật nằm ở RLS. Biến môi trường ở đây chỉ để tiện đổi, không phải để giấu. Ngược lại `service_role` hoặc `sb_secret_` bỏ qua RLS: đặt vào frontend là trao quyền admin database cho cả thế giới. Tuyệt đối không, kể cả qua biến môi trường của bước build, vì build sẽ nhúng nó vào file gửi cho khách.
 
 ### Cài đặt cho từng nền tảng (cách A)
 
@@ -168,6 +173,7 @@ jobs:
 Nếu dự án nằm trong thư mục con của repo, thêm `working-directory` cho bước build và đổi `path` tương ứng. Phiên bản action có thể đã tăng, kiểm tra trong kho `actions/deploy-pages`.
 
 Kiểm tra sau deploy: mở link, trang chủ không còn dòng "Chưa cấu hình Supabase"; mở `/config.js` thấy đúng URL và khóa `sb_publishable_`; gửi một đăng ký thử rồi đăng nhập `/admin.html`. Sau đó quay lại Supabase, đặt Site URL và Redirect URLs theo bảng ở mục Admin đầu tiên.
+:::
 
 ## Kiểm tra bảo mật (5 phút)
 
@@ -177,14 +183,17 @@ Kiểm tra sau deploy: mở link, trang chủ không còn dòng "Chưa cấu hì
 - [ ] Tài khoản admin có mật khẩu mạnh, đăng ký công khai (sign ups) đã tắt nếu bạn không cần.
 - [ ] Không có dữ liệu thật của người khác trong prompt đã gửi cho AI.
 
-Thử đọc dữ liệu như một người lạ (đổi hai giá trị cho đúng project của bạn, nhớ là khóa công khai):
+Thử đọc dữ liệu như một người lạ: mở tab ẩn danh, dán `https://YOUR-PROJECT-REF.supabase.co/rest/v1/members?select=*&apikey=YOUR_PUBLISHABLE_KEY` vào thanh địa chỉ. Kết quả đúng: `[]` hoặc lỗi từ chối quyền.
+
+::: details Cho ai quen terminal: curl
 
 ```bash
 curl "https://YOUR-PROJECT-REF.supabase.co/rest/v1/members?select=*" \
   -H "apikey: YOUR_PUBLISHABLE_KEY"
 ```
 
-Kết quả đúng: `[]` hoặc lỗi từ chối quyền. Nếu bạn thấy danh sách email, RLS chưa đúng, hãy chạy lại `schema.sql`.
+Nếu bạn thấy danh sách email, RLS chưa đúng, hãy chạy lại `schema.sql`.
+:::
 
 ## Gỡ lỗi nhanh
 
@@ -194,8 +203,8 @@ Kết quả đúng: `[]` hoặc lỗi từ chối quyền. Nếu bạn thấy da
 | Gửi form báo lỗi, Console có mã `42501` hoặc "row-level security" | Chưa chạy `schema.sql`, hoặc policy insert thiếu |
 | Admin đăng nhập được nhưng danh sách rỗng | Chưa thêm user vào bảng `admins` |
 | Sai email hoặc mật khẩu | User chưa xác nhận email (xem cột trạng thái ở Authentication, Users; tạo lại với Auto Confirm User) hoặc gõ sai |
-| Trang online hiện "Chưa cấu hình Supabase", local thì chạy | `config.js` không được deploy: chưa đặt biến môi trường, sai Build command hoặc Output directory (phải là `dist`), hoặc chưa redeploy sau khi đặt biến. Xem mục Deploy |
-| Build báo LỖI về SUPABASE_URL hoặc SUPABASE_KEY | Biến chưa đặt hoặc sai dạng; nếu báo secret key hay service_role thì bạn dùng nhầm khóa, hãy lấy lại publishable key |
+| Trang online hiện "Chưa cấu hình Supabase", local thì chạy | `config.js` chưa được commit và push (kiểm tra `.gitignore` không chặn nó). Nếu dùng cách build nâng cao: sai Build command hoặc Output directory (phải là `dist`), hoặc chưa redeploy sau khi đặt biến. Xem mục Deploy |
+| Build (cách nâng cao) báo LỖI về SUPABASE_URL hoặc SUPABASE_KEY | Biến chưa đặt hoặc sai dạng; nếu báo secret key hay service_role thì bạn dùng nhầm khóa, hãy lấy lại publishable key |
 | Email xác nhận không tới, hoặc link trỏ về localhost | Giới hạn email mặc định, hoặc chưa đổi Site URL. Dùng Auto Confirm User khi tạo admin |
 
 ## Mở rộng

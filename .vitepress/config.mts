@@ -327,7 +327,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
     nav: [
       { text: 'Bắt đầu', link: '/curriculum/getting-started' },
       { text: 'Học 16 tuần', link: '/curriculum/syllabus' },
-      { text: 'Vibe Deploy', link: '/vibe/' },
+      { text: 'Lên mạng nhanh (Vibe)', link: '/vibe/' },
       {
         text: 'Tra cứu',
         items: [

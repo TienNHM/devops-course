@@ -31,7 +31,7 @@ Toàn bộ lệnh chạy trong WSL2 Ubuntu, thư mục làm việc trong `~/devo
 | **Tổng L1** | **100** |
 | Thưởng L2 (mỗi thử thách hoàn chỉnh 5 điểm, tối đa 10) | +10 |
 
-Điểm của một tiêu chí bị trừ hết nếu bằng chứng không kiểm chứng được (không có log hoặc log không khớp lệnh). Tránh commit `.env`, commit thẳng vào `main`, dùng `reset --hard` hoặc `--force` trên nhánh chung, và nộp output giả; barem chi tiết chỉ mentor xem.
+Điểm của một tiêu chí bị trừ hết nếu bằng chứng không kiểm chứng được (không có log hoặc log không khớp lệnh). Tránh commit `.env`, commit thẳng vào `main`, dùng `reset --hard` hoặc `--force` trên nhánh chung, và nộp output giả; bảng điểm chi tiết chỉ mentor xem.
 
 ## Nhiệm vụ L1
 

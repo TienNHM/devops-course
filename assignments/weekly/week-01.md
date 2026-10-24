@@ -42,7 +42,7 @@ Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2 (chỉ c
 | **Tổng L1** | **100** |
 | L2: Thử thách A (+5), B (+3), C (+2) | +10 |
 
-Barem chi tiết, lỗi hay bị trừ điểm và cách chấm dành cho mentor nên không đăng ở đây. Bạn chỉ cần bám tiêu chí hoàn thành bên dưới.
+Bảng điểm chi tiết, lỗi hay bị trừ điểm và cách chấm dành cho mentor nên không đăng ở đây. Bạn chỉ cần bám tiêu chí hoàn thành bên dưới.
 
 ## Nhiệm vụ L1 (bắt buộc)
 

@@ -41,8 +41,8 @@ function reset() {
           <span>Bắt đầu từ trang hướng dẫn: cần gì, học thế nào, làm gì đầu tiên.</span>
         </a>
         <a class="who-card" :href="withBase('/vibe/')">
-          <strong>Mình chưa biết code, chỉ muốn có link nhanh (Vibe Deploy)</strong>
-          <span>Đi đường tắt: đưa ứng dụng lên mạng trước, học sâu sau.</span>
+          <strong>Mình chưa biết code, chỉ muốn có link web nhanh</strong>
+          <span>Track Vibe: khoảng 3 đến 4 giờ là có link mở được từ điện thoại.</span>
         </a>
         <a class="who-card" :href="withBase('/mentors/')">
           <strong>Mình là mentor</strong>

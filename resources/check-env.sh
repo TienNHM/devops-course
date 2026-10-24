@@ -3,7 +3,7 @@
 # Cách chạy:
 #   bash resources/check-env.sh        kiểm tra đủ bộ cho cả khóa học
 #   bash resources/check-env.sh 2      chỉ đòi những gì cần tới buổi 2 (WSL, git, curl)
-#   bash resources/check-env.sh 7      cần tới buổi 7 (thêm Docker)
+#   bash resources/check-env.sh 7      cần tới buổi 7 (thêm Docker; dùng cho các buổi 7 đến 20, ví dụ 9 và 13)
 #   bash resources/check-env.sh 21     cần tới buổi 21 (thêm kubectl, kind)
 # Script chỉ ĐỌC thông tin, không cài gì, không sửa gì, không cần quyền quản trị.
 # Mã thoát: 0 nếu không thiếu công cụ bắt buộc (theo mốc buổi đã chọn), 1 nếu còn thiếu.

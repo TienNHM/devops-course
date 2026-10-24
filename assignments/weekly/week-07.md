@@ -196,4 +196,4 @@ Trả lời ngắn (2 đến 4 câu mỗi câu) trong phần cuối của `lab-1
 - [ ] Không commit `.env`, `secrets/`, backup, password, token, private key
 - [ ] PR đã được ít nhất một bạn review
 
-Mentor chấm theo barem chi tiết riêng; các lỗi thường bị trừ điểm nhất là commit `.env` hoặc mật khẩu, log không có dòng lệnh đi kèm, và `depends_on` thiếu `condition`.
+Mentor chấm theo bảng điểm chi tiết riêng; các lỗi thường bị trừ điểm nhất là commit `.env` hoặc mật khẩu, log không có dòng lệnh đi kèm, và `depends_on` thiếu `condition`.

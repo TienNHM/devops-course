@@ -14,7 +14,7 @@
 | Nhóm | Điểm | Cách chấm |
 | --- | --- | --- |
 | 1. Chạy được qua link công khai | 25 | Link mở được trên điện thoại (10); form gửi được và dòng xuất hiện trong Supabase (10); HTTPS, không lỗi Console (5) |
-| 2. An toàn secret và RLS | 30 | RLS bật cả hai bảng (10); khách ẩn danh đọc `members` ra rỗng (10); repo và lịch sử Git sạch khóa bí mật, có `.gitignore` đúng (10) |
+| 2. An toàn secret và RLS | 30 | RLS bật cả hai bảng (10); khách ẩn danh đọc `members` ra rỗng (10); repo và lịch sử Git sạch khóa bí mật, không có `service_role` hay secret key trong repo (10) |
 | 3. Trang admin | 10 | Đăng nhập, xem danh sách, đăng xuất; người chưa đăng nhập không thấy dữ liệu |
 | 4. README | 10 | Có mô tả dự án, cách chạy local, cách cấu hình (không chứa khóa thật), cách deploy, link demo |
 | 5. Hiểu và giải thích | 15 | Trả lời 5 câu hỏi trong bài nộp, mỗi câu 3 điểm, đúng ý và bằng lời của mình |
@@ -47,7 +47,7 @@ Năm câu hỏi giải thích (trả lời 2 đến 4 câu mỗi ý, bằng lờ
 1. Từ lúc mình sửa một chữ trong code đến lúc người khác thấy chữ đó trên link công khai, chuyện gì xảy ra?
 2. Khóa công khai (publishable) khác khóa bí mật (secret, service_role) thế nào, và vì sao khóa công khai nằm trong trang web vẫn an toàn?
 3. RLS làm gì? Nếu quên bật RLS cho bảng members thì điều gì xảy ra?
-4. Vì sao config.js nằm trong .gitignore, và bạn đã đưa giá trị cấu hình lên hosting bằng cách nào?
+4. Vì sao commit config.js chỉ chứa khóa public là an toàn, và vì sao repo tuyệt đối không có service_role?
 5. Kể một lỗi bạn gặp (hoặc lỗi bị cài sẵn): triệu chứng, nguyên nhân, cách bạn tìm ra và cách sửa.
 
 Phần AI: liệt kê 2 việc bạn giao cho agent và 2 việc bạn tự làm vì không muốn giao.

@@ -144,7 +144,7 @@ curl -s localhost:13000/ready; echo
 curl -s localhost:13000/api/members; echo
 ```
 
-Kết quả mong đợi: `{"status":"ready"}` rồi `[]` (danh sách trống là bình thường khi chưa nạp dữ liệu mẫu). Vì sao: `/ready` chạy `SELECT 1`, nên `ready` chứng minh cả bốn biến trong ConfigMap lẫn mật khẩu trong Secret đều đúng.
+Kết quả mong đợi: `{"status":"ready"}` rồi danh sách thành viên (Alice, Bob nếu bạn đã nạp `init.sql` ở buổi 22; `[]` nếu bảng còn trống, vẫn là bình thường). Vì sao: `/ready` chạy `SELECT 1`, nên `ready` chứng minh cả bốn biến trong ConfigMap lẫn mật khẩu trong Secret đều đúng.
 
 ::: tip Kiểm tra: bạn đúng khi
 Hai Pod `club-api` đều `1/1 Running` và `/ready` trả `ready`. Lỗi mật khẩu hoặc `CreateContainerConfigError`: xem [Gặp lỗi?](#gap-loi).

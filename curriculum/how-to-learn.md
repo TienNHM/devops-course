@@ -60,6 +60,15 @@ L2 không phải "làm nhiều hơn" mà là "tự quyết định và chịu tr
 
 Khóa có 10 tình huống lỗi, xem tổng quan ở [10 tình huống lỗi](../examples/troubleshooting-scenarios.md). Bạn chỉ nhận **triệu chứng** và phải tìm **nguyên nhân gốc**. Đừng sửa mò: ghi lại giả thuyết, lệnh kiểm chứng và kết quả. Quy trình tốt: quan sát, đặt giả thuyết, kiểm chứng bằng lệnh, sửa một thay đổi mỗi lần, kiểm tra lại.
 
+## Nghỉ vài buổi? Làm gì {#nghi-vai-buoi}
+
+Đừng cố học bù hết một lần. Làm theo thứ tự:
+
+1. Mở [hub tuần](../labs/week-01/README.md) của tuần bạn bỏ lỡ (đổi số tuần ở đường dẫn) để biết cần làm gì trước, trong và sau buổi.
+2. Mở terminal WSL và chạy `bash ~/devops-course/resources/check-env.sh N`, thay `N` bằng số của buổi bạn định vào học. Script cho biết máy còn thiếu công cụ nào.
+3. Cập nhật giáo trình bằng `cd ~/devops-course && git pull`, rồi làm lại buổi gần nhất bạn đã xong để lấy lại nhịp.
+4. Kẹt thì nhắn mentor theo [mẫu câu hỏi](#cach-xin-giup), nói rõ bạn nghỉ từ buổi nào.
+
 ## Cấu trúc repo cá nhân devops-labs
 
 Clone repo `devops-labs` của bạn vào WSL (từ buổi 02, sau khi đã thêm SSH key; trước đó dùng web hoặc GitHub Desktop):

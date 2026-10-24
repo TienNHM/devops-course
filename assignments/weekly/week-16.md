@@ -15,7 +15,7 @@
 
 **Hạn nộp:** trước buổi đầu tiên của tuần kế tiếp. Tuần 16 là tuần cuối của khóa nên mentor sẽ công bố ngày cụ thể ngay sau buổi 32.
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs` (public), thư mục `lab-31/` và `lab-32/`. Mẫu nộp bài: [mẫu lab](../../templates/lab-template.md).
-**Tài liệu liên quan:** [đề bài Capstone](../capstone/README.md), [hướng dẫn demo](../capstone/demo-guide.md), [Rubric Capstone](../../curriculum/capstone-rubric.md), [template peer review](../../templates/peer-review-template.md). Mentor chấm theo barem; bảng điểm ngắn nằm bên dưới.
+**Tài liệu liên quan:** [đề bài Capstone](../capstone/README.md), [hướng dẫn demo](../capstone/demo-guide.md), [Rubric Capstone](../../curriculum/capstone-rubric.md), [template peer review](../../templates/peer-review-template.md). Mentor chấm theo bảng điểm; bảng điểm ngắn nằm bên dưới.
 
 ## Bối cảnh
 
