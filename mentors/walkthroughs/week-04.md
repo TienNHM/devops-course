@@ -1,5 +1,9 @@
 # Walkthrough tuần 4 – Docker Basics
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 07 (container và kiến trúc Docker) và Buổi 08 (Docker CLI, registry cục bộ, hai lỗi kinh điển), kèm đáp án bài tập tuần 4 và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -306,3 +310,11 @@ Chạy lại `commands.sh` trên máy mentor nếu có thể, và đối chiếu
 | L2 thử thách 3 (3) | `docker stats`, `inspect` ra 67108864, số đo `time` của máy học viên | Số trùng với tài liệu; quy đổi sai | Vì sao VM không "nhẹ" bằng container ở số liệu bạn vừa đo? |
 
 Hai kiểm tra chéo nên làm: giá trị `StartedAt` và ID container trong evidence phải khớp thứ tự lệnh, và kết quả `uname -r` phải là kernel WSL2 chứ không phải của Windows.
+
+### Bổ sung sau khi cải tổ bài lab
+
+- Tên container trong bài lab Buổi 07 giờ là `lab07-web` (khớp với bài tập tuần), thay cho `web-lab07` trong các lệnh mẫu ở trên; thử thách 3 dùng `lab07-limit`.
+- Bài lab Buổi 08 chuyển bước "xóa bản cục bộ rồi pull lại từ `localhost:5001`" sang trang thử thách; khi chấm, bước này là điểm cộng, không bắt buộc. Lệnh `docker port` và `docker stats` cũng chuyển sang trang thử thách.
+- Phần Postgres của Buổi 08 giờ có cả lần chạy thất bại (thiếu `POSTGRES_PASSWORD`, `Exited (1)`) rồi mới chạy đúng, khớp với nhiệm vụ 4.
+- Dọn dẹp sau tình huống 01: `bash examples/troubleshooting/scenario-01/cleanup.sh` (script này cũng xóa `ts01-web`). Dọn dẹp sau tình huống 02: `bash examples/troubleshooting/scenario-02/cleanup.sh` rồi `docker rmi ts02-notes:fixed`.
+

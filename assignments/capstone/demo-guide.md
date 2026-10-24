@@ -144,7 +144,7 @@ Mentor chọn câu hỏi theo bài làm của nhóm và có thể chỉ định 
 | Làm việc nhóm và truyền đạt | 2 | Mọi người cùng nói, quản lý thời gian |
 | Xử lý sự cố và nhận định hạn chế | 1 | Biết điều gì chưa tốt và nói trung thực |
 
-Mức điểm chi tiết theo bốn bậc nằm ở [capstone-rubric.md](../../curriculum/capstone-rubric.md), tiêu chí số 10.
+Mức điểm chi tiết theo bốn bậc nằm ở [Rubric Capstone](../../curriculum/capstone-rubric.md), tiêu chí số 10.
 
 ## 8. Nhận xét sau demo
 

@@ -1,5 +1,7 @@
 # Lab XX – &lt;Tên lab&gt;
 
+**Dùng khi nào:** học viên nộp báo cáo (`report.md`) cho mỗi buổi lab. Khung nộp gồm README, evidence và report, xem ví dụ ở [Bài tập tuần 01](../assignments/weekly/week-01.md).
+
 ## 1. Bài lab giải quyết vấn đề gì?
 ## 2. Kiến thức đã sử dụng?
 ## 3. Các bước thực hiện?

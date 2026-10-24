@@ -1,8 +1,14 @@
 # Rubric chấm Capstone (100 điểm)
 
-> **Tóm tắt:** Mười tiêu chí lấy từ [assessment.md](assessment.md), mỗi tiêu chí có bốn mức Excellent, Good, Pass, Needs improvement kèm điểm, bằng chứng cần kiểm tra và lệnh kiểm tra nhanh. Cuối trang là cách chuyển điểm nhóm thành điểm cá nhân.
+> **Tóm tắt:** Mười tiêu chí lấy từ [Đánh giá](assessment.md), mỗi tiêu chí có bốn mức Excellent, Good, Pass, Needs improvement kèm điểm, bằng chứng cần kiểm tra và lệnh kiểm tra nhanh. Cuối trang là cách chuyển điểm nhóm thành điểm cá nhân.
 
-Đề bài và yêu cầu: [Capstone](../assignments/capstone/README.md). Kịch bản demo: [demo-guide.md](../assignments/capstone/demo-guide.md).
+**Học viên cần biết:**
+
+- Dự án cuối khóa được chấm trên 10 tiêu chí, tổng 100 điểm; cần tối thiểu 60 điểm để hoàn thành khóa.
+- Mentor chấm bằng bằng chứng (source, lịch sử Git, log, kết quả chạy), không chấm theo lời kể hay ảnh chụp đơn lẻ.
+- Điểm cá nhân phụ thuộc hệ số đóng góp; hãy làm việc qua Pull Request để đóng góp của bạn được ghi nhận.
+
+Đề bài và yêu cầu: [Capstone](../assignments/capstone/README.md). Kịch bản demo: [Hướng dẫn demo](../assignments/capstone/demo-guide.md).
 
 ## 1. Nguyên tắc chấm
 
@@ -28,7 +34,7 @@
 | 10 | Demo và technical defense | 10 |
 | | Tổng | 100 |
 
-Các lệnh kiểm tra nhanh bên dưới giả định mentor đã clone repo nhóm và đang ở thư mục gốc repo. Điều chỉnh tên file, namespace, tên Deployment cho khớp bài của nhóm.
+Các lệnh kiểm tra nhanh (mục 6, dành cho mentor) giả định mentor đã clone repo nhóm và đang ở thư mục gốc repo. Điều chỉnh tên file, namespace, tên Deployment cho khớp bài của nhóm.
 
 ## 3. Mô tả chi tiết từng tiêu chí
 
@@ -43,14 +49,7 @@ Các lệnh kiểm tra nhanh bên dưới giả định mentor đã clone repo n
 
 **Bằng chứng:** danh sách PR đã merge, review comment, tab Issues/Projects, `.gitignore`.
 
-```bash
-git log --oneline --merges | head -20
-git shortlog -sn --no-merges
-git log --format='%an %s' | head -30
-git ls-files | grep -E '(^|/)\.env$' || echo "khong co .env duoc commit"
-```
-
-Đầu ra mong đợi: nhiều tác giả, thông điệp commit mô tả được thay đổi, dòng cuối in thông báo không có `.env`. Lưu ý: nếu nhóm dùng Squash and merge thì không có merge commit; hãy đếm PR trên GitHub (`gh pr list --state merged` nếu mentor đã cài GitHub CLI).
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 2. Dockerfile và image optimization (10 điểm)
 
@@ -63,15 +62,7 @@ git ls-files | grep -E '(^|/)\.env$' || echo "khong co .env duoc commit"
 
 **Bằng chứng:** Dockerfile backend và frontend, `.dockerignore`, kích thước image, kết quả build.
 
-```bash
-docker build -t capstone-api:check ./backend
-docker image ls capstone-api:check
-docker run --rm --entrypoint id capstone-api:check
-docker history capstone-api:check | head
-grep -n -E '^FROM' backend/Dockerfile
-```
-
-Đầu ra mong đợi: `uid` khác 0 trong lệnh `id`; các dòng `FROM` có tag cụ thể và có hơn một stage; `docker history` không chứa mật khẩu hay token. Nếu image frontend không có lệnh `id` thì kiểm tra bằng `docker inspect` mục `Config.User`.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 3. Docker Compose và networking (10 điểm)
 
@@ -84,17 +75,7 @@ grep -n -E '^FROM' backend/Dockerfile
 
 **Bằng chứng:** `compose.yaml`, `.env.example`, kết quả `docker compose ps`.
 
-```bash
-cp .env.example .env
-docker compose config --quiet && echo "compose hop le"
-docker compose up -d --build
-docker compose ps
-docker compose down
-docker compose up -d
-curl -s http://localhost:3000/api/members
-```
-
-Đầu ra mong đợi: các service ở trạng thái running hoặc healthy; danh sách thành viên sau `down` rồi `up` vẫn còn dữ liệu đã thêm trước đó. Cổng publish có thể khác tùy nhóm (xem `compose.yaml`). Dọn dẹp bằng `docker compose down` (không `-v` nếu cần giữ dữ liệu).
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 4. CI/CD pipeline (15 điểm)
 
@@ -107,13 +88,7 @@ curl -s http://localhost:3000/api/members
 
 **Bằng chứng:** `.github/workflows/`, tab Actions (cả run xanh và đỏ), trang Packages.
 
-```bash
-ls .github/workflows
-grep -n -E 'permissions|uses:|on:' .github/workflows/*.yml
-grep -rn -E 'ghp_|password: [^$]' .github/workflows || echo "khong thay secret cung"
-```
-
-Đầu ra mong đợi: có `permissions` ở cấp workflow hoặc job; các action có phiên bản (ví dụ `actions/checkout@v4`); không tìm thấy token hay mật khẩu viết cứng. Mentor mở tab Actions để xác nhận lần chạy gần nhất và kiểm tra trang Packages có image với tag SHA hoặc phiên bản.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 5. Kubernetes workloads (15 điểm)
 
@@ -126,16 +101,7 @@ grep -rn -E 'ghp_|password: [^$]' .github/workflows || echo "khong thay secret c
 
 **Bằng chứng:** thư mục `k8s/`, kết quả lệnh trên cluster của nhóm khi demo.
 
-```bash
-kubectl get pods,svc,ingress,pvc -n club
-kubectl get deployment -n club -o wide
-kubectl scale deployment club-api -n club --replicas=3
-kubectl rollout status deployment/club-api -n club
-kubectl rollout history deployment/club-api -n club
-kubectl get endpoints backend -n club
-```
-
-Đầu ra mong đợi: Pod `Running` và `READY` đầy đủ; PVC ở trạng thái `Bound`; Endpoints của Service liệt kê các địa chỉ Pod; scale lên 3 thành công. Tên Service và Deployment lấy theo manifest của nhóm. Nếu nhóm đổi tên so với starter project thì mentor dùng `kubectl get all -n club`.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 6. Configuration, storage, health checks (10 điểm)
 
@@ -148,15 +114,7 @@ kubectl get endpoints backend -n club
 
 **Bằng chứng:** ConfigMap, Secret (chỉ dạng mẫu trong Git), PVC, probe trong manifest, thử nghiệm xóa Pod.
 
-```bash
-kubectl get configmap,secret -n club
-kubectl get deployment club-api -n club -o jsonpath='{.spec.template.spec.containers[0].readinessProbe}'
-kubectl delete pod postgres-0 -n club
-kubectl wait --for=condition=Ready pod/postgres-0 -n club --timeout=120s
-curl -s http://localhost:8080/api/members
-```
-
-Đầu ra mong đợi: Pod `postgres-0` được tạo lại, `Ready`, và dữ liệu thành viên còn nguyên. Cổng 8080 giả định đã port-forward hoặc truy cập qua Ingress; điều chỉnh theo thiết lập của nhóm. Tên Pod `postgres-0` đúng với StatefulSet tên `postgres`.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 7. Troubleshooting (10 điểm)
 
@@ -169,12 +127,7 @@ curl -s http://localhost:8080/api/members
 
 **Bằng chứng:** `docs/troubleshooting-log.md` (hoặc mục trong README), lịch sử commit sửa lỗi, phần thực hành tại buổi demo.
 
-```bash
-grep -c -i 'nguyên nhân' docs/troubleshooting-log.md
-git log --oneline --grep='fix' -i | head
-```
-
-Đầu ra mong đợi: số mục lớn hơn hoặc bằng 3. Quan trọng hơn: mentor tạo một sự cố ngắn (ví dụ đổi sai tên Secret) và quan sát nhóm tìm nguyên nhân bằng log, `describe`, events thay vì đoán.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 8. Security practices (10 điểm)
 
@@ -187,13 +140,7 @@ git log --oneline --grep='fix' -i | head
 
 **Bằng chứng:** `.gitignore`, `.env.example`, `k8s/secret.example.yaml`, workflow quét, kết quả quét.
 
-```bash
-git ls-files | grep -E '(^|/)(\.env|.*kubeconfig.*)$' || echo "khong co file nhay cam"
-git log --all -p -S'password' --oneline -- . ':!*.md' | head -20
-grep -rn -i -E 'password|token' k8s compose.yaml | grep -v -i -E 'secretKeyRef|\$\{|example|<'
-```
-
-Đầu ra mong đợi: không có file nhạy cảm bị theo dõi; các lần xuất hiện của từ `password` chỉ là tên biến, không phải giá trị thật. Lệnh thứ hai và thứ ba có thể cho nhiều kết quả giả, mentor đọc từng dòng để phân biệt. Nếu nghi ngờ có secret trong lịch sử, yêu cầu nhóm giải thích cách xoay secret.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 9. Documentation (5 điểm)
 
@@ -206,12 +153,7 @@ grep -rn -i -E 'password|token' k8s compose.yaml | grep -v -i -E 'secretKeyRef|\
 
 **Bằng chứng:** `README.md`, `docs/adr/`, `docs/runbook.md`.
 
-```bash
-ls docs/adr
-grep -c -E '^```mermaid' README.md
-```
-
-Đầu ra mong đợi: ít nhất 3 file ADR; ít nhất một khối mermaid. Kiểm tra thực chất: một mentor hoặc học viên nhóm khác làm theo README trên máy sạch và ghi lại bước nào sai.
+Lệnh kiểm tra nhanh cho tiêu chí này nằm ở mục 6 cuối trang (dành cho mentor).
 
 ### 10. Demo và technical defense (10 điểm)
 
@@ -222,7 +164,7 @@ grep -c -E '^```mermaid' README.md
 | Pass | 5–6 | Demo chạy với hỗ trợ, trả lời được câu cơ bản, khó giải thích các lựa chọn |
 | Needs improvement | 0–4 | Demo không chạy, không giải thích được hệ thống của mình |
 
-**Bằng chứng:** buổi demo trực tiếp, video dự phòng, phiếu nhận xét của mentor. Tiêu chí phụ chi tiết xem [demo-guide.md](../assignments/capstone/demo-guide.md).
+**Bằng chứng:** buổi demo trực tiếp, video dự phòng, phiếu nhận xét của mentor. Tiêu chí phụ chi tiết xem [Hướng dẫn demo](../assignments/capstone/demo-guide.md).
 
 ## 4. Điểm cá nhân và điểm nhóm
 
@@ -281,4 +223,110 @@ Rubric không đổi. Mentor không trừ điểm vì nhóm ít người mà ch�
 | 10 | Demo và defense | 10 | | |
 | | Tổng nhóm | 100 | | |
 
-Xếp loại theo bảng trong [assessment.md](assessment.md).
+Xếp loại theo bảng trong [Đánh giá](assessment.md).
+
+## 6. Dành cho mentor: lệnh kiểm tra nhanh
+
+::: warning Dành cho mentor
+Mục này dành cho người chấm; học viên không cần đọc. Các lệnh giả định bạn đã clone repo nhóm và đang ở thư mục gốc repo.
+:::
+
+#### Tiêu chí 1. Git workflow và source structure (5 điểm)
+
+```bash
+git log --oneline --merges | head -20
+git shortlog -sn --no-merges
+git log --format='%an %s' | head -30
+git ls-files | grep -E '(^|/)\.env$' || echo "khong co .env duoc commit"
+```
+
+Đầu ra mong đợi: nhiều tác giả, thông điệp commit mô tả được thay đổi, dòng cuối in thông báo không có `.env`. Lưu ý: nếu nhóm dùng Squash and merge thì không có merge commit; hãy đếm PR trên GitHub (`gh pr list --state merged` nếu mentor đã cài GitHub CLI).
+
+#### Tiêu chí 2. Dockerfile và image optimization (10 điểm)
+
+```bash
+docker build -t capstone-api:check ./backend
+docker image ls capstone-api:check
+docker run --rm --entrypoint id capstone-api:check
+docker history capstone-api:check | head
+grep -n -E '^FROM' backend/Dockerfile
+```
+
+Đầu ra mong đợi: `uid` khác 0 trong lệnh `id`; các dòng `FROM` có tag cụ thể và có hơn một stage; `docker history` không chứa mật khẩu hay token. Nếu image frontend không có lệnh `id` thì kiểm tra bằng `docker inspect` mục `Config.User`.
+
+#### Tiêu chí 3. Docker Compose và networking (10 điểm)
+
+```bash
+cp .env.example .env
+docker compose config --quiet && echo "compose hop le"
+docker compose up -d --build
+docker compose ps
+docker compose down
+docker compose up -d
+curl -s http://localhost:3000/api/members
+```
+
+Đầu ra mong đợi: các service ở trạng thái running hoặc healthy; danh sách thành viên sau `down` rồi `up` vẫn còn dữ liệu đã thêm trước đó. Cổng publish có thể khác tùy nhóm (xem `compose.yaml`). Dọn dẹp bằng `docker compose down` (không `-v` nếu cần giữ dữ liệu).
+
+#### Tiêu chí 4. CI/CD pipeline (15 điểm)
+
+```bash
+ls .github/workflows
+grep -n -E 'permissions|uses:|on:' .github/workflows/*.yml
+grep -rn -E 'ghp_|password: [^$]' .github/workflows || echo "khong thay secret cung"
+```
+
+Đầu ra mong đợi: có `permissions` ở cấp workflow hoặc job; các action có phiên bản (ví dụ `actions/checkout@v4`); không tìm thấy token hay mật khẩu viết cứng. Mentor mở tab Actions để xác nhận lần chạy gần nhất và kiểm tra trang Packages có image với tag SHA hoặc phiên bản.
+
+#### Tiêu chí 5. Kubernetes workloads (15 điểm)
+
+```bash
+kubectl get pods,svc,ingress,pvc -n club
+kubectl get deployment -n club -o wide
+kubectl scale deployment club-api -n club --replicas=3
+kubectl rollout status deployment/club-api -n club
+kubectl rollout history deployment/club-api -n club
+kubectl get endpoints backend -n club
+```
+
+Đầu ra mong đợi: Pod `Running` và `READY` đầy đủ; PVC ở trạng thái `Bound`; Endpoints của Service liệt kê các địa chỉ Pod; scale lên 3 thành công. Tên Service và Deployment lấy theo manifest của nhóm. Nếu nhóm đổi tên so với starter project thì mentor dùng `kubectl get all -n club`.
+
+#### Tiêu chí 6. Configuration, storage, health checks (10 điểm)
+
+```bash
+kubectl get configmap,secret -n club
+kubectl get deployment club-api -n club -o jsonpath='{.spec.template.spec.containers[0].readinessProbe}'
+kubectl delete pod postgres-0 -n club
+kubectl wait --for=condition=Ready pod/postgres-0 -n club --timeout=120s
+curl -s http://localhost:8080/api/members
+```
+
+Đầu ra mong đợi: Pod `postgres-0` được tạo lại, `Ready`, và dữ liệu thành viên còn nguyên. Cổng 8080 giả định đã port-forward hoặc truy cập qua Ingress; điều chỉnh theo thiết lập của nhóm. Tên Pod `postgres-0` đúng với StatefulSet tên `postgres`.
+
+#### Tiêu chí 7. Troubleshooting (10 điểm)
+
+```bash
+grep -c -i 'nguyên nhân' docs/troubleshooting-log.md
+git log --oneline --grep='fix' -i | head
+```
+
+Đầu ra mong đợi: số mục lớn hơn hoặc bằng 3. Quan trọng hơn: mentor tạo một sự cố ngắn (ví dụ đổi sai tên Secret) và quan sát nhóm tìm nguyên nhân bằng log, `describe`, events thay vì đoán.
+
+#### Tiêu chí 8. Security practices (10 điểm)
+
+```bash
+git ls-files | grep -E '(^|/)(\.env|.*kubeconfig.*)$' || echo "khong co file nhay cam"
+git log --all -p -S'password' --oneline -- . ':!*.md' | head -20
+grep -rn -i -E 'password|token' k8s compose.yaml | grep -v -i -E 'secretKeyRef|\$\{|example|<'
+```
+
+Đầu ra mong đợi: không có file nhạy cảm bị theo dõi; các lần xuất hiện của từ `password` chỉ là tên biến, không phải giá trị thật. Lệnh thứ hai và thứ ba có thể cho nhiều kết quả giả, mentor đọc từng dòng để phân biệt. Nếu nghi ngờ có secret trong lịch sử, yêu cầu nhóm giải thích cách xoay secret.
+
+#### Tiêu chí 9. Documentation (5 điểm)
+
+```bash
+ls docs/adr
+grep -c -E '^```mermaid' README.md
+```
+
+Đầu ra mong đợi: ít nhất 3 file ADR; ít nhất một khối mermaid. Kiểm tra thực chất: một mentor hoặc học viên nhóm khác làm theo README trên máy sạch và ghi lại bước nào sai.

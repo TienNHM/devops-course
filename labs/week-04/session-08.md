@@ -1,96 +1,54 @@
 # Buổi 08 – Docker CLI
 
-Tuần 4 · Giai đoạn 2 – Containerization · Slide: [Slide buổi 08](../../slides/02-docker/session-08.md)
+Tuần 4/16 · Giai đoạn 2 – Containerization · Buổi 08/32
 
-> **Tóm tắt:** Dùng thành thạo Docker CLI để chạy, kiểm tra, debug, dừng, xóa container và đẩy image lên registry, rồi chẩn đoán lỗi port bận và container thoát ngay.
+[Slide buổi 08](../../slides/02-docker/session-08.md) · [Bài tập tuần 4](../../assignments/weekly/week-04.md) · [Hub tuần 4](README.md)
 
-## Mục tiêu học tập
+> **Tóm tắt:** Dùng 10 lệnh Docker cốt lõi để chạy, kiểm tra, dừng, xóa container, đẩy image lên registry cục bộ, và tự chẩn đoán khi container thoát ngay hoặc cổng bị bận.
 
-- Giải thích vòng đời container (created, running, exited, removed) và lệnh nào chuyển trạng thái nào.
-- Chạy được container với `docker run` kèm các cờ `-d`, `--name`, `-p`, `-e`, `--rm` và phân biệt image với container.
-- Kiểm tra được container đang chạy bằng `docker ps`, `docker logs`, `docker exec`, `docker inspect`, `docker stats`.
-- Dừng và dọn dẹp tài nguyên an toàn bằng `docker stop`, `docker rm`, `docker image rm`, `docker system df`.
-- Đặt tag cho image và đẩy lên registry bằng `docker tag`, `docker pull`, `docker push` (registry cục bộ).
-- Chẩn đoán được hai lỗi kinh điển: port đã được sử dụng (tình huống 01) và container thoát ngay khi start (tình huống 02).
+::: tip Buổi này bạn làm gì
+**Bạn sẽ tạo ra:** một web server Nginx và một database PostgreSQL do bạn tự chạy, soi và sửa lỗi bằng Docker CLI, cộng một image đẩy lên registry chạy ngay trên máy bạn.
 
-## Điều kiện cần
+**Thời gian thật:** đọc 15 phút, lab bắt buộc 60 phút, thử thách tùy chọn làm ở nhà.
 
-- Đã hoàn thành [Buổi 07](session-07.md): hiểu image, container, registry; Docker Desktop chạy với WSL2 backend.
-- Làm việc trong terminal WSL2 Ubuntu, thư mục nằm trong filesystem của WSL (ví dụ `~/devops-labs/lab-08`), không dùng `/mnt/c`.
-- Kiểm tra nhanh:
+**Cần chuẩn bị:**
 
-```bash
-docker version --format '{{.Server.Version}}'
-docker run --rm hello-world
-```
+- [ ] Làm xong [Buổi 07 – Container Fundamentals](session-07.md): Docker Desktop chạy được, `docker run --rm hello-world` thành công.
+- [ ] Môi trường theo [Hướng dẫn cài đặt](../../resources/setup-guide.md); tài khoản GitHub và repo `devops-labs` theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md).
+- [ ] Mở terminal WSL Ubuntu, nằm trong filesystem của WSL (không dùng `/mnt/c`).
 
-Kết quả mong đợi: in ra số phiên bản (ví dụ `27.x.x`) và đoạn chữ `Hello from Docker!`. Nếu báo `Cannot connect to the Docker daemon`, mở Docker Desktop và bật WSL integration cho Ubuntu (Settings, Resources, WSL integration).
+**Sản phẩm phải nộp** (thư mục `lab-08/` trong `devops-labs`):
 
-## Vấn đề thực tế
+- `README.md` trả lời 7 câu theo mẫu, ghi rõ đã làm L1 hay L2.
+- `evidence/command-output.txt` chứa lệnh và output thật của Phần 1 đến 4.
+- `source/commands.sh` ghi lại các lệnh bạn đã chạy.
+- `report.md` trả lời 5 câu hỏi kiểm tra của bài tập tuần.
 
-Một thành viên CLB gửi bạn lệnh "chạy thử cho nhanh" rồi báo: "máy mình chạy được, máy bạn thì không". Bạn chạy lệnh, không thấy lỗi gì nhưng `docker ps` trống. Hoặc bạn mở trang web CLB ở cổng quen thuộc và thấy một trang cũ không biết từ đâu ra. Không có Docker CLI trong tay, bạn chỉ còn cách đoán và khởi động lại máy.
+**Đi nhanh:** [Đọc](#van-de-thuc-te) > [Làm lab](#hands-on-lab) > [Gặp lỗi?](#gap-loi) > [Tự kiểm tra](#tu-kiem-tra) > [Nộp bài](#nop-bai). Kẹt giữa chừng? Nhảy tới [Gặp lỗi?](#gap-loi).
+:::
 
-Docker CLI là bộ công cụ quan sát và điều khiển container. Với vài lệnh nhỏ, bạn trả lời được các câu hỏi cốt lõi khi vận hành: container nào đang chạy, nó chạy bằng image nào, nó đang in ra gì, nó nghe cổng nào, nó thoát với mã lỗi bao nhiêu và vì sao. Đây cũng là cách debug đầu tiên mà bạn dùng ở Kubernetes (`kubectl logs`, `kubectl exec`, `kubectl describe` là các anh em họ của các lệnh hôm nay).
+**Từ mới trong buổi** (tra thêm ở [Thuật ngữ](../../resources/glossary.md)):
 
-## Khái niệm cốt lõi
+- **ExitCode**: con số cho biết tiến trình thoát thế nào (0 là êm, khác 0 là lỗi).
+- **PID 1**: tiến trình chính của container; nó chết thì container chết.
+- **Tag**: nhãn phiên bản của image, ví dụ `1.27-alpine`.
+- **Biến môi trường**: cặp `TÊN=giá trị` truyền cấu hình vào container.
+- **stdout**: luồng chữ ứng dụng in ra, `docker logs` đọc được nó.
+- **Registry**: kho lưu image; hôm nay bạn tự chạy một cái trên máy.
 
-### Image và container
+## Vấn đề thực tế {#van-de-thuc-te}
 
-| | Image | Container |
-| --- | --- | --- |
-| Bản chất | Gói chỉ đọc gồm filesystem và metadata (CMD, ENV, EXPOSE) | Tiến trình đang chạy (hoặc đã dừng) tạo từ image, có thêm một lớp ghi |
-| Tạo bằng | `docker build`, `docker pull` | `docker run`, `docker create` |
-| Xem bằng | `docker images` (hoặc `docker image ls`) | `docker ps` (đang chạy), `docker ps -a` (tất cả) |
-| Xóa bằng | `docker image rm` | `docker rm` |
-| Ví dụ | `nginx:1.27-alpine` | `web` (tên bạn đặt) |
+Một thành viên CLB gửi bạn lệnh "chạy thử cho nhanh" rồi báo: "máy mình chạy được, máy bạn thì không". Bạn chạy lệnh, không thấy lỗi nhưng `docker ps` trống. Hoặc bạn mở trang web CLB ở cổng quen thuộc và thấy một trang cũ không biết từ đâu ra. Không có Docker CLI trong tay, bạn chỉ còn cách đoán rồi khởi động lại máy.
 
-Một image có thể sinh nhiều container. Xóa container không xóa image, và ngược lại không xóa được image nếu còn container (kể cả container đã dừng) dùng nó.
+Docker CLI giúp bạn trả lời các câu hỏi cốt lõi khi vận hành: container nào đang chạy, từ image nào, đang in ra gì, nghe cổng nào, thoát với mã lỗi bao nhiêu và vì sao. Đây cũng là cách debug đầu tiên bạn dùng ở Kubernetes (`kubectl logs`, `kubectl exec`, `kubectl describe` là anh em họ của các lệnh hôm nay).
 
-### Cú pháp đầy đủ của docker run
+## Khái niệm cốt lõi {#khai-niem}
 
-```text
-docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARGS...]
-```
-
-`docker run` thực chất là ba việc gộp lại: `docker pull` (nếu image chưa có), `docker create` (tạo container) và `docker start` (chạy). Phần `COMMAND` nếu có sẽ ghi đè `CMD` mặc định của image.
-
-| Cờ | Ý nghĩa | Lưu ý |
-| --- | --- | --- |
-| `-d` | Chạy nền (detached) | Quên `-d` thì terminal bị chiếm, nhiều bạn tưởng container "treo" |
-| `--name web` | Đặt tên container | Không đặt thì Docker sinh tên ngẫu nhiên; tên phải duy nhất |
-| `-p 8088:80` | Map cổng host:container | Cổng bên trái là của máy bạn, bên phải là trong container |
-| `-e KEY=value` | Đặt biến môi trường | Không đưa secret thật vào lệnh mẫu hay lịch sử shell |
-| `--rm` | Tự xóa container khi nó thoát | Hợp cho lệnh chạy thử một lần |
-| `-it` | Có stdin và terminal (TTY) | Dùng cho shell tương tác như `sh` |
-
-### Nhóm lệnh quan sát và điều khiển
-
-| Mục đích | Lệnh | Ghi chú |
-| --- | --- | --- |
-| Liệt kê | `docker ps`, `docker ps -a` | `-a` bao gồm container đã thoát |
-| Xem log | `docker logs web`, `-f`, `--tail 20` | Chỉ thấy stdout và stderr của tiến trình chính (PID 1) |
-| Vào trong | `docker exec -it web sh` | Chạy thêm một tiến trình trong container đang chạy |
-| Soi chi tiết | `docker inspect web` | Trả về JSON: trạng thái, ExitCode, mạng, mount, env |
-| Tài nguyên | `docker stats --no-stream` | CPU, RAM, mạng của container đang chạy |
-| Dừng | `docker stop web` | Gửi SIGTERM, chờ 10 giây rồi SIGKILL |
-| Chạy lại | `docker start web` | Giữ nguyên cấu hình ban đầu |
-| Xóa | `docker rm web`, `docker rm -f web` | `-f` buộc dừng rồi xóa |
-| Lấy image | `docker pull nginx:1.27-alpine` | Luôn ghi rõ tag |
-| Đổi tên và đẩy | `docker tag`, `docker push` | Tên image chứa địa chỉ registry |
-
-### Tên image đầy đủ
-
-`localhost:5001/club/nginx:1.27-alpine` gồm: registry (`localhost:5001`), repository (`club/nginx`), tag (`1.27-alpine`). Nếu bỏ phần registry, Docker mặc định là Docker Hub. Tag `latest` là tag mặc định khi bạn không ghi tag và nó thay đổi theo thời gian, nên kết quả không tái lập. Trong khóa này luôn pin tag cụ thể.
-
-## Kiến trúc và cách hoạt động
-
-```mermaid
-flowchart LR
-    CLI["docker CLI"] -->|"REST API"| D["Docker daemon"]
-    D --> C["Container"]
-    D --> I["Image cục bộ"]
-    D -->|"pull / push"| R["Registry"]
-```
+- **Vòng đời container** gồm tạo, chạy, dừng, xóa. Ví von: công tắc đèn; `stop` chỉ tắt đèn (đèn vẫn còn trong phòng), `rm` mới gỡ hẳn bóng đèn.
+- **PID 1**: container sống chừng nào tiến trình chính còn sống. Ví von: người trực quầy duy nhất; người đó nghỉ thì quầy đóng cửa, và ExitCode là lời nhắn để lại cho biết nghỉ vì xong việc (0) hay vì sự cố.
+- **Bộ ba chẩn đoán** `docker ps -a`, `docker logs`, `docker inspect`. Ví von: bác sĩ hỏi bệnh nhân còn sống không (ps), đọc nhật ký triệu chứng (logs), rồi khám chi tiết (inspect). Gặp container lỗi thì luôn làm theo thứ tự này.
+- **Cờ của `docker run`** quyết định cách "gọi món": `-d` mang đi (chạy nền), `--name` đặt tên cho suất ăn, `-p` nối cổng, `-e` thêm gia vị (biến môi trường), `--rm` ăn xong tự dọn bàn.
+- **Tên image đầy đủ** như địa chỉ nhà: `localhost:5001/club/nginx:1.27-alpine` gồm registry (`localhost:5001`), repository (`club/nginx`) và tag (`1.27-alpine`). Bỏ phần registry thì Docker hiểu là Docker Hub.
 
 ```mermaid
 flowchart LR
@@ -101,134 +59,54 @@ flowchart LR
     B -->|"docker rm -f"| X
 ```
 
-1. Lệnh `docker` chỉ là client; nó gọi API của Docker daemon (chạy trong Docker Desktop). Vì vậy `docker version` hiển thị hai phần Client và Server.
-2. `docker run` nhờ daemon tìm image cục bộ, nếu thiếu thì pull từ registry, sau đó tạo container và chạy tiến trình `CMD` của image.
-3. Container sống chừng nào tiến trình chính (PID 1) còn sống. Tiến trình thoát (thành công hay lỗi) thì container chuyển sang `Exited` và mã thoát (ExitCode) được lưu lại.
-4. `docker logs` đọc luồng stdout/stderr của PID 1 mà daemon đã ghi lại, nên vẫn xem được log của container đã chết.
-5. `docker exec` không khởi động lại container; nó chạy thêm một tiến trình khác bên trong các namespace của container đang chạy.
-6. `docker push` gửi các layer của image tới registry theo tên đầy đủ; tên sai (thiếu địa chỉ registry) là nguyên nhân push thất bại phổ biến nhất.
+::: details Tìm hiểu thêm (đọc sau)
+**Image và container.** Image là gói chỉ đọc (tạo bằng `docker build`, `docker pull`; xem bằng `docker images`; xóa bằng `docker image rm`). Container là tiến trình tạo từ image kèm một lớp ghi (tạo bằng `docker run`, `docker create`; xem bằng `docker ps`, `docker ps -a`; xóa bằng `docker rm`). Một image sinh nhiều container; không xóa được image nếu còn container (kể cả đã dừng) dùng nó.
 
-## Demo của mentor
+**`docker run` là ba việc gộp lại:** `docker pull` (nếu image chưa có), `docker create` rồi `docker start`. Cú pháp: `docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARGS...]`, phần `COMMAND` nếu có sẽ ghi đè `CMD` mặc định của image. Cờ `-it` cấp stdin và terminal cho shell tương tác như `sh`; quên `-d` thì terminal bị chiếm và nhiều bạn tưởng container "treo".
 
-Mục tiêu (khoảng 10 phút trong phần 30'): cho lớp thấy một vòng đời hoàn chỉnh và một lỗi thoát ngay. Mentor chạy trên màn hình chiếu, lớp dự đoán trước khi Enter.
+**Các lệnh quan sát và điều khiển khác.** `docker logs web -f --tail 20` (chỉ thấy stdout và stderr của PID 1), `docker exec -it web sh` (chạy thêm một tiến trình trong container đang chạy, thoát shell không làm container dừng), `docker stats --no-stream`, `docker stop web` (gửi SIGTERM, chờ 10 giây rồi SIGKILL), `docker start web` (giữ nguyên cấu hình ban đầu).
 
-1. Chạy nginx nền và kiểm tra.
+**Kiến trúc.** Lệnh `docker` chỉ là client gọi API của daemon (vì vậy `docker version` có hai khối Client và Server). `docker logs` đọc luồng stdout/stderr của PID 1 mà daemon đã ghi lại nên vẫn xem được log của container đã chết, cho tới khi container bị xóa. `docker push` gửi các layer tới registry theo tên đầy đủ; tên thiếu địa chỉ registry là nguyên nhân push thất bại phổ biến nhất. Tag `latest` thay đổi theo thời gian nên kết quả không tái lập; khóa này luôn pin tag cụ thể.
+:::
 
-```bash
-docker run -d --name demo-web -p 8088:80 nginx:1.27-alpine
-docker ps
-curl -I http://localhost:8088
-```
+Trên lớp, mentor demo trước; tự học thì làm thẳng phần Làm lab.
 
-Kết quả mong đợi: `docker ps` có một dòng `demo-web` trạng thái `Up`, cột PORTS có `0.0.0.0:8088->80/tcp`; `curl -I` trả `HTTP/1.1 200 OK`.
+## Hands-on lab (60 phút, bắt buộc) {#hands-on-lab}
 
-Hỏi lớp: "Cổng 8088 nằm ở máy hay trong container? Nếu mình đổi thành `-p 8088:8088` thì chuyện gì xảy ra?" (Đáp: nginx nghe cổng 80 trong container nên kết nối tới 8088 bên trong sẽ không có ai trả lời.)
-
-2. Xem log và đi vào trong.
-
-```bash
-docker logs --tail 5 demo-web
-docker exec demo-web wget -qO- http://localhost
-docker exec -it demo-web sh
-# trong container:
-ps
-exit
-```
-
-Kết quả mong đợi: log có các dòng khởi động của nginx và một dòng truy cập GET từ `curl`; `wget` in ra HTML "Welcome to nginx!"; `ps` cho thấy `nginx: master process` là PID 1.
-
-Hỏi lớp: "Mình exit shell, container có chết không? Vì sao?" (Đáp: không, shell chỉ là tiến trình phụ do `exec` tạo; PID 1 vẫn là nginx.)
-
-3. Soi chi tiết bằng inspect.
-
-```bash
-docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}}' demo-web
-docker inspect --format '{{.Config.Image}} {{json .NetworkSettings.Ports}}' demo-web
-```
-
-Kết quả mong đợi: `running exit=0` và tên image kèm JSON ánh xạ cổng `80/tcp`.
-
-4. Cho một container thoát ngay (không có biến bắt buộc).
-
-```bash
-docker run -d --name demo-pg postgres:17-alpine
-docker ps
-docker ps -a --filter name=demo-pg
-docker logs demo-pg
-```
-
-Kết quả mong đợi: `docker ps` không thấy `demo-pg`; `docker ps -a` hiển thị `Exited (1)`; log có dòng `Error: Database is uninitialized and superuser password is not specified.`
-
-Hỏi lớp: "Container đã chết, mình còn xem được log không? Cần sửa gì?" Sau đó sửa:
-
-```bash
-docker rm demo-pg
-docker run -d --name demo-pg -e POSTGRES_PASSWORD=demo_only_password postgres:17-alpine
-docker ps --filter name=demo-pg
-```
-
-Kết quả mong đợi: lần này `demo-pg` ở trạng thái `Up`. Mật khẩu ở đây chỉ là giá trị minh họa cho demo, không dùng cho dự án thật.
-
-5. Dừng và dọn dẹp.
-
-```bash
-docker stop demo-web demo-pg
-docker rm demo-web demo-pg
-docker ps -a --filter name=demo-
-```
-
-Kết quả mong đợi: hai tên được in lại sau mỗi lệnh; lệnh cuối chỉ còn dòng tiêu đề.
-
-## Hands-on lab
-
-Thời gian dự kiến: 60 phút (Phần 1 đến 3 khoảng 25 phút, Phần 4 khoảng 10 phút, L2 khoảng 25 phút).
-
-### Chuẩn bị
+### Chuẩn bị (5 phút)
 
 ```bash
 mkdir -p ~/devops-labs/lab-08/{source,screenshots,evidence}
 cd ~/devops-labs/lab-08
 docker ps -a --format '{{.Names}}' | head
-```
-
-Ghi lại toàn bộ lệnh và output quan trọng vào `evidence/command-output.txt`. Cách dễ nhất là dùng `tee`:
-
-```bash
 echo "=== Lab 08 $(date -Iseconds) ===" | tee evidence/command-output.txt
 ```
 
-Về sau với mỗi lệnh quan trọng, thêm `2>&1 | tee -a evidence/command-output.txt` ở cuối.
+Kết quả mong đợi: lệnh `docker ps -a` chạy không lỗi (danh sách tên có thể rỗng). Nếu báo `Cannot connect to the Docker daemon`, xem [Gặp lỗi?](#gap-loi).
 
-Quy ước tên: mọi container của lab bắt đầu bằng `lab08-` để không đụng container khác. Cổng dùng trong lab: 8088 (web) và 5001 (registry cục bộ). Nếu cổng đã bận ở máy bạn, đó chính là tình huống 01; hãy chuyển sang Phần phá lỗi.
+Quy ước: mọi container của lab có tên bắt đầu bằng `lab08-`; cổng dùng là 8088 (web) và 5001 (registry). Với mỗi lệnh quan trọng, thêm `2>&1 | tee -a evidence/command-output.txt` ở cuối. Cổng đã bận ở máy bạn thì xem [Gặp lỗi?](#gap-loi).
 
-### Phần 1 – Chạy và kiểm tra container
+### Phần 1. Chạy và kiểm tra container (15 phút)
 
-1. Chạy nginx nền với tên và cổng rõ ràng.
+**Bước 1.1.** Chạy Nginx nền với tên và cổng rõ ràng, rồi xác nhận nó sống:
 
 ```bash
 docker run -d --name lab08-web -p 8088:80 nginx:1.27-alpine 2>&1 | tee -a evidence/command-output.txt
-```
-
-Kết quả mong đợi: một chuỗi ID dài 64 ký tự (lần đầu có thêm dòng tải layer). Vì sao: `-d` trả lại terminal cho bạn, ID là định danh container.
-
-2. Xác nhận container sống và đúng cổng.
-
-```bash
 docker ps --filter name=lab08-web --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}' | tee -a evidence/command-output.txt
 curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8088
 ```
 
-Kết quả mong đợi: một dòng `lab08-web  nginx:1.27-alpine  Up ...  0.0.0.0:8088->80/tcp` và mã `200`. Vì sao: `docker ps` cho biết Docker nghĩ gì, `curl` cho biết dịch vụ có thật sự trả lời.
+Kết quả mong đợi: một chuỗi ID 64 ký tự (lần đầu có thêm dòng tải layer), một dòng `lab08-web  nginx:1.27-alpine  Up ...  0.0.0.0:8088->80/tcp` và mã `200`. `docker ps` cho biết Docker nghĩ gì; `curl` cho biết dịch vụ có thật sự trả lời.
 
-3. Xem log theo thời gian thực, rồi tạo thêm request.
+**Bước 1.2.** Xem log theo thời gian thực:
 
 ```bash
 docker logs -f --tail 5 lab08-web
 ```
 
-Mở terminal thứ hai chạy `curl -s http://localhost:8088 > /dev/null` vài lần; mỗi lần sẽ có thêm một dòng log `GET / HTTP/1.1" 200`. Nhấn Ctrl+C để thoát phần theo dõi (container vẫn chạy). Vì sao: nginx ghi access log ra stdout nên `docker logs` thấy được; ứng dụng tốt trong container luôn log ra stdout/stderr thay vì ghi file.
+Mở terminal thứ hai chạy `curl -s http://localhost:8088 > /dev/null` vài lần: mỗi lần có thêm một dòng `GET / HTTP/1.1" 200`. Nhấn Ctrl+C để thoát (container vẫn chạy). Ứng dụng tốt trong container luôn log ra stdout/stderr thay vì ghi file.
 
-4. Vào bên trong container.
+**Bước 1.3.** Vào bên trong container:
 
 ```bash
 docker exec -it lab08-web sh
@@ -236,39 +114,41 @@ docker exec -it lab08-web sh
 
 Trong shell của container chạy:
 
-```bash
+```sh
 cat /etc/os-release | head -2
 ls /usr/share/nginx/html
 ps
 exit
 ```
 
-Kết quả mong đợi: tên hệ điều hành Alpine, file `index.html` và `50x.html`, và `nginx: master process` ở PID 1. Vì sao: bạn đang ở trong filesystem của image (cộng lớp ghi của container), không phải máy host.
+Kết quả mong đợi: Alpine Linux, file `index.html` và `50x.html`, và `nginx: master process` ở PID 1. Thoát shell không làm container dừng.
 
-5. Soi bằng inspect và stats.
+**Bước 1.4.** Soi bằng `inspect` (nguồn sự thật về cấu hình thật của container):
 
 ```bash
-docker inspect --format 'status={{.State.Status}} started={{.State.StartedAt}} ip={{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' lab08-web
-docker port lab08-web
-docker stats --no-stream lab08-web
+docker inspect --format 'status={{.State.Status}} started={{.State.StartedAt}} ip={{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' lab08-web | tee -a evidence/command-output.txt
 ```
 
-Kết quả mong đợi: trạng thái `running`, một địa chỉ IP nội bộ kiểu `172.17.0.x`, dòng `80/tcp -> 0.0.0.0:8088` (bản Docker mới có thể in thêm một dòng `[::]:8088` cho IPv6), và bảng CPU/MEM rất nhỏ. Vì sao: `inspect` là nguồn sự thật cho cấu hình thật của container; khi nghi ngờ, đọc nó thay vì đoán.
+Kết quả mong đợi: `status=running`, thời điểm bắt đầu và một IP nội bộ kiểu `172.17.0.x`.
 
-### Phần 2 – Dừng, chạy lại, xóa
+::: tip Kiểm tra: bạn đúng khi
+`curl` trả `200`, `docker logs` có dòng `GET` của chính bạn, `ps` trong container cho thấy Nginx là PID 1 và `inspect` in `status=running`.
+:::
 
-1. Dừng và quan sát trạng thái.
+### Phần 2. Dừng, chạy lại, xóa (10 phút)
+
+**Bước 2.1.** Dừng và quan sát trạng thái:
 
 ```bash
 docker stop lab08-web
 docker ps
 docker ps -a --filter name=lab08-web --format '{{.Names}} {{.Status}}'
-docker inspect --format 'exit={{.State.ExitCode}}' lab08-web
+docker inspect --format 'exit={{.State.ExitCode}} {{.State.Status}}' lab08-web | tee -a evidence/command-output.txt
 ```
 
-Kết quả mong đợi: `docker ps` không còn container; `docker ps -a` hiện `Exited (0) ... ago`; ExitCode là `0` (nginx nhận SIGTERM và thoát êm). Vì sao: container chỉ biến mất khỏi `docker ps` chứ chưa bị xóa; log và cấu hình vẫn còn.
+Kết quả mong đợi: `docker ps` không còn container; `docker ps -a` hiện `Exited (0) ... ago`; `exit=0 exited` (Nginx nhận SIGTERM và thoát êm). Container chỉ biến khỏi `docker ps` chứ chưa bị xóa; log và cấu hình vẫn còn.
 
-2. Chạy lại rồi xóa hẳn.
+**Bước 2.2.** Chạy lại rồi xóa hẳn:
 
 ```bash
 docker start lab08-web
@@ -277,265 +157,178 @@ docker rm lab08-web 2>&1 | tee -a evidence/command-output.txt
 docker rm -f lab08-web 2>&1 | tee -a evidence/command-output.txt
 ```
 
-Kết quả mong đợi: `200`; lệnh `docker rm lab08-web` báo lỗi `cannot remove container ... is running` vì container đang chạy; bạn dùng `docker rm -f` để dừng và xóa. Vì sao: Docker từ chối xóa container đang chạy để tránh mất dịch vụ ngoài ý muốn; `-f` là hành động có chủ đích.
+Kết quả mong đợi: `200`; lệnh `docker rm` đầu báo lỗi `cannot remove container ... container is running` (cố ý, nhớ giữ dòng lỗi này trong evidence); `docker rm -f` dừng và xóa. Docker từ chối xóa container đang chạy để tránh mất dịch vụ ngoài ý muốn; `-f` là hành động có chủ đích.
 
-3. Dùng `--rm` cho lệnh một lần.
+**Bước 2.3.** Container dùng một lần với `--rm`:
 
 ```bash
-docker run --rm --name lab08-once alpine:3.20 echo "xin chao CLB"
+docker run --rm --name lab08-once alpine:3.20 echo "xin chao CLB" | tee -a evidence/command-output.txt
 docker ps -a --filter name=lab08-once
 ```
 
-Kết quả mong đợi: in `xin chao CLB`, sau đó danh sách rỗng. Vì sao: `--rm` dọn container ngay khi tiến trình thoát, tránh để lại rác.
+Kết quả mong đợi: in `xin chao CLB`, rồi danh sách rỗng chỉ còn dòng tiêu đề. `--rm` dọn container ngay khi tiến trình thoát.
 
-### Phần 3 – Biến môi trường và container có trạng thái
+::: tip Kiểm tra: bạn đúng khi
+Bạn có đủ chuỗi `exit=0 exited`, thông báo lỗi của `docker rm` trên container đang chạy, và không còn container `lab08-web` hay `lab08-once` trong `docker ps -a`.
+:::
 
-Dùng PostgreSQL giống database của starter-project để quen với biến môi trường.
+### Phần 3. Biến môi trường và container thoát ngay (15 phút)
+
+PostgreSQL giống database của dự án CLB, nên đây là dịp quen với biến môi trường. Cố ý chạy sai trước để thấy container "chết".
+
+**Bước 3.1.** Chạy chưa cấu hình gì và điều tra bằng bộ ba chẩn đoán:
 
 ```bash
+docker run -d --name lab08-pg postgres:17-alpine
+docker ps -a --filter name=lab08-pg | tee -a evidence/command-output.txt
+docker inspect --format 'exit={{.State.ExitCode}}' lab08-pg | tee -a evidence/command-output.txt
+docker logs lab08-pg 2>&1 | head -4 | tee -a evidence/command-output.txt
+```
+
+Kết quả mong đợi: `docker ps` (không có `-a`) sẽ không thấy container; `docker ps -a` hiện `Exited (1)`, `exit=1`, và log có dòng `Error: Database is uninitialized and superuser password is not specified.` Nguyên nhân gốc đọc thẳng từ log, không đoán: image từ chối khởi tạo khi thiếu `POSTGRES_PASSWORD`. Gặp `ps` trống sau `run -d`: xem [Gặp lỗi?](#gap-loi).
+
+**Bước 3.2.** Dọn và chạy lại với cấu hình đúng, đợi database sẵn sàng:
+
+```bash
+docker rm lab08-pg
 docker run -d --name lab08-pg -e POSTGRES_PASSWORD=lab_only_password -e POSTGRES_DB=club postgres:17-alpine
-docker logs --tail 3 lab08-pg
 until [ "$(docker logs lab08-pg 2>&1 | grep -c 'ready to accept connections')" -ge 2 ]; do sleep 1; done
-docker exec lab08-pg pg_isready -U postgres
-docker exec lab08-pg psql -U postgres -d club -c "SELECT version();"
+docker exec lab08-pg pg_isready -U postgres | tee -a evidence/command-output.txt
+docker exec lab08-pg psql -U postgres -d club -c "SELECT version();" | tee -a evidence/command-output.txt
 ```
 
-Kết quả mong đợi: log có dòng `database system is ready to accept connections` (có thể cần đợi vài giây rồi chạy lại `logs`); `pg_isready` in `/var/run/postgresql:5432 - accepting connections`; `psql` in một dòng phiên bản PostgreSQL 17. Vì sao có vòng `until`: image postgres khởi động một server tạm để chạy bước khởi tạo rồi tắt và khởi động lại server thật, nên dòng `ready to accept connections` xuất hiện hai lần; chỉ khi đó `psql` mới kết nối ổn định. Vì sao: `-e` truyền cấu hình vào container; `exec` cho phép chạy công cụ có sẵn trong image mà không cần cài trên máy bạn. Mật khẩu trong lab là giá trị tạm, container bị xóa ngay cuối lab; ở dự án thật dùng `.env` không commit.
+Kết quả mong đợi: `pg_isready` in `/var/run/postgresql:5432 - accepting connections`; `psql` in một dòng phiên bản PostgreSQL 17. Vòng `until` đợi dòng `ready to accept connections` xuất hiện hai lần vì image khởi động một server tạm để khởi tạo rồi mới chạy server thật; `psql` quá sớm sẽ lỗi. Mật khẩu ở đây là giá trị tạm của bài lab, không phải mật khẩu thật của bạn.
 
-Kiểm tra biến đã vào container:
+**Bước 3.3.** Kiểm tra biến đã vào container, nhưng chỉ lọc đúng dòng cần:
 
 ```bash
-docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' lab08-pg | grep POSTGRES_DB
+docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' lab08-pg | grep POSTGRES_DB | tee -a evidence/command-output.txt
 ```
 
-Kết quả mong đợi: `POSTGRES_DB=club`. Lưu ý rằng `docker inspect` hiển thị cả biến chứa mật khẩu, nên không dán output nguyên văn vào báo cáo; hãy lọc như trên.
+Kết quả mong đợi: `POSTGRES_DB=club`.
+
+::: danger Không dán nguyên output docker inspect
+`docker inspect` hiển thị cả biến chứa mật khẩu. Luôn lọc bằng `--format` và `grep` như trên trước khi đưa vào evidence hoặc báo cáo.
+:::
 
 Dọn dẹp: `docker rm -f lab08-pg`.
 
-### Phần 4 – pull, tag, push lên registry cục bộ
+::: tip Kiểm tra: bạn đúng khi
+Evidence có cả lần thất bại (`Exited (1)` kèm dòng lỗi của log) lẫn lần thành công (`accepting connections`), và không có dòng `POSTGRES_PASSWORD=` nào.
+:::
 
-Bạn không cần tài khoản hay token: dùng một registry chạy ngay trên máy bạn.
+### Phần 4. Tag và push lên registry cục bộ (10 phút)
 
-1. Chạy registry và kiểm tra.
+Không cần tài khoản hay token: bạn chạy một registry ngay trên máy.
 
 ```bash
 docker run -d --name lab08-registry -p 5001:5000 registry:2.8.3
 curl -s http://localhost:5001/v2/_catalog
-```
-
-Kết quả mong đợi: `{"repositories":[]}`.
-
-2. Pull, tag lại và push.
-
-```bash
-docker pull nginx:1.27-alpine
 docker tag nginx:1.27-alpine localhost:5001/club/nginx:1.27-alpine
-docker push localhost:5001/club/nginx:1.27-alpine
-curl -s http://localhost:5001/v2/_catalog
-curl -s http://localhost:5001/v2/club/nginx/tags/list
+docker push localhost:5001/club/nginx:1.27-alpine 2>&1 | tee -a evidence/command-output.txt
+curl -s http://localhost:5001/v2/_catalog | tee -a evidence/command-output.txt
+curl -s http://localhost:5001/v2/club/nginx/tags/list | tee -a evidence/command-output.txt
 ```
 
-Kết quả mong đợi: push in các layer `Pushed` hoặc `Layer already exists` rồi `digest: sha256:...`; catalog có `club/nginx`; tags/list có `1.27-alpine` (dạng `{"name":"club/nginx","tags":["1.27-alpine"]}`). Vì sao: `docker tag` chỉ tạo thêm một cái tên trỏ cùng image, không sao chép dữ liệu; phần `localhost:5001/` trong tên cho Docker biết đẩy tới đâu. Đây là cùng cơ chế khi bạn push `ghcr.io/ten-ban/club-api:1.0.0` ở các buổi CI/CD sau (thay bằng xác thực và token).
+Kết quả mong đợi: lệnh `curl` đầu in `{"repositories":[]}`; `push` in các layer `Pushed` hoặc `Layer already exists` rồi `digest: sha256:...`; catalog có `club/nginx`; tags/list in `{"name":"club/nginx","tags":["1.27-alpine"]}`. `docker tag` chỉ thêm một cái tên trỏ cùng image, không sao chép dữ liệu; phần `localhost:5001/` trong tên cho Docker biết đẩy tới đâu. Đây cũng là cơ chế khi bạn push `ghcr.io/ten-ban/club-api:1.0.0` ở các buổi CI/CD sau (thêm xác thực). Push báo `denied`: xem [Gặp lỗi?](#gap-loi).
 
-3. Xóa bản cục bộ và pull lại từ registry của bạn.
+Dọn dẹp: `docker rm -fv lab08-registry` (cờ `-v` xóa luôn volume ẩn của registry).
 
-```bash
-docker image rm localhost:5001/club/nginx:1.27-alpine
-docker pull localhost:5001/club/nginx:1.27-alpine
-docker images --filter reference='localhost:5001/*'
-```
+::: tip Kiểm tra: bạn đúng khi
+`push` kết thúc bằng dòng `digest: sha256:...` và `tags/list` chứa `1.27-alpine`.
+:::
 
-Kết quả mong đợi: pull thành công từ registry cục bộ, image xuất hiện lại. Dọn dẹp: `docker rm -fv lab08-registry` (cờ `-v` xóa luôn volume ẩn của registry) rồi `docker image rm localhost:5001/club/nginx:1.27-alpine`.
+### Checklist L1 và tự kiểm tra một dòng
 
-### L1 – Foundation
-
-- [ ] Chạy được `lab08-web` bằng nginx:1.27-alpine, `curl` trả mã 200 trên cổng 8088.
-- [ ] Xem được log, `exec` vào container và chạy `ps`, ghi lại output.
+- [ ] `lab08-web` chạy từ `nginx:1.27-alpine`, `curl` trả `200` trên cổng 8088; xem được log và `exec` vào chạy `ps`.
 - [ ] Dùng `docker inspect --format` lấy được trạng thái và ExitCode.
-- [ ] Dừng, chạy lại, rồi xóa container; giải thích được vì sao `docker rm` không xóa container đang chạy.
+- [ ] Dừng, chạy lại, xóa container; giải thích được vì sao `docker rm` không xóa container đang chạy.
+- [ ] Có cả lần thất bại và thành công của Postgres, `inspect` đã lọc.
 - [ ] Push thành công một image lên registry cục bộ và xem được tag bằng `curl`.
-- [ ] Mọi container `lab08-*` đã được dọn sạch (`docker ps -a --filter name=lab08-` rỗng).
-
-### L2 – Engineering
-
-Thử thách 1: giải quyết xung đột cổng (tình huống 01). Clone repo giáo trình vào filesystem WSL (ví dụ `~/devops-course`) rồi chạy `bash examples/troubleshooting/scenario-01/setup.sh` từ thư mục gốc repo đó (hoặc nhờ mentor). Sau đó chạy lệnh trong `examples/troubleshooting/scenario-01/README.md`.
-
-Tiêu chí hoàn thành:
-
-- [ ] Chỉ ra bằng lệnh ai đang giữ cổng 28081 (container nào, image nào).
-- [ ] Chạy được trang của bạn trên một cổng khác mà không xóa trang đang chạy của người khác khi chưa kiểm tra.
-- [ ] Viết báo cáo 5 mục (triệu chứng, nguyên nhân gốc, cách xác minh, giải pháp, phòng tránh) trong `report.md`.
-
-<details><summary>Gợi ý</summary>
-
-Lệnh nào liệt kê container kèm cột cổng? `docker ps` với `--filter publish=PORT` trả lời nhanh. Lưu ý: với Docker Desktop, cổng được publish ra Windows nên `ss -ltnp` trong WSL có thể không thấy; nếu `docker ps` không có container nào giữ cổng thì kiểm tra tiến trình Windows bằng `netstat -ano` trong PowerShell. Có hai cách xử lý: đổi cổng host của bạn (an toàn nhất) hoặc dừng container cũ khi bạn chắc chắn nó vô chủ.
-
-</details>
-
-<details><summary>Lời giải</summary>
+- [ ] Mọi container `lab08-*` đã được dọn sạch.
 
 ```bash
-docker ps --filter publish=28081 --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}'
-docker rm ts01-web   # dọn container Created sót lại từ lần chạy lỗi, nếu không sẽ trùng tên
-docker run -d --name ts01-web -p 28091:80 nginx:1.27-alpine
-curl -s -o /dev/null -w '%{http_code}\n' http://localhost:28091
+docker ps -a --filter name=lab08- --format '{{.Names}}' | wc -l
 ```
 
-Nguyên nhân gốc: container `ts01-legacy-site` đã map cổng host 28081; một cổng host chỉ gán được cho một tiến trình. Nội dung bạn thấy ở `localhost:28081` là của container cũ. Chọn đổi cổng vì không phá dịch vụ của người khác; chỉ `docker stop`/`docker rm` container cũ sau khi xác nhận với chủ của nó. Phòng tránh: đặt tên container, dùng `docker ps` trước khi chạy, ghi cổng vào tài liệu hoặc `.env`. Dọn dẹp bằng `bash examples/troubleshooting/scenario-01/cleanup.sh` (script này cũng xóa `ts01-web`).
+Kết quả mong đợi: `0`.
 
-</details>
+## Gặp lỗi? {#gap-loi}
 
-Thử thách 2: container thoát ngay (tình huống 02). Chạy `bash examples/troubleshooting/scenario-02/setup.sh` để build image `ts02-notes:broken`, rồi làm theo `examples/troubleshooting/scenario-02/README.md`.
-
-Tiêu chí hoàn thành:
-
-- [ ] Lấy được ExitCode và log của container đã thoát.
-- [ ] Xác định nguyên nhân gốc bằng cách soi bên trong image mà không cần chạy ứng dụng.
-- [ ] Sửa và chạy lại để `curl http://localhost:28082` trả JSON.
-- [ ] `report.md` ghi rõ file nào, dòng nào đã đổi và cách phát hiện sớm lỗi này.
-
-<details><summary>Gợi ý</summary>
-
-Hai lệnh giúp bạn: `docker logs ts02-notes` và `docker run --rm --entrypoint ls ts02-notes:broken -la /app`. So sánh đường dẫn trong thông báo lỗi với những gì thực sự có trong `/app`.
-
-</details>
-
-<details><summary>Lời giải</summary>
-
-Log báo không tìm thấy module `/app/src/server.js`. Trong image chỉ có `/app/server.js` vì Dockerfile `COPY package.json server.js ./` nhưng `CMD` lại gọi `node src/server.js`. Sửa dòng cuối của Dockerfile thành `CMD ["node", "server.js"]`, build lại và chạy:
-
-```bash
-docker rm -f ts02-notes
-docker build -t ts02-notes:fixed examples/troubleshooting/scenario-02
-docker run -d --name ts02-notes -p 28082:3000 ts02-notes:fixed
-curl http://localhost:28082
-```
-
-Kết quả mong đợi: `{"status":"healthy","service":"club-notes"}`. Dọn dẹp bằng `bash examples/troubleshooting/scenario-02/cleanup.sh` rồi `docker rmi ts02-notes:fixed`. Phòng tránh: sau khi build luôn chạy thử một lần (smoke test) và xem log trước khi giao image; thêm bước đó vào CI.
-
-</details>
-
-## Phá lỗi và debug
-
-Tình huống tự tạo: nhầm cổng container khi publish (container vẫn `Up` nhưng không truy cập được).
-
-Cách phá:
-
-```bash
-docker run -d --name lab08-broken -p 8088:8088 nginx:1.27-alpine
-docker ps --filter name=lab08-broken
-curl -sS --max-time 3 http://localhost:8088 || echo "FAILED"
-```
-
-Triệu chứng: container ở trạng thái `Up`, nhưng `curl` báo `Recv failure: Connection reset by peer` hoặc `Empty reply from server`, in thêm `FAILED`.
-
-Hướng điều tra theo bước:
-
-1. Container có chạy không? `docker ps` cho `Up`: tiến trình sống, vấn đề nằm ở mạng.
-2. Log có gì lạ không? `docker logs lab08-broken`: không có lỗi, vì nginx hoạt động bình thường.
-3. Ánh xạ cổng thế nào? `docker port lab08-broken` cho `8088/tcp -> 0.0.0.0:8088`: cổng container được khai báo là 8088.
-4. Tiến trình thực sự nghe cổng nào? `docker exec lab08-broken netstat -ltn` (busybox) cho thấy `0.0.0.0:80`.
-
-Nguyên nhân gốc: Docker chuyển tiếp cổng host 8088 vào cổng 8088 của container, trong khi nginx nghe cổng 80. Phòng tránh: đọc tài liệu image để biết cổng ứng dụng nghe, kiểm tra bằng `docker exec ... netstat`, và luôn kiểm thử bằng `curl` sau khi chạy. Dọn dẹp: `docker rm -f lab08-broken`. Hai tình huống dựng sẵn 01 và 02 ở thử thách L2 là phần "Break, Debug" bắt buộc; bạn có thể xem thêm tổng quan ở `examples/troubleshooting/README.md`.
-
-## Lỗi thường gặp
-
-| Triệu chứng | Nguyên nhân | Cách xử lý |
+| Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `port is already allocated` | Cổng host đã được container hoặc tiến trình khác giữ | `docker ps --filter publish=PORT`, `ss -ltnp`; đổi cổng host hoặc dừng container vô chủ |
-| `docker ps` trống nhưng vừa chạy `docker run -d` | Container đã thoát; `docker ps` chỉ liệt kê container đang chạy | `docker ps -a`, `docker logs`, xem `ExitCode` bằng `docker inspect` |
+| `Cannot connect to the Docker daemon` | Docker Desktop chưa chạy hoặc chưa bật WSL integration | Mở Docker Desktop, bật WSL integration cho Ubuntu (Settings, Resources, WSL integration) |
+| `port is already allocated` | Cổng host đã được container hoặc tiến trình khác giữ | `docker ps --filter publish=PORT`, `ss -ltnp`; đổi cổng host hoặc dừng container vô chủ (tình huống 01 ở trang thử thách) |
+| `docker ps` trống nhưng vừa chạy `docker run -d` | Container đã thoát; `docker ps` chỉ liệt kê container đang chạy | `docker ps -a`, `docker logs`, xem `ExitCode` bằng `docker inspect` (tình huống 02) |
 | Terminal bị chiếm sau `docker run` | Quên `-d` nên chạy ở foreground | Ctrl+C rồi chạy lại với `-d`; hoặc mở terminal khác |
-| `container name is already in use` | Tên container trùng với container cũ (kể cả đã dừng) | `docker rm tên` rồi chạy lại, hoặc đặt tên khác |
-| `curl` bị từ chối dù container `Up` | Nhầm cổng container, ứng dụng nghe `127.0.0.1` thay vì `0.0.0.0`, hoặc ứng dụng chưa sẵn sàng | `docker port`, `docker logs`, `docker exec ... netstat -ltn`, đợi và thử lại |
-| `denied` hoặc `requested access to the resource is denied` khi push | Tên image thiếu địa chỉ registry hoặc chưa đăng nhập | `docker tag` lại với tên đầy đủ, `docker login` khi dùng registry thật |
-| `Cannot connect to the Docker daemon` | Docker Desktop chưa chạy hoặc chưa bật WSL integration | Mở Docker Desktop, bật WSL integration cho distro Ubuntu |
+| `container name is already in use` | Tên trùng với container cũ (kể cả đã dừng) | `docker rm tên` rồi chạy lại, hoặc đặt tên khác |
+| `curl` bị từ chối dù container `Up` (`Empty reply from server`, `Connection reset by peer`) | Nhầm cổng container (ví dụ `-p 8088:8088` trong khi Nginx nghe 80), ứng dụng nghe `127.0.0.1`, hoặc chưa sẵn sàng | `docker port`, `docker logs`, `docker exec ... netstat -ltn`, đợi và thử lại |
+| `psql` báo không kết nối được ngay sau khi Postgres chạy | Mới có một dòng `ready to accept connections` (server tạm khi khởi tạo) | Đợi dòng đó xuất hiện hai lần (vòng `until` ở Bước 3.2) rồi thử lại |
+| `denied` hoặc `requested access to the resource is denied` khi push | Tên image thiếu địa chỉ registry hoặc chưa đăng nhập | `docker tag` lại với tên đầy đủ `localhost:5001/...`; `docker login` khi dùng registry thật |
 | Kết quả pull khác nhau giữa các máy | Dùng tag `latest` | Pin tag cụ thể như `nginx:1.27-alpine` |
 
-## Tự kiểm tra
+## Tự kiểm tra {#tu-kiem-tra}
 
 1. Khác biệt giữa `docker stop` và `docker rm -f` là gì?
 
-<details><summary>Đáp án</summary>
-
+::: details Đáp án gợi ý
 `docker stop` gửi SIGTERM, chờ rồi SIGKILL, container chuyển sang `Exited` và còn lại trên đĩa. `docker rm -f` buộc dừng rồi xóa hẳn container (log và lớp ghi mất theo).
+:::
 
-</details>
+2. `docker run -d -p 9000:80 nginx:1.27-alpine` mở cổng nào trên máy bạn, và Nginx nghe cổng nào trong container?
 
-2. `docker run -d -p 9000:80 nginx:1.27-alpine` mở cổng nào trên máy bạn, và nginx nghe cổng nào trong container?
-
-<details><summary>Đáp án</summary>
-
-Cổng 9000 trên host; nginx nghe cổng 80 trong container. Định dạng luôn là host:container.
-
-</details>
+::: details Đáp án gợi ý
+Cổng 9000 trên host; Nginx nghe cổng 80 trong container. Định dạng luôn là host:container.
+:::
 
 3. Vì sao `docker logs` vẫn đọc được log của container đã thoát?
 
-<details><summary>Đáp án</summary>
-
+::: details Đáp án gợi ý
 Daemon lưu stdout/stderr của tiến trình chính theo container; log chỉ mất khi container bị xóa.
+:::
 
-</details>
+4. Bạn chạy `docker run -d --name api club-api:1.0.0`, `docker ps` không thấy gì. Liệt kê ba lệnh bạn chạy tiếp theo theo thứ tự.
 
-4. `docker exec -it web sh` rồi `exit`. Container có dừng không?
-
-<details><summary>Đáp án</summary>
-
-Không. Shell là tiến trình phụ do `exec` tạo; container sống theo PID 1.
-
-</details>
-
-5. Tình huống: bạn chạy `docker run -d --name api club-api:1.0.0`, `docker ps` không thấy gì. Liệt kê ba lệnh bạn chạy tiếp theo theo thứ tự.
-
-<details><summary>Đáp án</summary>
-
+::: details Đáp án gợi ý
 `docker ps -a` để xem trạng thái và ExitCode; `docker logs api` để xem lỗi; nếu log không rõ, `docker inspect api` (đặc biệt `State`, `Config.Cmd`, `Config.Env`) hoặc chạy `docker run --rm --entrypoint sh -it club-api:1.0.0` để soi bên trong image.
+:::
 
-</details>
+5. `docker push ten-ban/club-api:1.0.0` tới registry cục bộ ở cổng 5001 bị từ chối hoặc đi nhầm nơi. Bạn thiếu gì?
 
-6. Tình huống: `docker push ten-ban/club-api:1.0.0` tới registry cục bộ ở cổng 5001 bị từ chối hoặc đi nhầm nơi. Bạn thiếu gì?
-
-<details><summary>Đáp án</summary>
-
+::: details Đáp án gợi ý
 Tên image phải chứa địa chỉ registry: `docker tag ten-ban/club-api:1.0.0 localhost:5001/ten-ban/club-api:1.0.0` rồi push tên mới. Không có địa chỉ thì Docker hiểu là Docker Hub.
+:::
 
-</details>
+## Nộp bài {#nop-bai}
 
-7. Vì sao không nên dùng tag `latest` trong bài lab cần tái lập?
+Nộp vào thư mục `lab-08/` trong repo `devops-labs` theo [mẫu lab](../../templates/lab-template.md); đề bài và bảng điểm ở [Bài tập tuần 4](../../assignments/weekly/week-04.md).
 
-<details><summary>Đáp án</summary>
-
-`latest` trỏ tới phiên bản mới nhất tại thời điểm pull, nên hai người ở hai thời điểm có thể nhận hai image khác nhau, kết quả lab không tái lập và lỗi khó truy vết.
-
-</details>
-
-## Nộp bài
-
-Nộp vào thư mục `lab-08/` trong repository cá nhân (ví dụ `devops-labs`), theo `templates/lab-template.md`:
-
-- [ ] `README.md` trả lời đủ 7 câu: bài lab giải quyết vấn đề gì, kiến thức đã dùng, các bước thực hiện, kết quả mong đợi, lỗi đã gặp, cách khắc phục, có thể cải thiện gì. Ghi rõ đã làm L1 hay L2.
+- [ ] `README.md` trả lời đủ 7 câu: bài lab giải quyết vấn đề gì, kiến thức đã dùng, các bước thực hiện, kết quả mong đợi, lỗi đã gặp, cách khắc phục, có thể cải thiện gì; ghi rõ đã làm L1 hay L2.
 - [ ] `evidence/command-output.txt` chứa lệnh và output thật của Phần 1 đến 4 (run, ps, logs, exec, inspect, stop, rm, push).
-- [ ] `report.md` gồm báo cáo 5 mục cho tình huống 01 và 02 (triệu chứng, nguyên nhân gốc, cách xác minh, giải pháp, phòng tránh).
-- [ ] `source/` chứa Dockerfile đã sửa của tình huống 02 và file ghi lại các lệnh bạn đã chạy (ví dụ `commands.sh`).
-- [ ] `screenshots/` có ảnh `docker ps` trước và sau khi sửa (chỉ là minh họa, không thay thế evidence).
-- [ ] Không commit secret: không dán mật khẩu thật, token hay output `docker inspect` chứa biến môi trường nhạy cảm.
-- [ ] Đã dọn sạch container, image và registry tạm của lab.
+- [ ] `source/commands.sh` ghi lại các lệnh bạn đã chạy; `screenshots/` (tùy chọn) có ảnh `docker ps`.
+- [ ] `report.md` trả lời 5 câu hỏi kiểm tra của bài tập tuần (và báo cáo 5 mục nếu làm thử thách L2).
+- [ ] Không commit secret; không dán output `docker inspect` chưa lọc; đã dọn sạch container và registry tạm.
 
 ## Recap
 
-- Container sống theo tiến trình chính (PID 1): tiến trình thoát thì container thoát, và ExitCode cho biết thoát thế nào.
-- `docker ps -a`, `docker logs`, `docker inspect` là bộ ba chẩn đoán đầu tiên cho mọi container lỗi.
-- `-p host:container`: nhớ bên trái là máy bạn, bên phải là trong container; một cổng host chỉ gán được cho một dịch vụ.
-- `docker exec` thêm một tiến trình vào container đang chạy; thoát shell không làm container dừng.
-- `docker stop` giữ lại container để xem lại, `docker rm` mới xóa; dùng `--rm` cho lệnh chạy một lần.
-- Tên image đầy đủ gồm registry, repository và tag; luôn pin tag thay vì `latest`.
-- Khi gặp lỗi: đọc triệu chứng, lấy bằng chứng (log, inspect), tìm nguyên nhân gốc rồi mới sửa.
+- Container sống theo PID 1: tiến trình thoát thì container thoát, ExitCode cho biết thoát thế nào; bộ ba chẩn đoán là `docker ps -a`, `docker logs`, `docker inspect`.
+- `-p host:container` (trái là máy bạn); `stop` giữ lại container, `rm` xóa, `--rm` dành cho lệnh một lần.
+- Tên image đầy đủ gồm registry, repository, tag; luôn pin tag thay vì `latest`.
 
-## Tài liệu tham khảo
+Buổi tiếp theo: [Buổi 09 – Dockerfile](../week-05/session-09.md).
 
+::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
+Gồm hai tình huống dựng sẵn (xung đột cổng 28081 và container thoát ngay), một thử thách smoke test, và vài lệnh bổ sung (`docker port`, `docker stats`, pull lại từ registry cục bộ). Tự thử 15 phút trước khi mở gợi ý. Xem [Buổi 08 – Thử thách thêm](session-08-challenge.md).
+:::
+
+::: details Phá lỗi nâng cao
+Tự tạo lỗi "nhầm cổng container" (container `Up` nhưng không truy cập được) và điều tra từng bước. Xem phần Phá lỗi nâng cao ở [Buổi 08 – Thử thách thêm](session-08-challenge.md).
+:::
+
+::: details Tài liệu tham khảo
 - [docker run – Docker CLI reference](https://docs.docker.com/reference/cli/docker/container/run/)
-- [docker container logs](https://docs.docker.com/reference/cli/docker/container/logs/)
-- [docker container exec](https://docs.docker.com/reference/cli/docker/container/exec/)
 - [docker inspect](https://docs.docker.com/reference/cli/docker/inspect/)
 - [docker image push](https://docs.docker.com/reference/cli/docker/image/push/)
-- [Publishing and exposing ports](https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/)
+
+Danh sách đầy đủ ở cuối [trang thử thách](session-08-challenge.md).
+:::

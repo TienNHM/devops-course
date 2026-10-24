@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
@@ -6,47 +6,178 @@ import { courseTree } from './course'
 
 const repo = process.env.REPO_URL || 'https://github.com/TienNHM/devops-course'
 
-
 const root = join(import.meta.dirname, '..')
+const pad = (n: number) => String(n).padStart(2, '0')
 const h1 = (rel: string) => readFileSync(join(root, rel), 'utf8').match(/^# (.+)$/m)?.[1] ?? rel
 
-function slidesSidebar(): DefaultTheme.SidebarItem[] {
-  const names: Record<string, string> = {
-    '01-foundation': 'Foundation', '02-docker': 'Docker', '03-compose': 'Compose', '04-cicd': 'CI/CD',
-    '05-kubernetes': 'Kubernetes', '06-kubectl': 'kubectl', '07-operations': 'Operations', '08-capstone': 'Capstone',
+type Item = DefaultTheme.SidebarItem
+
+// Link của sidebar ("/a/b" hoặc "/a/") có file nguồn thật không. Trang thiếu thì bỏ khỏi cây.
+function pageExists(link: string): boolean {
+  const rel = link.replace(/^\//, '')
+  if (rel === '' || rel.endsWith('/')) {
+    return ['index.md', 'README.md'].some((f) => existsSync(join(root, rel, f)))
   }
-  return Object.entries(names).map(([dir, name], i) => ({
-    text: `${dir.slice(0, 2)} – ${name}`,
-    collapsed: i > 0,
-    link: `/slides/${dir}/`,
-    items: readdirSync(join(root, 'slides', dir))
-      .filter((f) => /^session-\d+\.md$/.test(f))
-      .sort()
-      .map((f) => ({ text: h1(`slides/${dir}/${f}`).replace(/^Slide buổi /, 'Buổi '), link: `/slides/${dir}/${f.replace(/\.md$/, '')}` })),
-  }))
+  return existsSync(join(root, `${rel}.md`))
 }
 
-// Sidebar cho một thư mục phẳng: index.md trước, các file còn lại theo tên
-function flatSidebar(dir: string, group: string): DefaultTheme.SidebarItem[] {
-  if (!existsSync(join(root, dir))) return []
-  const files = readdirSync(join(root, dir)).filter((f) => f.endsWith('.md')).sort()
-  const ordered = ['index.md', ...files.filter((f) => f !== 'index.md')].filter((f) => files.includes(f))
-  return [{ text: group, items: ordered.map((f) => ({ text: f === 'index.md' ? 'Tổng quan' : h1(`${dir}/${f}`), link: `/${dir}/${f === 'index.md' ? '' : f.replace(/\.md$/, '')}` })) }]
+// Tạo mục sidebar; trả null nếu trang không tồn tại
+const page = (text: string, link: string): Item | null => (pageExists(link) ? { text, link } : null)
+const present = (items: (Item | null)[]): Item[] => items.filter((i): i is Item => i !== null)
+const group = (text: string, items: (Item | null)[], extra: Partial<Item> = {}): Item | null => {
+  const kept = present(items)
+  return kept.length ? { text, items: kept, ...extra } : null
 }
 
-const weekNums = Array.from({ length: 16 }, (_, i) => String(i + 1).padStart(2, '0'))
+const phases = courseTree()
 
-function labsSidebar(): DefaultTheme.SidebarItem[] {
-  return courseTree().map((phase, i) => ({
-    text: `Giai đoạn ${phase.no} — ${phase.name}`,
-    collapsed: i > 0,
-    items: phase.weeks.map((w) => ({
-      text: w.title,
-      link: w.link,
-      collapsed: true,
-      items: w.sessions.map((s) => ({ text: s.title, link: s.link })),
-    })),
-  }))
+// Cây học chung cho /labs/, /curriculum/ và /assignments/
+function learningSidebar(): Item[] {
+  const start = group('Bắt đầu từ đây', [
+    page('Bắt đầu từ đây', '/curriculum/getting-started'),
+    page('Cài đặt máy', '/resources/setup-guide'),
+    page('Lộ trình 16 tuần', '/curriculum/syllabus'),
+    page('Chuẩn đầu ra', '/curriculum/learning-outcomes'),
+    page('Cách đánh giá', '/curriculum/assessment'),
+    page('Dự án cuối khóa (Capstone)', '/assignments/capstone/'),
+    page('Tiêu chí chấm Capstone', '/curriculum/capstone-rubric'),
+    page('Đánh giá kỹ thuật', '/curriculum/technical-assessment'),
+  ])
+  const stages = phases.map((phase, i) =>
+    group(
+      phase.title,
+      phase.weeks.map((w) => page(w.title, w.link)),
+      { collapsed: i > 0 },
+    ),
+  )
+  return present([start, ...stages])
+}
+
+const slideDecks: { dir: string; name: string }[] = [
+  { dir: '01-foundation', name: 'Foundation' },
+  { dir: '02-docker', name: 'Docker' },
+  { dir: '03-compose', name: 'Compose' },
+  { dir: '04-cicd', name: 'CI/CD' },
+  { dir: '05-kubernetes', name: 'Kubernetes' },
+  { dir: '06-kubectl', name: 'kubectl' },
+  { dir: '07-operations', name: 'Operations' },
+  { dir: '08-capstone', name: 'Capstone' },
+]
+// Deck nào thuộc giai đoạn nào (theo số thứ tự giai đoạn)
+const deckPhase: Record<string, number> = {
+  '01-foundation': 1, '02-docker': 2, '03-compose': 2, '04-cicd': 3,
+  '05-kubernetes': 4, '06-kubectl': 4, '07-operations': 4, '08-capstone': 5,
+}
+
+function slidesSidebar(): Item[] {
+  const deckItem = (d: { dir: string; name: string }): Item | null => {
+    const dirPath = join(root, 'slides', d.dir)
+    if (!existsSync(dirPath)) return null
+    const sessions = Array.from({ length: 32 }, (_, i) => pad(i + 1))
+      .filter((n) => existsSync(join(dirPath, `session-${n}.md`)))
+      .map((n) => ({
+        text: h1(`slides/${d.dir}/session-${n}.md`).replace(/^Slide buổi /, 'Buổi '),
+        link: `/slides/${d.dir}/session-${n}`,
+      }))
+    return { text: `${d.dir.slice(0, 2)} · ${d.name}`, collapsed: true, link: `/slides/${d.dir}/`, items: sessions }
+  }
+  const stages = phases.map((phase, i) =>
+    group(
+      phase.title,
+      slideDecks.filter((d) => deckPhase[d.dir] === phase.no).map(deckItem),
+      { collapsed: i > 0 },
+    ),
+  )
+  return present([group('Slide', [page('Tổng quan 32 buổi', '/slides/')]), ...stages])
+}
+
+// Sidebar chung cho các trang tra cứu
+function referenceSidebar(): Item[] {
+  return present([
+    group('Cài đặt và sự cố', [
+      page('Cài đặt máy', '/resources/setup-guide'),
+      page('Tài khoản và GitHub', '/resources/setup-github'),
+      page('Terminal cơ bản', '/resources/terminal-101'),
+      page('Sự cố khi cài đặt', '/resources/troubleshooting-setup'),
+    ]),
+    group('Tra nhanh', [
+      page('Thuật ngữ', '/resources/glossary'),
+      page('Cheatsheets', '/resources/cheatsheets'),
+      page('Tài liệu chính thức', '/resources/documentation'),
+      page('Sách', '/resources/books'),
+    ]),
+    group('Mẫu chạy được', [
+      page('Ví dụ theo chủ đề', '/examples/'),
+      page('10 tình huống lỗi', '/examples/troubleshooting-scenarios'),
+      page('Dự án mẫu', '/starter-project/'),
+      page('Mẫu bài lab', '/templates/lab-template'),
+      page('Mẫu bài tập', '/templates/assignment-template'),
+      page('Mẫu dự án', '/templates/project-template'),
+    ]),
+    group('Slide', [page('Slide 32 buổi', '/slides/')]),
+  ])
+}
+
+function mentorsSidebar(): Item[] {
+  const weeks = phases
+    .flatMap((p) => p.weeks)
+    .map((w) =>
+      group(
+        w.title,
+        [
+          ...w.sessions.map((s) => page(`Kịch bản Buổi ${pad(s)}`, `/mentors/sessions/session-${pad(s)}`)),
+          page('Hướng dẫn chấm', `/mentors/grading/week-${w.no}`),
+          page('Đáp án', `/mentors/walkthroughs/week-${w.no}`),
+        ],
+        { collapsed: true },
+      ),
+    )
+  return present([
+    group('Bắt đầu', [page('Tổng quan', '/mentors/'), page('Hướng dẫn mentor', '/mentors/handbook')]),
+    group('Lên lớp', [
+      page('Quy trình mỗi buổi', '/mentors/session-runbook'),
+      page('Đáp án: mục lục', '/mentors/walkthroughs/'),
+      ...weeks,
+    ]),
+    group('Vận hành khóa', [
+      page('Checklist mở khóa', '/mentors/launch-checklist'),
+      page('Kế hoạch chạy thử', '/mentors/pilot-plan'),
+      page('Quản trị repo', '/mentors/repo-governance'),
+    ]),
+  ])
+}
+
+function vibeSidebar(): Item[] {
+  return present([
+    group('Bắt đầu', [
+      page('Tổng quan', '/vibe/'),
+      page('Tư duy Vibe Deploy', '/vibe/00-mindset'),
+      page('Git và GitHub', '/vibe/01-git-github'),
+      page('Đưa web tĩnh lên mạng', '/vibe/02-static-hosting'),
+    ]),
+    group('Thêm database và đăng nhập', [
+      page('Fullstack serverless', '/vibe/03-fullstack-serverless'),
+      page('Supabase', '/vibe/04-supabase'),
+      page('Firebase', '/vibe/05-firebase'),
+    ]),
+    group('Dự án thật', [
+      page('Dự án nhỏ', '/vibe/09-mini-project'),
+      page('Tên miền, bảo mật, production', '/vibe/07-domain-security-production'),
+      page('Hoàn thiện và ra mắt', '/vibe/11-launch-polish'),
+    ]),
+    group(
+      'Tra cứu và nâng cao',
+      [
+        page('Deploy cùng AI agent', '/vibe/06-ai-agent-deploy'),
+        page('App builders', '/vibe/10-app-builders'),
+        page('Xử lý sự cố', '/vibe/08-troubleshooting'),
+        page('Nền tảng hosting', '/vibe/platforms'),
+        page('Thư viện prompt', '/vibe/prompt-library'),
+        page('CLI cheatsheet', '/vibe/cli-cheatsheet'),
+      ],
+      { collapsed: true },
+    ),
+  ])
 }
 
 export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>({
@@ -60,6 +191,9 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
   // README.md ở gốc là trang giới thiệu cho GitHub; website dùng index.md
   srcExclude: [
     'README.md',
+    'ROADMAP.md',
+    'CHANGELOG.md',
+    'CONTRIBUTING.md',
     'CODE_OF_CONDUCT.md',
     'starter-project/backend/**',
     'starter-project/frontend/**',
@@ -91,6 +225,21 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
     // Tắt cú pháp {...} gắn thuộc tính
     attrs: { disable: true },
     config(md) {
+      // Tiêu đề dạng "Tên mục {#neo}": lấy neo tường minh, bỏ phần {#...} khỏi chữ hiển thị
+      md.core.ruler.after('inline', 'explicit_heading_id', (state) => {
+        const toks = state.tokens
+        for (let i = 0; i < toks.length - 1; i++) {
+          if (toks[i].type !== 'heading_open' || toks[i + 1].type !== 'inline') continue
+          const inl = toks[i + 1]
+          const m = /\s*\{#([A-Za-z0-9_-]+)\}\s*$/.exec(inl.content)
+          if (!m) continue
+          toks[i].attrSet('id', m[1])
+          inl.content = inl.content.slice(0, m.index)
+          const last = inl.children?.[inl.children.length - 1]
+          if (last && last.type === 'text') last.content = last.content.replace(/\s*\{#[A-Za-z0-9_-]+\}\s*$/, '')
+        }
+      })
+
       // Inline code như `${{ github.sha }}`: không để Vue hiểu là biểu thức template
       const codeInline = md.renderer.rules.code_inline!
       md.renderer.rules.code_inline = (tokens, idx, ...rest) => {
@@ -152,84 +301,56 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
     // Tên ngắn cho thanh điều hướng để vừa màn hình điện thoại; tiêu đề đầy đủ vẫn ở thẻ title
     siteTitle: 'DevOps · HCMUTE DSC',
     nav: [
-      { text: 'Syllabus', link: '/curriculum/syllabus' },
-      { text: 'Bài lab', link: '/labs/week-01/' },
+      { text: 'Bắt đầu', link: '/curriculum/getting-started' },
+      { text: 'Học 16 tuần', link: '/curriculum/syllabus' },
       { text: 'Vibe Deploy', link: '/vibe/' },
       {
-        text: 'Thêm',
+        text: 'Tra cứu',
         items: [
-          { text: 'Lịch học', link: '/curriculum/schedule' },
-          { text: 'Capstone', link: '/assignments/capstone/' },
-          { text: 'Dành cho mentor', link: '/mentors/' },
-          { text: 'Walkthrough (đáp án)', link: '/mentors/walkthroughs/' },
-          { text: 'Starter project', link: '/starter-project/' },
-          { text: '10 tình huống lỗi', link: '/examples/troubleshooting-scenarios' },
-          { text: 'Setup guide', link: '/resources/setup-guide' },
+          { text: 'Cài đặt máy', link: '/resources/setup-guide' },
+          { text: 'Thuật ngữ', link: '/resources/glossary' },
           { text: 'Cheatsheets', link: '/resources/cheatsheets' },
+          { text: 'Tình huống lỗi', link: '/examples/troubleshooting-scenarios' },
+          { text: 'Dự án mẫu', link: '/starter-project/' },
+        ],
+      },
+      {
+        text: 'Mentor',
+        items: [
+          { text: 'Tổng quan', link: '/mentors/' },
+          { text: 'Kịch bản từng buổi', link: '/mentors/session-runbook' },
+          { text: 'Hướng dẫn chấm', link: '/mentors/handbook' },
+          { text: 'Đáp án', link: '/mentors/walkthroughs/' },
         ],
       },
     ],
     sidebar: {
-      '/curriculum/': [
-        {
-          text: 'Chương trình',
-          items: [
-            { text: 'Syllabus', link: '/curriculum/syllabus' },
-            { text: 'Lịch học', link: '/curriculum/schedule' },
-            { text: 'Chuẩn đầu ra', link: '/curriculum/learning-outcomes' },
-            { text: 'Đánh giá', link: '/curriculum/assessment' },
-          ],
-        },
-      ],
-      '/labs/': labsSidebar(),
-      '/assignments/': [
-        { text: 'Dự án cuối khóa', items: [{ text: 'Capstone', link: '/assignments/capstone/' }] },
-        {
-          text: 'Bài tập hàng tuần',
-          items: weekNums.map((n) => ({ text: `Tuần ${n}`, link: `/assignments/weekly/week-${n}` })),
-        },
-      ],
+      '/curriculum/': learningSidebar(),
+      '/labs/': learningSidebar(),
+      '/assignments/': learningSidebar(),
       '/slides/': slidesSidebar(),
-      '/mentors/': flatSidebar('mentors', 'Dành cho mentor'),
-      '/vibe/': flatSidebar('vibe', 'Vibe Deploy'),
-      '/solutions/': [
-        { text: 'Walkthrough', items: [{ text: 'Giới thiệu', link: '/solutions/' }, { text: 'Mục lục 16 tuần', link: '/mentors/walkthroughs/' }, ...weekNums.map((n) => ({ text: `Tuần ${n}`, link: `/mentors/walkthroughs/week-${n}` }))] },
-      ],
-      '/resources/': [
-        {
-          text: 'Tài nguyên',
-          items: [
-            { text: 'Setup guide', link: '/resources/setup-guide' },
-            { text: 'Tài liệu chính thức', link: '/resources/documentation' },
-            { text: 'Sách', link: '/resources/books' },
-            { text: 'Cheatsheets', link: '/resources/cheatsheets' },
-          ],
-        },
-      ],
-      '/examples/': [
-        {
-          text: 'Ví dụ',
-          items: [
-            { text: 'Tổng quan', link: '/examples/' },
-            { text: '10 tình huống lỗi', link: '/examples/troubleshooting-scenarios' },
-          ],
-        },
-      ],
-      '/templates/': [
-        {
-          text: 'Template',
-          items: [
-            { text: 'Lab', link: '/templates/lab-template' },
-            { text: 'Assignment', link: '/templates/assignment-template' },
-            { text: 'Project', link: '/templates/project-template' },
-          ],
-        },
-      ],
+      '/mentors/': mentorsSidebar(),
+      '/vibe/': vibeSidebar(),
+      '/resources/': referenceSidebar(),
+      '/examples/': referenceSidebar(),
+      '/starter-project/': referenceSidebar(),
+      '/templates/': referenceSidebar(),
     },
     socialLinks: [{ icon: 'github', link: repo }],
     search: {
       provider: 'local',
       options: {
+        // Trang mentor không vào chỉ mục tìm kiếm mặc định (học viên không bị lẫn đáp án)
+        _render(src, env, md) {
+          if (env.relativePath.startsWith('mentors/')) return ''
+          return md.render(src)
+        },
+        miniSearch: {
+          searchOptions: {
+            // Ưu tiên bài học (labs) và lộ trình (curriculum)
+            boostDocument: (id: string) => (/^\/(labs|curriculum)\//.test(id) ? 3 : 1),
+          },
+        },
         translations: {
           button: { buttonText: 'Tìm kiếm', buttonAriaLabel: 'Tìm kiếm' },
           modal: {
@@ -241,7 +362,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
       },
     },
     editLink: { pattern: `${repo}/edit/master/:path`, text: 'Sửa trang này trên GitHub' },
-    outline: { level: [2, 3], label: 'Trong bài này' },
+    outline: { level: [2, 2], label: 'Trong bài này' },
     docFooter: { prev: 'Bài trước', next: 'Bài sau' },
     lastUpdated: { text: 'Cập nhật lần cuối' },
     returnToTopLabel: 'Lên đầu trang',

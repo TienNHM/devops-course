@@ -228,13 +228,13 @@ README của repo nhóm phải cho phép một người lạ chạy được tro
 ## 11. Ghi lại demo
 
 - Quay video 8–10 phút (OBS Studio hoặc Xbox Game Bar trên Windows 11), có giọng thuyết minh, màn hình đọc được (cỡ chữ terminal tối thiểu 16).
-- Nội dung theo kịch bản trong [demo-guide.md](demo-guide.md). Video là phương án dự phòng khi demo trực tiếp gặp sự cố.
+- Nội dung theo kịch bản trong [Hướng dẫn demo](demo-guide.md). Video là phương án dự phòng khi demo trực tiếp gặp sự cố.
 - Không để lộ token, mật khẩu, thông tin cá nhân trong video. Kiểm tra lại trước khi nộp.
 - Nộp liên kết video (chế độ không công khai hoặc kênh nội bộ CLB) trong README repo nhóm, hoặc theo cách mentor yêu cầu.
 
 ## 12. Cách chấm và điều kiện đạt
 
-- Điểm Final Project tính theo [capstone-rubric.md](../../curriculum/capstone-rubric.md), tổng 100 điểm, chiếm 30% điểm khóa học (xem [assessment.md](../../curriculum/assessment.md)).
+- Điểm Final Project tính theo [Rubric Capstone](../../curriculum/capstone-rubric.md), tổng 100 điểm, chiếm 30% điểm khóa học (xem [Đánh giá khóa học](../../curriculum/assessment.md)).
 - Điều kiện đạt: Final Project tối thiểu 60/100.
 - Điểm nhóm được điều chỉnh thành điểm cá nhân dựa trên đóng góp (PR, commit, review, buổi bảo vệ). Chi tiết ở rubric.
 

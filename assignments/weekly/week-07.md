@@ -2,18 +2,43 @@
 
 > **Tóm tắt:** Dựng toàn bộ starter-project (frontend, backend, postgres) bằng một file `compose.yaml` cấu hình qua `.env`, thêm healthcheck và restart policy, chứng minh vòng đời dữ liệu bằng log thật, rồi (tùy chọn) tự động hóa backup/restore PostgreSQL.
 
-**Hạn nộp:** trước buổi đầu tiên của tuần 08.
+**Hạn nộp:** trước buổi đầu tiên của tuần 8.
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-13/` và `lab-14/`.
-**Bài lab liên quan:** [Buổi 13 – Docker Compose](../../labs/week-07/session-13.md), [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md).
-**Mẫu nộp bài:** [templates/lab-template.md](../../templates/lab-template.md).
+**Bài lab liên quan:** [Buổi 13 – Docker Compose](../../labs/week-07/session-13.md), [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md); hub tuần: [Tuần 7 – Docker Compose](../../labs/week-07/README.md).
+**Mẫu nộp bài:** [mẫu nộp bài lab](../../templates/lab-template.md).
 
-## Bối cảnh
+**Bài tập = nộp lại bằng chứng của lab, không có việc mới.** Việc duy nhất ngoài lab là viết lời giải thích ngắn trong `report.md` (và 5 câu hỏi kiểm tra cuối trang) bằng lời của bạn. Mọi lệnh chạy trong terminal WSL2, trong filesystem của WSL (ví dụ `~/devops-labs`), không dùng `/mnt/c`. Nếu kẹt, xem bảng "Gặp lỗi?" ở cuối mỗi bài lab trước khi hỏi mentor.
 
-Đến tuần 6 bạn đã tự chạy từng container bằng `docker run`, tự tạo network và volume. Với ba thành phần của ứng dụng Club Management, bạn phải gõ nhiều lệnh dài theo đúng thứ tự, và chỉ cần quên một cờ là API không nối được database. Docker Compose gom toàn bộ mô tả đó vào một file để cả nhóm chạy lại giống hệt nhau bằng một lệnh.
+## Tổng quan nhiệm vụ
 
-Tuần này bạn làm hai việc nối tiếp nhau. Ở `lab-13/`, bạn dựng hệ thống ba service, hiểu rõ vai trò từng khóa trong `compose.yaml` và vòng đời dữ liệu (`down` khác `down -v`). Ở `lab-14/`, bạn nâng cấp cấu hình theo hướng gần với môi trường thật: healthcheck, `depends_on` có điều kiện, restart policy, và kiểm chứng hành vi khi một service chết hoặc chưa sẵn sàng.
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Dựng hệ thống ba service bằng Compose | Buổi 13, Chuẩn bị và Phần 1-3 | 0,75 giờ | `compose.yaml`, `.env.example`; log `docker compose config --quiet` kèm exit code, `docker compose ps`, `curl /api/members`, lệnh `exec` gọi service theo tên; `git ls-files` hoặc `git status` chứng minh `.env` không bị theo dõi |
+| 2. Chứng minh vòng đời dữ liệu | Buổi 13, Phần 4 | 0,5 giờ | Ba lần gọi `/api/members` kèm lệnh `down`, `down -v`, `up -d` trong `lab-13/evidence/command-output.txt`; giải thích trong `report.md` |
+| 3. Healthcheck và thứ tự khởi động | Buổi 14, Phần 1-2 | 0,75 giờ | `lab-14/source/compose.yaml` có healthcheck và `depends_on` điều kiện; log `docker compose ps` (healthy) và `docker inspect` Health Log |
+| 4. Restart policy, `/health` và `/ready` | Buổi 14, Phần 3 | 0,75 giờ | Log thoát bất thường so với `stop`, `RestartCount`, mã HTTP của `/health` và `/ready` khi postgres dừng và khi chạy lại, ghi vào `lab-14/evidence/test-results.txt` |
+| 5. Break -> Debug: healthcheck quá ngặt | Buổi 14, Phần 4 | 0,75 giờ | `git diff` của thay đổi gây lỗi, log trước và sau khi sửa, mục Break -> Debug trong `lab-14/report.md` |
+| L2-A. Backup và restore | [Buổi 14 – thử thách L2](../../labs/week-07/session-14-challenge.md), Phần L2-3 và thử thách 3 | 1 giờ | `backup.sh`, `restore.sh`, log chạy bảy lần và `ls backups` đếm 5 file, log restore và `/api/members` sau restore |
+| L2-B. Secret cho Postgres | Buổi 14 thử thách L2, Phần L2-2 | 0,5 giờ | `compose.yaml` dùng `secrets`, log `docker inspect` không lộ mật khẩu, `/ready` 200 |
+| L2-C. Resource limits và OOM | Buổi 14 thử thách L2, Phần L2-1 và thử thách 2 | 0,5 giờ | Log `OOMKilled`/exit code, số liệu `docker stats`, giá trị cuối cùng và lý giải |
 
-Bài tập chỉ dùng kiến thức của Buổi 13 và Buổi 14. Nếu bị kẹt, đọc lại các phần "Lỗi thường gặp" và "Phá lỗi và debug" của hai bài lab trước khi hỏi mentor. Mọi lệnh chạy trong terminal WSL2, trong filesystem của WSL (ví dụ `~/devops-labs`), không dùng `/mnt/c`.
+Quy ước: mỗi lệnh trong `command-output.txt` được ghi dưới dạng dòng bắt đầu bằng `$ ` rồi tới output thật. Ảnh chụp màn hình chỉ bổ trợ, không thay cho log và source. Đừng đưa mật khẩu thật vào log; che giá trị nhạy cảm trước khi nộp.
+
+## Bảng điểm
+
+| Tiêu chí | Điểm |
+| --- | --- |
+| Nhiệm vụ 1: hệ thống ba service chạy bằng Compose | 20 |
+| Nhiệm vụ 2: vòng đời dữ liệu | 15 |
+| Nhiệm vụ 3: healthcheck và `depends_on` điều kiện | 20 |
+| Nhiệm vụ 4: restart policy và `/health`, `/ready` | 15 |
+| Nhiệm vụ 5: Break -> Debug | 10 |
+| Câu hỏi kiểm tra kiến thức (5 câu, 2 điểm mỗi câu) | 10 |
+| Chất lượng nộp bài và an toàn (cấu trúc đúng, README đủ 7 câu, không lộ secret, PR được review) | 10 |
+| Tổng | 100 |
+| Điểm thưởng L2 (mỗi thử thách đạt đủ tiêu chí tối đa 5 điểm) | +10 |
+
+Bài nộp không chạy lại được (mentor chạy `docker compose up -d` từ `source/` của bạn trên máy khác) chỉ nhận tối đa một nửa điểm của các nhiệm vụ liên quan.
 
 ## Nhiệm vụ L1 (bắt buộc)
 
@@ -25,7 +50,7 @@ Tiêu chí hoàn thành:
 
 - `lab-13/source/compose.yaml` có đủ ba service `frontend`, `backend`, `postgres`, một network `club-network` và một volume `postgres-data`. Postgres không publish cổng ra máy chủ.
 - Mật khẩu database chỉ xuất hiện trong `.env` (không commit). Repo có `.env.example` chỉ chứa giá trị mẫu, và `.gitignore` chặn `.env`.
-- `docker compose config --quiet` thành công (có log, kèm exit code).
+- `docker compose config --quiet` thành công (có log, kèm exit code: `docker compose config --quiet; echo "exit code: $?"`).
 - `docker compose ps` cho thấy cả ba service chạy; `curl -s http://localhost:8080/api/members` (hoặc cổng `WEB_PORT` của bạn) trả về JSON có Alice và Bob.
 - Có log chứng minh service gọi nhau bằng tên: `docker compose exec` vào `frontend` hoặc `backend` rồi gọi `backend`/`postgres` theo tên service (không dùng IP).
 
@@ -64,7 +89,7 @@ Tiêu chí hoàn thành:
 
 ### Nhiệm vụ 5. Break -> Debug: healthcheck quá ngặt
 
-Tự gây một lỗi có kiểm soát theo tình huống trong Buổi 14, rồi điều tra như trong một sự cố thật.
+Tự gây một lỗi có kiểm soát theo tình huống ở Phần 4 của Buổi 14, rồi điều tra như trong một sự cố thật.
 
 Tiêu chí hoàn thành:
 
@@ -73,9 +98,9 @@ Tiêu chí hoàn thành:
 - Log cho thấy trạng thái trước khi sửa (`unhealthy` hoặc chặn khởi động) và sau khi sửa (`healthy`), có `exit code:` của lệnh kiểm tra.
 - Bạn trả cấu hình về trạng thái đúng và `docker compose ps` lại sạch (healthy) trước khi nộp.
 
-## Nhiệm vụ L2 (nâng cao)
+## Nhiệm vụ L2 (nâng cao, tùy chọn)
 
-Làm tối đa 2 trong 3 thử thách. Mỗi thử thách có tiêu chí riêng; phần này là điểm thưởng, tối đa 10 điểm.
+Làm tối đa 2 trong 3 thử thách. Phần này là điểm thưởng, tối đa 10 điểm. Hướng dẫn làm nằm ở [Buổi 14 – thử thách L2](../../labs/week-07/session-14-challenge.md).
 
 ### Thử thách A. Backup và restore PostgreSQL có kiểm chứng
 
@@ -109,9 +134,7 @@ Tiêu chí hoàn thành:
 - Chọn giá trị cuối cùng dựa trên đo đạc `docker stats --no-stream`, không đoán; ghi số liệu vào `report.md`.
 - Compose vẫn cho ba service `(healthy)` với giá trị cuối cùng.
 
-## Bằng chứng cần nộp
-
-Cấu trúc thư mục theo mẫu lab:
+## Cấu trúc thư mục nộp
 
 ```text
 lab-13/
@@ -140,37 +163,6 @@ lab-14/
     └── test-results.txt
 ```
 
-Bằng chứng theo từng nhiệm vụ:
-
-| Nhiệm vụ | Bằng chứng bắt buộc |
-| --- | --- |
-| 1 | `compose.yaml`, `.env.example`; log `docker compose config --quiet` kèm exit code, `docker compose ps`, `curl /api/members`, lệnh `exec` gọi service theo tên; `git ls-files` hoặc `git status` chứng minh `.env` không bị theo dõi |
-| 2 | Ba lần gọi `/api/members` kèm lệnh `down`, `down -v`, `up -d` trong `lab-13/evidence/command-output.txt`; giải thích trong `report.md` |
-| 3 | `lab-14/source/compose.yaml` có healthcheck và `depends_on` điều kiện; log `docker compose ps` (healthy) và `docker inspect` Health Log |
-| 4 | Log thoát bất thường so với `stop`, `RestartCount`, mã HTTP của `/health` và `/ready` khi postgres dừng và khi chạy lại; ghi vào `lab-14/evidence/test-results.txt` |
-| 5 | `git diff` của thay đổi gây lỗi, log trước và sau khi sửa, mục Break -> Debug trong `lab-14/report.md` |
-| L2-A | `backup.sh`, `restore.sh`, log chạy bảy lần và `ls backups` đếm 5 file, log restore và `/api/members` sau restore |
-| L2-B | `compose.yaml` dùng `secrets`, log `docker inspect` không lộ mật khẩu, `/ready` 200 |
-| L2-C | Log `OOMKilled`/exit code, số liệu `docker stats`, giá trị cuối cùng và lý giải |
-
-Quy ước: mỗi lệnh trong `command-output.txt` được ghi dưới dạng dòng bắt đầu bằng `$ ` rồi tới output thật. Ảnh chụp màn hình chỉ bổ trợ, không thay cho log và source. Đừng đưa mật khẩu thật vào log; che giá trị nhạy cảm trước khi nộp.
-
-## Barem chấm
-
-| Tiêu chí | Mô tả đạt | Không đạt | Điểm |
-| --- | --- | --- | --- |
-| Nhiệm vụ 1: hệ thống ba service chạy bằng Compose | `compose.yaml` đủ service, network, volume; mật khẩu nằm ở `.env`; `/api/members` trả dữ liệu; có log gọi theo tên service | Thiếu service, mật khẩu hard-code, hoặc không có log chạy thật | 20 |
-| Nhiệm vụ 2: vòng đời dữ liệu | Ba lần gọi theo đúng thứ tự, kết quả (2) còn Carol, (3) mất Carol; giải thích đúng | Thiếu lần gọi, sai thứ tự, hoặc giải thích không nhắc tới volume | 15 |
-| Nhiệm vụ 3: healthcheck và `depends_on` điều kiện | Cả ba service healthy, `condition: service_healthy` đúng, có Health Log | Thiếu healthcheck của một service hoặc `depends_on` chưa có điều kiện | 20 |
-| Nhiệm vụ 4: restart policy và `/health`, `/ready` | Log thoát bất thường và `stop` đối chiếu đúng; mã 200 và 503 đúng; giải thích đúng | Chỉ nêu lý thuyết, không có log thực nghiệm | 15 |
-| Nhiệm vụ 5: Break -> Debug | Có diff, triệu chứng, quy trình điều tra, nguyên nhân gốc và cách phòng tránh | Chỉ mô tả cách sửa, không có quy trình điều tra | 10 |
-| Câu hỏi kiểm tra kiến thức | 5 câu trả lời đúng và ngắn gọn trong `report.md` (2 điểm mỗi câu) | Sai ý chính hoặc sao chép nguyên văn từ bài lab | 10 |
-| Chất lượng nộp bài và an toàn | Cấu trúc thư mục đúng, README trả lời 7 câu của template, không lộ secret, PR được review | Thiếu README, commit `.env` hoặc secret | 10 |
-| Tổng | | | 100 |
-| Điểm thưởng L2 | Mỗi thử thách đạt đủ tiêu chí cộng tối đa 5 điểm; tổng thưởng tối đa 10 | Thiếu tiêu chí đo được thì không cộng | +10 |
-
-Ghi chú chấm: mentor có thể chạy lại `docker compose up -d` từ `source/` của bạn trên máy khác. Bài nộp không chạy lại được chỉ nhận tối đa một nửa điểm của các nhiệm vụ liên quan.
-
 ## Câu hỏi kiểm tra kiến thức
 
 Trả lời ngắn (2 đến 4 câu mỗi câu) trong phần cuối của `lab-14/report.md`, bằng lời của bạn.
@@ -181,29 +173,15 @@ Trả lời ngắn (2 đến 4 câu mỗi câu) trong phần cuối của `lab-1
 4. Khi nào `restart: unless-stopped` giúp được bạn, và khi nào nó che giấu một lỗi thật?
 5. Vì sao không nên publish cổng của postgres ra máy chủ trong dự án này, và cách nào đưa mật khẩu vào cấu hình mà không commit nó?
 
-## Lỗi hay bị trừ điểm
-
-- Commit file `.env`, password hoặc token vào repo (trừ nặng ở tiêu chí an toàn).
-- `compose.yaml` ghi sẵn mật khẩu thật thay vì dùng biến từ `.env`.
-- Log không có dòng lệnh đi kèm, hoặc output được gõ tay thay vì lấy từ lần chạy thật.
-- Chỉ nộp ảnh chụp màn hình, không có `source/` và `evidence/`.
-- `depends_on` thiếu `condition`, nên chỉ đảm bảo thứ tự khởi động chứ không đảm bảo sẵn sàng.
-- Dùng `localhost` để healthcheck hoặc kết nối DB giữa các container thay vì `127.0.0.1` (trong healthcheck) hoặc tên service.
-- Publish cổng postgres ra máy chủ, gây xung đột với PostgreSQL cài sẵn.
-- Làm việc trong `/mnt/c` hoặc dùng `docker-compose` (v1) thay vì `docker compose`.
-- Gây lỗi ở Nhiệm vụ 5 nhưng không trả cấu hình về trạng thái đúng trước khi nộp.
-- Nộp file backup hoặc thư mục secret vào repo.
-- Trả lời câu hỏi kiểm tra bằng cách chép lại đoạn văn của bài lab.
-
 ## Quy trình nộp
 
 1. Tạo branch trong repo cá nhân, ví dụ `git switch -c week-07`.
 2. Hoàn thành `lab-13/` và `lab-14/` theo cấu trúc ở trên, commit nhiều lần với thông điệp rõ ràng.
 3. Chạy lại `docker compose up -d` từ `source/` trên một thư mục sạch để chắc chắn bài chạy lại được.
 4. Push branch và mở Pull Request vào nhánh chính của repo cá nhân.
-5. Nhờ một bạn review PR: người review đối chiếu với barem, để lại ít nhất 2 nhận xét cụ thể (một điểm tốt, một điểm cần sửa).
+5. Nhờ một bạn review PR: người review đối chiếu với bảng điểm, để lại ít nhất 2 nhận xét cụ thể (một điểm tốt, một điểm cần sửa).
 6. Sửa theo nhận xét, rồi gắn mentor vào PR để chấm.
-7. Hạn nộp: trước buổi đầu tiên của tuần 08.
+7. Hạn nộp: trước buổi đầu tiên của tuần 8.
 
 ## Checklist trước khi nộp
 
@@ -217,3 +195,5 @@ Trả lời ngắn (2 đến 4 câu mỗi câu) trong phần cuối của `lab-1
 - [ ] Đã trả lời 5 câu hỏi kiểm tra kiến thức
 - [ ] Không commit `.env`, `secrets/`, backup, password, token, private key
 - [ ] PR đã được ít nhất một bạn review
+
+Mentor chấm theo barem chi tiết riêng; các lỗi thường bị trừ điểm nhất là commit `.env` hoặc mật khẩu, log không có dòng lệnh đi kèm, và `depends_on` thiếu `condition`.

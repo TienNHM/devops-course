@@ -1,6 +1,10 @@
 ﻿# Kiem tra moi truong phia Windows cho khoa DevOps.
 # Cach chay (PowerShell):  powershell -ExecutionPolicy Bypass -File resources\check-env.ps1
 # Khong can quyen Administrator. Script chi doc thong tin, khong thay doi may.
+# Tuy chon: them -Buoi 1 (chi dong Git, VS Code), -Buoi 2 (them WSL), -Buoi 7 (them Docker). Mac dinh 32 = kiem tra tat ca.
+#   powershell -ExecutionPolicy Bypass -File resources\check-env.ps1 -Buoi 2
+# Chu giai: OK = dat | THIEU = con thieu, can cai | DE SAU = chua can o moc nay | CANH BAO = nen xem, khong chan.
+param([int]$Buoi = 32)
 
 $script:missing = 0
 $script:warnings = 0
@@ -8,6 +12,9 @@ $script:warnings = 0
 function Write-Ok($label, $msg)   { Write-Host ("[ OK    ] {0,-20} {1}" -f $label, $msg) -ForegroundColor Green }
 function Write-Miss($label, $msg) { Write-Host ("[ THIEU ] {0,-20} {1}" -f $label, $msg) -ForegroundColor Red; $script:missing++ }
 function Write-Opt($label, $msg)  { Write-Host ("[ THIEU ] {0,-20} (tuy chon) {1}" -f $label, $msg) -ForegroundColor Yellow }
+function Write-Later($label, $msg) { Write-Host ("[ DE SAU ] {0,-20} {1}" -f $label, $msg) -ForegroundColor Yellow }
+# Thieu cong cu: tinh la loi neu da toi buoi can no, nguoc lai chi ghi "de sau".
+function Write-Need($need, $label, $msg) { if ($Buoi -ge $need) { Write-Miss $label $msg } else { Write-Later $label ("chua can ngay, cai khi toi buoi {0}. {1}" -f $need, $msg) } }
 function Write-Warn($label, $msg) { Write-Host ("[ CANH BAO ] {0,-17} {1}" -f $label, $msg) -ForegroundColor Yellow; $script:warnings++ }
 
 Write-Host "== He dieu hanh =="
@@ -44,7 +51,7 @@ if ($cs.HypervisorPresent) {
 } elseif ($cpu.VirtualizationFirmwareEnabled) {
     Write-Ok "Ao hoa" "Da bat trong BIOS/UEFI"
 } else {
-    Write-Miss "Ao hoa" "Chua bat. Vao BIOS/UEFI bat Intel VT-x hoac AMD-V (SVM Mode). Xem troubleshooting-setup.md"
+    Write-Need 2 "Ao hoa" "Chua bat. Mo Task Manager > Hieu suat > CPU, neu Ao hoa la Disabled thi vao BIOS/UEFI bat Intel VT-x hoac AMD-V (SVM Mode). Xem troubleshooting-setup.md"
 }
 
 Write-Host ""
@@ -65,7 +72,7 @@ if (Get-Command wsl.exe -ErrorAction SilentlyContinue) {
             else { Write-Warn "Distro" "$clean (nen la WSL phien ban 2: wsl --set-version <ten> 2)" }
         }
     } else {
-        Write-Miss "Ubuntu" "Chua co distro Ubuntu. Chay (PowerShell Admin): wsl --install -d Ubuntu-24.04"
+        Write-Need 2 "Ubuntu" "Chua co distro Ubuntu. Chay (PowerShell Admin): wsl --install -d Ubuntu-24.04"
     }
     if ($lines | Where-Object { $_ -match "docker-desktop" }) {
         Write-Ok "docker-desktop" "distro noi bo cua Docker Desktop hien dien"
@@ -74,36 +81,37 @@ if (Get-Command wsl.exe -ErrorAction SilentlyContinue) {
     if (Test-Path $cfg) { Write-Ok ".wslconfig" $cfg }
     else { Write-Warn ".wslconfig" "chua co. Nen gioi han RAM cho WSL, xem setup-guide" }
 } else {
-    Write-Miss "WSL" "Khong tim thay wsl.exe. Chay (PowerShell Admin): wsl --install"
+    Write-Need 2 "WSL" "Khong tim thay wsl.exe. Chay (PowerShell Admin): wsl --install"
 }
 
 Write-Host ""
 Write-Host "== Cong cu phia Windows =="
-function Test-Tool($label, $cmd, $verArgs, $required, $hint) {
+# $need = buoi bat dau can cong cu (0 = tuy chon)
+function Test-Tool($label, $cmd, $verArgs, $need, $hint) {
     $c = Get-Command $cmd -ErrorAction SilentlyContinue
     if ($c) {
         $v = (& $cmd @verArgs 2>&1 | Select-Object -First 1 | Out-String).Trim()
         Write-Ok $label $v
-    } elseif ($required) { Write-Miss $label $hint }
+    } elseif ($need -gt 0) { Write-Need $need $label $hint }
     else { Write-Opt $label $hint }
 }
-Test-Tool "git"       "git"     @("--version")           $true  "Cai Git for Windows: https://git-scm.com/download/win"
-Test-Tool "VS Code"   "code"    @("--version")           $true  "Cai VS Code va chon Add to PATH khi cai"
-Test-Tool "docker"    "docker"  @("--version")           $true  "Cai Docker Desktop"
-Test-Tool "gh"        "gh"      @("--version")           $false "GitHub CLI (tuy chon)"
+Test-Tool "git"       "git"     @("--version")           1  "Cai Git for Windows: https://git-scm.com/download/win"
+Test-Tool "VS Code"   "code"    @("--version")           1  "Cai VS Code va chon Add to PATH khi cai"
+Test-Tool "docker"    "docker"  @("--version")           7  "Cai Docker Desktop (setup-guide.md)"
+Test-Tool "gh"        "gh"      @("--version")           0  "GitHub CLI (tuy chon)"
 
 Write-Host ""
 Write-Host "== Docker Desktop =="
 if (Get-Command docker -ErrorAction SilentlyContinue) {
     $info = & docker info --format "Server {{.ServerVersion}}, {{.OperatingSystem}}" 2>&1 | Out-String
     if ($LASTEXITCODE -eq 0) { Write-Ok "docker daemon" $info.Trim() }
-    else { Write-Miss "docker daemon" "Khong ket noi duoc. Mo Docker Desktop va doi bieu tuong chuyen sang trang thai Running" }
+    else { Write-Need 7 "docker daemon" "Khong ket noi duoc. Mo Docker Desktop va doi bieu tuong chuyen sang trang thai Running" }
 }
 
 Write-Host ""
 if ($script:missing -eq 0) {
     Write-Host "KET QUA: du dieu kien phia Windows. Canh bao: $($script:warnings)" -ForegroundColor Green
-    Write-Host "Tiep theo: mo Ubuntu va chay: bash resources/check-env.sh"
+    Write-Host "Tiep theo: mo Ubuntu va chay: bash resources/check-env.sh 2"
     exit 0
 } else {
     Write-Host "KET QUA: con $($script:missing) muc THIEU. Xem cac dong [ THIEU ] o tren. Canh bao: $($script:warnings)" -ForegroundColor Red

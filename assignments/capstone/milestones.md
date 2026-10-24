@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Bốn mốc M1–M4 gắn với bốn buổi cuối của khóa. Mỗi mốc có deliverable cụ thể, cách kiểm tra và dấu hiệu nhóm đang chậm tiến độ.
 
-Quay lại [đề bài Capstone](README.md). Rubric chấm điểm: [capstone-rubric.md](../../curriculum/capstone-rubric.md).
+Quay lại [đề bài Capstone](README.md). Rubric chấm điểm: [Rubric Capstone](../../curriculum/capstone-rubric.md).
 
 ## Tổng quan
 
@@ -163,7 +163,7 @@ Chưa chạy được trên kind khi còn 30 phút cuối buổi. Khi đó ưu t
 | --- | --- |
 | Tag phát hành | Tag `v1.0.0` trên `main`, image có tag tương ứng trên GHCR |
 | README hoàn chỉnh | Đủ 10 mục theo [đề bài](README.md) |
-| Demo | 10 phút demo + 5 phút hỏi đáp theo [demo-guide.md](demo-guide.md) |
+| Demo | 10 phút demo + 5 phút hỏi đáp theo [Hướng dẫn demo](demo-guide.md) |
 | Video dự phòng | Bản ghi demo hoặc script demo đã chạy thử |
 | Peer review | Mỗi thành viên nộp [peer review](../../templates/peer-review-template.md) cho các bạn cùng nhóm |
 | Báo cáo | Hoàn thiện theo [template dự án](../../templates/project-template.md) |

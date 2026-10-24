@@ -2,7 +2,11 @@
 
 > **Tóm tắt:** Quy tắc duy trì repo giáo trình qua nhiều thế hệ: đóng góp nội dung, quy trình thay đổi, versioning curriculum, changelog, tách repo private chứa đáp án, cập nhật phiên bản công cụ mỗi kỳ và kiểm tra link định kỳ.
 
-Tài liệu này mở rộng [CONTRIBUTING](../CONTRIBUTING.md). Người chịu trách nhiệm cuối cùng là Program Lead.
+::: warning Dành cho mentor
+Trang này dành cho người quản lý nội dung khóa; học viên không cần đọc.
+:::
+
+Tài liệu này mở rộng [CONTRIBUTING](https://github.com/TienNHM/devops-course/blob/master/CONTRIBUTING.md). Người chịu trách nhiệm cuối cùng là Program Lead.
 
 ## 1. Cấu trúc và chủ sở hữu nội dung
 
@@ -14,12 +18,34 @@ Tài liệu này mở rộng [CONTRIBUTING](../CONTRIBUTING.md). Người chịu
 | `slides/` | Slide theo phase | Technical Mentor |
 | `starter-project/` | Ứng dụng xuyên suốt (backend, frontend, database, Compose, k8s) | Technical Mentor, Lab Assistant chạy kiểm thử |
 | `examples/` | Ví dụ lệnh, workflow, tình huống lỗi | Technical Mentor |
-| `templates/` | Mẫu lab, assignment, project | Program Lead |
+| `templates/` | Mẫu lab, assignment, project, ADR, peer review | Program Lead |
 | `resources/` | Setup guide, cheatsheet, tài liệu tham khảo | Lab Assistant, Technical Mentor duyệt |
-| `mentors/` | Sổ tay và tài liệu vận hành cho mentor | Program Lead |
+| `mentors/` | Sổ tay, kịch bản buổi, barem chấm, đáp án (walkthroughs) | Program Lead |
 | `.github/workflows/` | CI và publish mẫu | Technical Mentor |
 
 Mỗi phần nội dung nên có một chủ sở hữu rõ ràng để hỏi khi có thay đổi. Danh sách này cập nhật mỗi kỳ.
+
+### 1.1 Quy ước cấu trúc mới
+
+Nội dung được sắp theo người học và tuần học, nội dung của người dạy tách riêng:
+
+| Loại trang | Đường dẫn | Ai đọc | Ghi chú |
+| --- | --- | --- | --- |
+| Cổng vào học viên | `curriculum/getting-started.md`, `curriculum/syllabus.md` | Học viên | `schedule.md` chỉ trỏ về syllabus |
+| Hub tuần | `labs/week-XX/README.md` | Học viên | 40 đến 70 dòng: mục tiêu, bảng Trước, Trong, Sau buổi, link slide, bài tập, đáp án |
+| Bài học | `labs/week-XX/session-NN.md` | Học viên | Mục tiêu 200 đến 300 dòng, không quá 350; thử thách L2 tách ra `session-NN-challenge.md` nếu dài |
+| Bài tập tuần | `assignments/weekly/week-XX.md` | Học viên | Bài tập là nộp lại bằng chứng của lab, đầu trang có bảng nhiệm vụ |
+| Slide | `slides/<deck>/session-NN.md` | Học viên, mentor | Chỉ khái niệm, sơ đồ, demo outline, recap; không chép lệnh lab |
+| Kịch bản buổi | `mentors/sessions/session-NN.md` | Mentor | Demo của mentor, câu hỏi cho lớp, khung thời gian, ghi chú giảng viên |
+| Barem chấm | `mentors/grading/week-XX.md` | Mentor | Barem chi tiết, lỗi hay bị trừ điểm, lệnh kiểm tra nhanh, câu hỏi vấn đáp |
+| Đáp án | `mentors/walkthroughs/week-XX.md` | Mentor, học viên sau khi nộp bài | Nằm trong website, hub tuần link tới |
+| Tra cứu | `resources/` (setup-guide, setup-github, terminal-101, glossary, troubleshooting-setup, cheatsheets) | Học viên | `setup-guide.md` là nguồn duy nhất cho các bước cài |
+| Mentor-only | `solutions/mentor-only/` | Mentor | Ngoài build (`srcExclude`), nên chuyển repo private |
+
+Mọi trang trong `mentors/` mở đầu bằng khối `::: warning Dành cho mentor`. Trang học viên không chứa "Demo của mentor", "Câu hỏi mentor nên hỏi lớp", khung thời gian giảng viên, lời giải L2 hay barem; các phần đó nằm ở `mentors/`.
+
+Môi trường thống nhất mọi trang phải khớp: repo giáo trình clone vào `~/devops-course` trong WSL; repo cá nhân `devops-labs` để public; cluster kind tên `club`, context `kind-club` (từ buổi 21); `postgres:17-alpine`; image `club-api:1.0.0`, `club-web:1.0.0`; namespace `club`; service Compose `frontend`, `backend`, `postgres`; port web 8080.
+
 
 ## 2. Quy trình thay đổi nội dung
 
@@ -71,9 +97,25 @@ Khi sửa một file của `starter-project/`, chạy lại các lab liên quan:
 - [ ] Image và công cụ có phiên bản được ghim, không dùng `latest` ở ví dụ cần tái lập.
 - [ ] Không có secret, token, mật khẩu thật. Dùng placeholder và nhắc `.env` không commit.
 - [ ] Mỗi lệnh quan trọng có "kết quả mong đợi" hợp lý, không bịa output.
-- [ ] Không nhắc hay link tới `solutions/` trong trang dành cho học viên.
+- [ ] Không nhắc hay link tới `solutions/` trong trang dành cho học viên (link tới `mentors/walkthroughs/` từ hub tuần là ngoại lệ được phép).
 - [ ] Link nội bộ trỏ tới file `.md` tồn tại, đã chạy `node scripts/check-lessons.mjs`.
 - [ ] Văn phong rõ ràng, thuật ngữ kỹ thuật giữ tiếng Anh, lệnh và YAML để nguyên.
+
+### 2.6 Checklist cập nhật khi đổi nội dung
+
+Khi sửa một bài học, đi hết danh sách này trong cùng một PR:
+
+- [ ] Bài học `labs/week-XX/session-NN.md`: còn dưới 350 dòng, mục "Làm lab" bắt đầu trước dòng khoảng 100, có đủ khối "Buổi này bạn làm gì".
+- [ ] Hub tuần `labs/week-XX/README.md` khớp tên bài và link.
+- [ ] Slide `slides/<deck>/session-NN.md` khớp khái niệm, không chép lệnh lab.
+- [ ] Bài tập tuần `assignments/weekly/week-XX.md`: bảng nhiệm vụ trỏ đúng Phần của lab.
+- [ ] Kịch bản `mentors/sessions/session-NN.md` khớp demo và thời gian mới.
+- [ ] Barem `mentors/grading/week-XX.md` và đáp án `mentors/walkthroughs/week-XX.md` khớp bài tập, lệnh kiểm tra nhanh còn chạy đúng.
+- [ ] Nếu đổi bước cài: sửa `resources/setup-guide.md` (nguồn duy nhất), các trang khác chỉ link.
+- [ ] Nếu đổi thuật ngữ: cập nhật `resources/glossary.md`.
+- [ ] Nếu đổi phiên bản công cụ, tên image, namespace hoặc tên cluster: rà toàn repo theo môi trường thống nhất ở mục 1.1.
+- [ ] Chạy `node scripts/check-lessons.mjs` cho các file đã sửa.
+- [ ] Ghi vào `CHANGELOG.md`.
 
 ## 3. Versioning curriculum
 
@@ -155,7 +197,7 @@ devops-course-solutions/
 - Khi sửa lab công khai, cập nhật đáp án tương ứng trong cùng đợt.
 - Không copy đáp án vào Issue, Discussions công khai, hay PR của học viên. Khi phản hồi, chỉ hướng dẫn cách tìm.
 - Nếu đáp án từng bị đẩy nhầm lên repo công khai: coi như đã lộ, thay đổi đề bài hoặc dữ liệu của bài đó, và xóa khỏi lịch sử theo hướng dẫn của GitHub (tìm "removing sensitive data from a repository" trong tài liệu GitHub). Báo Program Lead.
-- Trang dành cho học viên không nhắc đến thư mục `solutions/` hay repo đáp án. Phần chuẩn bị Break cho mentor chỉ mô tả quy trình, không chứa nguyên nhân gốc.
+- Trang dành cho học viên không nhắc đến thư mục `solutions/` hay repo đáp án. Ngoại lệ có chủ đích: walkthroughs (`mentors/walkthroughs/`) nằm trong website và hub tuần có mục "Đối chiếu đáp án (mở sau khi nộp bài)"; chúng không chứa mã nguồn bản tham chiếu capstone. Phần chuẩn bị Break cho mentor chỉ mô tả quy trình, không chứa nguyên nhân gốc.
 
 ### 5.3 Quy trình đồng bộ
 

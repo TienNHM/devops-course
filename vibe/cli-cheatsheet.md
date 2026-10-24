@@ -2,15 +2,25 @@
 
 > **Tóm tắt:** Bảng tra nhanh lệnh chính thức của gh, git, vercel, netlify, wrangler, supabase, firebase: đăng nhập, liên kết, deploy, xem trước, log, biến môi trường, quay lui.
 
+::: tip Bạn làm gì
+- **Kết quả:** tìm nhanh đúng lệnh cho gh, git, Vercel, Netlify, Cloudflare, Supabase, Firebase mà không phải đọc cả tài liệu.
+- **Thời gian:** tra cứu 1 đến 2 phút mỗi lệnh.
+- **Cần gì trước:** đã cài CLI của nền tảng bạn dùng (xem [Deploy cùng AI agent: nâng cao](06-ai-agent-deploy-advanced.md#cai-cac-cli-cua-nen-tang)) và đã tự đăng nhập.
+- **Module trước:** đây là trang tra cứu, không nằm trong lộ trình tuyến tính.
+:::
+
 ## Cách đọc bảng này
 
 Các lệnh dưới đây đã được đối chiếu với tài liệu chính thức vào tháng 10/2026. CLI cập nhật thường xuyên, nên nếu lệnh báo lỗi hãy chạy `ten-cli --help` hoặc mở link tài liệu ở cuối trang. Chỗ viết hoa kiểu `TEN-DU-AN` là placeholder, bạn thay bằng giá trị của mình.
 
-Ba lưu ý chung:
+Ba lưu ý chung (cảnh báo lệnh xoá nằm ngay bên dưới):
 
 - Mọi lệnh đăng nhập đều mở trình duyệt để bạn tự đăng nhập. Đừng nhờ agent đăng nhập hộ và đừng dán mật khẩu hay token vào chat.
-- Lệnh có chữ `rm`, `delete`, `remove`, `--force`, `destroy` là lệnh xoá. Chỉ tự chạy sau khi đã đọc kỹ.
 - Khi tự động hoá trong CI, dùng token đặt trong biến môi trường hoặc secret của nền tảng, không viết vào lệnh hay file trong repo.
+
+::: danger Lệnh xoá và lệnh tốn tiền
+Lệnh có chữ `rm`, `delete`, `remove`, `--force`, `destroy`, `buy` là lệnh xoá hoặc tốn tiền, không hoàn tác được. Chỉ tự chạy sau khi đã đọc kỹ, thử trên project thử nghiệm, và không giao cho agent.
+:::
 
 Cài đặt các CLI (chỉ cài cái bạn dùng):
 
@@ -120,7 +130,7 @@ Lưu ý:
 
 ## Cloudflare (wrangler)
 
-Cloudflare có hai nhóm lệnh. Kiểm tra 10/2026: tài liệu Cloudflare khuyên dự án mới bắt đầu bằng Workers (kèm static assets), nên các lệnh `wrangler deploy`, `wrangler dev`, `wrangler tail`... là đường chính; nhóm `wrangler pages ...` dành cho dự án Pages có sẵn (đường cũ). Cấu hình nằm trong file `wrangler.jsonc` ở gốc repo, xem [bài 02](02-static-hosting.md).
+Cloudflare ([thuật ngữ](../resources/glossary.md)) có hai nhóm lệnh. Kiểm tra 10/2026: tài liệu Cloudflare khuyên dự án mới bắt đầu bằng Workers (kèm static assets), nên các lệnh `wrangler deploy`, `wrangler dev`, `wrangler tail`... là đường chính; nhóm `wrangler pages ...` dành cho dự án Pages có sẵn (đường cũ). Cấu hình nằm trong file `wrangler.jsonc` ở gốc repo, xem [bài 02](02-static-hosting.md).
 
 | Việc | Lệnh |
 | --- | --- |
@@ -176,7 +186,7 @@ Lưu ý:
 
 - `MA-PROJECT` là mã trong URL dashboard của project. Đây không phải secret.
 - Luôn chạy `db push --dry-run` trước `db push`. Migration thay đổi database thật; cẩn thận với lệnh xoá bảng hay cột. Theo tài liệu, `supabase stop --no-backup` xoá dữ liệu cục bộ.
-- Thứ tự bật bảo mật: tạo bảng, bật RLS, viết policy, rồi mới dùng ở frontend. Xem [Supabase](./04-supabase.md).
+- Thứ tự bật bảo mật: tạo bảng, bật RLS, viết policy, rồi mới dùng ở frontend. Xem [Supabase](04-supabase.md).
 - Khóa `service_role` tuyệt đối không dán vào lệnh, vào chat hay vào code frontend.
 - Xem log: dùng mục Logs trên dashboard Supabase (tôi không tìm thấy lệnh xem log hosted đã kiểm chứng).
 - Quay lui: Supabase không có lệnh rollback database; cách an toàn là viết một migration mới sửa lại và dùng bản sao lưu theo tài liệu (kiểm tra gói của bạn có sao lưu hay không).
@@ -225,7 +235,7 @@ Lưu ý:
 
 ## Tiếp theo + Tài liệu chính thức
 
-Tiếp theo: dùng [Thư viện prompt](./prompt-library.md) để nhờ agent chạy các lệnh trên đúng cách, và xem [Dùng AI agent để deploy](./06-ai-agent-deploy.md) để biết giới hạn quyền. Gặp lỗi thì mở [Xử lý sự cố](./08-troubleshooting.md). Quay lại [trang chủ track](./index.md).
+**Tiếp theo:** đây là trang tra cứu. Dùng [Thư viện prompt](prompt-library.md) để nhờ agent chạy các lệnh trên đúng cách, và xem [Deploy cùng AI agent](06-ai-agent-deploy.md) để biết giới hạn quyền. Gặp lỗi thì mở [Xử lý sự cố](08-troubleshooting.md). Quay lại [trang chủ track](index.md).
 
 Tài liệu chính thức:
 

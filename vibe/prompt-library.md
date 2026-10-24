@@ -2,13 +2,20 @@
 
 > **Tóm tắt:** 30 prompt sao chép được theo tình huống, từ khởi tạo dự án tới deploy, Supabase, Firebase, domain, bảo mật, rollback, kèm điều bạn phải tự kiểm tra sau mỗi lần.
 
+::: tip Bạn làm gì
+- **Kết quả:** chọn đúng một prompt theo tình huống, sao chép, thay phần trong ngoặc vuông và chạy với agent, rồi tự kiểm tra kết quả.
+- **Thời gian:** tra cứu 2 đến 5 phút mỗi prompt.
+- **Cần gì trước:** một AI agent và một dự án (xem [Deploy cùng AI agent](06-ai-agent-deploy.md)).
+- **Module trước:** đây là trang tra cứu, không nằm trong lộ trình tuyến tính. Dùng khi bạn đang làm [Đưa web tĩnh lên mạng](02-static-hosting.md) trở đi.
+:::
+
 ## Cách dùng thư viện này
 
-Mỗi prompt có ba phần: **Mục tiêu**, **Khi nào dùng**, và **Bạn tự kiểm tra**. Chỗ viết hoa trong dấu ngoặc vuông như `[TÊN DỰ ÁN]` là chỗ bạn thay bằng thông tin của mình.
+Mỗi prompt (xem thuật ngữ ở [bảng thuật ngữ](../resources/glossary.md)) có ba phần: **Mục tiêu**, **Khi nào dùng**, và **Bạn tự kiểm tra**. Chỗ viết hoa trong dấu ngoặc vuông như `[TÊN DỰ ÁN]` là chỗ bạn thay bằng thông tin của mình.
 
 Ba quy tắc áp dụng cho mọi prompt:
 
-1. Có `AGENTS.md` trong dự án (xem [Dùng AI agent để deploy](./06-ai-agent-deploy.md)) để agent luôn nhớ các quy tắc an toàn.
+1. Có `AGENTS.md` trong dự án (xem [Dùng AI agent để deploy](06-ai-agent-deploy.md)) để agent luôn nhớ các quy tắc an toàn.
 2. Không bao giờ dán secret, API key, `service_role` key, mật khẩu hay dữ liệu cá nhân của người dùng vào prompt. Nếu log có chứa chúng, xoá đi trước khi dán.
 3. Agent chỉ đề xuất và làm phần code. Đăng nhập, bấm trả phí, nhập DNS, dán secret vào trang cài đặt là việc của bạn.
 
@@ -22,8 +29,8 @@ Mục lục theo tình huống:
 | Database và đăng nhập | 13 đến 16 |
 | Log, lỗi, biến môi trường | 17 đến 20 |
 | Domain | 21 |
-| Bảo mật, chi phí | 22 đến 25 |
-| Tài liệu, review, rollback, CI | 26 đến 30 |
+| Bảo mật, chi phí | 22 đến 25 ([trang tiếp theo](prompt-library-advanced.md)) |
+| Tài liệu, review, rollback, CI | 26 đến 30 ([trang tiếp theo](prompt-library-advanced.md)) |
 
 ## Khởi tạo dự án
 
@@ -190,7 +197,7 @@ Tôi cần lưu [MÔ TẢ DỮ LIỆU, ví dụ: danh sách đăng ký sự ki�
 Giải thích từng policy bằng tiếng Việt. Không dùng service_role key trong code frontend. Không viết policy kiểu cho phép tất cả. Tôi sẽ tự chạy SQL trong SQL Editor của dashboard.
 ```
 
-- **Bạn tự kiểm tra:** Đọc từng dòng SQL; trên dashboard bảng có nhãn RLS bật; xem [Supabase](./04-supabase.md) để thử truy cập khi chưa đăng nhập và thấy bị từ chối.
+- **Bạn tự kiểm tra:** Đọc từng dòng SQL; trên dashboard bảng có nhãn RLS bật; xem [Supabase](04-supabase.md) để thử truy cập khi chưa đăng nhập và thấy bị từ chối.
 
 ### 14. Kết nối frontend với Supabase đúng khóa
 
@@ -214,7 +221,7 @@ Tôi cần lưu [MÔ TẢ DỮ LIỆU] bằng Firestore và đăng nhập bằng
 Giải thích từng dòng rule bằng tiếng Việt, và đề xuất cách thử rule bằng Firebase Emulator trước khi deploy bằng firebase deploy --only firestore:rules.
 ```
 
-- **Bạn tự kiểm tra:** Đọc file rules, không có `if true`; thử bằng emulator hoặc Rules Playground: người chưa đăng nhập bị từ chối; xem [Firebase](./05-firebase.md).
+- **Bạn tự kiểm tra:** Đọc file rules, không có `if true`; thử bằng emulator hoặc Rules Playground: người chưa đăng nhập bị từ chối; xem [Firebase](05-firebase.md).
 
 ### 16. Rà soát RLS hoặc Security Rules do AI viết
 
@@ -270,6 +277,10 @@ Cho tôi các bước tự làm: đặt giá trị trong trang cài đặt biế
 
 ### 20. Phát hiện và xử lý khóa bị lộ
 
+::: danger Khóa đã lộ phải được xoay ngay
+Chỉ xóa file là chưa đủ vì khóa còn trong lịch sử Git. Xoay (rotate) khóa ở trang quản trị dịch vụ trước, rồi mới dọn lịch sử.
+:::
+
 - **Mục tiêu:** Khép lỗ hổng nhanh khi lỡ commit khóa.
 - **Khi nào dùng:** Thấy khóa trong code, trong lịch sử Git hoặc bị cảnh báo từ GitHub.
 
@@ -292,124 +303,15 @@ Tôi đã có domain [TÊN MIỀN] và muốn dùng cho dự án deploy trên [N
 Tôi sẽ tự nhập bản ghi ở nhà đăng ký. Đừng yêu cầu tôi cung cấp mật khẩu nhà đăng ký. Nhắc tôi rằng DNS có thể mất vài phút đến vài giờ để lan truyền, và cách kiểm tra bằng lệnh nslookup hoặc dig.
 ```
 
-- **Bạn tự kiểm tra:** Dùng `nslookup ten-mien` thấy giá trị đúng; mở domain thấy trang và biểu tượng ổ khóa; xem [Domain và bảo mật](./07-domain-security-production.md).
+- **Bạn tự kiểm tra:** Dùng `nslookup ten-mien` thấy giá trị đúng; mở domain thấy trang và biểu tượng ổ khóa; xem [Domain và bảo mật](07-domain-security-production.md).
 
-## Bảo mật và chi phí
+## Bảo mật, chi phí, tài liệu, review, rollback, CI (prompt 22 đến 30)
 
-### 22. Rà soát bảo mật trước khi công khai
-
-- **Mục tiêu:** Lọc những lỗi nguy hiểm nhất trước khi chia sẻ link.
-- **Khi nào dùng:** Trước khi đưa link cho người dùng thật.
-
-```text
-Hãy rà soát dự án này như người kiểm tra an ninh, chỉ báo cáo, chưa sửa. Kiểm tra: (1) có secret hay khóa trong code hoặc lịch sử gần đây, (2) .env có bị commit không, (3) database có bật RLS hoặc Security Rules chặt không, (4) có endpoint nào cho phép xoá hay sửa dữ liệu mà không kiểm tra người dùng, (5) có thông tin cá nhân nào bị ghi vào log, (6) form có kiểm tra dữ liệu đầu vào không.
-Trả lời theo bảng: vấn đề, mức độ, file liên quan, cách sửa.
-```
-
-- **Bạn tự kiểm tra:** Với mục nghiêm trọng, tự xác minh lại (đọc file, thử truy cập). Đừng tin báo cáo "không có vấn đề" nếu bạn chưa thử.
-
-### 23. Giới hạn chi phí và hạn mức
-
-- **Mục tiêu:** Không bị hoá đơn bất ngờ.
-- **Khi nào dùng:** Dự án có API tính tiền theo lượt (AI, email, lưu trữ) hoặc có thể bị nhiều người truy cập.
-
-```text
-Hãy liệt kê mọi nơi dự án có thể phát sinh chi phí theo mức dùng: gọi API trả phí, hàm serverless, băng thông, lưu trữ, database. Với mỗi nơi, đề xuất cách giới hạn: kiểm tra trước khi gọi, giới hạn tần suất (rate limit), giới hạn kích thước tải lên, và tránh vòng lặp gọi API vô hạn trong code.
-Nhắc tôi những thiết lập tôi phải tự làm ở trang quản trị của nền tảng như cảnh báo chi tiêu và hạn mức chi tiêu (spending cap) nếu có. Không bật hay mua gói trả phí thay tôi.
-```
-
-- **Bạn tự kiểm tra:** Tự vào trang Billing/Usage của từng nền tảng đặt cảnh báo; kiểm tra gói đang dùng là gói miễn phí.
-
-### 24. Rà soát việc gửi dữ liệu cá nhân cho AI
-
-- **Mục tiêu:** Không để dữ liệu thật của người dùng lọt vào prompt hay log.
-- **Khi nào dùng:** Dự án có thu thập tên, email, số điện thoại.
-
-```text
-Hãy rà soát code và quy trình làm việc của tôi: có chỗ nào dữ liệu cá nhân của người dùng (tên, email, số điện thoại, nội dung tin nhắn) bị ghi vào log, gửi tới dịch vụ bên thứ ba, hoặc nằm trong file mẫu trong repo?
-Đề xuất cách thay bằng dữ liệu giả khi gỡ lỗi, che bớt thông tin trong log, và nhắc tôi không dán dữ liệu thật vào bất kỳ prompt nào.
-```
-
-- **Bạn tự kiểm tra:** Xem log thật trên nền tảng, đảm bảo không có email hay số điện thoại; repo không chứa file dữ liệu người dùng thật.
-
-### 25. Giảm chi phí và dọn dẹp
-
-- **Mục tiêu:** Giữ mọi thứ trong gói miễn phí và bỏ tài nguyên không dùng.
-- **Khi nào dùng:** Sau vài tuần chạy thử, hoặc khi nhận cảnh báo dùng gần hết hạn mức.
-
-```text
-Hãy giúp tôi giảm mức dùng: nén ảnh lớn, bật cache cho file tĩnh, bỏ thư viện không dùng, tránh build lại không cần thiết. Liệt kê các tài nguyên trên nền tảng tôi có thể dọn (project thử nghiệm, deployment cũ, bucket trống) để tôi tự xem lại.
-Chỉ ĐỀ XUẤT xoá, đừng chạy lệnh xoá nào. Tôi tự quyết định sau khi kiểm tra từng mục.
-```
-
-- **Bạn tự kiểm tra:** Xem trang Usage trước và sau; đọc kỹ từng mục trước khi tự xoá, vì xoá database hay project không hoàn tác được.
-
-## Tài liệu, review, rollback và CI
-
-### 26. Viết README cho dự án
-
-- **Mục tiêu:** Người khác (và bạn tương lai) biết dự án chạy ra sao.
-- **Khi nào dùng:** Sau khi dự án chạy được.
-
-```text
-Hãy viết README.md tiếng Việt cho dự án này gồm: dự án là gì, ảnh chụp hoặc link demo (để trống chỗ link), cách chạy ở máy, cách deploy, danh sách biến môi trường (chỉ tên, trỏ tới .env.example), và quy tắc an toàn (không commit .env).
-Không đưa bất kỳ giá trị khóa hay URL nội bộ nào. Dùng ngôn ngữ cho người mới.
-```
-
-- **Bạn tự kiểm tra:** Làm theo README từng bước trên thư mục mới; không có secret trong file.
-
-### 27. Review diff trước khi commit
-
-- **Mục tiêu:** Bắt lỗi và rủi ro trước khi code vào repo.
-- **Khi nào dùng:** Trước mỗi lần commit lớn hoặc sau khi agent sửa nhiều file.
-
-```text
-Hãy chạy git diff và review thay đổi chưa commit như một người rà soát khó tính. Chỉ ra: file nào chứa thứ trông như secret hay khóa, thay đổi nào làm yếu bảo mật (bỏ kiểm tra quyền, mở rule, tắt lint), file nào thêm vào mà không liên quan tới việc tôi nhờ, và thay đổi nào có thể làm hỏng deploy.
-Đừng commit. Trả lời bằng danh sách ngắn, kèm tên file và dòng.
-```
-
-- **Bạn tự kiểm tra:** Tự chạy `git diff --stat` và đọc ít nhất các file nhạy cảm (workflow, cấu hình bảo mật, rules).
-
-### 28. Rollback khi bản mới bị lỗi
-
-- **Mục tiêu:** Đưa trang về bản tốt gần nhất nhanh nhất, rồi mới tìm nguyên nhân.
-- **Khi nào dùng:** Production vừa deploy bị hỏng.
-
-```text
-Bản deploy mới nhất lên [NỀN TẢNG] bị lỗi: [MÔ TẢ]. Ưu tiên khôi phục trước, tìm nguyên nhân sau.
-Hãy cho tôi cách quay về deployment trước đó theo tài liệu chính thức của nền tảng (qua dashboard hoặc CLI), kèm lưu ý về gói miễn phí nếu có giới hạn. Sau khi tôi khôi phục, giúp tôi so sánh hai commit để tìm nguyên nhân. Đừng chạy git push --force hay xoá deployment.
-```
-
-- **Bạn tự kiểm tra:** Mở lại URL production thấy bản cũ chạy tốt; không xoá lịch sử Git. Với database đã đổi cấu trúc, hỏi kỹ trước, vì quay lại code không quay lại dữ liệu.
-
-### 29. Tạo GitHub Actions để deploy
-
-- **Mục tiêu:** Có quy trình tự kiểm tra rồi deploy, quyền tối thiểu.
-- **Khi nào dùng:** Muốn chạy test hoặc build trước khi deploy.
-
-```text
-Hãy viết .github/workflows/deploy.yml cho dự án này: chạy khi push lên main, cài dependency, build, chạy test nếu có, rồi deploy lên [NỀN TẢNG].
-Yêu cầu: khai báo permissions tối thiểu, lấy token từ secrets (chỉ tên, ví dụ NỀN_TẢNG_API_TOKEN), không in secret ra log, không dùng pull_request_target, ghim phiên bản cho action bên thứ ba.
-Sau khi viết, tự review lại file theo danh sách trên và liệt kê tên các secret tôi phải tự tạo trong Settings của repo.
-```
-
-- **Bạn tự kiểm tra:** Đọc từng dòng workflow; tự tạo secret trong GitHub (hoặc `gh secret set`); xem tab Actions, log không in ra giá trị bí mật.
-
-### 30. Thiết lập kết nối MCP ít quyền nhất
-
-- **Mục tiêu:** Cấu hình MCP chỉ đọc, giới hạn phạm vi.
-- **Khi nào dùng:** Muốn agent tự xem log và trạng thái deploy.
-
-```text
-Tôi muốn kết nối MCP của [NỀN TẢNG] để bạn xem log và trạng thái deploy. Hãy đọc tài liệu chính thức của nền tảng và đề xuất cấu hình ít quyền nhất: chỉ đọc nếu có, giới hạn một project, chỉ bật nhóm công cụ cần thiết, giữ xác nhận từng thao tác.
-Chỉ đưa cho tôi lệnh hoặc nội dung cấu hình, tôi tự chạy và tự đăng nhập OAuth. Đừng yêu cầu token từ tôi. Liệt kê những thao tác bạn sẽ KHÔNG làm qua MCP (xoá, đổi cấu hình thanh toán, đọc secret).
-```
-
-- **Bạn tự kiểm tra:** Đối chiếu URL với tài liệu chính thức; sau khi kết nối, xem danh sách công cụ và quyền được cấp; đặt chế độ xác nhận trong công cụ agent.
+Chín prompt cuối nằm ở trang [Thư viện prompt: bảo mật, chi phí, review, rollback, CI](prompt-library-advanced.md): rà soát bảo mật trước khi công khai (22), giới hạn chi phí (23), dữ liệu cá nhân (24), dọn dẹp (25), viết README (26), review diff (27), rollback (28), GitHub Actions deploy (29) và MCP ít quyền nhất (30).
 
 ## Tiếp theo + Tài liệu chính thức
 
-Tiếp theo: tra [Bảng lệnh CLI](./cli-cheatsheet.md) khi cần lệnh cụ thể, hoặc xem [Xử lý sự cố](./08-troubleshooting.md) khi gặp lỗi. Đọc cách làm việc an toàn với agent ở [Dùng AI agent để deploy](./06-ai-agent-deploy.md). Quay lại [trang chủ track](./index.md).
+**Tiếp theo:** đây là trang tra cứu. Xem tiếp [prompt 22 đến 30](prompt-library-advanced.md), tra [CLI cheatsheet](cli-cheatsheet.md) khi cần lệnh cụ thể, hoặc [Xử lý sự cố](08-troubleshooting.md) khi gặp lỗi. Đọc cách làm việc an toàn với agent ở [Deploy cùng AI agent](06-ai-agent-deploy.md). Quay lại [trang chủ track](index.md).
 
 Tài liệu chính thức để đối chiếu mọi nội dung mà agent đưa ra:
 

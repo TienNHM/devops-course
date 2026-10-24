@@ -2,11 +2,20 @@
 
 > **Tóm tắt:** Kiểm thử hệ thống capstone từ một bản clone sạch, tiêm ba sự cố có kiểm soát trên kind và chẩn đoán bằng log và events, rồi chuẩn bị, trình bày và tự đánh giá buổi demo cuối. Mọi kết luận phải kiểm chứng được bằng source, log và kết quả lệnh.
 
+**Bài tập = nộp lại bằng chứng của lab, không có việc mới về kỹ thuật.** Việc mới duy nhất: bạn tự viết dự đoán trước mỗi sự cố, điền bảng 5 hạng mục bảo mật và nhận xét hiệu năng trong `report.md`, tạo `source/links.md`, và trả lời 5 câu hỏi kiểm tra bằng lời của bạn.
+
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Kiểm thử từ bản clone sạch (Compose) | [Buổi 31 – Testing & Troubleshooting](../../labs/week-16/session-31.md), Chuẩn bị và Phần 1 | 1 giờ | `pwd`, `git log`, kiểm tra `.env`, `docker compose ps`, ba mã smoke test, chuỗi `down` và `up` |
+| 2. Triển khai lên kind và đo độ trễ | [Buổi 31 – Testing & Troubleshooting](../../labs/week-16/session-31.md), Phần 2 và đo 50 request ở Phần 4 | 1 giờ | `kubectl get pods,svc,ingress`, 5 dòng `curl -w`, hai số `time` (2 và 3 replica) |
+| 3. Ba sự cố có kiểm soát | [Buổi 31 – Testing & Troubleshooting](../../labs/week-16/session-31.md), Phần 3 và Phần 5 | 1,5 giờ | 9 đoạn output có nhãn, `troubleshooting-log.md` |
+| 4. Checklist bảo mật và runbook | [Buổi 31 – Testing & Troubleshooting](../../labs/week-16/session-31.md), Phần 4 và Phần 5 | 1 giờ | output 4 lệnh bảo mật, bảng 5 hạng mục, `runbook.md` |
+| 5. Chuẩn bị demo, bảo vệ, tự đánh giá | [Buổi 32 – Final Demo & Review](../../labs/week-16/session-32.md), Chuẩn bị, Phần 1, 2 và 4 | 1,5 giờ | `demo-commands.md`, log chạy thử có bấm giờ, `links.md`, lessons learned |
+| L2 (thưởng) | [Buổi 31 – Thử thách nâng cao](../../labs/week-16/session-31-challenge.md) và phần Thử thách thêm của [Buổi 32 – Final Demo & Review](../../labs/week-16/session-32.md) | 3 giờ | theo từng thử thách bên dưới |
+
 **Hạn nộp:** trước buổi đầu tiên của tuần kế tiếp. Tuần 16 là tuần cuối của khóa nên mentor sẽ công bố ngày cụ thể ngay sau buổi 32.
-**Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-31/` và `lab-32/`.
-**Bài lab liên quan:** [Buổi 31 – Testing & Troubleshooting](../../labs/week-16/session-31.md), [Buổi 32 – Final Demo & Review](../../labs/week-16/session-32.md).
-**Mẫu nộp bài:** [templates/lab-template.md](../../templates/lab-template.md).
-**Tài liệu liên quan:** [đề bài Capstone](../capstone/README.md), [hướng dẫn demo](../capstone/demo-guide.md), [rubric Capstone](../../curriculum/capstone-rubric.md), [template peer review](../../templates/peer-review-template.md).
+**Hình thức:** Pull Request vào repo cá nhân `devops-labs` (public), thư mục `lab-31/` và `lab-32/`. Mẫu nộp bài: [mẫu lab](../../templates/lab-template.md).
+**Tài liệu liên quan:** [đề bài Capstone](../capstone/README.md), [hướng dẫn demo](../capstone/demo-guide.md), [Rubric Capstone](../../curriculum/capstone-rubric.md), [template peer review](../../templates/peer-review-template.md). Mentor chấm theo barem trong [Chấm điểm tuần 16](../../mentors/grading/week-16.md); bảng điểm ngắn nằm bên dưới.
 
 ## Bối cảnh
 
@@ -14,7 +23,7 @@ Hệ thống Club Management của nhóm bạn đã chạy được trên máy n
 
 Tuần này gồm hai phần nối tiếp nhau. Ở buổi 31 bạn tự phá hệ thống của nhóm theo kế hoạch (clean clone, sai tag image, sai mật khẩu database, xóa Pod) và ghi lại thành troubleshooting log và runbook. Ở buổi 32 nhóm demo trực tiếp, bảo vệ kỹ thuật trước mentor và viết lessons learned. Bài tập cá nhân này gom bằng chứng của cả hai buổi: bạn không nộp lại sản phẩm của nhóm, bạn nộp bằng chứng rằng chính bạn đã chạy, quan sát và hiểu từng bước.
 
-Bài tập chỉ dùng kiến thức đã học đến buổi 32 và môi trường local (Windows 11, WSL2 Ubuntu, Docker Desktop, kind, kubectl, GitHub Actions, GHCR). Không expose máy của bạn ra Internet. Mọi lệnh chạy trong filesystem của WSL, không dùng `/mnt/c`. Nếu bị kẹt, đọc lại phần "Lỗi thường gặp" và "Phá lỗi và debug" của hai bài lab.
+Bài tập chỉ dùng kiến thức đã học đến buổi 32 và môi trường local (Windows 11, WSL2 Ubuntu, Docker Desktop, kind, kubectl, GitHub Actions, GHCR). Không expose máy của bạn ra Internet. Mọi lệnh chạy trong filesystem của WSL, không dùng `/mnt/c`. Nếu bị kẹt, đọc lại mục "Gặp lỗi?" của hai bài lab và trang [Buổi 31 – Thử thách nâng cao](../../labs/week-16/session-31-challenge.md).
 
 ## Nhiệm vụ L1 (bắt buộc)
 
@@ -173,27 +182,24 @@ grep -rIl "BEGIN OPENSSH PRIVATE KEY" . --exclude-dir=.git
 
 Lệnh thứ hai có thể in ra các dòng văn bản mô tả hợp lệ (ví dụ tiêu đề "Secret không nằm trong Git"); hãy xem từng dòng và đảm bảo không dòng nào chứa giá trị mật khẩu thật.
 
-## Barem chấm
+## Bảng điểm
 
-Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
+Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2 (chỉ chấm khi L1 từ 60 điểm). Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0.
 
-| Tiêu chí | Đạt | Không đạt | Điểm |
-| --- | --- | --- | --- |
-| Nhiệm vụ 1: clean clone và Compose | Clone thư mục mới, không có `.env` trong Git, ba service lên, smoke test đủ, dữ liệu còn sau `down` và `up`, có nhận xét README | Dùng thư mục cũ, thiếu smoke test, không chứng minh dữ liệu bền | 15 |
-| Nhiệm vụ 2: kind và độ trễ | Context kind đúng, image có tag phiên bản, mọi Pod Ready, đủ 5 lần đo và hai số `time`, nhận xét có lập luận | Pod không Ready, dùng `latest`, thiếu số đo hoặc kết luận không dựa trên số đo | 15 |
-| Nhiệm vụ 3: ba sự cố | Đủ 9 đoạn output có nhãn, mỗi sự cố có dự đoán, log 5 trường, nguyên nhân gốc đúng, hoàn tác về trạng thái khỏe mạnh | Thiếu sự cố hoặc thiếu trạng thái trước, trong, sau; nguyên nhân sai hoặc chỉ nêu lại triệu chứng; không hoàn tác | 25 |
-| Nhiệm vụ 4: bảo mật và runbook | 4 lệnh kiểm tra có output thật, bảng 5 hạng mục trung thực, runbook đủ 5 mục với lệnh đã chạy | Bảng ghi Đạt không có bằng chứng, runbook thiếu mục hoặc có lệnh chưa chạy, có secret | 15 |
-| Nhiệm vụ 5: demo, bảo vệ, tự đánh giá | Có lệnh demo, lượt chạy thử bấm giờ bằng log thật, lessons learned cụ thể, đã nộp peer review | Lessons learned chung chung, thiếu log chạy thử, đưa peer review vào repo | 10 |
-| `report.md` và `README.md` | Đủ 7 câu mỗi lab, giải thích đúng, 5 câu hỏi kiểm tra được trả lời bằng lời của bạn, ghi rõ mức đã làm | Thiếu câu, sao chép đề bài hoặc lời giải trong bài lab, không ghi mức | 10 |
-| Bằng chứng và kỷ luật repo | Đúng cấu trúc thư mục, evidence là text thật có nhãn, không có secret, commit message rõ ràng | Sai cấu trúc, evidence chỉ là ảnh, có secret | 5 |
-| Quy trình nộp | Có PR, được một bạn review có nhận xét thật | Push thẳng vào `main` hoặc review chỉ ghi "OK" | 5 |
-| **Tổng L1** | | | **100** |
-| L2: Thử thách A (thiết kế sự cố) | Kịch bản an toàn, hoàn tác được, đã tự chạy thử, có nhận xét báo cáo của nhóm nhận | Thiếu cách hoàn tác, chưa chạy thử, lộ nguyên nhân trong triệu chứng | +4 |
-| L2: Thử thách B (xóa Pod PostgreSQL) | Dự đoán ghi trước, PVC cùng một cái, dữ liệu còn, so sánh dự đoán trung thực | Dự đoán viết sau khi chạy, không có output PVC, xóa PVC | +3 |
-| L2: Thử thách C (cải tiến và câu hỏi mở rộng) | Đủ số đề xuất có ưu tiên và ước lượng, hai câu mở rộng có lập luận cụ thể | Đề xuất chung chung, không bằng chứng, câu trả lời không nêu cách đo | +3 |
-| **Tối đa thưởng** | | | **+10** |
+| Tiêu chí | Điểm |
+| --- | --- |
+| Nhiệm vụ 1: clean clone và Compose | 15 |
+| Nhiệm vụ 2: kind và độ trễ | 15 |
+| Nhiệm vụ 3: ba sự cố | 25 |
+| Nhiệm vụ 4: bảo mật và runbook | 15 |
+| Nhiệm vụ 5: demo, bảo vệ, tự đánh giá | 10 |
+| `report.md` và `README.md` (7 câu mỗi lab, 5 câu hỏi kiểm tra, ghi rõ mức) | 10 |
+| Bằng chứng và kỷ luật repo | 5 |
+| Quy trình nộp (PR có review) | 5 |
+| **Tổng L1** | **100** |
+| L2: Thử thách A, B, C | +4, +3, +3 |
 
-Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0.
+Nguyên tắc: không commit mật khẩu, token, `.env` hay file Secret thật; nếu có, bài bị trừ phần "Bằng chứng và kỷ luật repo" và phải xóa khỏi lịch sử trước khi chấm lại.
 
 ## Câu hỏi kiểm tra kiến thức
 
@@ -204,21 +210,6 @@ Trả lời ngắn (2-4 câu mỗi câu) bằng lời của bạn: câu 1 đến
 3. Bạn vừa sửa Secret nhưng API vẫn dùng mật khẩu cũ. Bạn làm gì tiếp theo, vì sao, và bạn xác nhận Pod đã dùng giá trị mới bằng cách nào mà không in mật khẩu ra màn hình?
 4. `docker compose down` khác `docker compose down -v` ở điểm nào, và khi xóa Pod `postgres-0` trên Kubernetes thì dữ liệu còn hay mất? Nêu thành phần quyết định điều đó.
 5. Mentor chỉ định bạn trả lời về một phần bạn không trực tiếp viết (ví dụ Dockerfile multi-stage hoặc pipeline CI). Nêu ba bước bạn trả lời theo cấu trúc kết luận, lý do, bằng chứng, và cho biết bằng chứng đó nằm ở lệnh hay file nào trong repo nhóm.
-
-## Lỗi hay bị trừ điểm
-
-- Dùng thư mục làm việc cũ thay vì clone mới, nên không phát hiện thiếu `.env.example` hoặc thiếu bước trong README.
-- `command-output.txt` chỉ có output cuối, thiếu trạng thái trước và trong lúc lỗi; hoặc output không có nhãn nên reviewer không biết thuộc sự cố nào.
-- Viết dự đoán sau khi đã thấy kết quả, hoặc ghi nguyên nhân gốc là triệu chứng (ví dụ "Pod ImagePullBackOff" thay vì "tag không tồn tại trong node kind").
-- Xem log của Pod cũ rồi kết luận "không có lỗi" trong sự cố C, vì không lấy đúng Pod mới; hoặc quên gọi trực tiếp vào Pod mới khi Service không gửi traffic tới Pod chưa Ready.
-- Không hoàn tác: để Deployment ở tag `9.9.9`, để Secret sai mật khẩu, hoặc để replica ở 3.
-- In mật khẩu thật hay mật khẩu thử nghiệm vào evidence, log, runbook hoặc ảnh chụp màn hình; commit `.env`, file Secret chứa giá trị thật, token hoặc private key.
-- Ghi "Đạt" trong bảng bảo mật nhưng không có output lệnh tương ứng; khai quét image nhưng không có kết quả quét.
-- Kết luận về hiệu năng mà không có số đo, hoặc nói thêm replica luôn làm nhanh hơn mà không giải thích nút thắt.
-- Runbook chứa lệnh chưa từng chạy, hoặc dùng tên Pod cố định thay vì chỉ cách lấy tên Pod thật.
-- Đưa file peer review vào repo công khai, hoặc lessons learned chung chung ("làm việc nhóm tốt hơn") không gắn với sự việc cụ thể.
-- Nhóm chạy thử demo bằng ảnh chụp thay vì lệnh thật, hoặc lệnh trong `demo-commands.md` không khớp tên service và nhãn trong manifest.
-- Nộp ảnh chụp thay cho file nguồn và log text; push thẳng vào `main`, không có PR hoặc không có người review.
 
 ## Quy trình nộp
 
@@ -247,7 +238,7 @@ git push -u origin week-16
 ```
 
 4. Nhờ một bạn trong CLB review. Reviewer để ít nhất 2 nhận xét cụ thể (một điểm tốt, một điểm cần sửa) trên PR; nên đối chiếu thử một đoạn output trong `command-output.txt` với troubleshooting log tương ứng. Bạn sửa theo nhận xét hợp lý và trả lời từng nhận xét.
-5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo barem trên, không chấm nội dung đẩy sau hạn.
+5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo bảng điểm trên, không chấm nội dung đẩy sau hạn.
 
 Hạn nộp: trước buổi đầu tiên của tuần kế tiếp (mentor công bố ngày cụ thể sau buổi 32). Nộp muộn bị trừ theo quy định trong `curriculum/assessment.md`.
 

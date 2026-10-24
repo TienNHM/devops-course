@@ -1,5 +1,7 @@
 # Project – &lt;Tên nhóm&gt;
 
+**Dùng khi nào:** nhóm capstone khởi tạo README cho repo dự án ở tuần 15, rồi điền dần đến tuần 16 (xem [Capstone rubric](../curriculum/capstone-rubric.md)).
+
 ## Thành viên và vai trò
 | Thành viên | Trách nhiệm | Reviewer chéo |
 | --- | --- | --- |

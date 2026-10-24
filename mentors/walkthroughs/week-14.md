@@ -1,5 +1,9 @@
 # Walkthrough tuần 14 – Storage, Ingress & Operations
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải buổi 27 và 28: PV, PVC và Ingress cho Club Management trên kind, rồi rollout, rollback và chẩn đoán ImagePullBackOff, CrashLoopBackOff, Pending bằng bằng chứng, kèm hướng dẫn chấm.
 
 ## Cách dùng tài liệu này
@@ -213,3 +217,81 @@ Gợi ý theo nhiệm vụ:
 | L2 (tối đa 10 điểm) | A: bảng dự đoán viết trước và PV `Released`. B: hai lệnh curl hai Host, `describe ingress` hai rule, một lỗi Ingress đã gây và chẩn đoán. C: rollout kẹt với `9.9.9`, hai ReplicaSet, undo, ít nhất một scenario | Dự đoán giống hệt kết quả không có ngộ nhận; L2-C không có bằng chứng ứng dụng vẫn trả lời khi kẹt | Vì sao PV `Released` chưa bind lại được và admin cần làm gì? Làm sao kiểm tra image đã có trong node trước `set image`? |
 
 Lưu ý khi chấm: yêu cầu học viên mở lại `evidence/command-output.txt` và chạy lại một lệnh bất kỳ khi vấn đáp; bài chép thường không tái hiện được kết quả. Tên PV, hash ReplicaSet và timestamp giống hệt giữa hai bài là dấu hiệu sao chép.
+
+### Bổ sung sau khi cải tổ bài lab
+
+Phần này bổ sung các chi tiết trước đây nằm trong bài lab của học viên (lời giải L2 đã chuyển về đây) và ghi chú cho các thay đổi của bài lab.
+
+- Đã đổi trong bài lab buổi 27: cluster `club` tạo từ buổi 21 đã có port mapping nên học viên không xóa cluster; họ xóa namespace `club` để làm lại sạch (bước này thay cho `kind delete cluster` ở phần "Đáp án các nhiệm vụ L1" phía trên) và thêm một PVC thử `demo-pvc` để có bằng chứng `Pending`. Chỉ khi `docker ps` không có `0.0.0.0:80->80/tcp` mới phải tạo lại cluster.
+- Đáp án ba tình huống `scenario-07`, `scenario-08`, `scenario-09` và tình huống tổng hợp readiness path nằm ở [Kịch bản mentor buổi 28](../sessions/session-28.md); học viên chỉ nhận triệu chứng.
+
+#### Lời giải thử thách 1 buổi 27 (lệnh đầy đủ)
+
+```bash
+kubectl get pv
+kubectl delete statefulset postgres -n club
+kubectl get pvc -n club                 # vẫn Bound
+kubectl apply -f k8s/postgres.yaml
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;"   # còn dữ liệu
+
+kubectl delete statefulset postgres -n club
+kubectl delete pvc postgres-pvc -n club
+kubectl get pv                          # PV biến mất vì reclaimPolicy Delete
+kubectl apply -f k8s/postgres.yaml      # tạo lại PVC mới, database rỗng
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "\dt"   # không có bảng members
+```
+
+Kết luận: xóa PVC với reclaimPolicy `Delete` làm mất dữ liệu vĩnh viễn; phải chạy lại `init.sql`.
+
+#### Lời giải thử thách 2 buổi 27 (Retain)
+
+```bash
+PV=$(kubectl get pvc postgres-pvc -n club -o jsonpath='{.spec.volumeName}')
+kubectl patch pv "$PV" -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+kubectl delete statefulset postgres -n club
+kubectl delete pvc postgres-pvc -n club
+kubectl get pv     # STATUS: Released
+```
+
+PV giữ dữ liệu nhưng còn `claimRef` cũ. Để dùng lại: xóa `spec.claimRef` bằng `kubectl patch pv "$PV" --type=json -p='[{"op":"remove","path":"/spec/claimRef"}]'` để PV về `Available`, rồi tạo PVC khớp (storageClassName, dung lượng) hoặc đặt `volumeName` trong PVC. Với local-path, dữ liệu nằm trên node nên phải dọn thủ công khi không cần nữa.
+
+#### Lời giải thử thách 3 buổi 27 (host thứ hai)
+
+File `~/devops-labs/lab-27/source/ingress-api.yaml`:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: club-api-host
+  namespace: club
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.club.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 3000
+```
+
+```bash
+kubectl apply -f ~/devops-labs/lab-27/source/ingress-api.yaml
+curl -s -H "Host: api.club.localhost" http://127.0.0.1/api/members
+```
+
+#### Lời giải thử thách 2 buổi 28 (club-api tag 9.9.9)
+
+```bash
+kubectl -n club describe pod -l app=club-api | sed -n '/Events:/,$p'
+kubectl -n club rollout undo deployment/club-api
+kubectl -n club rollout status deployment/club-api
+kubectl -n club get pods
+```
+
+Nguyên nhân gốc: tag `9.9.9` chưa từng được build hay nạp vào kind. Cách đúng để phát hành bản mới là `docker build -t club-api:1.0.1 ./backend`, rồi `kind load docker-image club-api:1.0.1 --name club`, rồi mới `set image`. Phòng tránh: tag bất biến, kiểm tra image tồn tại trước khi deploy, luôn chạy `rollout status` sau khi deploy.

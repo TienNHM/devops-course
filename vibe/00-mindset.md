@@ -1,15 +1,19 @@
 # 00 Từ prompt tới production
 
-> **Tóm tắt:** Hiểu deploy là gì, các mảnh ghép của một ứng dụng web, vòng lặp làm việc với AI agent và 7 quy tắc sống còn trước khi đưa bất cứ thứ gì lên Internet.
+> **Tóm tắt:** Bản đọc 10 phút: deploy là gì, các mảnh ghép của một ứng dụng web và 7 quy tắc sống còn trước khi đưa bất cứ thứ gì lên Internet.
+
+::: tip Bạn làm gì: đọc 10 phút để có bản đồ
+**Bạn sẽ tạo ra:** một câu mô tả sản phẩm của mình và danh sách mảnh ghép nó cần (tĩnh hay có database). Không cần cài gì.
+
+**Thời gian:** 10 phút đọc, 5 phút làm phần "Thực hành". Phần mở rộng ở cuối là đọc sau, không bắt buộc.
+
+**Đây là bước đầu của Chặng 1 "Có link công khai"** (00, 01, 02). Track này độc lập với khóa DevOps 16 tuần. Trang tra cứu thuật ngữ: [Thuật ngữ](../resources/glossary.md) (deploy, hosting, domain, HTTPS, frontend, backend, database, build, serverless, env var, diff).
+:::
 
 ## Bạn sẽ làm được gì
 
-Thời lượng ước tính: 45 phút, không cần cài gì.
-
-- Giải thích deploy, hosting, domain, build, env var bằng lời của mình.
+- Giải thích deploy, hosting, domain, env var bằng ví von đời thường.
 - Phân biệt frontend, backend, database, web tĩnh và web động.
-- Chọn đúng loại công cụ: app-builder, coding agent hay nền tảng host.
-- Thuộc vòng lặp "mô tả, agent viết, chạy thử, commit, deploy, xem log, sửa".
 - Thuộc 7 quy tắc sống còn để không lộ secret, không mất tiền, không bị AI "nói dối".
 
 ## Khái niệm trong 5 phút
@@ -26,6 +30,8 @@ Bạn làm xong món đồ trong bếp nhà mình (code chạy trên laptop). Ch
 | Két sắt | Env var (biến môi trường) | Nơi cất mật khẩu và khóa, không treo ngoài cửa |
 | Sổ nhật ký cửa hàng | Log | Ghi lại chuyện gì xảy ra, đọc khi có sự cố |
 | Sổ lưu mọi phiên bản công thức | Git và GitHub | Lịch sử thay đổi, quay lại được khi hỏng |
+
+Các thuật ngữ này đều có trong [Thuật ngữ](../resources/glossary.md).
 
 ### Các mảnh ghép của một ứng dụng
 
@@ -46,55 +52,6 @@ flowchart LR
 ```
 
 Quy tắc ngón tay cái: **nếu làm được bằng web tĩnh thì đừng thêm backend.** Mỗi mảnh ghép thêm vào là thêm một chỗ có thể hỏng và một chỗ có thể bị tấn công.
-
-### Hosting khác domain
-
-Hosting là nơi sản phẩm ở. Domain là tên gọi để người ta tìm tới. Bạn có thể có hosting mà không có domain (dùng địa chỉ miễn phí như `ten-ban.github.io` hay `ten-ban.vercel.app`) và đổi domain sau mà không phải làm lại sản phẩm.
-
-### Ba loại công cụ, đừng nhầm
-
-| Loại | Ví dụ | Hợp với | Lưu ý |
-| --- | --- | --- | --- |
-| App-builder (nói là ra app, host sẵn) | Lovable, Bolt, v0, Replit | Làm nhanh bản thử, không cần cài gì | Dễ bị khóa vào một nơi. Nên kết nối GitHub để có bản sao code |
-| Coding agent (agent sửa code trong dự án của bạn) | Claude Code, Cursor, GitHub Copilot agent, Codex CLI, Gemini CLI | Dự án thật, có kiểm soát, có lịch sử Git | Cần biết đọc diff tối thiểu |
-| Nền tảng host (nơi sản phẩm chạy) | GitHub Pages, Vercel, Netlify, Cloudflare, Supabase, Firebase | Chạy sản phẩm lâu dài | Mỗi nơi hợp một kiểu sản phẩm, xem [So sánh nền tảng](platforms.md) |
-
-Một quy trình phổ biến: dùng app-builder hoặc coding agent để tạo code, đưa code vào GitHub, kết nối GitHub với nền tảng host. GitHub là "trạm trung chuyển" giúp bạn đổi công cụ bất cứ lúc nào.
-
-### Vòng lặp vibe-code
-
-```mermaid
-flowchart LR
-    A["1. Mô tả việc cần làm"] --> B["2. Agent viết code"]
-    B --> C["3. Chạy thử trên máy"]
-    C --> D["4. Đọc diff và commit"]
-    D --> E["5. Deploy"]
-    E --> F["6. Mở link thật, xem log"]
-    F -->|"Có lỗi"| A
-    F -->|"OK"| G["Xong một vòng"]
-```
-
-Vòng lặp càng ngắn càng tốt: mỗi vòng chỉ một thay đổi nhỏ. Khi hỏng, bạn biết ngay lỗi nằm ở thay đổi vừa rồi.
-
-### Giao việc cho agent hiệu quả
-
-Một yêu cầu tốt có bốn phần: **bối cảnh** (dự án là gì), **mục tiêu** (kết quả nhìn thấy được), **ràng buộc** (không đổi gì ngoài X, không đụng file khóa), **cách kiểm tra** (mở trang nào, thấy gì).
-
-| Yêu cầu yếu | Yêu cầu tốt |
-| --- | --- |
-| "Làm web đẹp đẹp rồi deploy" | "Trang giới thiệu CLB, 1 file HTML, có form đăng ký tên và email. Chưa deploy. Cho tôi lệnh chạy thử và cách kiểm tra" |
-| "Sửa lỗi đi" | "Mở trang /api/hello báo 500. Đây là log (dán log, đã xóa secret). Hãy giải thích nguyên nhân trước, chưa sửa" |
-| "Cài hết mọi thứ cần thiết" | "Chỉ thêm đúng một thư viện để gửi email, nói rõ vì sao cần" |
-
-### Review diff trong 1 phút
-
-**Diff** là bảng so sánh "trước và sau" mà agent đã sửa. Bạn không cần hiểu từng dòng, chỉ cần quét ba thứ:
-
-1. Có file nào lạ không (đặc biệt `.env`, file chứa khóa)?
-2. Có chuỗi trông như khóa hoặc mật khẩu viết thẳng trong code không?
-3. Có dòng nào xóa kiểm tra bảo mật, tắt xác thực, hoặc tắt chế độ an toàn "cho chạy được" không?
-
-Gặp một trong ba điều đó: dừng lại, hỏi agent vì sao, đừng commit.
 
 ### 7 quy tắc sống còn
 
@@ -124,23 +81,6 @@ Bài này là bài vẽ bản đồ, làm trên giấy hoặc trong ghi chú.
 
 4. Viết ra 3 thứ bạn sợ nhất (lộ khóa, tốn tiền, trang sập). Đây là lý do bạn sẽ đọc kỹ module 07.
    - Bạn sẽ thấy: một danh sách ngắn. Cuối track bạn đối chiếu lại.
-
-## Nhờ AI agent làm giúp
-
-Prompt để agent đóng vai người hướng dẫn, giúp bạn phân loại sản phẩm:
-
-```text
-Tôi là người mới, chưa biết lập trình. Tôi muốn làm: [mô tả 1-2 câu].
-Hãy giúp tôi:
-1. Cho biết sản phẩm này là web tĩnh hay cần backend và database, giải thích bằng ví dụ đời thường.
-2. Đề xuất cách đơn giản nhất, ít thành phần nhất.
-3. Liệt kê những thứ bí mật (khóa, mật khẩu) sản phẩm sẽ cần, KHÔNG yêu cầu tôi gửi giá trị thật.
-4. Chưa viết code. Hỏi lại tôi nếu thiếu thông tin.
-```
-
-Bạn phải tự kiểm tra: đề xuất có nhiều thành phần hơn mức cần không? Có yêu cầu bạn dán khóa thật không (nếu có, từ chối)?
-
-Không giao cho agent: dán secret hoặc dữ liệu cá nhân của người dùng, bấm nâng cấp gói trả phí, nhập thông tin thẻ, xóa database thật.
 
 ## Nếu bị lỗi
 
@@ -184,7 +124,78 @@ Không giao cho agent: dán secret hoặc dữ liệu cá nhân của người d
 - Chọn nơi deploy: [So sánh nền tảng](platforms.md).
 - Prompt mẫu: [Thư viện prompt](prompt-library.md).
 - Đã làm sản phẩm bằng Lovable, Bolt, v0 hay Replit: sau bài 01 có thể nhảy sang [10 App-builder](10-app-builders.md).
-- Toàn bộ lộ trình từ 00 đến 11: [trang chủ track](index.md).
+- Toàn bộ lộ trình 3 chặng: [trang chủ track](index.md).
+
+
+::: details Mở rộng (đọc sau, không bắt buộc): công cụ, vòng lặp với AI, cách giao việc, review diff
+
+#### Hosting khác domain
+
+Hosting là nơi sản phẩm ở. Domain là tên gọi để người ta tìm tới. Bạn có thể có hosting mà không có domain (dùng địa chỉ miễn phí như `ten-ban.github.io` hay `ten-ban.vercel.app`) và đổi domain sau mà không phải làm lại sản phẩm.
+
+#### Ba loại công cụ, đừng nhầm
+
+| Loại | Ví dụ | Hợp với | Lưu ý |
+| --- | --- | --- | --- |
+| App-builder (nói là ra app, host sẵn) | Lovable, Bolt, v0, Replit | Làm nhanh bản thử, không cần cài gì | Dễ bị khóa vào một nơi. Nên kết nối GitHub để có bản sao code |
+| Coding agent (agent sửa code trong dự án của bạn) | Claude Code, Cursor, GitHub Copilot agent, Codex CLI, Gemini CLI | Dự án thật, có kiểm soát, có lịch sử Git | Cần biết đọc diff tối thiểu |
+| Nền tảng host (nơi sản phẩm chạy) | GitHub Pages, Vercel, Netlify, Cloudflare, Supabase, Firebase | Chạy sản phẩm lâu dài | Mỗi nơi hợp một kiểu sản phẩm, xem [So sánh nền tảng](platforms.md) |
+
+Một quy trình phổ biến: dùng app-builder hoặc coding agent để tạo code, đưa code vào GitHub, kết nối GitHub với nền tảng host. GitHub là "trạm trung chuyển" giúp bạn đổi công cụ bất cứ lúc nào.
+
+#### Vòng lặp vibe-code
+
+```mermaid
+flowchart LR
+    A["1. Mô tả việc cần làm"] --> B["2. Agent viết code"]
+    B --> C["3. Chạy thử trên máy"]
+    C --> D["4. Đọc diff và commit"]
+    D --> E["5. Deploy"]
+    E --> F["6. Mở link thật, xem log"]
+    F -->|"Có lỗi"| A
+    F -->|"OK"| G["Xong một vòng"]
+```
+
+Vòng lặp càng ngắn càng tốt: mỗi vòng chỉ một thay đổi nhỏ. Khi hỏng, bạn biết ngay lỗi nằm ở thay đổi vừa rồi.
+
+#### Giao việc cho agent hiệu quả
+
+Một yêu cầu tốt có bốn phần: **bối cảnh** (dự án là gì), **mục tiêu** (kết quả nhìn thấy được), **ràng buộc** (không đổi gì ngoài X, không đụng file khóa), **cách kiểm tra** (mở trang nào, thấy gì).
+
+| Yêu cầu yếu | Yêu cầu tốt |
+| --- | --- |
+| "Làm web đẹp đẹp rồi deploy" | "Trang giới thiệu CLB, 1 file HTML, có form đăng ký tên và email. Chưa deploy. Cho tôi lệnh chạy thử và cách kiểm tra" |
+| "Sửa lỗi đi" | "Mở trang /api/hello báo 500. Đây là log (dán log, đã xóa secret). Hãy giải thích nguyên nhân trước, chưa sửa" |
+| "Cài hết mọi thứ cần thiết" | "Chỉ thêm đúng một thư viện để gửi email, nói rõ vì sao cần" |
+
+#### Review diff trong 1 phút
+
+**Diff** là bảng so sánh "trước và sau" mà agent đã sửa. Bạn không cần hiểu từng dòng, chỉ cần quét ba thứ:
+
+1. Có file nào lạ không (đặc biệt `.env`, file chứa khóa)?
+2. Có chuỗi trông như khóa hoặc mật khẩu viết thẳng trong code không?
+3. Có dòng nào xóa kiểm tra bảo mật, tắt xác thực, hoặc tắt chế độ an toàn "cho chạy được" không?
+
+Gặp một trong ba điều đó: dừng lại, hỏi agent vì sao, đừng commit.
+
+#### Nhờ AI agent làm giúp
+
+Prompt để agent đóng vai người hướng dẫn, giúp bạn phân loại sản phẩm:
+
+```text
+Tôi là người mới, chưa biết lập trình. Tôi muốn làm: [mô tả 1-2 câu].
+Hãy giúp tôi:
+1. Cho biết sản phẩm này là web tĩnh hay cần backend và database, giải thích bằng ví dụ đời thường.
+2. Đề xuất cách đơn giản nhất, ít thành phần nhất.
+3. Liệt kê những thứ bí mật (khóa, mật khẩu) sản phẩm sẽ cần, KHÔNG yêu cầu tôi gửi giá trị thật.
+4. Chưa viết code. Hỏi lại tôi nếu thiếu thông tin.
+```
+
+Bạn phải tự kiểm tra: đề xuất có nhiều thành phần hơn mức cần không? Có yêu cầu bạn dán khóa thật không (nếu có, từ chối)?
+
+Không giao cho agent: dán secret hoặc dữ liệu cá nhân của người dùng, bấm nâng cấp gói trả phí, nhập thông tin thẻ, xóa database thật.
+
+:::
 
 ## Tài liệu chính thức
 

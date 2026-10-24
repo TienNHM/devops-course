@@ -2,11 +2,28 @@
 
 Tờ tóm tắt lệnh dùng xuyên suốt khóa học. Mỗi lệnh có một dòng chú thích, nhóm theo tác vụ. Tất cả lệnh giả định bạn làm việc trong WSL2 Ubuntu, trong filesystem của WSL (ví dụ `~/devops-labs`), không dùng `/mnt/c`.
 
-Khi cần chi tiết hơn, xem [Tài liệu chính thức](documentation.md) và [Thuật ngữ](glossary.md). Cách cài môi trường: [Setup guide](setup-guide.md).
+Khi cần chi tiết hơn, xem [Tài liệu chính thức](documentation.md) và [Thuật ngữ](glossary.md). Cách cài môi trường: [Hướng dẫn cài đặt môi trường](setup-guide.md). Mới làm quen terminal: [Terminal 101](terminal-101.md).
 
 Trong các ví dụ, phần trong dấu `<` `>` như `<pod>` là chỗ bạn thay bằng giá trị thật.
 
-## 1. Linux CLI và quản trị cơ bản
+::: tip Mục lục nhảy
+1. [Linux CLI và quản trị cơ bản](#linux) (buổi 03 đến 04)
+2. [Git và GitHub](#git) (buổi 06)
+3. [Networking](#networking) (buổi 05)
+4. [Docker CLI](#docker-cli) (buổi 07 đến 08)
+5. [Dockerfile](#dockerfile) (buổi 09 đến 10)
+6. [Docker Compose](#compose) (buổi 13 đến 14)
+7. [GitHub Actions](#actions) (buổi 15 đến 19)
+8. [kubectl và YAML mẫu](#kubectl) (buổi 21 đến 28), gồm [kind và context kind-club](#kind-context)
+9. [Gỡ lỗi Kubernetes](#debug-k8s) (buổi 28)
+10. [YAML tips](#yaml-tips)
+:::
+
+::: warning Lệnh có thể làm mất dữ liệu
+Các lệnh sau xóa thật, không hoàn tác được. Đọc kỹ trước khi chạy, và thử trên đối tượng thử, không thử trên dữ liệu bạn cần: `docker volume prune`, `docker compose down -v` (mất dữ liệu database), `kubectl delete ...`, `kind delete cluster`. Với lệnh `rm -rf`, `sudo`, `chmod` hãy xem hộp cảnh báo ở [Terminal 101](terminal-101.md).
+:::
+
+## 1. Linux CLI và quản trị cơ bản {#linux}
 
 Dùng chính từ buổi 03 và 04 ([buổi 03](../labs/week-02/session-03.md), [buổi 04](../labs/week-02/session-04.md)).
 
@@ -99,7 +116,7 @@ echo "Disk usage:"
 df -h /
 ```
 
-## 2. Git và GitHub
+## 2. Git và GitHub {#git}
 
 Dùng chính từ buổi 05 và 06 ([buổi 06](../labs/week-03/session-06.md)).
 
@@ -172,7 +189,7 @@ git rm --cached .env             # gỡ file đã lỡ commit khỏi index (vẫ
 
 Nếu secret thật đã bị đẩy lên GitHub, hãy coi như đã lộ: thu hồi và tạo secret mới, không chỉ xóa file.
 
-## 3. Networking
+## 3. Networking {#networking}
 
 Dùng chính từ buổi 05 ([buổi 05](../labs/week-03/session-05.md)) và buổi 11.
 
@@ -203,7 +220,7 @@ Cổng thường gặp trong khóa học:
 
 Thứ tự gỡ lỗi mạng: tên có phân giải được không (`dig`), cổng có mở không (`ss`), dịch vụ có trả lời không (`curl`), cuối cùng mới xem firewall.
 
-## 4. Docker CLI
+## 4. Docker CLI {#docker-cli}
 
 Dùng chính từ buổi 07 và 08 ([buổi 07](../labs/week-04/session-07.md), [buổi 08](../labs/week-04/session-08.md)).
 
@@ -277,7 +294,7 @@ Registry: đăng nhập GHCR bằng token đặt trong biến môi trường, kh
 echo "$GHCR_TOKEN" | docker login ghcr.io -u OWNER --password-stdin   # đăng nhập GHCR an toàn hơn
 ```
 
-## 5. Dockerfile
+## 5. Dockerfile {#dockerfile}
 
 Dùng chính từ buổi 09 và 10 ([buổi 09](../labs/week-05/session-09.md), [buổi 10](../labs/week-05/session-10.md)).
 
@@ -321,7 +338,7 @@ Quy tắc tối ưu:
 - Chạy bằng user không phải root.
 - Dùng dạng exec cho `CMD` và `ENTRYPOINT`: `CMD ["node", "server.js"]`, để tín hiệu dừng đến đúng process.
 
-## 6. Docker Compose
+## 6. Docker Compose {#compose}
 
 Dùng chính từ buổi 13 và 14 ([buổi 13](../labs/week-07/session-13.md), [buổi 14](../labs/week-07/session-14.md)). Cú pháp là `docker compose` (v2), file `compose.yaml`.
 
@@ -370,7 +387,7 @@ volumes:
 
 Ghi chú: `.env` đặt cạnh `compose.yaml` và không được commit. Chỉ commit file mẫu như `.env.example` với giá trị giả.
 
-## 7. GitHub Actions
+## 7. GitHub Actions {#actions}
 
 Dùng chính từ buổi 15 đến 20 ([buổi 15](../labs/week-08/session-15.md), [buổi 17](../labs/week-09/session-17.md), [buổi 19](../labs/week-10/session-19.md)).
 
@@ -489,11 +506,20 @@ Lưu ý bảo mật:
 - Với workflow từ fork, secret không được truyền vào; đừng thiết kế pipeline phụ thuộc vào điều đó.
 - Ghim action bằng phiên bản chính (`@v4`); môi trường yêu cầu chặt hơn thì ghim theo commit SHA.
 
-## 8. kubectl và YAML mẫu
+## 8. kubectl và YAML mẫu {#kubectl}
 
 Dùng chính từ buổi 21 đến 28 ([buổi 21](../labs/week-11/session-21.md), [buổi 23](../labs/week-12/session-23.md), [buổi 25](../labs/week-13/session-25.md)).
 
-### kind và context
+### kind và context {#kind-context}
+
+Cluster của khóa tên `club`, nên context phải là `kind-club`. Trước mỗi lệnh `kubectl apply` hoặc `kubectl delete`, kiểm tra đang trỏ đúng cluster:
+
+```bash
+kubectl config current-context   # kết quả mong đợi: kind-club
+kubectl config use-context kind-club   # nếu đang là cluster khác (ví dụ docker-desktop)
+```
+
+Các lệnh dưới đây chạy trong thư mục `~/devops-course` (đường dẫn `starter-project/...` tính từ đó):
 
 ```bash
 kind create cluster --name club --config starter-project/k8s/kind-config.yaml   # tạo cluster local
@@ -659,7 +685,7 @@ spec:
                   number: 80
 ```
 
-## 9. Gỡ lỗi Kubernetes
+## 9. Gỡ lỗi Kubernetes {#debug-k8s}
 
 Dùng chính từ buổi 27 và 28 ([buổi 27](../labs/week-14/session-27.md), [buổi 28](../labs/week-14/session-28.md)) và 10 tình huống trong `examples/troubleshooting`.
 
@@ -711,7 +737,7 @@ Bên trong Pod tạm: `nslookup backend` kiểm tra DNS, `wget -qO- http://backe
 
 Với Docker và Compose, quy trình tương tự: `docker ps -a` (trạng thái, mã thoát), `docker logs` (nguyên nhân), `docker inspect` (cấu hình), rồi sửa một thứ và thử lại.
 
-## 10. YAML tips
+## 10. YAML tips {#yaml-tips}
 
 - Dùng 2 dấu cách để thụt lề, tuyệt đối không dùng tab.
 - Thụt lề quyết định cấu trúc: một lệch dòng là một lỗi khác nghĩa.

@@ -2,6 +2,13 @@
 
 > **Tóm tắt:** Dựng backend bằng Supabase (database Postgres, đăng nhập, lưu file), nối với web bằng supabase-js và bật Row Level Security để dữ liệu không bị ai cũng đọc được.
 
+::: tip Bạn làm gì
+- **Kết quả:** một database Supabase có bảng đăng ký, bật RLS, và web gửi dữ liệu vào được mà người lạ không đọc được.
+- **Thời gian:** 60 đến 90 phút.
+- **Cần gì trước:** tài khoản GitHub, một trang web tĩnh đã deploy, và email để đăng ký Supabase (không cần thẻ).
+- **Module trước:** [Fullstack serverless](03-fullstack-serverless.md) hoặc [Đưa web tĩnh lên mạng](02-static-hosting.md). Chặng 2: chọn Supabase hoặc [Firebase](05-firebase.md), không cần cả hai.
+:::
+
 ## Bạn sẽ làm được gì
 
 Thời lượng ước tính: 60 đến 90 phút.
@@ -16,7 +23,7 @@ Thời lượng ước tính: 60 đến 90 phút.
 
 Hãy tưởng tượng bạn mở một cửa hàng (web của bạn). Phía sau cửa hàng có một nhà kho (database). Supabase là dịch vụ cho thuê nhà kho đã gắn sẵn: ổ khóa cho từng người (Auth), kệ để hàng (Postgres), ngăn chứa đồ cồng kềnh như ảnh hay PDF (Storage), và một nhân viên làm việc riêng ở hậu trường (Edge Functions).
 
-Điểm khác biệt quan trọng với cách làm truyền thống: trình duyệt của khách nói chuyện trực tiếp với nhà kho qua một cửa sổ có sẵn gọi là API. Vì khách đi thẳng vào kho, chính nhà kho phải tự quyết ai được lấy gì. Quy tắc đó gọi là Row Level Security (RLS, bảo mật theo từng dòng).
+Điểm khác biệt quan trọng với cách làm truyền thống: trình duyệt của khách nói chuyện trực tiếp với nhà kho qua một cửa sổ có sẵn gọi là API. Vì khách đi thẳng vào kho, chính nhà kho phải tự quyết ai được lấy gì. Quy tắc đó gọi là Row Level Security (RLS, bảo mật theo từng dòng; [thuật ngữ](../resources/glossary.md)).
 
 ```mermaid
 flowchart LR
@@ -35,7 +42,7 @@ flowchart LR
 | Postgres và Table Editor | Kệ hàng có bảng kê | Lưu dữ liệu dạng bảng, sửa như Excel |
 | Auth | Ổ khóa và thẻ nhân viên | Đăng nhập bằng email, magic link (link đăng nhập gửi qua email) hoặc OAuth (Google, GitHub) |
 | Storage | Ngăn chứa đồ lớn | Lưu ảnh, tệp, cũng có policy riêng |
-| Edge Functions | Nhân viên hậu trường | Chạy code phía server khi cần giữ bí mật hoặc gọi dịch vụ bên thứ ba; học kỹ ở [bài serverless](./03-fullstack-serverless.md) |
+| Edge Functions | Nhân viên hậu trường | Chạy code phía server khi cần giữ bí mật hoặc gọi dịch vụ bên thứ ba; học kỹ ở [bài serverless](03-fullstack-serverless.md) |
 | RLS | Quy định ai được vào kệ nào | Quyết định mỗi dòng dữ liệu ai đọc, ai ghi |
 
 ### Hai loại khóa, hai mức quyền
@@ -49,11 +56,11 @@ Tài liệu Supabase hiện hành dùng tên khóa mới. Khóa cũ vẫn chạy
 
 Ví von: publishable key như chìa khóa cổng khu phố, ai cũng có thể thấy. Secret key là chìa vạn năng của chủ nhà kho. Nếu chìa vạn năng lộ ra, người lạ đọc, sửa, xóa mọi thứ mà không bị hỏi han.
 
-Quy tắc bắt buộc:
-
+::: danger Secret key và service_role không bao giờ ra ngoài server
 - Secret key và service_role tuyệt đối không đặt vào frontend, repo công khai, prompt gửi cho AI, ảnh chụp màn hình hay tin nhắn chat.
 - File `.env` không commit lên Git. Biến chứa khóa bí mật không đặt tên bắt đầu bằng tiền tố công khai như `NEXT_PUBLIC_` hay `VITE_`, vì các tiền tố đó khiến giá trị bị nhúng vào code gửi cho trình duyệt.
 - Nếu khóa bí mật lộ: tạo khóa mới, thay ở mọi nơi dùng, kiểm tra chạy bình thường, rồi xóa khóa cũ (rotate). Làm ngay, không đợi.
+:::
 
 Cập nhật gần nhất tôi kiểm chứng: tháng 10/2026 trên trang chính thức về API keys. Hãy mở lại trang đó nếu giao diện hoặc tên khóa khác với bài.
 
@@ -230,57 +237,9 @@ Vì sao **không** dùng `user_metadata` (cột `raw_user_meta_data`) để phâ
 
 Site URL và Redirect URLs khi chạy local và khi lên domain thật: xem bảng trong [README của club-landing](../examples/vibe/club-landing/README.md). Đăng nhập bằng mật khẩu không chuyển hướng nên hay chạy được dù quên cấu hình, nhưng mọi email Supabase gửi đi (xác nhận, đặt lại mật khẩu) vẫn dùng Site URL, nên đổi nó ngay khi có domain.
 
-### Bước 7. Storage (ảnh, tệp) trong một phút
+### Bước 7. Đọc thêm khi cần: Storage, Edge Functions, CLI, MCP
 
-Vào Storage, tạo bucket (một thư mục lớn). Mặc định bucket là riêng tư. Chỉ bật Public khi tệp thật sự công khai (ví dụ ảnh bìa sự kiện). Với tệp riêng tư, bạn cần viết policy cho bảng `storage.objects`, giống tinh thần RLS ở trên. Đừng cho bucket cho phép upload không giới hạn từ `anon`: người lạ có thể nhồi đầy dung lượng của bạn.
-
-### Bước 8. Edge Functions (nhắc ngắn)
-
-Khi bạn cần giữ bí mật (ví dụ gọi API trả phí bằng khóa của bạn) hoặc xử lý thứ không thể tin trình duyệt, đặt code trong Edge Function. Secret key và khóa bên thứ ba được lưu bằng secrets của Supabase, không nằm trong code web. Chi tiết nằm ngoài phạm vi bài nhập môn này; xem [tài liệu Edge Functions](https://supabase.com/docs/guides/functions).
-
-### Bước 9. Supabase CLI ở mức nhập môn
-
-CLI hữu ích khi bạn muốn lược đồ database (schema) nằm trong Git thay vì chỉ trong dashboard, để agent và bạn cùng xem lịch sử thay đổi. Cài đặt theo tài liệu chính thức, cần Node.js 20 trở lên nếu dùng npm:
-
-```bash
-npm install supabase --save-dev
-npx supabase init
-```
-
-`supabase init` chỉ tạo thư mục `supabase/` với `config.toml`, chưa đăng nhập hay nối project nào. Để nối với project trên mạng:
-
-```bash
-npx supabase login
-npx supabase link --project-ref YOUR_REF
-npx supabase migration new create_signups
-```
-
-Lệnh cuối tạo một file rỗng trong `supabase/migrations/`. Dán nội dung `schema.sql` và `policies.sql` vào đó rồi đẩy lên:
-
-```bash
-npx supabase db push
-```
-
-Windows có thể cài CLI bằng Scoop thay cho npm; xem [hướng dẫn CLI](https://supabase.com/docs/guides/local-development/cli/getting-started). Trang hướng dẫn nhập môn không mô tả chi tiết `login`, `link`, `db push`, nên nếu lệnh báo khác, hãy chạy `npx supabase --help` hoặc đọc [CLI reference](https://supabase.com/docs/reference/cli/introduction) nếu lệnh báo khác. Chạy `db push` chỉ với project dev; với dữ liệu thật hãy đọc kỹ bản xem trước thay đổi trước khi đồng ý. Chạy local bằng `supabase start` cần container runtime như Docker, bạn sẽ gặp ở khóa DevOps chính.
-
-### Bước 10. Supabase MCP: cho agent nhìn vào database, nhưng có rào
-
-MCP (Model Context Protocol) là cách để AI agent dùng công cụ ngoài, ví dụ đọc bảng hay chạy SQL trong project Supabase của bạn. Đây là con dao hai lưỡi vì agent có thể ghi và xóa dữ liệu.
-
-Quy tắc an toàn:
-
-- Chỉ nối với project dev, không bao giờ với production hay project chứa dữ liệu người dùng thật.
-- Giới hạn bằng tham số `project_ref` (agent chỉ thấy đúng một project, các công cụ quản lý tài khoản bị tắt) và bật `read_only=true` (chạy truy vấn bằng user Postgres chỉ đọc) khi chỉ cần đọc.
-- Giữ chế độ duyệt tay từng lệnh trong công cụ của bạn; đọc SQL agent định chạy trước khi bấm cho phép.
-- Cẩn thận prompt injection (kẻ xấu cài chỉ thị vào dữ liệu, ví dụ trong ô lời nhắn của form, để agent đọc phải làm theo). Chính tài liệu Supabase thừa nhận các biện pháp chống chịu chỉ giảm rủi ro chứ không loại bỏ.
-
-Ví dụ cấu hình cho Claude Code (cú pháp nhìn chung ổn định nhưng hãy đối chiếu [trang MCP chính thức](https://supabase.com/docs/guides/getting-started/mcp)):
-
-```bash
-claude mcp add --transport http supabase "https://mcp.supabase.com/mcp?project_ref=YOUR_REF&read_only=true"
-```
-
-Sau đó mở Claude Code, gõ `/mcp`, chọn supabase rồi chọn Authenticate để đăng nhập qua trình duyệt (bạn tự làm bước này; không dán token vào chat). Mở rộng quyền ghi chỉ khi bạn đang làm trên project dev và đã commit mọi thứ lên Git.
+Bốn phần này không bắt buộc cho dự án đầu tay nên được tách sang trang riêng: [Supabase nâng cao](04-supabase-advanced.md) (lưu ảnh và tệp, Edge Functions, Supabase CLI, Supabase MCP cho agent). Riêng quy tắc cho agent kết nối MCP: chỉ project dev, `read_only=true`, duyệt tay từng lệnh.
 
 ## Nhờ AI agent làm giúp
 
@@ -310,12 +269,12 @@ Bạn phải tự kiểm tra sau khi agent làm xong:
 - Tìm chữ `service_role` hoặc `sb_secret` trong toàn bộ repo (Tìm kiếm của trình soạn thảo). Phải không có kết quả.
 - Gọi API bằng `curl` như Bước 5 để chứng minh người lạ không đọc được dữ liệu riêng.
 
-Không giao cho agent:
-
+::: danger Không giao cho agent
 - Dán secret key, service_role key, mật khẩu database hay token cá nhân vào prompt hoặc file.
 - Bấm nâng gói, nhập thẻ, hoặc bất kỳ quyết định thanh toán nào.
 - Chạy lệnh ghi hoặc xóa trên project production.
 - Dán dữ liệu cá nhân thật của người dùng (email, số điện thoại) vào cuộc trò chuyện với AI; dùng dữ liệu giả để thử.
+:::
 
 ## Nếu bị lỗi
 
@@ -366,12 +325,14 @@ Không giao cho agent:
 
 ## Tiếp theo
 
-- Bài kế tiếp là Firebase, một cách làm khác để so sánh (có thể bỏ qua nếu bạn đã chọn Supabase, khi đó sang bài 06): [Firebase](./05-firebase.md).
-- Cho agent làm việc với nhiều dịch vụ cùng lúc: [AI agent và deploy](./06-ai-agent-deploy.md).
-- Gắn domain và rà soát bảo mật trước khi mở cho người dùng thật: [Domain, bảo mật, production](./07-domain-security-production.md).
-- Gặp lỗi chưa gặp trong bài: [Xử lý sự cố](./08-troubleshooting.md).
-- Tra nhanh lệnh: [CLI cheatsheet](./cli-cheatsheet.md). Prompt mẫu: [Prompt library](./prompt-library.md). So sánh nền tảng: [Platforms](./platforms.md).
-- Quay về bức tranh lớn: [Tư duy deploy](./00-mindset.md).
+**Tiếp theo:** ráp mọi thứ thành một sản phẩm hoàn chỉnh ở [Dự án nhỏ](09-mini-project.md). Nếu bạn muốn so sánh, [Firebase](05-firebase.md) là cách làm khác (bỏ qua được nếu đã chọn Supabase).
+
+Tra cứu khi cần:
+
+- Storage, Edge Functions, CLI, MCP: [Supabase nâng cao](04-supabase-advanced.md).
+- Cho agent làm việc với nhiều dịch vụ: [Deploy cùng AI agent](06-ai-agent-deploy.md).
+- Gặp lỗi chưa gặp trong bài: [Xử lý sự cố](08-troubleshooting.md).
+- Lệnh nhanh: [CLI cheatsheet](cli-cheatsheet.md). Prompt mẫu: [Thư viện prompt](prompt-library.md). So sánh nền tảng: [Nền tảng hosting](platforms.md).
 
 Tài liệu chính thức:
 

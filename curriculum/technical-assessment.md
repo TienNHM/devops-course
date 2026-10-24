@@ -2,9 +2,15 @@
 
 > **Tóm tắt:** Technical Assessment chiếm 15% điểm khóa, gồm bài kiểm tra giữa khóa (sau tuần 8) và bài kiểm tra cuối khóa (sau tuần 14). Trang này mô tả thể thức, chủ đề ôn tập, quy định và 10 câu mẫu có đáp án.
 
+**Học viên cần biết:**
+
+- Hai bài (giữa khóa, cuối khóa) đều có lý thuyết ngắn và thực hành trên máy; thực hành chiếm phần lớn điểm.
+- Được dùng tài liệu chính thức và ghi chú cá nhân, không được dùng chatbot AI hay nhờ người khác.
+- Cách ôn tốt nhất: làm lại các lab và mười tình huống lỗi, rồi tự trả lời 10 câu mẫu ở cuối trang.
+
 Technical Assessment đo khả năng hiểu và tự xử lý, không đo khả năng học thuộc. Phần lớn điểm nằm ở bài thực hành trên máy: bạn phải containerize, dựng Compose, đọc log và sửa lỗi Kubernetes trong thời gian giới hạn. Phần lý thuyết chỉ kiểm tra những khái niệm bạn cần để thao tác đúng.
 
-Cách tính điểm tổng hợp nằm ở [Đánh giá](assessment.md). Lịch tuần nằm ở [Lịch học](schedule.md).
+Cách tính điểm tổng hợp nằm ở [Đánh giá](assessment.md). Lịch tuần nằm ở [Lộ trình](syllabus.md).
 
 ## Tổng quan hai bài kiểm tra
 
@@ -206,3 +212,25 @@ Container backend chạy được, `curl localhost:3000/health` trả về 200, 
 ## Sau bài kiểm tra
 
 Mentor công bố điểm và nhận xét theo từng tiêu chí. Hãy dùng nhận xét để bổ sung lab còn yếu trước Final Project. Quy trình khiếu nại và thi bù xem tại [Đánh giá](assessment.md).
+
+## Dành cho mentor: ghi chú chấm bài
+
+::: warning Dành cho mentor
+Mục này dành cho người chấm; học viên không cần đọc. Đáp án 10 câu mẫu ở trên là tài liệu tự ôn cho học viên và không nằm trong ngân hàng đề thật.
+:::
+
+Lệnh kiểm tra nhanh khi chấm bài thực hành giữa khóa (chạy trong thư mục bài nộp của học viên, điều chỉnh cổng và tên theo tham số đề của từng người):
+
+```bash
+docker compose config --quiet && echo "compose hop le"
+docker compose up -d --build
+docker compose ps
+curl -s http://localhost:8080/health
+docker compose down
+docker compose up -d
+docker compose exec backend id
+```
+
+Đọc kết quả: các service running hoặc healthy; dữ liệu còn nguyên sau `down` rồi `up` (không dùng `-v`); `id` cho uid khác 0. Dọn dẹp bằng `docker compose down` sau khi chấm.
+
+Với bài cuối khóa, chấm theo từng lỗi: nguyên nhân (4 điểm), cách sửa (4 điểm), kiểm chứng (2 điểm), cộng 10 điểm cho bản ghi chép tổng hợp. Yêu cầu học viên chạy lại `kubectl get pods -n <namespace>` và một lệnh kiểm chứng riêng cho từng lỗi trước khi cho điểm kiểm chứng.

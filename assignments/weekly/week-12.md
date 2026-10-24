@@ -2,6 +2,18 @@
 
 > **Tóm tắt:** Bạn tự dựng một workload nhỏ trong namespace riêng, thao tác bằng kubectl theo hướng khai báo, đọc trạng thái bằng nhiều định dạng đầu ra, rồi mở workload ra bằng Service và kiểm tra DNS. Hai tình huống lỗi (image sai, selector sai) phải được điều tra bằng lệnh và ghi lại có bằng chứng.
 
+**Bài tập = nộp lại bằng chứng của lab, áp dụng cho workload `notice-board`.** Không có kiến thức mới. Việc mới duy nhất: bạn tự viết manifest cho `notice-board` (không chép `demo-web`), tự chọn tag sai và selector sai riêng của bạn, rồi nộp bằng chứng.
+
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Dựng workload bằng manifest | [Buổi 23 – kubectl Fundamentals](../../labs/week-12/session-23.md), Chuẩn bị và Phần 2 | 1 giờ | `get deployment`, `get pods -l`, `apply` lần hai `unchanged` |
+| 2. Quan sát bằng đầu ra có cấu trúc | [Buổi 23 – kubectl Fundamentals](../../labs/week-12/session-23.md), Phần 3-5 | 1 giờ | `inspect.txt`, `port-forward` cổng 8082, `curl`, `logs` |
+| 3. Điều tra Deployment kẹt | [Buổi 23 – Thử thách nâng cao](../../labs/week-12/session-23-challenge.md), mục Phá lỗi | 1 giờ | trạng thái Pod lỗi, Events, `rollout`/`diff` sau khôi phục; mục trong `report.md` |
+| 4. Mở workload bằng Service và DNS | [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md), Phần 1-3 | 1 giờ | `get endpoints`, `describe svc`, `nslookup` ba tên, `wget`, `curl` |
+| 5. Điều tra Service không có Endpoints | [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md), mục Phá lỗi nâng cao | 1 giờ | `get endpoints` ba thời điểm, so sánh selector và nhãn; mục trong `report.md` |
+
+Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo barem trong [Chấm điểm tuần 12](../../mentors/grading/week-12.md); bảng điểm ngắn nằm bên dưới.
+
 ## Bối cảnh
 
 Tuần này bạn học `kubectl` (buổi 23) và Service (buổi 24). Ban tổ chức CLB muốn có thêm một trang nhỏ "bảng thông báo" chạy cạnh ứng dụng điểm danh. Bạn được giao dựng trang này trong namespace riêng `club-dev` để không đụng vào workload của starter-project ở namespace `club`.
@@ -17,7 +29,7 @@ Thông số chung cho cả bài (dùng đúng tên, vì bước chấm sẽ tìm
 | Service | `notice-board`, loại ClusterIP, `port: 8080`, `targetPort: 80` |
 | Cổng port-forward trên máy | `8082` (tránh 8080 và 8081) |
 
-Môi trường: Windows 11 + WSL2 Ubuntu, cluster kind từ buổi 21, làm việc trong thư mục dưới `~` (không dùng `/mnt/c`). Cluster chỉ lắng nghe trên máy bạn.
+Môi trường: Windows 11 + WSL2 Ubuntu, cluster kind `club` (context `kind-club`) từ buổi 21, làm việc trong thư mục dưới `~` (không dùng `/mnt/c`). Cluster chỉ lắng nghe trên máy bạn.
 
 Nộp bài vào hai thư mục `lab-23/` và `lab-24/` trong repository cá nhân. Nhiệm vụ 1 đến 3 thuộc `lab-23/`, nhiệm vụ 4 và 5 thuộc `lab-24/`.
 
@@ -172,21 +184,21 @@ Quy ước chung:
 - `README.md` trả lời đủ 7 câu của template và ghi rõ đã làm L1 hay L2. Giải thích cách chạy lại từ đầu (các lệnh `apply` theo thứ tự).
 - Không đưa `~/.kube/config`, token, hay bất kỳ secret nào vào repo.
 
-## Barem chấm
+## Bảng điểm
 
-| Tiêu chí | Đạt | Không đạt | Điểm |
-| --- | --- | --- | --- |
-| Nhiệm vụ 1: Manifest và rollout | Manifest tự viết, đủ probe và resources, đúng nhãn, 3/3 Ready, apply lần hai `unchanged` | Thiếu probe hoặc nhãn sai, Pod không Ready, không có bằng chứng idempotent | 15 |
-| Nhiệm vụ 2: Quan sát và truy cập | Đủ bốn phần trong `inspect.txt`, jsonpath gọn, có log request `200` qua cổng 8082 | Thiếu phần, output dán từ nguồn khác, không có log request | 15 |
-| Nhiệm vụ 3: Điều tra image sai | Tái hiện được lỗi, có Events, chứng minh Pod cũ còn chạy, khôi phục và diff sạch | Chỉ nêu kết luận không có lệnh, không khôi phục, Git khác cluster | 15 |
-| Nhiệm vụ 4: Service và DNS | Service đúng cổng, 3 endpoints cổng 80, ba tên DNS cùng ClusterIP, `curl` 200 | `targetPort` sai, thiếu bằng chứng DNS, ClusterIP không khớp | 20 |
-| Nhiệm vụ 5: Điều tra Endpoints rỗng | Có ba thời điểm `get endpoints`, so sánh selector với nhãn, nguyên nhân gốc đúng, đã sửa | Thiếu điều tra từng bước, chỉ sửa mà không giải thích, không sửa file nguồn | 20 |
-| Chất lượng nộp bài | README đủ 7 câu, cấu trúc thư mục đúng, chạy lại được, không secret, PR có review | Thiếu mục, cấu trúc sai, có thông tin nhạy cảm | 10 |
-| Câu hỏi kiểm tra kiến thức | Trả lời đúng ý và bằng lời của mình | Sao chép đề lab, sai khái niệm | 5 |
-| Tổng | | | 100 |
-| Điểm thưởng L2 | Script đúng ba tình huống; gọi chéo namespace có giải thích; bảng so sánh có bằng chứng | Thiếu mã thoát, thiếu kết quả thất bại | tối đa +10 |
+| Tiêu chí | Điểm |
+| --- | --- |
+| Nhiệm vụ 1: Manifest và rollout | 15 |
+| Nhiệm vụ 2: Quan sát và truy cập | 15 |
+| Nhiệm vụ 3: Điều tra image sai | 15 |
+| Nhiệm vụ 4: Service và DNS | 20 |
+| Nhiệm vụ 5: Điều tra Endpoints rỗng | 20 |
+| Chất lượng nộp bài | 10 |
+| Câu hỏi kiểm tra kiến thức | 5 |
+| Tổng | 100 |
+| Điểm thưởng L2 | tối đa +10 |
 
-Quy định: nếu có secret hoặc kubeconfig trong repo, bài bị trừ toàn bộ phần "Chất lượng nộp bài" và phải xóa khỏi lịch sử trước khi chấm lại.
+Có secret hoặc kubeconfig trong repo thì bị trừ toàn bộ phần "Chất lượng nộp bài". Tiêu chí đạt và không đạt chi tiết do mentor giữ; hãy tự đối chiếu bằng checklist ở cuối trang.
 
 ## Câu hỏi kiểm tra kiến thức
 
@@ -198,19 +210,6 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục cuối của `lab-24/report
 4. Service liên kết với Pod bằng cơ chế nào, và điều gì xảy ra với Endpoints khi một Pod mất trạng thái Ready?
 5. Pod ở namespace `lab24-x` muốn gọi Service `notice-board` ở `club-dev`: dùng tên nào, và vì sao tên ngắn không đủ?
 
-## Lỗi hay bị trừ điểm
-
-- Chạy lệnh ở sai namespace (quên `-n club-dev`) rồi kết luận "workload mất".
-- Dán screenshot thay cho output text, hoặc output không có dòng lệnh đi kèm.
-- `port-forward` trên cổng 8080 hoặc 8081 đã bị chiếm, dẫn tới `address already in use`; đề yêu cầu dùng 8082.
-- Để selector Service và nhãn Pod lệch nhau, không kiểm tra `get endpoints` sau khi apply.
-- Nhầm `port`, `targetPort` và `containerPort`; dùng `targetPort: 8080` trong khi nginx nghe cổng 80.
-- Sửa lỗi bằng `kubectl edit` hoặc `patch` mà không cập nhật manifest, khiến Git và cluster lệch nhau.
-- Dùng tag `latest` hoặc quên pin phiên bản image.
-- File lỗi nằm chung thư mục với manifest chính và bị `apply -f` cả thư mục.
-- Không dọn tài nguyên thử nghiệm (Pod debug, namespace `lab24-x`).
-- Commit `~/.kube/config`, token hay file `.env`.
-
 ## Quy trình nộp
 
 1. Tạo branch trong repository cá nhân, ví dụ `week-12`.
@@ -219,7 +218,7 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục cuối của `lab-24/report
 4. Nhờ ít nhất một bạn review và xử lý nhận xét của bạn đó; review cần có ít nhất một góp ý cụ thể về evidence hoặc manifest.
 5. Mentor chấm theo barem sau khi PR đã được review.
 
-Hạn nộp: trước buổi đầu tiên của tuần 13. Nộp muộn bị trừ điểm theo quy định chung ở [curriculum/assessment.md](../../curriculum/assessment.md).
+Hạn nộp: trước buổi đầu tiên của tuần 13. Nộp muộn bị trừ điểm theo quy định chung ở [Đánh giá và chấm điểm](../../curriculum/assessment.md).
 
 ## Checklist trước khi nộp
 

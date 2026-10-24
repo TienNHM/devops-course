@@ -1,5 +1,9 @@
 # Walkthrough tuần 11 – Kubernetes Setup và Workloads
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải buổi 21 (dựng cluster kind) và buổi 22 (Pods, Deployments, rolling update, ImagePullBackOff), kèm bài tập tuần và bảng chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -369,3 +373,73 @@ Gợi ý chấm nhanh:
 - Với bản tham khảo mẫu, tên Pod và hash trong tài liệu này và trong lab chỉ là ví dụ; bài thật phải khớp với nhau giữa các lệnh (cùng hash ReplicaSet giữa `get pods` và `get replicaset`).
 - Nếu có secret hoặc kubeconfig trong repo, áp dụng quy định trừ điểm trong barem chung.
 - Điểm L2: thử thách 1 và 2 tối đa 3 điểm mỗi bài, thử thách 3 tối đa 4 điểm.
+
+### Bổ sung sau khi chuẩn hóa môi trường
+
+Bổ sung này đi kèm bản bài học đã rút gọn. Phần trên giữ nguyên để đối chiếu; khi đọc, áp dụng các quy ước mới sau.
+
+- Cluster thống nhất là `club` (context `kind-club`, node `club-control-plane`), tạo từ `starter-project/k8s/kind-config.yaml` ở buổi 21 và dùng tiếp ở buổi 22. Các tên cũ `club-lab`, `club-lab-3`, `club-hw11` nay chỉ còn ý nghĩa tham khảo; cluster 3 node đổi tên thành `club-3` và là thử thách L2 ([Buổi 21 – Thử thách thêm](../../labs/week-11/session-21-challenge.md)). Mọi lệnh `kind load docker-image ... --name club-hw11` trong phần bài tập tuần nay là `--name club`.
+- Bản bài học không còn lời giải đầy đủ của Deployment canary; lời giải nằm ngay dưới đây. Học viên chỉ nhận gợi ý từng bậc ở [Buổi 22 – Thử thách thêm](../../labs/week-11/session-22-challenge.md).
+
+#### Lời giải đầy đủ: Deployment canary (thử thách 1 buổi 22)
+
+Tên Deployment trong lab là `club-api-canary` (bài tập tuần dùng `club-api-extra` với `track: extra`; đáp án chỉ khác tên):
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: club-api-canary
+  namespace: club
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: club-api
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: club-api
+        track: canary
+    spec:
+      containers:
+        - name: api
+          image: club-api:1.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: club-secrets
+                  key: db-password
+          envFrom:
+            - configMapRef:
+                name: club-config
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+```
+
+Áp dụng bằng `kubectl apply -f club-api-canary.yaml`. Khung tự viết là `apiVersion`, `kind`, `metadata`, selector, template; phần `env`, `envFrom`, `readinessProbe` có thể chép từ `k8s/backend.yaml` sau khi học viên đã tự viết khung. Deployment chính `club-api` có selector `app: club-api` trùng một phần với label của Pod canary: an toàn vì Pod canary đã có owner là ReplicaSet của canary, nhưng thực hành tốt là thêm nhãn phân biệt vào cả selector của Deployment chính (selector không sửa được nên phải xóa và tạo lại Deployment đó). Dọn dẹp: `kubectl delete deployment club-api-canary -n club`.
+
+#### Ghi chú thêm cho thử thách rolling update
+
+Khi học viên chép `k8s/backend.yaml` thành `source/backend-l2.yaml`, selector không đổi nên `kubectl apply` an toàn. Để đổi image, sửa dòng `image:` trong file rồi apply lại; nếu dùng `kubectl set image` thì lần apply sau ghi đè về image trong file. `revisionHistoryLimit: 3` giữ tối đa 3 ReplicaSet cũ để rollback. Phép tính vẫn như trên: tối đa 5 Pod, tối thiểu 4 Pod Ready.
+
+#### Ghi chú về cluster 1 node và taint
+
+Cluster `club` có 1 node nên kind gỡ taint `NoSchedule` của control plane; vì vậy câu hỏi về taint chỉ kiểm tra được khi học viên làm thử thách cluster `club-3` (3 node). Với cluster 1 node, bảng thành phần ở bài tập tuần có mọi Pod nằm trên `club-control-plane`; ý "kube-proxy mỗi node một Pod" chỉ kiểm tra được ở `club-3`.

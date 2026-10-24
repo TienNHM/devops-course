@@ -1,5 +1,9 @@
 # Walkthrough tuần 6 – Networking và Persistent Storage
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 11 và Buổi 12 (network, DNS container, isolation, volume, pg_dump), kèm gợi ý giải bài tập tuần 6 và bảng chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -218,3 +222,137 @@ Thử thách A, B của Buổi 11 và Thử thách A của Buổi 12 giải ở 
 | L2 (thưởng) | Script PASS hoặc FAIL, thoát khác 0 khi sai, tự dọn, hai lần chạy; Compose với `web` không phân giải được `postgres`; báo cáo 5 mục có log | Script chỉ chạy được khi có can thiệp tay; `web` vẫn thấy `postgres` do để chung network; dùng `localhost` trong `wget` rồi ghi nhận "API hỏng" | Compose của bạn khác `docker run` ở chỗ nào về network? `down` khác `down -v` thế nào? |
 
 Gợi ý chung khi vấn đáp: nhờ học viên mô tả bằng lời đường đi của một gói tin từ `curl` trên host tới Postgres (host, port mapping, API, DNS nhúng, Postgres), và giải thích hậu quả của `docker volume rm` với bản backup của chính họ. Bài hiểu thật nói được lỗi nằm ở đâu khi hai đường dẫn (mount và `data_directory`) khác nhau.
+
+### Bổ sung: lời giải chuyển từ bài lab (Buổi 11 và 12)
+
+Các lời giải dưới đây trước đây nằm trong bài lab của học viên; đã chuyển về đây khi rút gọn bài lab.
+
+**Buổi 11, Thử thách B: `source/compose.yaml` hai network.**
+
+```yaml
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: clubdb
+      POSTGRES_USER: club
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    networks:
+      - backend-net
+
+  api:
+    image: club-api:1.0.0
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: clubdb
+      DB_USER: club
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:13001:3000"
+    networks:
+      - backend-net
+      - frontend-net
+
+  web:
+    image: nginx:1.27-alpine
+    networks:
+      - frontend-net
+
+networks:
+  backend-net:
+  frontend-net:
+```
+
+Gợi ý đã đưa cho học viên: khai báo `networks:` ở mức cao nhất với hai network rồi liệt kê network cho từng service; để kiểm tra DNS dùng `docker compose exec web nslookup postgres` (Alpine có sẵn `nslookup` của BusyBox). Lệnh kiểm tra:
+
+```bash
+docker compose exec web nslookup postgres
+docker compose exec api wget -qO- http://127.0.0.1:3000/health
+```
+
+Lệnh đầu phải báo không tìm thấy tên (`can't resolve` hoặc `NXDOMAIN`); lệnh sau trả JSON health. Dùng `127.0.0.1` thay vì `localhost` vì `wget` của BusyBox thử IPv6 trước.
+
+**Buổi 11, Thử thách A: bản script gốc trong bài lab** (chưa thoát mã khác 0 khi `FAIL`; bản đầy đủ ở phần Lời giải L2 phía trên). Gợi ý đã đưa: `trap cleanup EXIT` ở đầu script; kiểm tra "mong đợi thất bại" viết `if ! docker exec ... ; then echo PASS; fi`; dùng `wget -T 3`.
+
+```bash
+#!/usr/bin/env bash
+set -u
+cleanup() {
+  docker rm -f t-a t-b >/dev/null 2>&1
+  docker network rm t-net-a t-net-b >/dev/null 2>&1
+}
+trap cleanup EXIT
+
+docker network create t-net-a >/dev/null
+docker network create t-net-b >/dev/null
+docker run -d --name t-a --network t-net-a nginx:1.27-alpine >/dev/null
+docker run -d --name t-b --network t-net-b alpine:3.20 sleep 600 >/dev/null
+sleep 2
+
+IP_A=$(docker inspect -f '{{(index .NetworkSettings.Networks "t-net-a").IPAddress}}' t-a)
+
+if ! docker exec t-b wget -qO- -T 3 http://t-a >/dev/null 2>&1; then echo "PASS goi bang ten that bai"; else echo "FAIL"; fi
+if ! docker exec t-b wget -qO- -T 3 "http://$IP_A" >/dev/null 2>&1; then echo "PASS goi bang IP that bai"; else echo "FAIL"; fi
+
+docker network connect t-net-a t-b
+if docker exec t-b wget -qO- -T 3 http://t-a >/dev/null 2>&1; then echo "PASS sau khi connect thanh cong"; else echo "FAIL"; fi
+```
+
+**Buổi 12, Thử thách A: `source/compose.yaml` và chuỗi lệnh chứng minh `down` với `down -v`.** Gợi ý đã đưa: dùng `name: lab12` ở đầu file để tên project và tên volume dễ đoán (`lab12_pgdata`); dùng `${DB_PASSWORD:?Set DB_PASSWORD}` giống `starter-project/compose.yaml`, đặt `DB_PASSWORD` trong `.env` (không commit); `docker compose up -d --wait` chờ tới khi healthcheck báo healthy.
+
+```yaml
+name: lab12
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: clubdb
+      POSTGRES_USER: club
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U club -d clubdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+```
+
+```bash
+cd ~/devops-labs/lab-12/source
+echo "DB_PASSWORD=lab-only-password" > .env
+docker compose up -d --wait
+docker compose exec postgres psql -U club -d clubdb -c "CREATE TABLE t(x int); INSERT INTO t VALUES (1);"
+docker compose down && docker compose up -d --wait
+docker compose exec postgres psql -U club -d clubdb -tA -c "SELECT count(*) FROM t;"   # 1
+docker compose down -v && docker compose up -d --wait
+docker compose exec postgres psql -U club -d clubdb -tA -c "SELECT count(*) FROM t;"   # báo lỗi: relation "t" does not exist
+```
+
+Giải thích: `down` xóa container và network nhưng giữ named volume; `down -v` xóa thêm các named volume khai báo trong file. Database mới sinh ra từ volume rỗng nên không có bảng `t`.
+
+**Buổi 12, Thử thách B (backup mức volume):** gợi ý đã đưa cho học viên: dùng container `alpine:3.20` gắn volume ở chế độ chỉ đọc và gắn thư mục hiện tại (`source/`) để ghi file; tên volume do Compose đặt là `lab12_pgdata` (kiểm tra bằng `docker volume ls`); lệnh nén là `tar czf`. Lời giải ở phần trên.
+
+**Buổi 12, dọn dẹp cuối buổi:**
+
+```bash
+(cd ~/devops-labs/lab-12/source && docker compose down -v 2>/dev/null); docker rm -f pg-lab pg-lab2 2>/dev/null; docker volume rm pg-data 2>/dev/null; true
+```
+
+**Buổi 11, Phá lỗi 1: lệnh sửa chi tiết (tạo lại container).**
+
+```bash
+docker rm -f lab-api-bad
+docker run -d --name lab-api-bad --network club-net -p 127.0.0.1:13002:3000 \
+  -e DB_HOST=lab-postgres -e DB_PORT=5432 -e DB_NAME=clubdb \
+  -e DB_USER=club -e DB_PASSWORD="$DB_PASSWORD" \
+  club-api:1.0.0
+sleep 2; curl -s -o /dev/null -w "%{http_code}\n" http://localhost:13002/ready
+```
+
+Kết quả mong đợi: `200`.

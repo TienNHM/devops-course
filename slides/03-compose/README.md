@@ -1,27 +1,21 @@
-# Deck 03 – Docker Compose
+# Slide 03 – Docker Compose
 
-Bộ slide cho Tuần 7 (Giai đoạn 2 – Containerization): chạy cả starter-project bằng một file `compose.yaml` rồi nâng cấp lên mức vận hành đáng tin cậy. Tổng cộng 43 slide, mỗi slide một ý chính, có ghi chú giảng viên.
+> **Tóm tắt:** Chạy cả hệ thống bằng một file compose. Bộ slide gồm 2 buổi (13 đến 14) dành cho mentor chiếu trên lớp.
 
-## Các buổi trong deck
+## Slide dùng để làm gì
 
-| Buổi | Chủ đề | Số slide | Slide | Bài lab |
-| --- | --- | --- | --- | --- |
-| 13 | Docker Compose | 21 | [session-13.md](session-13.md) | [Lab buổi 13](../../labs/week-07/session-13.md) |
-| 14 | Production-minded Compose | 22 | [session-14.md](session-14.md) | [Lab buổi 14](../../labs/week-07/session-14.md) |
+Slide dành cho mentor chiếu trên lớp để dẫn dắt; học viên làm theo bài Lab, không cần đọc slide trước. Slide chỉ giữ khung khái niệm, sơ đồ, demo outline và recap. Lệnh thực hành nằm trong bài Lab.
 
-## Mục tiêu của deck
+## Các buổi trong bộ slide
 
-- Mô tả và chạy cả Frontend, API, PostgreSQL bằng `docker compose up -d --build`.
-- Hiểu `depends_on`, `healthcheck`, `restart`, `volumes`, `.env` và mối quan hệ giữa chúng.
-- Biết phân biệt "container đang chạy" với "service sẵn sàng".
-- Có thói quen vận hành: giới hạn tài nguyên, log rotation, secret dạng file, backup và restore thật.
-- Chuẩn bị nền tảng cho probe, resource limits, Secret và PVC ở Kubernetes.
+| Buổi | Slide | Bài Lab | Bài tập |
+| --- | --- | --- | --- |
+| Buổi 13 – Docker Compose | [Slide](session-13.md) | [Buổi 13 – Docker Compose](../../labs/week-07/session-13.md) | [Bài tập tuần 07](../../assignments/weekly/week-07.md) |
+| Buổi 14 – Production-minded Compose | [Slide](session-14.md) | [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md) | [Bài tập tuần 07](../../assignments/weekly/week-07.md) |
 
-## Mẹo trình bày
+## Mẹo chiếu slide bằng trình duyệt
 
-- Mở file slide bằng trình duyệt qua site giáo trình, chia sẻ cửa sổ trình duyệt; phóng to bằng `Ctrl` và `+` cho tới khi người ngồi cuối lớp đọc được code block.
-- Mỗi slide chỉ giữ một ý; phần "Ghi chú giảng viên" bấm mở khi cần lời dẫn, thời lượng và câu hỏi cho lớp.
-- Chia sẻ terminal WSL với cỡ chữ lớn (tối thiểu 16-18 pt), nền tối, chỉ một lệnh mỗi lần; xóa màn hình bằng `clear` trước mỗi demo.
-- Buổi 14 cần hai terminal cạnh nhau (một chạy `watch -n 1 docker compose ps`, một chạy lệnh) để thấy khoảng chờ giữa started và ready.
-- Chạy thử toàn bộ demo trước giờ học; dọn môi trường bằng `docker compose down -v` trong cả `lab-13/source` và `lab-14/source` để hai lab không dẫm lên nhau.
-- Cho học viên dự đoán kết quả trước khi chạy lệnh quan trọng (`down` so với `down -v`, `kill` so với `stop`, `/health` so với `/ready`).
+- Mở trang slide trên site, bấm F11 để toàn màn hình và cuộn từng slide.
+- Phóng to chữ bằng Ctrl và dấu cộng tới khi người ngồi cuối lớp đọc được code block.
+- Chia sẻ terminal WSL với cỡ chữ từ 16 đến 18 pt, nền tối, mỗi lần một lệnh; gõ `clear` trước mỗi demo.
+- Chạy thử toàn bộ demo trước giờ học.

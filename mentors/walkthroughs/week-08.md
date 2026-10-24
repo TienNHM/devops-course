@@ -1,5 +1,9 @@
 # Walkthrough tuần 8 – CI/CD Fundamentals và GitHub Actions
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải tuần 8: thiết kế pipeline Club API, pipeline giả lập, workflow GitHub Actions có cache và matrix, kèm gợi ý bài tập và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này

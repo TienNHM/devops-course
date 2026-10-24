@@ -1,15 +1,27 @@
-# Deploy web tĩnh lên 4 nơi
+# Deploy web tĩnh: có link công khai
 
-> **Tóm tắt:** Đưa cùng một trang web tĩnh lên GitHub Pages, Cloudflare (Workers static assets, kèm Pages), Netlify và Vercel bằng cả giao diện lẫn CLI, rồi so sánh preview, rollback, domain, HTTPS và giới hạn gói miễn phí.
+> **Tóm tắt:** Chặng 1, bước cuối: đưa trang web tĩnh lên GitHub Pages để có link công khai. Nền tảng khác (Cloudflare, Netlify, Vercel) gập sẵn để thử sau.
 
-Đây là bài thứ hai của track "Vibe Deploy". Ở bài trước bạn đã đưa code lên GitHub ([01-git-github.md](01-git-github.md)). Bây giờ ta biến repo đó thành một đường link công khai. Web tĩnh là loại dễ deploy nhất, miễn phí ở cả bốn nơi, và là bước đệm tốt cho phần có backend ở [bài 03](03-fullstack-serverless.md).
+::: tip Bạn làm gì: có link công khai cho trang web của mình
+**Bạn sẽ tạo ra:** một đường link dạng `ten-ban.github.io/ten-repo` mà ai cũng mở được.
+
+**Thời gian:** đọc 10 phút, làm 20 đến 30 phút. Thử thêm nền tảng khác (không bắt buộc): mỗi nơi khoảng 10 đến 15 phút.
+
+**Cần có trước:** repo GitHub chứa `index.html` ở [bài 01 Git và GitHub](01-git-github.md); đã đọc [bài 00 Tư duy](00-mindset.md).
+
+**Chỉ bắt buộc MỘT nền tảng.** Khuyến nghị GitHub Pages: bạn đã có tài khoản GitHub và repo từ bài 01, không cần đăng ký thêm dịch vụ nào, không cần thẻ, và bật bằng vài cú bấm trong Settings. Các nền tảng khác nằm trong mục "Thử nền tảng khác" ở dưới.
+
+Thuật ngữ lần đầu trong bài: [deploy, hosting, domain, HTTPS](../resources/glossary.md).
+:::
+
+Đây là bài thứ ba của Chặng 1 "Có link công khai". Ở bài trước bạn đã đưa code lên GitHub ([bài 01 Git và GitHub](01-git-github.md)). Bây giờ ta biến repo đó thành một đường link công khai. Web tĩnh là loại dễ deploy nhất, miễn phí ở cả bốn nơi, và là bước đệm tốt cho phần có backend ở [bài 03 Fullstack serverless](03-fullstack-serverless.md).
 
 ## Bạn sẽ làm được gì
 
-Thời lượng ước tính: 60 đến 90 phút nếu thử cả 4 nơi (mỗi nơi khoảng 10 đến 15 phút).
+Thời lượng ước tính: 20 đến 30 phút với một nền tảng. Thử thêm các nơi khác thì mỗi nơi 10 đến 15 phút.
 
 - Hiểu "web tĩnh" là gì và vì sao nó rẻ, nhanh, khó hỏng.
-- Có link công khai của cùng một sản phẩm trên GitHub Pages, Cloudflare, Netlify và Vercel.
+- Có link công khai của sản phẩm trên GitHub Pages (hoặc nền tảng bạn chọn).
 - Biết xem preview deploy trước khi lên bản chính, và quay lui (rollback) khi lỡ làm hỏng.
 - Biết gắn domain riêng và để HTTPS tự bật.
 - Tự sửa được hai lỗi kinh điển: trang trắng/mất CSS trên GitHub Pages, và lỗi 404 khi refresh trang trong Single Page App.
@@ -20,7 +32,7 @@ Thời lượng ước tính: 60 đến 90 phút nếu thử cả 4 nơi (mỗi 
 
 **Web tĩnh** là website chỉ gồm các file có sẵn: `index.html`, `style.css`, `script.js`, ảnh. Máy chủ chỉ việc đưa file cho trình duyệt, không tính toán gì. Giống tờ rơi đã in sẵn: phát cho ai cũng như nhau. Vì vậy nó nhanh, rẻ và gần như không sập.
 
-Web **không tĩnh** (có đăng nhập, lưu dữ liệu, gọi AI bằng key bí mật) cần thêm backend. Phần đó nằm ở [bài 03](03-fullstack-serverless.md), [bài 04](04-supabase.md) và [bài 05](05-firebase.md).
+Web **không tĩnh** (có đăng nhập, lưu dữ liệu, gọi AI bằng key bí mật) cần thêm backend. Phần đó nằm ở [bài 03 Fullstack serverless](03-fullstack-serverless.md), [bài 04 Supabase](04-supabase.md) và [bài 05 Firebase](05-firebase.md).
 
 Hai thuật ngữ cần nhớ:
 
@@ -44,11 +56,20 @@ Quy tắc dễ nhớ: nhánh chính (thường là `main`) tạo bản **product
 
 Sản phẩm dùng xuyên suốt bài: thư mục `examples/vibe/static-site/` (HTML, CSS, JS thuần, không cần build). Bạn cũng có thể dùng sản phẩm tĩnh của chính mình, chỉ cần có `index.html` ở thư mục gốc hoặc trong một thư mục con rõ ràng.
 
+## Chọn MỘT nền tảng cho Chặng 1
+
+| Nền tảng | Hợp khi | Lý do |
+| --- | --- | --- |
+| **GitHub Pages (khuyến nghị)** | Trang giới thiệu, portfolio, landing page | Dùng luôn tài khoản và repo GitHub, không đăng ký thêm, không thẻ |
+| Cloudflare (Workers static assets) | Bạn đã có hoặc sắp mua domain ở Cloudflare, muốn có preview theo nhánh | Cần thêm tài khoản Cloudflare và file cấu hình |
+
+Netlify và Vercel cũng dùng được, xem mục "Thử nền tảng khác" ở cuối phần thực hành. Hãy làm một nơi cho xong rồi mới thử nơi khác.
+
 ## Thực hành từng bước
 
 ### Bước 0. Chuẩn bị repo
 
-1. Tạo một repo GitHub mới, ví dụ `my-static-site`, và đưa nội dung của `examples/vibe/static-site/` vào **thư mục gốc** của repo (file `index.html` nằm ngay ngoài cùng). Cách làm chi tiết xem [01-git-github.md](01-git-github.md).
+1. Tạo một repo GitHub mới, ví dụ `my-static-site`, và đưa nội dung của `examples/vibe/static-site/` vào **thư mục gốc** của repo (file `index.html` nằm ngay ngoài cùng). Cách làm chi tiết xem [bài 01 Git và GitHub](01-git-github.md).
 2. Kiểm tra trên máy trước khi deploy. Mở thẳng `index.html` bằng trình duyệt, hoặc chạy một server thử:
 
 ```bash
@@ -132,13 +153,67 @@ Chi tiết và danh sách IP luôn lấy từ tài liệu chính thức (liên k
 
 **Giới hạn đáng biết** (theo tài liệu GitHub, kiểm tra 10/2026): site tối đa 1 GB; băng thông mềm 100 GB mỗi tháng; mềm 10 lần build mỗi giờ (không áp dụng nếu build bằng workflow Actions tự viết); một lần deploy chạy quá 10 phút sẽ thất bại. Chỉ phù hợp web tĩnh, không chạy được backend. GitHub Pages **không dành cho** dịch vụ thương mại (bán hàng, thanh toán, SaaS thương mại) và không nên chứa dữ liệu nhạy cảm như mật khẩu hay số thẻ. Nếu dự án của bạn thuộc loại đó, hãy đọc trang giới hạn chính thức ở cuối bài.
 
-### Phần B. Cloudflare (Workers với static assets, và Pages)
+### Hai vấn đề kinh điển
+
+**1. Sai đường dẫn tài nguyên trên GitHub Pages (trang trắng hoặc mất CSS).**
+
+Project site nằm ở `https://USERNAME.github.io/TEN-REPO/`, tức là web của bạn không nằm ở gốc `/` mà ở `/TEN-REPO/`. Nếu code viết `href="/style.css"`, trình duyệt đi tìm `https://USERNAME.github.io/style.css` (sai chỗ) và báo 404 trong tab Network.
+
+| Cách viết | Kết quả trên project site |
+| --- | --- |
+| `href="style.css"` hoặc `href="./style.css"` | Đúng, tính theo thư mục hiện tại |
+| `href="/style.css"` | Sai, nhảy lên gốc của `github.io` |
+| `href="/TEN-REPO/style.css"` | Chạy được nhưng dính cứng tên repo, đổi tên là hỏng |
+
+Cách sửa: dùng đường dẫn tương đối. Với dự án Vite, đặt base trong `vite.config.js`:
+
+```js
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  base: '/TEN-REPO/',
+})
+```
+
+Ví dụ này dùng cho project site; nếu dùng domain riêng hoặc user site thì để `base: '/'`. Các framework khác có tùy chọn tương tự (thường tên `base`, `basePath` hoặc `publicPath`), hãy nhờ AI agent tìm đúng cho framework bạn dùng.
+
+**2. Single Page App bị 404 khi refresh.**
+
+SPA (React, Vue, Vite...) chỉ có **một** file thật là `index.html`. Khi bạn bấm link trong web để sang `/about`, JavaScript tự đổi màn hình mà không hỏi máy chủ. Nhưng nếu bạn **refresh** hoặc mở thẳng `/about`, trình duyệt hỏi máy chủ file `/about`; máy chủ không có file đó nên trả 404. Giống như bạn đi thẳng đến "phòng 302" mà tòa nhà chỉ có một cửa chính: phải vào cửa chính (`index.html`) trước rồi mới tìm phòng.
+
+Cách sửa: bảo máy chủ "gặp đường dẫn lạ thì trả `index.html`".
+
+| Nơi | Cách sửa |
+| --- | --- |
+| Cloudflare Workers | `not_found_handling` đặt `single-page-application` trong `assets` của `wrangler.jsonc` (Pages cũ: không có `404.html` ở gốc output là đủ) |
+| Netlify | Rule `/*` tới `/index.html` với `status = 200` trong `netlify.toml` |
+| Vercel | `rewrites` trong `vercel.json` (như ví dụ ở trên) |
+| GitHub Pages | Không có rewrite. Mẹo phổ biến: sao chép `index.html` thành `404.html` sau build, vì GitHub Pages hiển thị `404.html` cho đường dẫn không tồn tại. Cách khác: dùng hash routing (`#/about`) |
+
+Mẹo `404.html` hoạt động nhưng trả mã trạng thái 404 (trình duyệt vẫn hiển thị app, công cụ SEO thì không thích). Với web giới thiệu nhỏ thì chấp nhận được.
+
+### Cách biết build lỗi: đọc build log
+
+Khi deploy thất bại, câu trả lời gần như luôn nằm trong **build log**. Cách đọc:
+
+1. Mở bản deploy bị đỏ (Failed). GitHub: tab **Actions**; Cloudflare, Netlify, Vercel: mục **Deployments** hoặc **Deploys**.
+2. Kéo xuống **cuối** log, tìm dòng chứa `error`, `Error:`, `failed` hoặc `exit code`. Thường lỗi thật nằm ngay trên dòng "Build failed".
+3. Chép đúng khoảng 20 dòng quanh chỗ lỗi (không chứa secret) để hỏi AI agent.
+4. Chạy lại lệnh build trên máy (`npm run build`). Nếu máy bạn cũng lỗi, sửa tại máy; nếu máy chạy được mà server lỗi, nghi ngờ phiên bản Node, biến môi trường, hoặc sai output directory.
+
+Với CLI, thêm cờ in log: `vercel deploy --logs`, và `netlify deploy` hiển thị log ngay trong terminal.
+
+::: details Thử nền tảng khác (Cloudflare, Netlify, Vercel) - không bắt buộc
+
+Chỉ mở khi bạn đã có link GitHub Pages và muốn so sánh, cần preview theo Pull Request, hoặc cần backend nhỏ. Cả ba nơi đều miễn phí cho web tĩnh.
+
+#### Phần B. Cloudflare (Workers với static assets, và Pages)
 
 URL mặc định: `TEN-DU-AN.TEN-TAI-KHOAN.workers.dev` cho Workers, `TEN-DU-AN.pages.dev` cho Pages.
 
 Cloudflare có hai sản phẩm host web tĩnh. Kiểm tra 10/2026: trang tài liệu Cloudflare Pages ghi Workers là nền tảng ứng dụng chính và khuyên **bắt đầu dự án mới bằng Workers** (kèm static assets), có hướng dẫn chuyển dự án Pages sang Workers; tài liệu không nói Pages bị ngừng. Vì vậy bài này dạy **Workers static assets làm đường chính**, còn Pages ở mục B2 là đường cũ vẫn dùng được (dự án Pages có sẵn, hoặc khi bạn đang theo một hướng dẫn cũ). Tài liệu Cloudflare thay đổi thường xuyên, hãy xem lại các link cuối bài.
 
-#### B1. Workers static assets (đường chính cho dự án mới)
+##### B1. Workers static assets (đường chính cho dự án mới)
 
 Ý tưởng: bạn có một Worker (chương trình nhỏ chạy trên mạng lưới Cloudflare) và khai báo "thư mục này là file tĩnh". Khi deploy, Cloudflare tải file tĩnh lên và phục vụ chúng cùng Worker. Web thuần HTML không cần viết code Worker.
 
@@ -192,13 +267,13 @@ Nếu web nhiều trang và bạn muốn trang 404 riêng, đặt giá trị `"4
 
 **Preview:** mỗi nhánh không phải production có một URL Preview riêng khi bật Workers Builds.
 
-**Rollback:** trong trang của Worker, mở tab **Deployments** và chọn phiên bản cũ chạy tốt; hoặc dùng `npx wrangler rollback` (xem [cli-cheatsheet.md](cli-cheatsheet.md)). Giao diện hay đổi, nếu không thấy nút thì đối chiếu tài liệu Workers.
+**Rollback:** trong trang của Worker, mở tab **Deployments** và chọn phiên bản cũ chạy tốt; hoặc dùng `npx wrangler rollback` (xem [Bảng lệnh CLI](cli-cheatsheet.md)). Giao diện hay đổi, nếu không thấy nút thì đối chiếu tài liệu Workers.
 
 **Domain riêng:** vào Worker, **Settings**, **Domains & Routes**, **Add**, **Custom Domain**, nhập tên miền hoặc subdomain. Điều kiện: domain đã nằm trong tài khoản Cloudflare (zone đang hoạt động) và hostname chưa có bản ghi CNAME. Cloudflare tự tạo bản ghi DNS và cấp chứng chỉ HTTPS. Có thể khai báo trong file cấu hình bằng mục `routes` có `pattern` và `custom_domain` đặt `true`, rồi chạy `npx wrangler deploy`.
 
-**Giới hạn đáng biết:** request tới file tĩnh không tính vào hạn mức request của Worker (theo tài liệu Cloudflare); request chạy code Worker mới tính, gói Free khoảng 100.000 request mỗi ngày (kiểm tra 10/2026). Giới hạn số file, kích thước file và số lần build của gói Free thay đổi theo thời gian, hãy xem trang giá và giới hạn Workers. Backend nhỏ chạy trên cùng Worker sẽ gặp ở [bài 03](03-fullstack-serverless.md).
+**Giới hạn đáng biết:** request tới file tĩnh không tính vào hạn mức request của Worker (theo tài liệu Cloudflare); request chạy code Worker mới tính, gói Free khoảng 100.000 request mỗi ngày (kiểm tra 10/2026). Giới hạn số file, kích thước file và số lần build của gói Free thay đổi theo thời gian, hãy xem trang giá và giới hạn Workers. Backend nhỏ chạy trên cùng Worker sẽ gặp ở [bài 03 Fullstack serverless](03-fullstack-serverless.md).
 
-#### B2. Cloudflare Pages (đường cũ, vẫn dùng được)
+##### B2. Cloudflare Pages (đường cũ, vẫn dùng được)
 
 Pages hợp nếu bạn đã có dự án Pages hoặc theo hướng dẫn cũ; dự án mới nên dùng B1. Giao diện tạo dự án có thể đã đổi: nếu không thấy lựa chọn Pages trong **Create application**, hãy đọc trang Pages và hướng dẫn chuyển sang Workers (link cuối bài).
 
@@ -220,7 +295,7 @@ npx wrangler pages project create ten-du-an --production-branch=main
 npx wrangler pages deploy . --project-name=ten-du-an
 ```
 
-Lệnh đầu mở trình duyệt để bạn tự đăng nhập; lệnh thứ hai tạo dự án (thay `ten-du-an` bằng tên của bạn, viết thường, không dấu); lệnh thứ ba tải thư mục hiện tại lên. Để tạo bản preview theo nhánh: `npx wrangler pages deploy . --project-name=ten-du-an --branch=ten-nhanh`. Lưu ý: tài liệu Cloudflare ghi rõ dự án đã kết nối Git thì không đổi sang Direct Upload được về sau. Direct Upload từ giao diện web cũng không hỗ trợ Functions: muốn có Functions, dùng Git hoặc Wrangler (xem [bài 03](03-fullstack-serverless.md)).
+Lệnh đầu mở trình duyệt để bạn tự đăng nhập; lệnh thứ hai tạo dự án (thay `ten-du-an` bằng tên của bạn, viết thường, không dấu); lệnh thứ ba tải thư mục hiện tại lên. Để tạo bản preview theo nhánh: `npx wrangler pages deploy . --project-name=ten-du-an --branch=ten-nhanh`. Lưu ý: tài liệu Cloudflare ghi rõ dự án đã kết nối Git thì không đổi sang Direct Upload được về sau. Direct Upload từ giao diện web cũng không hỗ trợ Functions: muốn có Functions, dùng Git hoặc Wrangler (xem [bài 03 Fullstack serverless](03-fullstack-serverless.md)).
 
 **Preview:** mỗi nhánh/Pull Request có một URL preview riêng, hiển thị trong danh sách **Deployments**.
 
@@ -230,9 +305,9 @@ Lệnh đầu mở trình duyệt để bạn tự đăng nhập; lệnh thứ h
 
 **SPA:** nếu dự án **không có** file `404.html` ở thư mục gốc, Pages coi đó là Single Page App và trả trang gốc cho mọi đường dẫn không khớp file nào.
 
-**Giới hạn đáng biết** (gói Free theo tài liệu, kiểm tra 10/2026): 500 lần build mỗi tháng, mỗi lần build tối đa 20 phút, tối đa 20.000 file mỗi site, mỗi file tối đa 25 MiB, 100 domain riêng mỗi dự án. Request tới file tĩnh không giới hạn và không tính phí; chỉ request chạy Functions mới tính vào hạn mức hằng ngày. Pages Functions (backend nhỏ) sẽ gặp lại ở [bài 03](03-fullstack-serverless.md).
+**Giới hạn đáng biết** (gói Free theo tài liệu, kiểm tra 10/2026): 500 lần build mỗi tháng, mỗi lần build tối đa 20 phút, tối đa 20.000 file mỗi site, mỗi file tối đa 25 MiB, 100 domain riêng mỗi dự án. Request tới file tĩnh không giới hạn và không tính phí; chỉ request chạy Functions mới tính vào hạn mức hằng ngày. Pages Functions (backend nhỏ) sẽ gặp lại ở [bài 03 Fullstack serverless](03-fullstack-serverless.md).
 
-### Phần C. Netlify
+#### Phần C. Netlify
 
 URL mặc định: `TEN-SITE.netlify.app`.
 
@@ -285,7 +360,7 @@ netlify deploy --dir=. --prod
 
 **Giới hạn đáng biết** (theo tài liệu Netlify, kiểm tra 10/2026): gói Free tính theo **credits**, có 300 credits mỗi tháng, đầu mỗi chu kỳ thanh toán được đặt lại và không cộng dồn. Gói Free là **hạn mức cứng**: hết credits thì mọi dự án bị tạm dừng và khách vào thấy trang "Site not available", và gói Free không mua thêm được credits. Mức tiêu hao tham khảo: mỗi lần deploy production thành công 15 credits (deploy lỗi, rollback, Deploy Preview và branch deploy là 0), băng thông 20 credits mỗi GB, chạy function 10 credits mỗi GB-giờ. Nghĩa là 300 credits chỉ đủ khoảng 20 lần deploy production, nên đừng bấm deploy production liên tục khi thử nghiệm; hãy dùng `netlify deploy` (bản nháp) hoặc nhánh phụ. Số liệu đổi theo thời gian, luôn đối chiếu trang giá.
 
-### Phần D. Vercel
+#### Phần D. Vercel
 
 URL mặc định: `TEN-DU-AN.vercel.app`.
 
@@ -324,7 +399,7 @@ vercel --prod
 
 **Giới hạn đáng biết:** gói Hobby chỉ dành cho **mục đích cá nhân, phi thương mại**. Site có bán hàng, quảng cáo, nhận tiền để làm site cho khách... đều thuộc dùng thương mại và cần gói trả phí (nhận quyên góp thì không tính là thương mại). Theo tài liệu fair use (kiểm tra 10/2026), mức tham khảo của Hobby gồm 100 GB Fast Data Transfer và 1.000.000 lần gọi function mỗi tháng. Tài liệu định nghĩa dùng thương mại là bất kỳ deployment nào phục vụ lợi ích tài chính của bất kỳ ai tham gia làm dự án, kể cả người được trả công viết code. Bạn tự quyết định có nâng cấp hay không; khóa này ưu tiên gói miễn phí.
 
-### Bước cuối. So sánh sau khi thử cả 4
+#### Bước cuối. So sánh sau khi thử cả 4
 
 Điền bảng này theo trải nghiệm của chính bạn (bao nhiêu phút, gặp lỗi gì), rồi đối chiếu với bảng tham khảo:
 
@@ -338,57 +413,9 @@ vercel --prod
 | Backend nhỏ | Không | Worker (cùng dự án) | Netlify Functions | Vercel Functions |
 | Điểm cần lưu ý | Base path của project site; không dành cho dịch vụ thương mại | Tên Worker phải trùng `name` trong file cấu hình; Pages là đường cũ | Free là hạn mức cứng 300 credits mỗi tháng, hết thì site bị tạm dừng | Hobby chỉ phi thương mại |
 
-Gợi ý chọn nhanh: demo tức thì thì Netlify Drop; sản phẩm tĩnh đơn giản, muốn ổn định lâu dài thì GitHub Pages hoặc Cloudflare (Workers static assets); dùng Next.js hoặc app có backend nhỏ thì Vercel. Chi tiết hơn ở [platforms.md](platforms.md).
+Gợi ý chọn nhanh: demo tức thì thì Netlify Drop; sản phẩm tĩnh đơn giản, muốn ổn định lâu dài thì GitHub Pages hoặc Cloudflare (Workers static assets); dùng Next.js hoặc app có backend nhỏ thì Vercel. Chi tiết hơn ở [So sánh nền tảng](platforms.md).
 
-### Hai vấn đề kinh điển
-
-**1. Sai đường dẫn tài nguyên trên GitHub Pages (trang trắng hoặc mất CSS).**
-
-Project site nằm ở `https://USERNAME.github.io/TEN-REPO/`, tức là web của bạn không nằm ở gốc `/` mà ở `/TEN-REPO/`. Nếu code viết `href="/style.css"`, trình duyệt đi tìm `https://USERNAME.github.io/style.css` (sai chỗ) và báo 404 trong tab Network.
-
-| Cách viết | Kết quả trên project site |
-| --- | --- |
-| `href="style.css"` hoặc `href="./style.css"` | Đúng, tính theo thư mục hiện tại |
-| `href="/style.css"` | Sai, nhảy lên gốc của `github.io` |
-| `href="/TEN-REPO/style.css"` | Chạy được nhưng dính cứng tên repo, đổi tên là hỏng |
-
-Cách sửa: dùng đường dẫn tương đối. Với dự án Vite, đặt base trong `vite.config.js`:
-
-```js
-import { defineConfig } from 'vite'
-
-export default defineConfig({
-  base: '/TEN-REPO/',
-})
-```
-
-Ví dụ này dùng cho project site; nếu dùng domain riêng hoặc user site thì để `base: '/'`. Các framework khác có tùy chọn tương tự (thường tên `base`, `basePath` hoặc `publicPath`), hãy nhờ AI agent tìm đúng cho framework bạn dùng.
-
-**2. Single Page App bị 404 khi refresh.**
-
-SPA (React, Vue, Vite...) chỉ có **một** file thật là `index.html`. Khi bạn bấm link trong web để sang `/about`, JavaScript tự đổi màn hình mà không hỏi máy chủ. Nhưng nếu bạn **refresh** hoặc mở thẳng `/about`, trình duyệt hỏi máy chủ file `/about`; máy chủ không có file đó nên trả 404. Giống như bạn đi thẳng đến "phòng 302" mà tòa nhà chỉ có một cửa chính: phải vào cửa chính (`index.html`) trước rồi mới tìm phòng.
-
-Cách sửa: bảo máy chủ "gặp đường dẫn lạ thì trả `index.html`".
-
-| Nơi | Cách sửa |
-| --- | --- |
-| Cloudflare Workers | `not_found_handling` đặt `single-page-application` trong `assets` của `wrangler.jsonc` (Pages cũ: không có `404.html` ở gốc output là đủ) |
-| Netlify | Rule `/*` tới `/index.html` với `status = 200` trong `netlify.toml` |
-| Vercel | `rewrites` trong `vercel.json` (như ví dụ ở trên) |
-| GitHub Pages | Không có rewrite. Mẹo phổ biến: sao chép `index.html` thành `404.html` sau build, vì GitHub Pages hiển thị `404.html` cho đường dẫn không tồn tại. Cách khác: dùng hash routing (`#/about`) |
-
-Mẹo `404.html` hoạt động nhưng trả mã trạng thái 404 (trình duyệt vẫn hiển thị app, công cụ SEO thì không thích). Với web giới thiệu nhỏ thì chấp nhận được.
-
-### Cách biết build lỗi: đọc build log
-
-Khi deploy thất bại, câu trả lời gần như luôn nằm trong **build log**. Cách đọc:
-
-1. Mở bản deploy bị đỏ (Failed). GitHub: tab **Actions**; Cloudflare, Netlify, Vercel: mục **Deployments** hoặc **Deploys**.
-2. Kéo xuống **cuối** log, tìm dòng chứa `error`, `Error:`, `failed` hoặc `exit code`. Thường lỗi thật nằm ngay trên dòng "Build failed".
-3. Chép đúng khoảng 20 dòng quanh chỗ lỗi (không chứa secret) để hỏi AI agent.
-4. Chạy lại lệnh build trên máy (`npm run build`). Nếu máy bạn cũng lỗi, sửa tại máy; nếu máy chạy được mà server lỗi, nghi ngờ phiên bản Node, biến môi trường, hoặc sai output directory.
-
-Với CLI, thêm cờ in log: `vercel deploy --logs`, và `netlify deploy` hiển thị log ngay trong terminal.
+:::
 
 ## Nhờ AI agent làm giúp
 
@@ -458,23 +485,27 @@ Những việc **không giao** cho agent: dán hay gõ token, mật khẩu, API 
 
 ## Checklist hoàn thành
 
+Bắt buộc (Chặng 1):
+
 - [ ] Sản phẩm chạy đúng khi mở bằng `npx serve .` trên máy.
 - [ ] Đã dùng đường dẫn tương đối cho CSS, JS, ảnh.
-- [ ] Có link công khai trên GitHub Pages.
-- [ ] Có link công khai trên Cloudflare (Workers static assets).
-- [ ] Có link công khai trên Netlify.
-- [ ] Có link công khai trên Vercel.
+- [ ] Có link công khai trên GitHub Pages, mở được bằng cửa sổ ẩn danh và trên điện thoại.
+- [ ] Không có secret nào trong repo (`git status` sạch các file `.env`).
+
+Tùy chọn (khi thử nền tảng khác):
+
+- [ ] Có link công khai trên Cloudflare (Workers static assets), Netlify hoặc Vercel.
 - [ ] Đã tạo một Pull Request và xem được link preview ở ít nhất một nền tảng.
 - [ ] Đã thử rollback ít nhất một lần.
 - [ ] Đã điền bảng so sánh bằng trải nghiệm của chính mình.
-- [ ] Không có secret nào trong repo (`git status` sạch các file `.env`).
 
 ## Tiếp theo
 
-- Cần lưu dữ liệu, form, gọi API có key bí mật: sang [bài 03 (fullstack và serverless)](03-fullstack-serverless.md).
-- Cần đăng nhập và database: [bài 04 (Supabase)](04-supabase.md) hoặc [bài 05 (Firebase)](05-firebase.md).
-- Muốn domain riêng, bảo mật, giới hạn chi phí: [bài 07](07-domain-security-production.md). Gặp lỗi lạ: [bài 08](08-troubleshooting.md).
-- So sánh nền tảng chi tiết hơn: [platforms.md](platforms.md); lệnh CLI nhanh: [cli-cheatsheet.md](cli-cheatsheet.md).
+- Có link rồi: bạn đã xong Chặng 1. Sang Chặng 2 để thêm database và đăng nhập: [bài 04 Supabase](04-supabase.md) hoặc [bài 05 Firebase](05-firebase.md). Xem lộ trình ở [trang chủ track](index.md).
+
+- Cần lưu dữ liệu, form, gọi API có key bí mật: sang [bài 03 Fullstack serverless](03-fullstack-serverless.md).
+- Muốn domain riêng, bảo mật, giới hạn chi phí: [bài 07 Domain, bảo mật, production](07-domain-security-production.md). Gặp lỗi lạ: [bài 08 Xử lý sự cố](08-troubleshooting.md).
+- So sánh nền tảng chi tiết hơn: [So sánh nền tảng](platforms.md); lệnh CLI nhanh: [Bảng lệnh CLI](cli-cheatsheet.md).
 
 Tài liệu chính thức (giao diện và giới hạn đổi thường xuyên, luôn đối chiếu):
 
@@ -492,3 +523,4 @@ Tài liệu chính thức (giao diện và giới hạn đổi thường xuyên,
 - Vercel: [https://vercel.com/docs](https://vercel.com/docs)
 - Vercel fair use: [https://vercel.com/docs/limits/fair-use-guidelines](https://vercel.com/docs/limits/fair-use-guidelines)
 - Vercel Instant Rollback: [https://vercel.com/docs/instant-rollback](https://vercel.com/docs/instant-rollback)
+

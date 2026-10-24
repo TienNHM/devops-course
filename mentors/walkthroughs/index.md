@@ -2,7 +2,15 @@
 
 > **Tóm tắt:** Mục lục các walkthrough của khóa DevOps, gồm đáp án gợi ý cho lab, bài tập tuần và hướng dẫn chấm, chỉ đọc sau khi đã tự làm.
 
+::: warning Dành cho mentor
+Đây là đáp án của khóa: mentor dùng để đối chiếu khi chấm; học viên chỉ xem sau khi đã nộp bài của tuần đó.
+:::
+
 ## Cảnh báo: tự làm trước khi đọc
+
+::: danger Học viên chỉ xem sau khi nộp bài
+Đọc đáp án trước khi tự làm sẽ lấy mất phần học quan trọng nhất. Mentor nhắc học viên mở trang này sau khi đã nộp bài của tuần tương ứng (hub tuần có mục "Đối chiếu đáp án").
+:::
 
 Walkthrough chỉ nên mở sau khi tuần học đã kết thúc và bạn đã nộp bài. Hãy tự làm lab và bài tập, tự gặp lỗi và tự gỡ lỗi trước. Đọc đáp án quá sớm sẽ lấy mất phần học quan trọng nhất của DevOps: điều tra và chẩn đoán.
 
@@ -34,4 +42,4 @@ Walkthrough chỉ nên mở sau khi tuần học đã kết thúc và bạn đã
 
 ## Cấu trúc mỗi walkthrough
 
-Mỗi file gồm lời giải theo từng buổi (đáp án L1, lời giải L2, phần phá lỗi, hiểu lầm thường gặp), gợi ý lời giải bài tập tuần và hướng dẫn chấm dành cho mentor. Đề bài gốc nằm ở thư mục `labs/` và `assignments/weekly/`.
+Mỗi file gồm lời giải theo từng buổi (đáp án L1, lời giải L2, phần phá lỗi, hiểu lầm thường gặp), gợi ý lời giải bài tập tuần và hướng dẫn chấm dành cho mentor. Đề bài gốc nằm ở [các hub tuần](../../labs/week-01/README.md) (thư mục `labs/`) và [bài tập tuần](../../assignments/weekly/week-01.md) (thư mục `assignments/weekly/`). Barem chấm chi tiết nằm ở [Mentor: chấm bài tuần 01](../grading/week-01.md) và các tuần sau, kịch bản dạy từng buổi nằm ở [Mentor: kịch bản buổi 01](../sessions/session-01.md).

@@ -1,5 +1,7 @@
 # ADR-NNNN – Tiêu đề quyết định
 
+**Dùng khi nào:** nhóm capstone cần ghi lại một quyết định kiến trúc (xem [Capstone rubric](../curriculum/capstone-rubric.md)). Sao chép file này, đổi tên theo số thứ tự quyết định.
+
 > **Tóm tắt:** Architecture Decision Record ghi lại một quyết định kiến trúc quan trọng: bối cảnh, lựa chọn, lý do và hệ quả. Đặt file tại `docs/adr/NNNN-ten-quyet-dinh.md` trong repo nhóm; mỗi quyết định một file ngắn, tối đa một trang.
 
 - Trạng thái: Đề xuất / Đã chấp nhận / Thay thế bởi ADR-NNNN

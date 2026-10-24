@@ -4,8 +4,21 @@
 
 **Hạn nộp:** trước buổi đầu tiên của tuần 03.
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-03/` và `lab-04/`.
-**Bài lab liên quan:** [Buổi 03 – Linux CLI](../../labs/week-02/session-03.md), [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md).
-**Mẫu nộp bài:** [templates/lab-template.md](../../templates/lab-template.md).
+**Bài lab liên quan:** [Buổi 03 – Linux CLI](../../labs/week-02/session-03.md), [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md). Hub tuần: [Tuần 02 – Linux Essentials](../../labs/week-02/README.md).
+**Mẫu nộp bài:** [Mẫu nộp lab](../../templates/lab-template.md).
+
+## Bảng nhiệm vụ
+
+Bài tập này nộp lại bằng chứng của lab, nhưng **có việc mới**: bạn làm lại các kỹ thuật của lab với tên user, file và dữ liệu khác, và có vài sản phẩm riêng (ma trận dự đoán, script `show-config.sh`). Việc mới được ghi rõ ở cột cuối.
+
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Workspace bằng CLI | Buổi 03, Phần 1 và Phần 2 (việc mới: cây thư mục khác, script `commands-task1.sh`) | 0,5 giờ | `club-workspace/`, `commands-task1.sh`, 5 phép kiểm tra |
+| 2. Phân tích access log | Buổi 03, Phần 3 (việc mới: tự viết `my-access.log` 15 dòng, `log-answers.md`) | 1,5 giờ | `my-access.log`, `log-answers.md`, `stderr.txt`, output pipeline |
+| 3. Thư mục chung cho nhóm | Buổi 04, Phần 1 và Phần 2 (việc mới: ma trận dự đoán commit trước) | 1,5 giờ | `id`, `ls -ld`, 5 hành động, `permissions-matrix.md` |
+| 4. Điều khiển process | Buổi 04, Phần 3 | 0,5 giờ | output `ps`, `pgrep -af`, `process-notes.md` |
+| 5. Script đọc cấu hình từ môi trường | Buổi 04, Phần 4 (việc mới: viết `show-config.sh`) | 1 giờ | `show-config.sh`, `.env.example`, 4 lần chạy kèm mã thoát |
+| L2 (tùy chọn, +10 điểm) | Hai trang thử thách thêm | 1 đến 2 giờ | Theo từng thử thách |
 
 ## Bối cảnh
 
@@ -273,28 +286,26 @@ grep -rIl "BEGIN OPENSSH PRIVATE KEY" . --exclude-dir=.git
 
 Lưu ý riêng cho tuần này: `access.log` giáo trình không chứa thông tin cá nhân, nhưng nếu bạn dán thêm log từ máy thật vào evidence, hãy kiểm tra không có IP, tên đăng nhập hay token của người khác.
 
-## Barem chấm
 
-Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
+## Bảng điểm
 
-| Tiêu chí | Đạt | Không đạt | Điểm |
-| --- | --- | --- | --- |
-| Nhiệm vụ 1: workspace | Cả 5 phép kiểm tra trong tiêu chí cho đúng kết quả; có `commands-task1.sh` dựng lại được; quote đường dẫn có khoảng trắng | Sai số lượng thư mục hoặc file, `backend.conf` bị ghi đè, thiếu script lệnh | 15 |
-| Nhiệm vụ 2: phân tích log | `my-access.log` thỏa mọi điều kiện, tổng đếm bằng 15, 5xx lọc đúng bằng cột 9, `log-answers.md` mỗi dòng có lệnh tái hiện được, có giải thích thiếu `sort`, có `stderr.txt` | Log không đủ điều kiện, tổng không khớp, số liệu không kèm lệnh, lọc 5xx bằng chuỗi lỏng | 20 |
-| Nhiệm vụ 3: thư mục chung | Đúng group, user, quyền `2770` và `770`; 5 hành động cho kết quả đúng; ma trận dự đoán có commit trước; không `chmod 777`; đã dọn và chứng minh | Thiếu setgid, thiếu đối chứng, ma trận làm sau khi chạy, có `777`, không dọn | 20 |
-| Nhiệm vụ 4: process | Có PID, PPID khớp `$$`, đủ trước và sau mỗi tín hiệu, kết thúc sạch với `exit code: 1`, ghi chú đúng tín hiệu | Dùng `pkill sleep` hoặc `killall`, thiếu chứng minh process còn hoặc đã dừng | 10 |
-| Nhiệm vụ 5: `show-config.sh` | Bốn lần chạy đúng kết quả và mã thoát, không lộ mật khẩu, mặc định `8080`, `.gitignore` có `.env`, LF và quyền thực thi | In mật khẩu, mã thoát sai, thiếu `.env.example`, có `.env` thật trong repo | 10 |
-| Câu hỏi kiểm tra kiến thức | 5 câu trả lời đúng, bằng lời của bạn, có ví dụ hoặc lệnh khi được hỏi | Sao chép đề hoặc tài liệu, trả lời sai khái niệm | 10 |
-| `README.md` và `report.md` | Đủ 7 câu mỗi lab, ghi lỗi thật và cách điều tra, ghi rõ mức đã làm | Thiếu câu, không ghi lỗi, không ghi mức | 5 |
-| Bằng chứng và kỷ luật repo | Đúng cấu trúc, evidence là text thật có chú thích nhiệm vụ, không có secret, commit message rõ ràng | Sai cấu trúc, evidence chỉ là ảnh hoặc gõ tay, có secret | 5 |
-| Quy trình nộp | Có PR, được một bạn review có nhận xét thật | Push thẳng vào `main` hoặc review chỉ ghi "OK" | 5 |
-| **Tổng L1** | | | **100** |
-| L2: Thử thách A (`log-report.sh`) | Đủ tiêu chí, ba trường hợp lỗi tham số đều có evidence và mã thoát | Thiếu kiểm tra tham số hoặc không có evidence | +4 |
-| L2: Thử thách B (`resource-check.sh`) | Đủ tiêu chí, ba lần chạy có mã thoát khác nhau đúng thiết kế, giải thích `awk` bằng lời | Mã thoát sai, chép mẫu không giải thích | +3 |
-| L2: Thử thách C (`onboard.sh`) | Chạy lặp an toàn, không mất group phụ, có dọn | Chạy lần hai lỗi hoặc nhân đôi, dùng `usermod -G` | +3 |
-| **Tối đa thưởng** | | | **+10** |
+Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2 (chỉ chấm khi L1 từ 60 điểm). Tiêu chí chi tiết dành cho mentor chấm.
 
-Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0.
+| Tiêu chí | Điểm |
+| --- | --- |
+| Nhiệm vụ 1: workspace | 15 |
+| Nhiệm vụ 2: phân tích log | 20 |
+| Nhiệm vụ 3: thư mục chung | 20 |
+| Nhiệm vụ 4: process | 10 |
+| Nhiệm vụ 5: `show-config.sh` | 10 |
+| Câu hỏi kiểm tra kiến thức | 10 |
+| `README.md` và `report.md` | 5 |
+| Bằng chứng và kỷ luật repo | 5 |
+| Quy trình nộp (PR có review thật) | 5 |
+| **Tổng L1** | **100** |
+| L2: Thử thách A, B, C | +4, +3, +3 |
+
+Mỗi điểm đều dựa trên bằng chứng text chạy lại được, không phải ảnh chụp màn hình. Các lỗi hay làm mất điểm (ví dụ `chmod 777`, `pkill sleep`, quên `sort` trước `uniq -c`) đều đã được nhắc trong tiêu chí của từng nhiệm vụ.
 
 ## Câu hỏi kiểm tra kiến thức
 
@@ -305,24 +316,6 @@ Trả lời ngắn (2-4 câu mỗi câu) bằng lời của bạn trong `lab-03/
 3. `find` và `grep` khác nhau ở đối tượng tìm kiếm. Viết một tình huống trong dự án Club Management cần dùng `find`, một tình huống cần `grep`, và một tình huống phải dùng cả hai.
 4. File `report.txt` có quyền `640`, owner `alice`, group `dev`. Bob thuộc `dev`, Carol không thuộc `dev`. Mỗi người đọc và ghi được không? Một thư mục chia sẻ nên đặt quyền thế nào để file mới tạo luôn thuộc group của nhóm, và vì sao điều đó quan trọng?
 5. Bạn vừa chạy `usermod -aG clbops clb-ops2`, nhưng bạn ấy vẫn gặp `Permission denied`. Liệt kê ba điểm kiểm tra đầu tiên theo thứ tự (kèm lệnh), và giải thích vì sao không nên "chữa cháy" bằng `chmod 777`. Liên hệ: vì sao ứng dụng trong container cũng hay gặp lỗi quyền kiểu này?
-
-## Lỗi hay bị trừ điểm
-
-- Làm việc trong `/mnt/c` hoặc evidence không chứng minh được vị trí làm việc (thiếu `pwd`).
-- Ghi đè file bằng `>` thay vì `>>`, làm `backend.conf` chỉ còn 1 dòng.
-- Đếm với `uniq -c` mà không `sort`, hoặc không kiểm tra tổng bằng `wc -l`.
-- Lọc 5xx bằng `grep " 5"` thay vì kiểm tra đúng cột mã HTTP; số liệu trong `log-answers.md` không kèm lệnh.
-- Chép nguyên tên user, group và lệnh từ bài lab (`clbdev`, `clb-dev1`) thay vì dùng đúng tên của bài tập này.
-- Điền ma trận dự đoán sau khi đã chạy lệnh, hoặc không commit riêng phần dự đoán.
-- Dùng `chmod 777` hoặc `chmod -R 777` ở bất kỳ bước nào.
-- Quên `-a` trong `usermod -aG`, làm user mất các group khác.
-- Dùng `pkill sleep`, `killall` hoặc `kill -9` ngay từ đầu, làm ảnh hưởng process khác hoặc bỏ qua bước chứng minh SIGTERM.
-- Lấy mã thoát sai (đọc `$?` sau `| tee`), nên log ghi `exit code: 0` trong khi script thật sự thất bại.
-- In giá trị `DB_PASSWORD` ra màn hình hoặc vào evidence; commit `.env` thật hoặc mật khẩu thật.
-- Script có CRLF (`bash\r: No such file or directory`) hoặc thiếu quyền thực thi.
-- Không dọn user, group, thư mục `/srv/...` thử nghiệm và không ghi lý do.
-- Evidence là ảnh chụp thay cho text, hoặc output gõ tay thay vì chạy lệnh thật.
-- Push thẳng vào `main`, không có PR hoặc review chỉ ghi "OK".
 
 ## Quy trình nộp
 
@@ -351,7 +344,7 @@ git push -u origin week-02
 ```
 
 4. Nhờ một bạn trong CLB review. Reviewer để ít nhất 2 nhận xét cụ thể (một điểm tốt, một điểm cần sửa) trên PR, và nên tự chạy lại ít nhất một phép kiểm tra trong tiêu chí (ví dụ `find ... | wc -l`) để xác nhận. Bạn sửa theo nhận xét hợp lý và trả lời từng nhận xét.
-5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo barem trên, không chấm nội dung đẩy sau hạn.
+5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo bảng điểm ở trên, không chấm nội dung đẩy sau hạn.
 
 Hạn nộp: trước buổi đầu tiên của tuần 03. Nộp muộn sẽ bị trừ theo quy định trong `curriculum/assessment.md`.
 

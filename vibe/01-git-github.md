@@ -1,6 +1,18 @@
 # Git và GitHub tối thiểu cho Vibe Coder
 
-> **Tóm tắt:** Học vừa đủ Git và GitHub để mọi nền tảng deploy đọc được code của bạn: tạo repo, commit, push, .gitignore, giữ .env và secret ngoài repo, xử lý khi lỡ lộ khóa.
+> **Tóm tắt:** Chặng 1, bước 2: đưa code lên GitHub bằng GitHub Desktop (không cần gõ lệnh), giữ .env và secret ngoài repo, biết xử lý khi lỡ lộ khóa.
+
+::: tip Bạn làm gì: đưa code lên GitHub an toàn
+**Bạn sẽ tạo ra:** một repo GitHub chứa code của bạn, có `.gitignore`, và không có file bí mật nào trong đó.
+
+**Thời gian:** đọc 10 phút, làm 30 đến 45 phút. Phần dòng lệnh và Git nâng cao là tùy chọn.
+
+**Cần có trước:** đã đọc [bài 00 Tư duy](00-mindset.md); có một thư mục chứa code do AI viết (ví dụ `my-site` với file `index.html`); một địa chỉ email để đăng ký GitHub.
+
+**Đường đi duy nhất cho người chưa biết code:** GitHub Desktop (bấm chuột). Ai quen terminal hoặc đang dùng AI agent xem các mục gập ở dưới.
+
+Thuật ngữ lần đầu trong bài: [repo, commit, push, branch, diff](../resources/glossary.md).
+:::
 
 ## Bạn sẽ làm được gì
 
@@ -49,65 +61,16 @@ Repo public và private khác nhau thế nào:
 
 Quy tắc gọn: nếu không chắc, chọn private cho sản phẩm có dữ liệu, chọn public cho web tĩnh bạn muốn khoe. Dù chọn gì, không bao giờ để secret trong repo.
 
-## Thực hành từng bước
+## Thực hành từng bước (đường chính: GitHub Desktop)
 
-### Bước 1. Chuẩn bị tài khoản và công cụ
+### Bước 1. Tạo tài khoản và cài GitHub Desktop
 
-1. Có tài khoản GitHub (miễn phí) và bật xác thực hai lớp (2FA) trong phần Settings, mục Password and authentication (giao diện có thể khác chút).
-2. Cài **một** trong hai đường đi, chọn cái bạn thấy dễ hơn:
-   - **GitHub Desktop**: ứng dụng bấm chuột, hợp nhất với người chưa từng dùng terminal.
-   - **Git + GitHub CLI (`gh`)**: dùng terminal, hợp với việc để AI agent làm giúp.
-3. Nếu chọn terminal, kiểm tra đã cài:
+1. Tạo tài khoản GitHub (miễn phí) và bật xác thực hai lớp (2FA) trong Settings, mục Password and authentication (giao diện có thể khác chút).
+2. Cài **GitHub Desktop** từ [desktop.github.com](https://desktop.github.com), mở app và bấm đăng nhập. Trình duyệt mở ra để bạn đồng ý; mật khẩu và mã 2FA chỉ gõ trên trang GitHub, không dán vào khung chat với AI.
 
-```bash
-git --version
-gh --version
-```
+Bạn sẽ thấy: GitHub Desktop hiện tên tài khoản của bạn.
 
-Bạn sẽ thấy: hai dòng hiện số phiên bản. Nếu báo "command not found", cài Git và GitHub CLI từ trang chính thức (link ở cuối bài) rồi mở lại terminal.
-
-4. Khai báo tên và email để dấu vết commit có chủ (chỉ làm một lần):
-
-```bash
-git config --global user.name "Ten Cua Ban"
-git config --global user.email "email-cua-ban@example.com"
-```
-
-Gợi ý: GitHub có tùy chọn email riêng tư dạng `noreply` nếu bạn không muốn lộ email thật.
-
-### Bước 2. Đăng nhập GitHub một lần, theo cách ít đau đầu nhất
-
-Bạn không cần tự tạo token hay khóa SSH nếu dùng một trong hai cách sau.
-
-| Cách | Làm gì | Khi nào chọn |
-| --- | --- | --- |
-| GitHub Desktop | Mở app, bấm đăng nhập, trình duyệt mở ra để bạn đồng ý | Chưa từng dùng terminal |
-| GitHub CLI | Chạy `gh auth login`, chọn GitHub.com, chọn HTTPS, đồng ý để Git dùng thông tin đăng nhập của GitHub, làm theo trình duyệt | Dùng terminal hoặc AI agent |
-
-```bash
-gh auth login
-gh auth status
-```
-
-Bạn sẽ thấy: `gh auth status` báo "Logged in to github.com". Việc nhập mật khẩu hay mã xác nhận là việc của bạn trên trình duyệt, đừng dán vào khung chat với AI.
-
-Personal Access Token (PAT) và SSH key chỉ cần khi cách trên không chạy được (ví dụ máy chủ không có trình duyệt). Hiểu ngắn gọn: PAT là "mật khẩu tạm có giới hạn quyền" thay cho mật khẩu thật; SSH key là "chìa khóa cặp" đặt sẵn trên máy. Nếu phải dùng PAT, tạo token với quyền nhỏ nhất, đặt hạn dùng ngắn, và đối xử với nó như một secret (không dán vào repo, không dán vào prompt). Xem hướng dẫn chính thức ở cuối bài.
-
-### Bước 3. Tạo thư mục dự án và khởi tạo Git
-
-Giả sử AI đã viết code vào thư mục `my-site`:
-
-```bash
-cd my-site
-git init
-git branch -M main
-```
-
-Bạn sẽ thấy: thông báo "Initialized empty Git repository". Nhánh chính tên là `main`.
-
-Với GitHub Desktop: menu File, chọn Add local repository (hoặc Create new repository), trỏ tới thư mục `my-site`.
-
-### Bước 4. Tạo `.gitignore` và `.env.example` TRƯỚC khi commit lần đầu
+### Bước 2. Tạo `.gitignore` và `.env.example` TRƯỚC khi commit lần đầu
 
 Đây là bước quan trọng nhất của cả bài. `.gitignore` bảo Git "bỏ qua các file này". Tạo file `.gitignore` ở thư mục gốc dự án:
 
@@ -149,7 +112,100 @@ SUPABASE_SECRET_KEY=your-secret-key-placeholder
 
 Giải thích nhanh: `.env` là két sắt đặt trên máy bạn, chứa chìa khóa thật. `.env.example` là tờ giấy ghi "két này cần những ngăn nào". `.gitignore` đảm bảo két không bị mang ra tiệm.
 
-### Bước 5. Kiểm tra bằng `git status` rằng secret không bị gom vào
+### Bước 3. Thêm thư mục dự án vào GitHub Desktop
+
+1. Menu File, chọn Add local repository (hoặc Create new repository), trỏ tới thư mục `my-site`. Nếu app báo thư mục chưa phải repo Git, bấm "create a repository" ngay trong thông báo đó.
+2. Đặt tên nhánh chính là `main` nếu app hỏi.
+
+Bạn sẽ thấy: cột bên trái liệt kê các file sẽ được commit.
+
+### Bước 4. Kiểm tra rồi commit lần đầu
+
+1. Nhìn danh sách file ở cột bên trái. Nếu thấy `.env` (hoặc file `.pem`, `id_rsa`, `*.key`) thì **dừng**: `.gitignore` sai tên hoặc sai vị trí. Sửa xong mới tiếp tục. Muốn chắc hơn, dùng `git status` theo mục "Dòng lệnh" ở dưới.
+2. Ghi tóm tắt vào ô Summary, ví dụ "Initial commit: first version of my site".
+3. Bấm **Commit to main**.
+
+Bạn sẽ thấy: danh sách file trống và lịch sử (tab History) có một commit.
+
+::: danger Trước khi bấm Commit: có `.env` trong danh sách không?
+Nếu bạn lỡ commit rồi push một khóa bí mật lên GitHub, coi như khóa đã lộ: bot quét GitHub liên tục. Việc đầu tiên là xoay khóa (tạo khóa mới, thu hồi khóa cũ), không phải xóa commit. Xem mục "Nếu lỡ commit secret" bên dưới.
+:::
+
+### Bước 5. Publish lên GitHub
+
+1. Bấm **Publish repository**.
+2. Chọn public hoặc private: bỏ hoặc giữ dấu tick "Keep this code private". Dự định dùng GitHub Pages ở [bài 02 Hosting tĩnh](02-static-hosting.md) trên gói Free thì chọn **public** (repo chỉ chứa web tĩnh, không chứa secret).
+3. Bấm Publish.
+
+Bạn sẽ thấy: nút đổi thành "Push origin" hoặc báo đã đồng bộ.
+
+### Bước 6. Tự kiểm tra trên github.com
+
+Mở repo trên trình duyệt (menu Repository, View on GitHub). Bạn sẽ thấy các file của bạn và **không** thấy `.env`. Hãy tự bấm duyệt danh sách file một lần.
+
+Mỗi lần AI sửa code về sau, vòng lặp là: xem diff trong GitHub Desktop (bấm từng file, xanh là thêm, đỏ là xóa), Commit, bấm Push origin. Khi xem diff, tìm ba thứ: file lạ (như `.env`), chuỗi dài giống khóa (bắt đầu bằng `sk_`, `sb_secret_`, `eyJ`, `AKIA`...), file bị xóa ngoài ý muốn.
+
+::: details Dòng lệnh: làm các bước trên bằng git và gh (tùy chọn)
+
+Chọn cách này nếu bạn quen terminal hoặc muốn AI agent chạy lệnh giúp. Các bước dưới đây thay cho Bước 1, 3, 4, 5 ở trên (Bước 2 `.gitignore` vẫn làm như cũ).
+
+#### Bước 1. Chuẩn bị tài khoản và công cụ
+
+1. Có tài khoản GitHub (miễn phí) và bật xác thực hai lớp (2FA) trong phần Settings, mục Password and authentication (giao diện có thể khác chút).
+2. Cài **một** trong hai đường đi, chọn cái bạn thấy dễ hơn:
+   - **GitHub Desktop**: ứng dụng bấm chuột, hợp nhất với người chưa từng dùng terminal.
+   - **Git + GitHub CLI (`gh`)**: dùng terminal, hợp với việc để AI agent làm giúp.
+3. Nếu chọn terminal, kiểm tra đã cài:
+
+```bash
+git --version
+gh --version
+```
+
+Bạn sẽ thấy: hai dòng hiện số phiên bản. Nếu báo "command not found", cài Git và GitHub CLI từ trang chính thức (link ở cuối bài) rồi mở lại terminal.
+
+4. Khai báo tên và email để dấu vết commit có chủ (chỉ làm một lần):
+
+```bash
+git config --global user.name "Ten Cua Ban"
+git config --global user.email "email-cua-ban@example.com"
+```
+
+Gợi ý: GitHub có tùy chọn email riêng tư dạng `noreply` nếu bạn không muốn lộ email thật.
+
+#### Bước 2. Đăng nhập GitHub một lần, theo cách ít đau đầu nhất
+
+Bạn không cần tự tạo token hay khóa SSH nếu dùng một trong hai cách sau.
+
+| Cách | Làm gì | Khi nào chọn |
+| --- | --- | --- |
+| GitHub Desktop | Mở app, bấm đăng nhập, trình duyệt mở ra để bạn đồng ý | Chưa từng dùng terminal |
+| GitHub CLI | Chạy `gh auth login`, chọn GitHub.com, chọn HTTPS, đồng ý để Git dùng thông tin đăng nhập của GitHub, làm theo trình duyệt | Dùng terminal hoặc AI agent |
+
+```bash
+gh auth login
+gh auth status
+```
+
+Bạn sẽ thấy: `gh auth status` báo "Logged in to github.com". Việc nhập mật khẩu hay mã xác nhận là việc của bạn trên trình duyệt, đừng dán vào khung chat với AI.
+
+Personal Access Token (PAT) và SSH key chỉ cần khi cách trên không chạy được (ví dụ máy chủ không có trình duyệt). Hiểu ngắn gọn: PAT là "mật khẩu tạm có giới hạn quyền" thay cho mật khẩu thật; SSH key là "chìa khóa cặp" đặt sẵn trên máy. Nếu phải dùng PAT, tạo token với quyền nhỏ nhất, đặt hạn dùng ngắn, và đối xử với nó như một secret (không dán vào repo, không dán vào prompt). Xem hướng dẫn chính thức ở cuối bài.
+
+#### Bước 3. Tạo thư mục dự án và khởi tạo Git
+
+Giả sử AI đã viết code vào thư mục `my-site`:
+
+```bash
+cd my-site
+git init
+git branch -M main
+```
+
+Bạn sẽ thấy: thông báo "Initialized empty Git repository". Nhánh chính tên là `main`.
+
+Với GitHub Desktop: menu File, chọn Add local repository (hoặc Create new repository), trỏ tới thư mục `my-site`.
+
+#### Bước 5. Kiểm tra bằng `git status` rằng secret không bị gom vào
 
 Giả sử bạn có file `.env` thật. Chạy:
 
@@ -167,7 +223,7 @@ git check-ignore -v .env
 
 Bạn sẽ thấy: một dòng chỉ ra quy tắc nào trong `.gitignore` đang chặn `.env`. Không có đầu ra nghĩa là `.env` chưa được chặn.
 
-### Bước 6. Commit đầu tiên
+#### Bước 6. Commit đầu tiên
 
 ```bash
 git add .
@@ -179,7 +235,7 @@ Lệnh `git add .` gom mọi thay đổi (trừ file bị ignore) vào "giỏ". 
 
 Với GitHub Desktop: tick các file ở cột bên trái, ghi tóm tắt vào ô Summary, bấm Commit to main. Hãy nhìn danh sách file: nếu thấy `.env` thì đừng commit.
 
-### Bước 7. Tạo repo trên GitHub và push
+#### Bước 7. Tạo repo trên GitHub và push
 
 Cách A, dùng GitHub CLI (một lệnh):
 
@@ -200,7 +256,7 @@ git push -u origin main
 
 Bạn sẽ thấy: mở link repo trên trình duyệt, thấy các file của bạn, và không thấy `.env`. Hãy tự bấm kiểm tra danh sách file trên GitHub một lần.
 
-### Bước 8. Vòng lặp hằng ngày: sửa, xem diff, commit, push
+#### Bước 8. Vòng lặp hằng ngày: sửa, xem diff, commit, push
 
 ```bash
 git status
@@ -212,7 +268,7 @@ git push
 
 `git diff` hiện từng dòng đã đổi. Với người mới, bạn không cần hiểu từng ký tự; hãy tìm ba điều: có file lạ không (ví dụ `.env`, `*.pem`, `id_rsa`), có chuỗi dài giống khóa không (bắt đầu bằng `sk_`, `sb_secret_`, `eyJ`, `AKIA`...), AI có xóa nhiều file ngoài ý muốn không. GitHub Desktop có khung diff sẵn, bấm vào từng file để xem.
 
-### Bước 9. Branch: thử ý tưởng mà không làm hỏng bản đang chạy
+#### Bước 9. Branch: thử ý tưởng mà không làm hỏng bản đang chạy
 
 Rất hữu ích khi bạn nhờ AI "thử đổi giao diện": nếu hỏng thì bỏ nhánh, bản chính vẫn nguyên.
 
@@ -231,9 +287,9 @@ git switch main
 git branch -D try-new-design
 ```
 
-Mẹo: Vercel, Netlify, Cloudflare Pages thường tạo link xem thử (preview) riêng cho mỗi nhánh hoặc PR, nên bạn thử thoải mái mà không đụng trang chính. Chi tiết xem [Static hosting](02-static-hosting.md).
+Mẹo: Vercel, Netlify, Cloudflare Pages thường tạo link xem thử (preview) riêng cho mỗi nhánh hoặc PR, nên bạn thử thoải mái mà không đụng trang chính. Chi tiết xem [bài 02 Hosting tĩnh](02-static-hosting.md).
 
-### Bước 10. README, license và vài việc nhỏ cho repo
+#### Bước 10. README, license và vài việc nhỏ cho repo
 
 Một `README.md` tối thiểu giúp bạn (và AI ở các phiên sau) nhớ dự án là gì:
 
@@ -257,7 +313,10 @@ Về license (giấy phép): nếu repo public và bạn muốn người khác �
 
 Bật thêm cho an toàn: trong Settings của repo, mục Security (giao diện có thể khác chút), xem secret scanning. Theo tài liệu GitHub, secret scanning chạy miễn phí trên repo public (repo private tùy gói, xem trang giá GitHub); đừng coi nó là lưới an toàn duy nhất.
 
-## Nhờ AI agent làm giúp
+:::
+
+::: details Cách khác: nhờ AI agent làm giúp (prompt sao chép được)
+
 
 Agent (Claude Code, Cursor, Copilot agent, Codex, Gemini CLI...) làm tốt các việc lặp lại với Git. Bạn là người duyệt cuối.
 
@@ -298,7 +357,21 @@ Việc bạn phải tự làm, đừng giao cho agent:
 
 Bạn kiểm tra gì sau khi agent làm xong: mở repo trên github.com, xem danh sách file và lịch sử commit; tìm tên file `.env`; mở thử một vài file code xem có khóa dán cứng không.
 
+:::
+
+::: warning Việc bạn phải tự làm, đừng giao cho agent
+
+- Đăng nhập GitHub, nhập mật khẩu, mã 2FA.
+- Dán secret, token, khóa API vào chat hay prompt. Nếu agent hỏi giá trị khóa, hãy tự điền vào file `.env` trên máy bạn.
+- Quyết định repo public hay private, và mọi thao tác có trả tiền.
+- Chạy `git push --force`, `git reset --hard`, hoặc xóa repo mà bạn chưa hiểu hậu quả.
+:::
+
 ## Nếu lỡ commit secret
+
+::: danger Khóa đã lộ là khóa đã mất
+Khi một secret đã lên GitHub (kể cả repo private hoặc chỉ push vài giây), coi như nó đã lộ. Xoay khóa trước, mọi việc khác sau.
+:::
 
 Bình tĩnh và làm đúng thứ tự. Khi một secret đã lên GitHub (kể cả repo private hoặc chỉ push vài giây), coi như nó đã lộ: có bot quét GitHub liên tục.
 
@@ -367,11 +440,11 @@ Quy tắc ghi nhớ: xóa commit không làm khóa an toàn lại, chỉ xoay kh
 
 ## Tiếp theo
 
-- Đưa repo vừa tạo lên mạng: [Static hosting](02-static-hosting.md).
-- Nếu bạn cần backend nhỏ (API, form): [Fullstack serverless](03-fullstack-serverless.md).
-- Prompt có thể sao chép cho nhiều việc khác: [Prompt library](prompt-library.md). Lệnh Git và CLI thường dùng: [CLI cheatsheet](cli-cheatsheet.md).
+- Chặng 1, bước cuối: đưa repo vừa tạo lên mạng bằng [bài 02 Hosting tĩnh](02-static-hosting.md).
+- Nếu bạn cần backend nhỏ (API, form): [bài 03 Fullstack serverless](03-fullstack-serverless.md).
+- Prompt có thể sao chép cho nhiều việc khác: [Thư viện prompt](prompt-library.md). Lệnh Git và CLI thường dùng: [Bảng lệnh CLI](cli-cheatsheet.md).
 - Quay lại tổng quan: [Trang chủ track Vibe Deploy](index.md).
-- Khi muốn đi sâu về Git trong khóa DevOps, xem [Setup Guide](../resources/setup-guide.md).
+- Khi muốn đi sâu về Git trong khóa DevOps, xem [Hướng dẫn cài môi trường](../resources/setup-guide.md).
 
 Tài liệu chính thức:
 

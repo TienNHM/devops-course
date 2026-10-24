@@ -1,5 +1,7 @@
 # Peer Review – Capstone
 
+**Dùng khi nào:** cuối buổi 32, mỗi thành viên capstone điền một bản cho mỗi bạn cùng nhóm.
+
 > **Tóm tắt:** Mỗi thành viên nộp một bản cho mỗi bạn cùng nhóm vào cuối buổi 32. Nội dung chỉ mentor đọc, dùng để tham khảo khi xác định hệ số đóng góp trong [capstone rubric](../curriculum/capstone-rubric.md).
 
 Người đánh giá: ...............

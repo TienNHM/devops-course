@@ -1,6 +1,25 @@
 # Walkthrough tuần 5 – Dockerfile và Image Optimization
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 09 và Buổi 10 (Dockerfile, build cache, dockerignore, multi-stage, tag), kèm gợi ý giải bài tập tuần 5 và bảng chấm cho mentor.
+
+## Ghi chú đối chiếu sau cải tổ bài học
+
+Bài lab đã được cải tổ theo ranh giới mới: Buổi 09 chỉ dạy Dockerfile chạy được, `ENV`, `CMD`, `ENTRYPOINT` và build context; layer cache, `.dockerignore`, `USER node`, multi-stage và tag thuộc Buổi 10. Đáp án bên dưới vẫn đúng về kỹ thuật, chỉ khác chỗ làm:
+
+| Phần cũ trong walkthrough | Nay nằm ở |
+| --- | --- |
+| Buổi 09 Phần 2 (cache trên club-api) | [Thử thách 5 của Buổi 10](../../labs/week-05/session-10-challenge.md); bằng chứng cache của bài tập lấy ở Buổi 10 Phần 3 (hello-node) |
+| Buổi 09 Phần 3 (`USER node`) | [Thử thách 6 của Buổi 10](../../labs/week-05/session-10-challenge.md); `ENV` và `-e` vẫn ở Buổi 09 Phần 2 |
+| Buổi 09 Phần 5 (rò rỉ `rac.bin`, `.dockerignore`) | [Thử thách 7 của Buổi 10](../../labs/week-05/session-10-challenge.md); bằng chứng của bài tập lấy ở Buổi 10 Phần 1 và 2 (`big.bin` 30 MB) |
+| L2 Buổi 09 Thử thách 1 (`HEALTHCHECK`) và 4 (so sánh multi-stage) | Thử thách 8 và 9 của [Buổi 10 – thử thách thêm](../../labs/week-05/session-10-challenge.md) |
+| Phá lỗi sai build context | [Buổi 09 – thử thách thêm](../../labs/week-05/session-09-challenge.md#pha-loi-nang-cao); Phần 4 của Buổi 09 làm bản rút gọn |
+| Nhiệm vụ 1 và `USER node`; Nhiệm vụ 2 `Dockerfile.badorder`; Nhiệm vụ 3 `rac.bin` | Xem bảng "Điều chỉnh sau cải tổ" ở [Barem và hướng dẫn chấm tuần 5](../grading/week-05.md): `USER node` chuyển sang Nhiệm vụ 4 và 5; bằng chứng cache và rò rỉ làm trên hello-node ở `lab-10` |
+
+Mọi lệnh và lời giải L2 trong tài liệu này không đổi; nhiều bước cũ của Buổi 09 giờ chỉ là phần thử thách thêm.
 
 ## Cách dùng tài liệu này
 

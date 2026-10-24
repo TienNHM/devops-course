@@ -2,6 +2,13 @@
 
 > **Tóm tắt:** Bạn đã làm app bằng Lovable, Bolt, v0 hay Replit? Bài này chỉ cách đưa code về repo GitHub của riêng bạn, deploy lên nền tảng bạn kiểm soát, rà lỗi bảo mật AI hay sinh ra và giữ chi phí credit trong tầm tay.
 
+::: tip Bạn làm gì
+- **Kết quả:** code của app-builder nằm trong repo GitHub của bạn, đã rà lỗi bảo mật AI hay sinh, và chạy trên nền tảng bạn kiểm soát.
+- **Thời gian:** 60 đến 90 phút.
+- **Cần gì trước:** một app đã làm bằng Lovable, Bolt, v0 hoặc Replit; tài khoản GitHub.
+- **Module trước:** [Tư duy Vibe Deploy](00-mindset.md) và [Git và GitHub](01-git-github.md). Đây là đường rẽ riêng cho người dùng app-builder, không nằm trong lộ trình tuyến tính.
+:::
+
 ## Bạn sẽ làm được gì
 
 Thời lượng ước tính: 60 đến 90 phút.
@@ -15,7 +22,7 @@ Thời lượng ước tính: 60 đến 90 phút.
 
 ## Khái niệm trong 5 phút
 
-App-builder giống một xưởng may đo có sẵn cửa hàng: bạn nói kiểu áo, xưởng may xong và treo luôn lên cửa hàng của xưởng. Tiện, nhưng áo nằm trong tiệm của người khác. Nếu tiệm đổi giá, đổi luật hay đóng cửa, bạn khó mang áo đi. Có một bản sao áo (repo của bạn) ở nhà thì bạn đem đi may sửa hoặc trưng bày ở tiệm khác được.
+App-builder (công cụ dựng app bằng AI; xem [thuật ngữ](../resources/glossary.md)) giống một xưởng may đo có sẵn cửa hàng: bạn nói kiểu áo, xưởng may xong và treo luôn lên cửa hàng của xưởng. Tiện, nhưng áo nằm trong tiệm của người khác. Nếu tiệm đổi giá, đổi luật hay đóng cửa, bạn khó mang áo đi. Có một bản sao áo (repo của bạn) ở nhà thì bạn đem đi may sửa hoặc trưng bày ở tiệm khác được.
 
 Hiện nay các công cụ chính (cập nhật tháng 10/2026, hãy xem lại tài liệu chính thức vì giao diện đổi nhanh):
 
@@ -70,7 +77,11 @@ Mở repo trên GitHub, hoặc clone về máy (`git clone`), rồi đi qua bả
 | Biết cách chạy | Đọc `package.json`, mục `scripts` | Thấy `build` và `dev` hoặc `start` |
 | Biết app cần biến nào | Tìm `import.meta.env`, `process.env` | Có danh sách biến, ghi lại tên (không ghi giá trị) |
 
-Bạn sẽ thấy: một danh sách tên biến môi trường cần khai báo ở bước deploy. Nếu bạn thấy khóa thật trong lịch sử commit, coi như khóa đã lộ: tạo khóa mới ở nhà cung cấp, thay vào, rồi mới xóa khóa cũ.
+Bạn sẽ thấy: một danh sách tên biến môi trường cần khai báo ở bước deploy. 
+
+::: danger Khóa đã vào lịch sử commit là khóa đã lộ
+Tạo khóa mới ở nhà cung cấp, thay vào, rồi mới xóa khóa cũ.
+:::
 
 ### Bước 3: Deploy từ repo lên nền tảng bạn kiểm soát
 
@@ -140,8 +151,7 @@ Cách tự thử: mở cửa sổ ẩn danh (chưa đăng nhập) và gọi API 
 
 Nếu bạn dùng Supabase đã nối sẵn trong công cụ, vào chính dashboard Supabase để kiểm tra RLS, đừng chỉ tin lời AI nói "đã bảo mật xong". Dự án có dữ liệu thật nên tách riêng: một project dev để thử, một project cho người dùng thật.
 
-## Quản lý chi phí credit và token
-
+::: details Nâng cao: quản lý chi phí credit và token
 App-builder thường tính tiền theo credit hoặc token, mỗi lần bạn nhắn một yêu cầu là tiêu một ít. Gói và hạn mức thay đổi thường xuyên, nên hãy xem trang giá hiện hành của từng công cụ thay vì tin con số cũ.
 
 | Thói quen | Lý do |
@@ -154,9 +164,9 @@ App-builder thường tính tiền theo credit hoặc token, mỗi lần bạn n
 | Không bật tự động nạp thêm credit hoặc nâng gói khi chưa tính | Quyết định trả tiền luôn là của bạn |
 
 Chi phí không chỉ nằm ở công cụ: nền tảng deploy, Supabase và API của AI cũng có hạn mức riêng. Bài [module 07](07-domain-security-production.md) có phần đặt cảnh báo chi phí.
+:::
 
-## Khi nào nên chuyển sang coding agent
-
+::: details Nâng cao: khi nào nên chuyển sang coding agent
 App-builder rất mạnh ở giai đoạn đầu: dựng giao diện, thử ý tưởng. Hãy cân nhắc chuyển sang coding agent (Claude Code, Cursor, hoặc tương tự, xem [module 06](06-ai-agent-deploy.md)) làm việc trên repo của bạn khi:
 
 - AI cứ sửa chỗ này lại hỏng chỗ khác, hoặc lặp lỗi dù đã thử nhiều lần.
@@ -171,6 +181,7 @@ Hai cách phối hợp:
 2. **Song song:** giữ nối hai chiều (Lovable, Replit) hoặc dùng nhánh riêng (v0). Mỗi lần chỉ một bên sửa một nhánh, để tránh xung đột.
 
 Cách an toàn nhất: agent làm việc trên một nhánh riêng, bạn xem Pull Request rồi mới merge.
+:::
 
 ## Nhờ AI agent làm giúp
 
@@ -192,7 +203,9 @@ Những việc bạn phải tự kiểm tra:
 - Vào dashboard Supabase xem RLS từng bảng, không chỉ tin báo cáo của agent.
 - Đọc diff trước khi merge bất cứ thay đổi nào.
 
-Những việc KHÔNG giao cho agent: dán khóa thật vào chat, nhập thẻ hoặc bấm nâng gói trả phí, xóa project hay database thật, xóa repo gốc.
+::: danger Những việc KHÔNG giao cho agent
+Dán khóa thật vào chat, nhập thẻ hoặc bấm nâng gói trả phí, xóa project hay database thật, xóa repo gốc.
+:::
 
 Thêm prompt mẫu ở [Thư viện prompt](prompt-library.md).
 
@@ -263,7 +276,7 @@ Ví dụ: AI lặp lỗi dù đã thử nhiều lần, thay đổi cần chạm 
 
 ## Tiếp theo và tài liệu chính thức
 
-Tiếp theo: [11 Hoàn thiện và ra mắt](11-launch-polish.md). Nếu chưa gắn domain và chưa rà secret, chi phí, rollback thì làm trước ở [07 Domain, bảo mật, production](07-domain-security-production.md). Cần ví dụ trọn vẹn để đối chiếu: [09 Dự án mini](09-mini-project.md).
+**Tiếp theo:** đây là đường rẽ, quay lại lộ trình chính ở [Hoàn thiện và ra mắt](11-launch-polish.md) trước khi gửi link cho người lạ. Nếu chưa gắn domain và chưa rà secret, chi phí, rollback thì làm trước ở [Tên miền, bảo mật, production](07-domain-security-production.md). Cần ví dụ trọn vẹn để đối chiếu: [Dự án nhỏ](09-mini-project.md). Thêm prompt: [Thư viện prompt](prompt-library.md).
 
 Tài liệu chính thức (nội dung và giao diện thay đổi nhanh, hãy mở bản mới nhất):
 

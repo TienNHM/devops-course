@@ -1,118 +1,126 @@
 # Bài tập tuần 1 – DevOps Workflow & Dev Environment
 
-> **Tóm tắt:** Phân tích một quy trình triển khai thủ công, vẽ lại thành workflow tự động bằng Mermaid, dựng môi trường WSL2 Ubuntu + Git + SSH và chứng minh môi trường chạy được bằng script cùng log thật.
+> **Tóm tắt:** Nộp lại bằng chứng của hai buổi lab: quy trình triển khai thủ công được vẽ lại thành workflow tự động bằng Mermaid, và môi trường WSL2 Ubuntu + Git + SSH được chứng minh bằng log thật.
 
 **Hạn nộp:** trước buổi đầu tiên của tuần 02.
-**Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-01/` và `lab-02/`.
-**Bài lab liên quan:** [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md), [Buổi 02 – Development Environment](../../labs/week-01/session-02.md).
-**Mẫu nộp bài:** [templates/lab-template.md](../../templates/lab-template.md).
+**Hình thức:** upload hoặc Pull Request vào repo cá nhân `devops-labs` (PUBLIC), thư mục `lab-01/` và `lab-02/`. Buổi 01 chưa học Git nên được upload trên web; từ Buổi 02 nộp bằng Git qua SSH.
+**Bài lab liên quan:** [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md), [Buổi 02 – Development Environment](../../labs/week-01/session-02.md). Hub tuần: [Hub Tuần 1](../../labs/week-01/README.md).
+**Mẫu nộp bài:** [mẫu bài lab](../../templates/lab-template.md).
+
+**Bài tập = nộp lại bằng chứng của lab, không có việc mới**, trừ hai việc viết nhỏ trong `report.md`: bảng ánh xạ điểm nghẽn sang nút (Nhiệm vụ 3) và trả lời 5 câu kiểm tra kiến thức ở cuối trang.
+
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Bảng các bước triển khai thủ công | Buổi 01, Phần 1 và Phần 3 | 0,5 giờ | `lab-01/source/steps.md`, kết quả đếm số dòng bảng trong evidence |
+| 2. Sơ đồ thủ công và 3 điểm nghẽn | Buổi 01, Phần 2 và Phần 3 | 0,5 giờ | `manual-workflow.mmd`, `bottlenecks.md`, ảnh `manual-workflow.png` |
+| 3. Sơ đồ tự động hóa | Buổi 01, Phần 4 (cộng việc mới: bảng ánh xạ trong `report.md`, khoảng 15 phút) | 0,5 giờ | `automated-workflow.mmd`, ảnh `automated-workflow.png`, bảng ánh xạ trong `report.md` |
+| 4. Môi trường WSL2 + Git + SSH | Buổi 02, Phần 1, 2, 3, 5 và 6 | 1,5 giờ (60 phút ở lớp, 30 phút ở nhà) | `lab-02/evidence/command-output.txt`, ảnh `vscode-wsl.png` |
+| 5. Log `check-env.sh` | Buổi 02, Phần 4 | 0,25 giờ | Log có dòng `exit code:` trong `command-output.txt` |
+| README, report và 5 câu kiểm tra | Phần Nộp bài của hai buổi | 0,75 giờ | `README.md` (7 câu), `report.md` ở mỗi lab |
+| L2 (tùy chọn, điểm thưởng) | [Buổi 01 – Thử thách thêm](../../labs/week-01/session-01-challenge.md), [Buổi 02 – Thử thách thêm](../../labs/week-01/session-02-challenge.md) | 1,5 giờ | Theo từng thử thách |
+
+Tổng L1 khoảng 4 giờ, trong đó khoảng 2 giờ đã nằm trong giờ lab trên lớp. Kẹt? Đọc phần "Gặp lỗi?" của từng bài lab trước khi hỏi mentor.
 
 ## Bối cảnh
 
-Tuần này bạn làm hai việc nối tiếp nhau. Thứ nhất, bạn học cách nhìn một quy trình triển khai như một chuỗi bước có người làm, đầu vào và đầu ra, rồi tìm ra bước nào đang gây đau nhất. Thứ hai, bạn dựng môi trường làm việc chuẩn (Ubuntu trên WSL2) mà toàn bộ 15 tuần sau đều dùng.
+Tình huống xuyên suốt: ứng dụng Club Management của CLB gồm frontend (Nginx), backend (Node.js, cổng 3000) và database (PostgreSQL). Việc đưa ứng dụng lên server chung đang làm tay: nén thư mục, gửi qua chat, giải nén, cài dependency, đặt biến môi trường, chạy. Bạn chỉ ra chỗ hỏng của cách làm đó (Buổi 01) và chuẩn bị máy để từ tuần sau bắt đầu sửa nó (Buổi 02).
 
-Tình huống xuyên suốt: ứng dụng Club Management của CLB gồm frontend (Nginx), backend (Node.js, cổng 3000) và database (PostgreSQL). Hiện tại việc đưa ứng dụng lên server chung được làm tay: nén thư mục, gửi qua chat, giải nén, cài dependency, đặt biến môi trường, chạy. Nhiệm vụ của bạn là chỉ ra chỗ hỏng của cách làm đó và chuẩn bị máy để từ tuần sau bắt đầu sửa nó.
+## Bảng điểm
 
-Bài tập này chỉ dùng kiến thức đã học ở Buổi 01 và Buổi 02. Nếu bị kẹt, đọc lại phần "Lỗi thường gặp" và "Phá lỗi và debug" của hai bài lab trước khi hỏi mentor.
+Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2 (chỉ chấm khi L1 đạt từ 60 điểm).
+
+| Tiêu chí | Điểm |
+| --- | --- |
+| Nhiệm vụ 1: `steps.md` | 15 |
+| Nhiệm vụ 2: sơ đồ thủ công và 3 điểm nghẽn | 15 |
+| Nhiệm vụ 3: sơ đồ tự động hóa và bảng ánh xạ | 15 |
+| Nhiệm vụ 4: môi trường (WSL2, `~`, Git, SSH) | 20 |
+| Nhiệm vụ 5: log `check-env.sh` có `exit code:` đúng | 15 |
+| `README.md` và `report.md` | 10 |
+| Bằng chứng và kỷ luật repo (không có secret) | 5 |
+| Quy trình nộp (PR có người review) | 5 |
+| **Tổng L1** | **100** |
+| L2: Thử thách A (+5), B (+3), C (+2) | +10 |
+
+Barem chi tiết, lỗi hay bị trừ điểm và cách chấm dành cho mentor nên không đăng ở đây. Bạn chỉ cần bám tiêu chí hoàn thành bên dưới.
 
 ## Nhiệm vụ L1 (bắt buộc)
 
 ### Nhiệm vụ 1. Bảng các bước triển khai thủ công
 
-Lập file `lab-01/source/steps.md` mô tả quy trình triển khai thủ công của ứng dụng Club Management.
-
-Tiêu chí hoàn thành:
+Lập `lab-01/source/steps.md` mô tả quy trình triển khai thủ công của ứng dụng Club Management. Tiêu chí hoàn thành:
 
 - Bảng Markdown có tối thiểu 9 dòng bước (không tính dòng tiêu đề và dòng phân cách).
 - Mỗi dòng có đủ các cột: Bước, Ai làm, Đầu vào, Đầu ra, Rủi ro, Tự động hóa được không.
-- Các bước bắt buộc phải xuất hiện: commit, build, test, đóng gói, gửi lên server, cấu hình biến môi trường (ví dụ `DB_PASSWORD`), chạy ứng dụng, kiểm tra `/health`.
-- Không có ô nào để trống hoặc ghi chung chung như "tùy". Cột Rủi ro nêu một lỗi cụ thể có thể xảy ra ở bước đó.
+- Các bước bắt buộc: commit, build, test, đóng gói, gửi lên server, cấu hình biến môi trường (ví dụ `DB_PASSWORD`), chạy ứng dụng, kiểm tra `/health`.
+- Không ô nào để trống hoặc ghi chung chung như "tùy". Cột Rủi ro nêu một lỗi cụ thể có thể xảy ra ở bước đó.
 
 ### Nhiệm vụ 2. Sơ đồ workflow thủ công và 3 điểm nghẽn
 
-Vẽ sơ đồ Mermaid từ bảng ở Nhiệm vụ 1, rồi chọn ra đúng 3 điểm nghẽn.
-
 Tiêu chí hoàn thành:
 
-- `lab-01/source/manual-workflow.mmd` hiển thị được trên mermaid.live, có ít nhất một vòng lặp lỗi (bước lỗi quay về bước trước), mọi nhãn đặt trong dấu nháy kép.
-- Tên nút cho biết ai làm (ví dụ tiền tố `Dev:` hoặc `Ops:`).
-- `lab-01/source/bottlenecks.md` nêu đúng 3 điểm nghẽn. Mỗi điểm có ba phần: bước nào, vì sao nghẽn (dùng một trong bốn dấu hiệu của bài lab: phụ thuộc trí nhớ một người, chờ người khác, dễ sai khi làm tay, lặp lại nhiều), và hướng tự động hóa dự kiến.
-- 3 điểm nghẽn phải truy ngược được về các dòng trong `steps.md` (ghi số bước).
+- `lab-01/source/manual-workflow.mmd` hiển thị được trên mermaid.live, có ít nhất một vòng lặp lỗi, mọi nhãn đặt trong dấu nháy kép, tên nút cho biết ai làm (tiền tố `Dev:` hoặc `Ops:`).
+- `lab-01/source/bottlenecks.md` nêu đúng 3 điểm nghẽn, mỗi điểm có ba phần: bước nào, vì sao nghẽn (một trong bốn dấu hiệu: phụ thuộc trí nhớ một người, chờ người khác, dễ sai khi làm tay, lặp lại nhiều), hướng tự động hóa dự kiến.
+- 3 điểm nghẽn truy ngược được về các dòng trong `steps.md` (ghi số bước).
 
 ### Nhiệm vụ 3. Sơ đồ workflow tự động hóa
-
-Vẽ workflow mới trong đó mỗi điểm nghẽn ở Nhiệm vụ 2 được thay bằng một bước tự động.
 
 Tiêu chí hoàn thành:
 
 - `lab-01/source/automated-workflow.mmd` hiển thị được trên mermaid.live.
-- Có đủ các bước: push code, CI build và test, cổng kiểm thử có nhánh "không đạt" quay về dev, đóng gói image, lưu vào registry có phiên bản, deploy từ file cấu hình, health check.
-- Có thêm ít nhất một bước do bạn tự bổ sung (ví dụ rollback hoặc thông báo cho nhóm) và nói rõ trong `report.md` vì sao cần bước đó.
-- Trong `report.md`, có một bảng ánh xạ: mỗi điểm nghẽn tương ứng nút nào trong sơ đồ mới.
+- Có đủ: push code, CI build và test, cổng kiểm thử có nhánh "không đạt" quay về dev, đóng gói image, registry có phiên bản, deploy từ file cấu hình, health check.
+- Có ít nhất một bước bạn tự bổ sung (ví dụ rollback hoặc thông báo cho nhóm), nói rõ vì sao cần trong `report.md`.
+- Trong `report.md` có bảng ánh xạ: mỗi điểm nghẽn tương ứng nút nào trong sơ đồ mới.
 
 ### Nhiệm vụ 4. Dựng môi trường WSL2 + Git + SSH
 
-Hoàn thành phần cài đặt của Buổi 02 trên máy của bạn.
-
 Tiêu chí hoàn thành:
 
-- `wsl --list --verbose` cho thấy distro Ubuntu có VERSION 2 (dán output từ PowerShell vào evidence).
-- Thư mục làm việc `~/devops-labs` nằm trong filesystem Linux, không nằm trong `/mnt/c`. Evidence phải có output của `pwd` hoặc `realpath` chứng minh điều này.
-- `git config --global --list` có `user.name`, `user.email` thật của bạn và `core.autocrlf=input`.
+- `wsl --list --verbose` cho thấy Ubuntu có VERSION 2 (dán output từ PowerShell vào evidence).
+- Thư mục làm việc `~/devops-labs` nằm trong filesystem Linux; evidence có output của `pwd` hoặc `realpath` chứng minh điều này.
+- `git config --global --list` có `user.name`, `user.email` thật và `core.autocrlf=input`.
 - `ssh -T git@github.com` báo xác thực thành công với username GitHub của bạn.
 - Repo `devops-labs` có remote `origin` dạng `git@github.com:...` (output của `git remote -v`).
 - Không có private key hay token nào trong repo.
 
-### Nhiệm vụ 5. Script kiểm tra môi trường và log thật
+### Nhiệm vụ 5. Log script kiểm tra môi trường
 
-Viết và chạy `lab-02/source/check-env.sh`.
+Chạy `resources/check-env.sh` của giáo trình (Buổi 02, Phần 4). Tiêu chí hoàn thành:
 
-Tiêu chí hoàn thành:
-
-- Script kiểm tra tối thiểu `git`, `curl`, `ssh`, `docker` và cảnh báo khi đang đứng trong `/mnt/*`.
-- File có quyền thực thi, dòng đầu là shebang, xuống dòng kiểu LF (lệnh `file` không báo "CRLF").
-- Chạy script bằng lệnh, lưu cả output lẫn mã thoát vào `lab-02/evidence/command-output.txt` (dòng `exit code: N` ở cuối phần chạy script).
-- Nếu `docker` chưa cài, script phải báo THIEU và mã thoát khác 0. Điều này chấp nhận được ở tuần này, nhưng bạn phải ghi vào `report.md` rằng đây là trạng thái dự kiến và khi nào nó sẽ thành 0.
+- Log chạy script nằm trong `lab-02/evidence/command-output.txt`, kèm dòng `exit code: N` ở cuối phần chạy script, lấy bằng `code=$?` ngay sau lệnh chạy.
+- Các dòng WSL, git, curl là `[ OK ]`. Các công cụ của tuần sau (docker, kubectl, kind, node) có thể còn `[ THIEU ]`, mã thoát 1 là trạng thái dự kiến.
+- Trong `report.md` ghi rằng mã thoát khác 0 là dự kiến ở tuần này và nêu khi nào nó thành 0.
 
 ## Nhiệm vụ L2 (nâng cao)
 
-L2 là điểm thưởng, chỉ chấm khi L1 đã đạt từ 60 điểm trở lên.
+L2 là điểm thưởng, chỉ chấm khi L1 đạt từ 60 điểm. Đề bài chi tiết và gợi ý ở hai trang thử thách của lab.
 
 ### Thử thách A. Đề xuất DevOps workflow cho một dự án CLB thật
 
-Chọn một dự án có thật (website CLB, bot Discord, ứng dụng điểm danh, ...) và viết `lab-01/source/proposal.md`.
+Viết `lab-01/source/proposal.md` cho một dự án có thật. Tiêu chí hoàn thành:
 
-Tiêu chí hoàn thành:
+- Hai sơ đồ Mermaid: workflow hiện tại và workflow đề xuất.
+- 3 điểm nghẽn, mỗi điểm có số liệu ước lượng kèm cách ước lượng (ví dụ "deploy tay mất 15 phút, 2 lần mỗi tuần, tự đo lần gần nhất").
+- Mỗi điểm nghẽn có cách tự động hóa, công cụ dự kiến và buổi dạy công cụ đó (tra [Lộ trình](../../curriculum/syllabus.md)).
+- Ít nhất một rủi ro của chính giải pháp tự động hóa và người chịu trách nhiệm khi pipeline hỏng.
+- 2 chỉ số đo cải thiện, nói rõ cách đo.
 
-- Có hai sơ đồ Mermaid: workflow hiện tại và workflow đề xuất.
-- Nêu 3 điểm nghẽn, mỗi điểm có số liệu ước lượng kèm cách bạn ước lượng (ví dụ "deploy tay mất 15 phút, 2 lần mỗi tuần, do bạn tự đo lần gần nhất").
-- Mỗi điểm nghẽn có cách tự động hóa, công cụ dự kiến và buổi học trong khóa dạy công cụ đó (tra `curriculum/syllabus.md`).
-- Có ít nhất một rủi ro của chính giải pháp tự động hóa và người chịu trách nhiệm khi pipeline hỏng.
-- Có 2 chỉ số đo cải thiện, nói rõ cách đo.
+### Thử thách B. Tự viết script kiểm tra đầy đủ
 
-### Thử thách B. Script kiểm tra đầy đủ và tự kiểm chứng
+Tự viết `lab-02/source/check-env.sh`, rồi mở rộng thành `check-env-full.sh`. Tiêu chí hoàn thành:
 
-Mở rộng `check-env.sh` thành `check-env-full.sh` trong cùng thư mục `source/`.
+- Kiểm tra `node`, `npm`, `make`; in dòng tổng kết số vấn đề; thoát khác 0 nếu có vấn đề.
+- Kiểm tra quyền private key SSH phải là 600 và báo lỗi nếu khác.
+- Evidence gồm hai lần chạy trong cùng một file log: một lần đúng, một lần cố tình làm sai trên khóa thử `~/.ssh/test_key` (không đổi quyền khóa thật), kèm mã thoát và cách khôi phục.
 
-Tiêu chí hoàn thành:
+### Thử thách C. Dotfiles chạy lặp an toàn
 
-- Kiểm tra thêm `node`, `npm`, `make`; in dòng tổng kết số vấn đề; thoát khác 0 nếu có vấn đề.
-- Kiểm tra quyền của private key SSH phải là 600 và báo lỗi nếu khác.
-- Evidence gồm hai lần chạy liên tiếp trong cùng một file log: một lần ở trạng thái đúng và một lần bạn cố tình làm sai (đổi quyền một file key thử nghiệm, không phải key thật đang dùng), kèm mã thoát tương ứng. Ghi rõ cách bạn khôi phục.
+Tạo `lab-02/source/dotfiles/` chứa alias và `install.sh`. Tiêu chí hoàn thành:
 
-### Thử thách C. Dotfiles chạy lặp lại an toàn
-
-Tạo `lab-02/source/dotfiles/` chứa alias của bạn và `install.sh`.
-
-Tiêu chí hoàn thành:
-
-- `install.sh` chạy lần thứ hai không lỗi và không nhân đôi nội dung.
-- Không ghi đè file có sẵn khi chưa sao lưu.
+- `install.sh` chạy lần thứ hai không lỗi và không nhân đôi nội dung; không ghi đè file có sẵn khi chưa sao lưu.
 - Evidence ghi lại hai lần chạy liên tiếp và kết quả `ls -l` của các symlink.
 
 ## Bằng chứng cần nộp
-
-Cấu trúc thư mục theo mẫu lab:
 
 ```text
 lab-01/
@@ -132,7 +140,7 @@ lab-01/
 lab-02/
 ├── README.md
 ├── report.md
-├── source/
+├── source/                  (chỉ khi làm L2)
 │   ├── check-env.sh
 │   ├── check-env-full.sh    (L2, Thử thách B)
 │   └── dotfiles/            (L2, Thử thách C)
@@ -142,20 +150,9 @@ lab-02/
     └── command-output.txt
 ```
 
-Bằng chứng theo từng nhiệm vụ:
+Nguyên tắc: ảnh chụp màn hình chỉ bổ trợ, mọi nhiệm vụ phải kiểm chứng được bằng file nguồn và log dạng text. `README.md` của mỗi lab trả lời đủ 7 câu theo mẫu và ghi rõ đã làm L1 hay L2. `report.md` của `lab-01` ghi 3 điểm nghẽn, bảng ánh xạ và bước tự bổ sung; `report.md` của `lab-02` giải thích ngắn về `~` so với `/mnt/c`, về SSH key và về mã thoát của `check-env.sh`.
 
-| Nhiệm vụ | Bằng chứng bắt buộc |
-| --- | --- |
-| 1 | `source/steps.md`; `evidence/command-output.txt` có kết quả đếm số dòng bảng (ví dụ `grep -c '^|' lab-01/source/steps.md`, số đếm gồm cả dòng tiêu đề và phân cách) |
-| 2 | `manual-workflow.mmd`, `bottlenecks.md`, ảnh `manual-workflow.png` (chỉ chụp phần sơ đồ) |
-| 3 | `automated-workflow.mmd`, ảnh `automated-workflow.png`, bảng ánh xạ điểm nghẽn sang nút trong `report.md` |
-| 4 | `lab-02/evidence/command-output.txt` chứa output thật của `wsl --list --verbose` (dán tay từ PowerShell), `pwd`, `lsb_release -a`, `git config --global --list`, `git remote -v`, `ssh -T git@github.com`; ảnh `vscode-wsl.png` chỉ bổ trợ |
-| 5 | `source/check-env.sh` và log chạy có `exit code:`; kết quả `ls -l` và `file` của script |
-| L2 | Theo từng thử thách ở trên |
-
-Nguyên tắc: ảnh chụp màn hình chỉ bổ trợ. Mọi nhiệm vụ phải kiểm chứng được bằng file nguồn và log dạng text để reviewer chạy lại hoặc đọc được. `README.md` của mỗi lab trả lời đủ 7 câu theo mẫu và ghi rõ đã làm L1 hay L2. `report.md` của `lab-01` ghi 3 điểm nghẽn, bảng ánh xạ và bước tự bổ sung; `report.md` của `lab-02` giải thích ngắn về `~` so với `/mnt/c`, về SSH key, và về mã thoát của `check-env.sh`.
-
-Trước khi nộp, tự kiểm tra tệp nhạy cảm bằng lệnh sau (kết quả mong đợi: không in ra dòng nào):
+Trước khi nộp, tự kiểm tra tệp nhạy cảm (kết quả mong đợi: không in ra dòng nào):
 
 ```bash
 cd ~/devops-labs
@@ -163,49 +160,15 @@ git ls-files | grep -E '(^|/)(id_ed25519|id_rsa|\.env)$'
 grep -rIl "BEGIN OPENSSH PRIVATE KEY" . --exclude-dir=.git
 ```
 
-## Barem chấm
-
-Tổng 100 điểm cho L1, cộng tối đa 10 điểm thưởng cho L2.
-
-| Tiêu chí | Đạt | Không đạt | Điểm |
-| --- | --- | --- | --- |
-| Nhiệm vụ 1: `steps.md` | Đủ 9 bước trở lên, đủ 6 cột, có đủ 8 bước bắt buộc, rủi ro cụ thể | Thiếu bước hoặc cột, ô trống, rủi ro chung chung | 15 |
-| Nhiệm vụ 2: sơ đồ thủ công và điểm nghẽn | Mermaid hiển thị được, có vòng lặp lỗi, nút ghi rõ ai làm; đúng 3 điểm nghẽn có lý do và truy ngược được về `steps.md` | Sơ đồ lỗi cú pháp, không có vòng lặp, điểm nghẽn không có lý do hoặc không khớp bảng | 15 |
-| Nhiệm vụ 3: sơ đồ tự động hóa | Đủ các bước bắt buộc, có bước tự bổ sung có giải thích, bảng ánh xạ điểm nghẽn sang nút đầy đủ | Thiếu bước CI/health check, không ánh xạ được | 15 |
-| Nhiệm vụ 4: môi trường | Evidence chứng minh WSL2 VERSION 2, làm việc trong `~`, Git và SSH hợp lệ, remote dạng SSH | Thiếu một mục trong evidence hoặc làm việc trong `/mnt/c` | 20 |
-| Nhiệm vụ 5: `check-env.sh` | Script chạy lại được, LF, có quyền thực thi, log có mã thoát đúng với trạng thái máy | Script lỗi, log do tự gõ tay, mã thoát sai hoặc không giải thích | 15 |
-| `report.md` và `README.md` | Đủ 7 câu mỗi lab, giải thích đúng, ghi rõ mức đã làm | Thiếu câu, sao chép đề bài, không ghi mức | 10 |
-| Bằng chứng và kỷ luật repo | Đúng cấu trúc thư mục, evidence là text thật, không có secret, commit message rõ ràng | Sai cấu trúc, evidence chỉ là ảnh, có secret | 5 |
-| Quy trình nộp | Có PR, được một bạn review có nhận xét thật | Push thẳng vào `main` hoặc review chỉ ghi "OK" | 5 |
-| **Tổng L1** | | | **100** |
-| L2: Thử thách A (`proposal.md`) | Đủ 5 tiêu chí, số liệu có cách ước lượng | Thiếu tiêu chí hoặc số liệu bịa không giải thích | +5 |
-| L2: Thử thách B và C | Mỗi thử thách đạt đủ tiêu chí và có evidence hai lần chạy | Thiếu evidence hoặc chạy lặp lại bị lỗi | +3 và +2 |
-| **Tối đa thưởng** | | | **+10** |
-
-Điểm một tiêu chí được chia theo mức: đạt đủ nhận điểm tối đa, đạt một phần nhận khoảng một nửa, không có hoặc không kiểm chứng được nhận 0.
-
 ## Câu hỏi kiểm tra kiến thức
 
-Trả lời ngắn (2-4 câu mỗi câu) trong `lab-01/report.md` (câu 1 đến 3) và `lab-02/report.md` (câu 4 đến 5), bằng lời của bạn.
+Trả lời ngắn (2 đến 4 câu mỗi câu) trong `lab-01/report.md` (câu 1 đến 3) và `lab-02/report.md` (câu 4 đến 5), bằng lời của bạn.
 
-1. Vì sao nói DevOps không phải một công cụ và cũng không phải một chức danh? Nêu một ví dụ trong quy trình CLB để minh họa.
+1. Vì sao nói DevOps không phải một công cụ và cũng không phải một chức danh? Nêu một ví dụ trong quy trình CLB.
 2. Phân biệt Continuous Delivery và Continuous Deployment. Với ứng dụng CLB, bạn chọn loại nào cho giai đoạn đầu và vì sao?
 3. Nhóm của bạn push 12 lần mỗi ngày, mỗi lần deploy tay mất 8 phút. Tính tổng thời gian mỗi tuần (5 ngày) và nêu bước nên tự động hóa trước.
 4. Vì sao mã nguồn nên nằm ở `~` thay vì `/mnt/c/Users/...`? Nêu hai hậu quả cụ thể nếu làm ngược lại.
 5. `ssh -T git@github.com` báo `Permission denied (publickey)`. Liệt kê ba điểm kiểm tra đầu tiên theo thứ tự bạn sẽ làm và lệnh tương ứng.
-
-## Lỗi hay bị trừ điểm
-
-- Sơ đồ Mermaid có nhãn chứa ngoặc hoặc dấu hai chấm mà không đặt trong dấu nháy kép, khiến sơ đồ không hiển thị.
-- `steps.md` chỉ có tên bước, thiếu Ai làm, Đầu vào, Đầu ra; hoặc điểm nghẽn không truy ngược được về bảng.
-- Chọn công cụ trước khi nêu điểm nghẽn (ví dụ "dùng Kubernetes" mà không nói vấn đề cần giải).
-- Làm việc và clone repo trong `/mnt/c`, hoặc evidence không chứng minh được vị trí làm việc.
-- Dán output từ máy khác hoặc tự gõ tay output thay vì chạy lệnh thật; `command-output.txt` rỗng vì quên chuyển hướng.
-- Lấy mã thoát sai (dùng `| tee` rồi đọc `$?`), nên log ghi `exit code: 0` trong khi script thật sự thất bại.
-- Script có CRLF (`bash\r: No such file or directory`) hoặc thiếu quyền thực thi.
-- Commit private key, `.env`, token hoặc ảnh chụp lộ thông tin cá nhân.
-- Nộp ảnh chụp thay cho file nguồn và log text.
-- Push thẳng vào `main`, không có PR hoặc không có người review.
 
 ## Quy trình nộp
 
@@ -234,21 +197,20 @@ git push -u origin week-01
 ```
 
 4. Nhờ một bạn trong CLB review. Reviewer để ít nhất 2 nhận xét cụ thể (một điểm tốt, một điểm cần sửa) trên PR. Bạn sửa theo nhận xét hợp lý và trả lời từng nhận xét.
-5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo barem trên, không chấm nội dung đẩy sau hạn.
+5. Gắn mentor làm reviewer và dán link PR vào kênh nộp bài của lớp. Mentor chấm theo bảng điểm trên, không chấm nội dung đẩy sau hạn.
 
-Hạn nộp: trước buổi đầu tiên của tuần 02. Nộp muộn sẽ bị trừ theo quy định trong `curriculum/assessment.md`.
+Nộp muộn bị trừ theo quy định trong [Đánh giá](../../curriculum/assessment.md). Sau khi nộp, mở phần "Đối chiếu đáp án" ở [Hub Tuần 1](../../labs/week-01/README.md).
 
 ## Checklist trước khi nộp
 
-- [ ] `lab-01/` và `lab-02/` có đúng cấu trúc thư mục, có `README.md` (7 câu), `report.md`, `source/`, `screenshots/`, `evidence/`
+- [ ] `lab-01/` và `lab-02/` có `README.md` (7 câu), `report.md`, `screenshots/`, `evidence/` (và `source/` đúng như mô tả)
 - [ ] `steps.md` có tối thiểu 9 bước, đủ 6 cột, không ô trống
 - [ ] Ba file `.mmd` hiển thị được trên mermaid.live, mọi nhãn đặt trong dấu nháy kép
 - [ ] `bottlenecks.md` có đúng 3 điểm nghẽn, truy ngược được về `steps.md`
 - [ ] `report.md` có bảng ánh xạ điểm nghẽn sang nút trong sơ đồ tự động hóa
 - [ ] `wsl --list --verbose` (VERSION 2), `pwd`, `lsb_release -a`, `git config --global --list`, `git remote -v`, `ssh -T git@github.com` đều có trong evidence
-- [ ] `check-env.sh` chạy lại được, có quyền thực thi, dùng LF, log có dòng `exit code:` đúng
+- [ ] Log `check-env.sh` có dòng `exit code:` đúng
 - [ ] 5 câu hỏi kiểm tra kiến thức đã được trả lời trong `report.md`
-- [ ] Đã chạy lệnh quét secret ở phần Bằng chứng và không có kết quả
-- [ ] Không commit `.env`, password, token, private key
+- [ ] Đã chạy lệnh quét secret và không có kết quả; không commit `.env`, password, token, private key
 - [ ] Ghi rõ mức đã làm (L1 hoặc L2) cuối `README.md`
 - [ ] Đã mở Pull Request, được ít nhất một bạn review, mentor đã được gắn

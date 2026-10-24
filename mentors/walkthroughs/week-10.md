@@ -1,5 +1,9 @@
 # Walkthrough tuần 10 – CD & Pipeline Security
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 19 (deploy local bằng script, health check, rollback, workflow_dispatch) và Buổi 20 (permissions, quét image, SBOM, pin SHA), kèm đáp án bài tập và hướng dẫn chấm.
 
 ## Cách dùng tài liệu này
@@ -248,3 +252,92 @@ Chạy lại các lệnh kiểm tra trên máy mentor nếu có thể (`python3 
 | L2 thử thách 3 (2) | Log quét trước và sau kèm tổng số; báo cáo 5 phần; `.trivyignore` có lý do và ngày xem xét lại hoặc nêu rõ không dùng | Chỉ nâng ngưỡng hoặc xóa bước quét để gate xanh | Nếu gate không đỏ thì bạn quan sát cơ chế chặn bằng cách nào? |
 
 Ba kiểm tra chéo nên làm: hai tag trong evidence khớp tab Packages; thời điểm quét trong evidence hợp lý với số liệu (cơ sở dữ liệu CVE đổi theo ngày, kết quả giống hệt bài khác là dấu hiệu bất thường); và `demo-wide.yml` có hai commit riêng với SHA 40 ký tự ở bản cuối.
+
+### Phụ lục – Mã lời giải L2 đầy đủ (chuyển từ bài lab)
+
+Phần này giữ nguyên mã lời giải đã được bỏ khỏi trang học viên của [Buổi 19](../../labs/week-10/session-19.md) và [Buổi 20](../../labs/week-10/session-20.md), để mentor đối chiếu.
+
+#### Buổi 19 – chặn tag không tồn tại
+
+Thêm đoạn sau vào `deploy-local.sh`, ngay sau khi `export OWNER TAG`:
+
+```bash
+for img in club-api club-web; do
+  if ! docker manifest inspect "ghcr.io/${OWNER}/${img}:${TAG}" > /dev/null 2>&1; then
+    log "KHONG tim thay ghcr.io/${OWNER}/${img}:${TAG}, huy deploy (stack hien tai khong bi dong vao)"
+    exit 3
+  fi
+done
+```
+
+Kiểm thử:
+
+```bash
+OWNER=your-github-user TAG=sha-khongtontai ./deploy-local.sh; echo "exit=$?"
+docker compose ps
+```
+
+Kết quả mong đợi: `exit=3` và các service cũ vẫn `Up`.
+
+Trong workflow, biến `TAG` được truyền qua `env` nên giá trị người dùng nhập chỉ là chuỗi dữ liệu trong shell. Script đã đặt trong dấu nháy nên không bị tách lệnh.
+
+#### Buổi 20 – workflow security.yml
+
+```yaml
+name: Security
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  image-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t club-api:ci starter-project/backend
+
+      - name: Export image to tar
+        run: |
+          mkdir -p scan sbom
+          docker save club-api:ci -o scan/club-api.tar
+
+      - name: Generate SBOM
+        run: |
+          docker run --rm \
+            -v "$PWD/scan:/scan:ro" \
+            -v "$PWD/sbom:/out" \
+            aquasec/trivy:0.57.1 image --input /scan/club-api.tar \
+            --format cyclonedx --output /out/club-api.cdx.json
+
+      - name: Scan image
+        run: |
+          docker run --rm \
+            -v "$PWD/scan:/scan:ro" \
+            aquasec/trivy:0.57.1 image --input /scan/club-api.tar \
+            --severity CRITICAL --ignore-unfixed --exit-code 1
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: club-api-sbom
+          path: sbom/club-api.cdx.json
+          retention-days: 30
+```
+
+Lưu ý: nếu repo private và không bật dependency graph, job `dependency-review` sẽ lỗi; ghi nhận trong `report.md` và thay bằng `npm audit --omit=dev` ở thư mục `starter-project/backend`. Bước SBOM đặt trước bước scan và `upload-artifact` có `if: always()` để luôn có SBOM kể cả khi scan thất bại. Lời giải không mount `docker.sock`: image được xuất ra tar rồi Trivy đọc file. Với action bên thứ ba bạn thêm vào, đổi `@v...` thành SHA.

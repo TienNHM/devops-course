@@ -2,6 +2,13 @@
 
 > **Tóm tắt:** Dự án cuối track: làm trong một buổi chiều một landing page CLB có form đăng ký lưu vào Supabase, trang admin có đăng nhập, có link công khai, HTTPS và RLS.
 
+::: tip Bạn làm gì
+- **Kết quả:** một landing page CLB có link công khai, form đăng ký lưu vào Supabase và trang admin có đăng nhập.
+- **Thời gian:** 3 đến 4 giờ (một buổi chiều), chia làm 8 mốc.
+- **Cần gì trước:** đã làm xong [Đưa web tĩnh lên mạng](02-static-hosting.md) và một backend: [Supabase](04-supabase.md) (bài này dùng Supabase; nếu bạn học Firebase thì xem thử thách trong trang chấm điểm).
+- **Module trước:** [Supabase](04-supabase.md) hoặc [Firebase](05-firebase.md).
+:::
+
 ## Bạn sẽ làm được gì
 
 Thời lượng ước tính: 3 đến 4 giờ (một buổi chiều), chia làm 8 mốc.
@@ -23,7 +30,7 @@ Hãy nghĩ tới một quầy đăng ký ở cổng trường.
 | Tờ rơi và bàn đăng ký | Trang web tĩnh (HTML, CSS, JS) đặt trên hosting |
 | Hộp phiếu có khe nhét giấy | Bảng `members` chỉ cho phép "nhét vào" (insert) |
 | Chìa khóa hộp phiếu, chỉ BTC giữ | Tài khoản admin + bảng `admins` + policy đọc |
-| Quy định "ai được làm gì với hộp phiếu" | Row Level Security (RLS) |
+| Quy định "ai được làm gì với hộp phiếu" | Row Level Security (RLS; [thuật ngữ](../resources/glossary.md)) |
 | Chìa khóa vạn năng của chủ nhà | `service_role` hoặc secret key, không bao giờ đưa ra ngoài |
 | Biển hiệu và địa chỉ quầy | Domain và HTTPS |
 
@@ -151,7 +158,7 @@ Làm hết danh sách trong mục "Tự rà soát" bên dưới, rồi chụp �
 
 ### Mốc 8: Demo (10 phút)
 
-Đứng trước một người bạn, cầm điện thoại: mở link, đăng ký bằng email của bạn đó, mở admin trên laptop và cho thấy dòng mới xuất hiện. Sau đó trả lời năm câu hỏi giải thích ở mục "Mẫu bài nộp".
+Đứng trước một người bạn, cầm điện thoại: mở link, đăng ký bằng email của bạn đó, mở admin trên laptop và cho thấy dòng mới xuất hiện. Sau đó trả lời năm câu hỏi giải thích ở mục "Mẫu bài nộp" trong [trang chấm điểm](09-mini-project-advanced.md).
 
 ## Nhờ AI agent làm giúp
 
@@ -200,13 +207,13 @@ Liệt kê phát hiện kèm mức độ. KHÔNG tự sửa schema trên Supabas
 
 Bạn phải tự kiểm tra: mở file `schema.sql` và đọc từng policy; chạy `curl` ẩn danh; xem lại `git status`; mở trang trên điện thoại.
 
-Những việc KHÔNG giao cho agent:
-
+::: danger Những việc KHÔNG giao cho agent
 - Dán `service_role`, secret key, mật khẩu admin hay token vào khung chat hoặc file trong repo.
 - Bấm nâng cấp gói trả phí, nhập thông tin thẻ, mua domain.
 - Tự chạy SQL phá hủy (`drop table`, `delete`) trên project Supabase có dữ liệu thật.
 - Dán danh sách thành viên thật (họ tên, email) vào AI để "xử lý giúp".
 - Tắt RLS hay đổi policy thành `using (true)` chỉ vì "cho chạy được".
+:::
 
 ## Tự rà soát bảo mật (mốc 7)
 
@@ -235,59 +242,11 @@ Những việc KHÔNG giao cho agent:
 | Vài tuần sau, form báo lỗi hoặc admin không tải được | Project Supabase gói free bị tạm dừng vì ít hoạt động | Vào dashboard Supabase, bấm khôi phục (restore) project; đọc trang Project Pausing để biết điều kiện hiện hành |
 | Trang hosting hiện 404 | Thư mục xuất bản sai, hoặc file không tên `index.html` | Kiểm tra Publish/Output directory trỏ đúng thư mục chứa `index.html` |
 
-Một lỗi cố tình dùng cho phần chấm điểm nằm ở mục rubric bên dưới.
+Một lỗi cố tình dùng cho phần chấm điểm nằm ở mục rubric trong [trang chấm điểm](09-mini-project-advanced.md).
 
-## Rubric 100 điểm
+## Chấm điểm và nộp bài
 
-| Nhóm | Điểm | Cách chấm |
-| --- | --- | --- |
-| 1. Chạy được qua link công khai | 25 | Link mở được trên điện thoại (10); form gửi được và dòng xuất hiện trong Supabase (10); HTTPS, không lỗi Console (5) |
-| 2. An toàn secret và RLS | 30 | RLS bật cả hai bảng (10); khách ẩn danh đọc `members` ra rỗng (10); repo và lịch sử Git sạch khóa bí mật, có `.gitignore` đúng (10) |
-| 3. Trang admin | 10 | Đăng nhập, xem danh sách, đăng xuất; người chưa đăng nhập không thấy dữ liệu |
-| 4. README | 10 | Có mô tả dự án, cách chạy local, cách cấu hình (không chứa khóa thật), cách deploy, link demo |
-| 5. Hiểu và giải thích | 15 | Trả lời 5 câu hỏi trong bài nộp, mỗi câu 3 điểm, đúng ý và bằng lời của mình |
-| 6. Xử lý một lỗi cố tình | 10 | Người chấm cài sẵn một lỗi (ví dụ đổi tên bảng, xóa policy insert, hoặc làm sai URL); bạn chẩn đoán đúng nguyên nhân qua Console/log (5) và sửa đúng cách, không tắt RLS (5) |
-
-Quy tắc trừ điểm nặng: có secret key hoặc `service_role` trong repo công khai là về 0 điểm nhóm 2 và phải xoay khóa trước khi chấm tiếp. Dùng gói trả phí hay nhập thẻ không phải yêu cầu của bài, và không được cộng điểm.
-
-Thang xếp loại gợi ý: từ 90 là xuất sắc, 75 đến 89 là đạt tốt, 60 đến 74 là đạt, dưới 60 làm lại phần còn thiếu.
-
-## Mẫu bài nộp
-
-Sao chép khung dưới đây vào một Issue, một trang Notion hoặc file `SUBMISSION.md` trong repo, rồi điền.
-
-```text
-BÀI NỘP MINI PROJECT: LANDING PAGE CLB
-
-Họ tên:
-Link công khai:
-Link repo GitHub:
-Dịch vụ hosting đã dùng:
-Công cụ AI agent đã dùng:
-
-Bằng chứng (ảnh chụp, không lộ khóa):
-1. Table Editor có nhãn RLS đã bật
-2. Kết quả curl ẩn danh đọc members
-3. Trang admin sau khi đăng nhập
-4. Console không lỗi trên trang công khai
-
-Năm câu hỏi giải thích (trả lời 2 đến 4 câu mỗi ý, bằng lời của bạn):
-1. Từ lúc mình sửa một chữ trong code đến lúc người khác thấy chữ đó trên link công khai, chuyện gì xảy ra?
-2. Khóa công khai (publishable) khác khóa bí mật (secret, service_role) thế nào, và vì sao khóa công khai nằm trong trang web vẫn an toàn?
-3. RLS làm gì? Nếu quên bật RLS cho bảng members thì điều gì xảy ra?
-4. Vì sao config.js nằm trong .gitignore, và bạn đã đưa giá trị cấu hình lên hosting bằng cách nào?
-5. Kể một lỗi bạn gặp (hoặc lỗi bị cài sẵn): triệu chứng, nguyên nhân, cách bạn tìm ra và cách sửa.
-
-Phần AI: liệt kê 2 việc bạn giao cho agent và 2 việc bạn tự làm vì không muốn giao.
-```
-
-<details><summary>Gợi ý đáp án cho câu 1 đến 3</summary>
-
-1. Bạn commit và đẩy lên GitHub; hosting được nối với repo nhận thay đổi, chạy build (hoặc chỉ sao chép file), rồi phát hành bản mới lên mạng lưới của họ. Trình duyệt người khác tải bản mới.
-2. Khóa công khai chỉ có quyền thấp, mọi thao tác vẫn bị RLS lọc. Khóa bí mật bỏ qua RLS nên ai cầm được là đọc, sửa, xóa toàn bộ dữ liệu. Vì vậy khóa bí mật chỉ nằm ở backend.
-3. RLS là bộ quy tắc "ai được làm gì với từng dòng". Bảng không bật RLS thì bất kỳ ai có khóa công khai (mà khóa này nằm trong trang, ai cũng lấy được) đều có thể đọc, sửa, xóa dữ liệu qua API.
-
-</details>
+Bài được chấm trên 100 điểm theo sáu nhóm: chạy được qua link công khai (25), an toàn secret và RLS (30), trang admin (10), README (10), hiểu và giải thích (15), xử lý một lỗi cố tình (10). Có secret key hoặc `service_role` trong repo công khai là về 0 điểm nhóm 2. Bảng điểm chi tiết, mẫu bài nộp và các thử thách nâng cao nằm ở trang [Mini project: chấm điểm, nộp bài, thử thách](09-mini-project-advanced.md).
 
 ## Tự kiểm tra
 
@@ -307,18 +266,6 @@ Phần AI: liệt kê 2 việc bạn giao cho agent và 2 việc bạn tự làm
 
 </details>
 
-## Phiên bản thử thách nâng cao
-
-Chọn một hoặc nhiều thử thách, mỗi thử thách cộng tối đa 5 điểm thưởng (tổng thưởng không quá 15).
-
-| Thử thách | Làm gì | Gợi ý |
-| --- | --- | --- |
-| Function chống spam | Thêm một function trên Vercel hoặc Cloudflare nhận form, kiểm tra dữ liệu và giới hạn tần suất, rồi mới ghi vào Supabase | Xem [bài Fullstack serverless](03-fullstack-serverless.md). Khóa bí mật (nếu dùng) chỉ nằm trong biến môi trường của function, không trong frontend |
-| Firebase thay thế | Làm lại phần lưu dữ liệu bằng Firestore và Security Rules thay cho Supabase | Xem [bài Firebase](05-firebase.md). Viết rules chỉ cho phép tạo, không cho đọc |
-| Preview deploy | Mở một Pull Request đổi giao diện, lấy link preview của hosting, gửi cho bạn bè góp ý trước khi merge | Vercel, Netlify và Cloudflare đều tạo preview cho mỗi nhánh hoặc PR; kiểm tra tài liệu dịch vụ bạn chọn |
-| CI đơn giản | Thêm GitHub Actions chạy `node --check` cho các file JS và tìm chuỗi `sb_secret_` trong repo, fail nếu có | Là cầu nối sang khóa DevOps chính, xem mục Tiếp theo bên dưới |
-| Agent qua MCP | Dùng MCP server của Supabase để agent đọc cấu trúc bảng ở chế độ chỉ đọc, kiểm tra thiếu RLS | Xem [bài AI agent và deploy](06-ai-agent-deploy.md). Dùng project thử, không dùng dữ liệu thật |
-
 ## Checklist hoàn thành
 
 - [ ] Có link công khai mở được trên điện thoại, HTTPS có ổ khóa.
@@ -333,7 +280,9 @@ Chọn một hoặc nhiều thử thách, mỗi thử thách cộng tối đa 5 
 
 ## Tiếp theo
 
-Bạn vừa đi trọn đường từ "AI viết code" đến "có sản phẩm thật trên Internet". Khi sản phẩm lớn lên, hãy nhìn vào bảng này để biết khi nào cần học thêm.
+**Tiếp theo:** [Tên miền, bảo mật, production](07-domain-security-production.md) (gắn domain riêng, rà soát bảo mật trước khi mở cho người dùng thật), rồi [Hoàn thiện và ra mắt](11-launch-polish.md). Nếu bạn làm sản phẩm bằng Lovable, Bolt, v0 hay Replit, đọc thêm [App builders](10-app-builders.md).
+
+Khi sản phẩm lớn lên, nhìn vào bảng này để biết khi nào cần học thêm.
 
 | Dấu hiệu | Nên học |
 | --- | --- |
@@ -342,9 +291,7 @@ Bạn vừa đi trọn đường từ "AI viết code" đến "có sản phẩm 
 | Nhiều người cùng sửa, cần môi trường thử riêng | Môi trường staging, preview, quản lý cấu hình |
 | Lượng người dùng lớn, cần nhiều bản chạy song song | Kubernetes, giám sát, logging |
 
-Bài kế tiếp trong track: nếu bạn làm sản phẩm bằng Lovable, Bolt, v0 hay Replit, đọc [10 App-builder](10-app-builders.md); trước khi gửi link cho người lạ, đọc [11 Hoàn thiện và ra mắt](11-launch-polish.md) (chống spam form, preview khi chia sẻ, analytics, checklist go-live).
-
-Trong track này, nếu cần ôn: [Xử lý sự cố](08-troubleshooting.md), [Prompt library](prompt-library.md), [CLI cheatsheet](cli-cheatsheet.md), [So sánh nền tảng](platforms.md). Quay lại [trang chủ track](index.md) để xem lộ trình.
+Tra cứu: [Xử lý sự cố](08-troubleshooting.md), [Thư viện prompt](prompt-library.md), [CLI cheatsheet](cli-cheatsheet.md), [Nền tảng hosting](platforms.md). Quay lại [trang chủ track](index.md) để xem lộ trình.
 
 Tài liệu chính thức (giao diện và gói free thay đổi, luôn đối chiếu trang chính thức):
 

@@ -1,5 +1,9 @@
 # Walkthrough tuần 2 – Linux Essentials
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 03 (Linux CLI, phân tích access log) và Buổi 04 (user, group, setgid, process, biến môi trường, systemd), kèm đáp án bài tập tuần 2 và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -100,7 +104,31 @@ Top 5 IP có thể có hai IP cùng 33 request ở hạng 5 và 6 (`192.168.1.11
 
 Vì sao `$9 >= 400` đúng: awk so sánh theo số khi trường trông giống số, nên `404` và `500` thỏa còn `200` và `304` thì không. Kiểm chứng bằng `mini-access.log`: `/api/members` xuất hiện 2 lần (một POST trả 405, một GET trả 500), `/api/members/99` và `/favicon.ico` mỗi cái 1 lần.
 
-Script `log-report.sh` (có kiểm tra tham số) đã có trong lời giải của bài lab. Điểm mấu chốt: `[ -z "${1:-}" ]` để `set -u` không báo lỗi khi thiếu tham số, `[ ! -f "$1" ]` để bắt file không tồn tại, thoát mã 1 và ghi thông báo vào stderr bằng `>&2`, mọi biến trong nháy kép. Chạy thử với cả `mini-access.log` và `access.log`, không hard-code đường dẫn.
+Script `log-report.sh` (có kiểm tra tham số), lời giải tham khảo cho thử thách 4 của L2:
+
+```bash
+#!/usr/bin/env bash
+# log-report.sh - thống kê access log
+set -u
+
+if [ -z "${1:-}" ]; then
+  echo "Cách dùng: $0 duong-dan-access.log" >&2
+  exit 1
+fi
+if [ ! -f "$1" ]; then
+  echo "Không tìm thấy file: $1" >&2
+  exit 1
+fi
+
+echo "== Top 5 IP =="
+awk '{print $1}' "$1" | sort | uniq -c | sort -nr | head -n 5
+echo "== Mã HTTP =="
+awk '{print $9}' "$1" | sort | uniq -c | sort -nr
+echo "== Top 3 endpoint lỗi =="
+awk '$9 >= 400 {print $7}' "$1" | sort | uniq -c | sort -nr | head -n 3
+```
+
+Chạy thử: `bash log-report.sh mini-access.log`. Với `mini-access.log`, `/api/members` xuất hiện 2 lần (một POST trả 405, một GET trả 500), còn `/api/members/99` và `/favicon.ico` mỗi cái 1 lần. Điểm mấu chốt: `[ -z "${1:-}" ]` để `set -u` không báo lỗi khi thiếu tham số, `[ ! -f "$1" ]` để bắt file không tồn tại, thoát mã 1 và ghi thông báo vào stderr bằng `>&2`, mọi biến trong nháy kép. Chạy thử với cả `mini-access.log` và `access.log`, không hard-code đường dẫn.
 
 #### Lời giải phần Phá lỗi và debug
 
@@ -248,7 +276,32 @@ if [ "$disk" -ge "$DISK_LIMIT" ]; then echo "WARN: disk above ${DISK_LIMIT}%"; w
 
 Đã chạy thử: mặc định cho mã 0, `MEM_LIMIT=1` in `WARN: memory above 1%` và mã 2, `MEM_LIMIT=abc` in lỗi ra stderr và mã 1.
 
-**Bài 2 – systemd (chưa chạy lại trong container vì không có systemd).** Cách tiếp cận: bật systemd cho WSL nếu cần (`[boot]` và `systemd=true` trong `/etc/wsl.conf`, rồi `wsl --shutdown` từ PowerShell), copy script vào `/opt/club/` với quyền 755 để user của service đọc và chạy được cả đường dẫn, bọc script trong vòng lặp vì `Type=simple` cần tiến trình chạy mãi, `User=clb-dev1` để không chạy bằng root, `Restart=on-failure`. Dùng đúng unit trong lời giải của bài lab. Hướng chẩn đoán nếu lỗi: `systemctl status` rồi `journalctl -u club-resource-check -n 20 --no-pager`; `status=203/EXEC` nghĩa là đường dẫn trong `ExecStart` sai hoặc thiếu quyền thực thi; nhớ `daemon-reload` sau mỗi lần sửa unit. Kiểm tra tự khởi động lại: `sudo kill -9` PID chính (lấy bằng `systemctl show -p MainPID --value club-resource-check`); SIGKILL được tính là thất bại nên `on-failure` khởi động lại sau `RestartSec`.
+**Bài 2 – systemd (chưa chạy lại trong container vì không có systemd).** Cách tiếp cận: bật systemd cho WSL nếu cần (`[boot]` và `systemd=true` trong `/etc/wsl.conf`, rồi `wsl --shutdown` từ PowerShell), copy script vào `/opt/club/` với quyền 755 để user của service đọc và chạy được cả đường dẫn, bọc script trong vòng lặp vì `Type=simple` cần tiến trình chạy mãi, `User=clb-dev1` để không chạy bằng root, `Restart=on-failure`. Unit tham khảo:
+
+```bash
+sudo mkdir -p /opt/club
+sudo cp source/resource-check.sh /opt/club/resource-check.sh
+sudo chmod 755 /opt/club/resource-check.sh
+sudo tee /etc/systemd/system/club-resource-check.service > /dev/null <<'EOF'
+[Unit]
+Description=Club resource check loop
+
+[Service]
+User=clb-dev1
+ExecStart=/bin/bash -c 'while true; do /opt/club/resource-check.sh; sleep 30; done'
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl start club-resource-check
+systemctl status club-resource-check --no-pager
+sudo journalctl -u club-resource-check -n 5 --no-pager
+```
+
+Dọn: `sudo systemctl stop club-resource-check`, xóa file unit rồi `daemon-reload`. Hướng chẩn đoán nếu lỗi: `systemctl status` rồi `journalctl -u club-resource-check -n 20 --no-pager`; `status=203/EXEC` nghĩa là đường dẫn trong `ExecStart` sai hoặc thiếu quyền thực thi; nhớ `daemon-reload` sau mỗi lần sửa unit. Kiểm tra tự khởi động lại: `sudo kill -9` PID chính (lấy bằng `systemctl show -p MainPID --value club-resource-check`); SIGKILL được tính là thất bại nên `on-failure` khởi động lại sau `RestartSec`.
 
 **Bài 3 – `permissions-notes.md`.** Ý chính của 5 dòng: `chmod 777` cho cả người ngoài nhóm đọc, ghi, xóa nên mất ranh giới; thay bằng group sở hữu `clbdev`, `chmod 2770` để người ngoài bị chặn, setgid để file mới luôn thuộc nhóm, umask 007 hoặc 002 để các thành viên sửa được file của nhau; mỗi người một user giúp biết ai đã làm gì.
 

@@ -2,13 +2,20 @@
 
 > **Tóm tắt:** Thêm backend nhẹ cho web bằng serverless function: viết endpoint JSON, giữ secret phía server, push lên GitHub để Vercel, Netlify hoặc Cloudflare tự build và cho bạn link.
 
+::: tip Bạn làm gì
+- **Kết quả:** một endpoint `/api/hello` chạy trên mạng, và một biến bí mật chỉ function đọc được (web nhìn không thấy).
+- **Thời gian:** 60 đến 90 phút. Chỉ cần deploy một nền tảng.
+- **Cần gì trước:** đã làm [Git và GitHub](01-git-github.md) và [Đưa web tĩnh lên mạng](02-static-hosting.md); có Node.js bản LTS.
+- **Module trước:** [Đưa web tĩnh lên mạng](02-static-hosting.md).
+:::
+
 ## Bạn sẽ làm được gì
 
 Thời lượng ước tính: 60 đến 90 phút.
 
 - Giải thích được serverless function là gì và khi nào web của bạn cần nó.
 - Chạy thử một endpoint trả JSON trên máy mình, rồi deploy lên ít nhất một nền tảng (Vercel, Netlify hoặc Cloudflare Workers).
-- Phân biệt biến môi trường phía server và biến public (`NEXT_PUBLIC_`, `VITE_`), biết vì sao secret không bao giờ được vào frontend.
+- Phân biệt [biến môi trường](../resources/glossary.md) phía server và biến public (`NEXT_PUBLIC_`, `VITE_`), biết vì sao secret không bao giờ được vào frontend.
 - Đọc được build log và function log để tìm lỗi khi deploy hỏng.
 - Dùng preview deployment để thử thay đổi trước khi lên bản chính.
 
@@ -138,7 +145,11 @@ git add .
 git status
 ```
 
-Kiểm tra trong `git status` không có `.env`, `.env.local` hay `.dev.vars` (ví dụ đã có `.gitignore` sẵn). Rồi:
+::: danger Đừng đẩy secret lên GitHub
+Kiểm tra trong `git status` không có `.env`, `.env.local` hay `.dev.vars` (ví dụ đã có `.gitignore` sẵn). Nếu lỡ commit một khóa thật, coi như khóa đã lộ và phải xoay (rotate) khóa ở nhà cung cấp.
+:::
+
+Rồi:
 
 ```bash
 git commit -m "Add serverless demo"
@@ -178,7 +189,7 @@ Sửa lời chào trong `hello`, commit và push nhánh này. Mở Pull Request 
 
 Mẹo: thêm `console.log("env-check duoc goi")` rồi xem dòng này xuất hiện trong log. Không bao giờ `console.log` giá trị secret, vì log có thể được chia sẻ.
 
-### Bước 9. Biết thêm: cron và webhook
+::: details Nâng cao: cron (việc chạy theo lịch) và webhook
 
 Cron (việc chạy theo lịch): Vercel cho khai báo trong `vercel.json`, rồi gọi một endpoint của bạn bằng GET vào địa chỉ production; múi giờ luôn là UTC. Gói Hobby chỉ cho chạy tối đa một lần mỗi ngày và giờ chạy có thể lệch tới gần một tiếng (ví dụ `0 5 * * *` chạy trong khoảng 5:00 đến 5:59 UTC); khai báo dày hơn sẽ làm deploy bị từ chối. Vì endpoint cron là một địa chỉ công khai, hãy xem trang Cron Jobs của Vercel để biết cách chặn người lạ gọi (thường dùng một biến bí mật so với header Authorization).
 
@@ -190,7 +201,9 @@ Cron (việc chạy theo lịch): Vercel cho khai báo trong `vercel.json`, rồ
 
 Netlify có scheduled functions (đặt `schedule` trong `config`, giới hạn thực thi 30 giây, chỉ chạy theo lịch ở bản deploy đã publish, không chạy ở Deploy Preview), Cloudflare có Cron Triggers cho Workers (bảng chuyển từ Pages sang Workers của Cloudflare ghi Pages không có Cron Triggers). Webhook là khi dịch vụ ngoài (Stripe, GitHub) gọi vào endpoint của bạn: luôn kiểm tra chữ ký (signature) mà dịch vụ cung cấp, đừng tin mọi request đến.
 
-### Với Next.js, Vite hoặc Astro
+:::
+
+::: details Nâng cao: nếu agent tạo cho bạn Next.js, Vite hoặc Astro
 
 Agent thường tạo cho bạn một framework thay vì file lẻ. Quy tắc vẫn như trên:
 
@@ -201,6 +214,8 @@ Agent thường tạo cho bạn một framework thay vì file lẻ. Quy tắc v�
 | Astro | Endpoint trong `src/pages/api/` kèm adapter của nền tảng | `PUBLIC_` | Cài adapter cho Vercel, Netlify hoặc Cloudflare |
 
 Với cả ba, trước khi deploy hãy chạy `npm run build` ở máy: nếu máy bạn build lỗi thì nền tảng cũng lỗi.
+
+:::
 
 ## Nhờ AI agent làm giúp
 
@@ -236,7 +251,11 @@ Bạn phải tự kiểm tra:
 - Chạy `node test.mjs` hoặc `npm run build` ở máy và thấy qua.
 - Sau deploy, mở URL thật và thử cả hai endpoint.
 
-Không giao cho agent: dán secret hay khóa thật vào chat, bấm nâng cấp gói trả phí hoặc nhập thẻ, gắn domain thật khi bạn chưa kiểm tra, và tắt các bước kiểm tra "cho chạy được". Nếu agent có MCP của Vercel hay GitHub, hãy bắt đầu bằng quyền chỉ đọc và đọc kỹ từng thao tác nó xin làm.
+::: danger Không giao cho agent
+Dán secret hay khóa thật vào chat, bấm nâng cấp gói trả phí hoặc nhập thẻ, gắn domain thật khi bạn chưa kiểm tra, và tắt các bước kiểm tra "cho chạy được".
+:::
+
+Nếu agent có MCP của Vercel hay GitHub, hãy bắt đầu bằng quyền chỉ đọc và đọc kỹ từng thao tác nó xin làm.
 
 ## Nếu bị lỗi
 
@@ -284,7 +303,7 @@ Xem thêm các lỗi chung ở [Xử lý sự cố](08-troubleshooting.md).
 
 ## Tiếp theo + Tài liệu chính thức
 
-Tiếp theo: lưu dữ liệu thật với [Supabase](04-supabase.md) hoặc [Firebase](05-firebase.md); để agent hỗ trợ deploy ở [AI agent và deploy](06-ai-agent-deploy.md); trước khi mở cho người dùng thật, đọc [Domain, bảo mật, production](07-domain-security-production.md). Khi cần container, CI/CD hay tự quản lý server, quay lại [khóa DevOps](../curriculum/getting-started.md).
+**Tiếp theo:** lưu dữ liệu thật với [Supabase](04-supabase.md) hoặc [Firebase](05-firebase.md) (chọn một). Tra cứu thêm: [Deploy cùng AI agent](06-ai-agent-deploy.md); trước khi mở cho người dùng thật, đọc [Tên miền, bảo mật, production](07-domain-security-production.md). Khi cần container, CI/CD hay tự quản lý server, quay lại [khóa DevOps](../curriculum/getting-started.md).
 
 Tài liệu chính thức:
 

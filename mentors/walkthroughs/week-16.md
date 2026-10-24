@@ -1,12 +1,16 @@
 # Walkthrough tuần 16 – Capstone: kiểm thử, gỡ lỗi và bảo vệ
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải buổi 31 (clean clone, ba sự cố trên kind, bảo mật, runbook) và buổi 32 (demo, bảo vệ kỹ thuật), kèm checklist Definition of Done, lỗi tích hợp thường gặp và bảng chấm cho mentor.
 
 ## Cách dùng tài liệu này
 
 Tài liệu này được công bố sau khi tuần 16 kết thúc. Hãy đọc nó sau khi nhóm đã tự làm và đã demo, rồi đối chiếu chứ không chép. Tuần 16 là phần chứng minh khả năng vận hành: giá trị nằm ở dự đoán, quan sát và chẩn đoán của chính bạn, không nằm ở việc có cùng câu chữ với tài liệu này.
 
-- Lệnh và kết quả mong đợi bám theo hai bài lab: [buổi 31](../../labs/week-16/session-31.md) và [buổi 32](../../labs/week-16/session-32.md); bài tập tuần ở [assignments/weekly/week-16.md](../../assignments/weekly/week-16.md). Tiêu chí tổng thể: [đề bài Capstone](../../assignments/capstone/README.md), [hướng dẫn demo](../../assignments/capstone/demo-guide.md) và [rubric](../../curriculum/capstone-rubric.md).
+- Lệnh và kết quả mong đợi bám theo hai bài lab: [buổi 31](../../labs/week-16/session-31.md) và [buổi 32](../../labs/week-16/session-32.md); bài tập tuần ở [Bài tập tuần 16](../../assignments/weekly/week-16.md). Tiêu chí tổng thể: [đề bài Capstone](../../assignments/capstone/README.md), [hướng dẫn demo](../../assignments/capstone/demo-guide.md) và [rubric](../../curriculum/capstone-rubric.md).
 - Tài liệu này không đưa mã nguồn hoàn chỉnh của hệ thống. Capstone dùng mã của chính nhóm; ở đây chỉ có cách tiếp cận, checklist và cách chẩn đoán.
 - Trong bài làm, hãy viết dự đoán trước khi chạy lệnh. Dự đoán sai không bị trừ điểm; dự đoán viết sau khi đã thấy kết quả mới bị trừ.
 
@@ -117,6 +121,19 @@ Thử thách là thiết kế một failure injection mới cho nhóm bạn. Cá
 | Sai tên key trong Secret | Đổi `key` trong `secretKeyRef` sang tên không có | Pod mới ở `CreateContainerConfigError`, Pod cũ vẫn phục vụ | Key không tồn tại trong Secret | `kubectl rollout undo deployment/club-api -n club` |
 | Sai cổng của readiness | Đổi `port` của readinessProbe sang cổng khác | Pod mới `0/1`, event báo probe bị từ chối kết nối | Probe gọi cổng ứng dụng không lắng nghe | `kubectl rollout undo deployment/club-api -n club` |
 
+**Lời giải mẫu bổ sung: đổi đường dẫn readiness.** Đây là ví dụ đã có trong bài lab cũ (chưa chạy lại trên kind khi viết tài liệu, hãy tự chạy thử trước khi giao).
+
+Gây lỗi:
+
+```bash
+kubectl patch deployment club-api -n club --type=json \
+  -p='[{"op":"replace","path":"/spec/template/spec/containers/0/readinessProbe/httpGet/path","value":"/readyy"}]'
+```
+
+Triệu chứng: Pod mới `Running` nhưng `0/1` Ready, rollout bị kẹt, Pod cũ vẫn phục vụ. `kubectl describe pod` cho thấy `Readiness probe failed: HTTP probe failed with statuscode: 404`. Sửa: `kubectl rollout undo deployment/club-api -n club`. Phòng tránh: kiểm thử probe bằng `curl` trong Pod trước khi đưa vào manifest, và để CI chạy `kubectl apply --dry-run=client` cho cú pháp.
+
+Các ý tưởng khác trong gợi ý của bài lab: đổi `DB_HOST` trong ConfigMap thành `postgress` (xem lời giải Phá lỗi bên dưới), đặt memory limit rất thấp để Pod bị `OOMKilled`, đặt `nodeSelector` không tồn tại để Pod `Pending`. Mỗi ý có cách hoàn tác bằng `kubectl rollout undo` hoặc `kubectl apply -f` lại manifest gốc; với trường mà manifest gốc không có, như `nodeSelector`, ưu tiên `rollout undo`.
+
 Cách chấm báo cáo 5 mục của nhóm nhận: có đi từ trạng thái, sự kiện, log tới cấu hình không (và có bỏ bước nào không); nguyên nhân gốc có phân biệt với triệu chứng không; có lệnh và output làm bằng chứng không; cách sửa có đúng cách hoàn tác không. Một chẩn đoán tốt bắt đầu bằng `kubectl get endpoints` khi Pod đều Ready mà vẫn lỗi.
 
 #### Lời giải phần Phá lỗi và debug: `DB_HOST` sai chính tả
@@ -183,7 +200,16 @@ Cấu trúc câu trả lời nên theo ba bước kết luận, lý do, bằng c
 
 #### Lời giải phần L2
 
-**Failure injection tự chọn: xóa Pod PostgreSQL.** Dự đoán đúng gồm ba điều: Pod `postgres-0` được tạo lại bởi StatefulSet; dữ liệu còn vì PVC `postgres-pvc` không bị xóa và Pod mới gắn lại đúng PVC đó; người dùng thấy lỗi vài giây khi Pod chưa Ready (API trả 500 hoặc 502), sau đó hồi phục. Quan sát thêm đã gặp khi kiểm chứng với starter-project: khi PostgreSQL ngắt kết nối đột ngột, tiến trình backend có thể thoát vì pool chưa xử lý sự kiện `error`, nên có thể thấy `RESTARTS` của Pod `club-api` tăng thêm 1. Bằng chứng cần nộp: `kubectl get pvc -n club` trước và sau (cùng một PVC, trạng thái `Bound`), dữ liệu truy vấn được trước và sau. Không xóa PVC trong thử thách này; xóa PVC là hành động mất dữ liệu có chủ ý.
+**Failure injection tự chọn: xóa Pod PostgreSQL.** Lệnh mẫu:
+
+```bash
+kubectl get pods -n club
+kubectl delete pod postgres-0 -n club
+kubectl get pods -n club -w
+curl -s http://club.localhost/api/members
+```
+
+Tên Pod `postgres-0` giả định StatefulSet tên `postgres`; hãy lấy tên thật từ `kubectl get pods`. Trong lúc Pod chưa Ready, `curl` có thể trả lỗi 500 hoặc 502 vài giây, sau đó hồi phục. Dự đoán đúng gồm ba điều: Pod `postgres-0` được tạo lại bởi StatefulSet; dữ liệu còn vì PVC `postgres-pvc` không bị xóa và Pod mới gắn lại đúng PVC đó; người dùng thấy lỗi vài giây khi Pod chưa Ready (API trả 500 hoặc 502), sau đó hồi phục. Quan sát thêm đã gặp khi kiểm chứng với starter-project: khi PostgreSQL ngắt kết nối đột ngột, tiến trình backend có thể thoát vì pool chưa xử lý sự kiện `error`, nên có thể thấy `RESTARTS` của Pod `club-api` tăng thêm 1. Bằng chứng cần nộp: `kubectl get pvc -n club` trước và sau (cùng một PVC, trạng thái `Bound`), dữ liệu truy vấn được trước và sau. Không xóa PVC trong thử thách này; xóa PVC là hành động mất dữ liệu có chủ ý.
 
 **Đề xuất cải tiến có ưu tiên.** Ví dụ danh sách đạt yêu cầu (mỗi mục phải kèm bằng chứng và ước lượng của riêng bạn):
 

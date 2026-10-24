@@ -1,15 +1,19 @@
 # Walkthrough tuần 15 – Capstone: lập kế hoạch và triển khai
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải buổi 29 (kiến trúc, backlog, ADR) và buổi 30 (CRUD có test, Compose, CI, GHCR) cho Capstone Club Management, kèm cách chẩn đoán lỗi tích hợp và bảng chấm cho mentor.
 
 ## Cách dùng tài liệu này
 
 Tài liệu này được công bố sau khi tuần 15 kết thúc. Hãy đọc nó sau khi nhóm đã tự làm, và dùng để đối chiếu chứ không chép. Capstone là bài làm nhóm: mỗi nhóm có repo, ADR, backlog và sơ đồ riêng, nên không có "đáp án duy nhất". Phần dưới đây nêu cách tiếp cận, các mốc kiểm chứng và những chỗ nhóm hay sai.
 
-- Các lệnh và kết quả mong đợi lấy từ hai bài lab: [buổi 29](../../labs/week-15/session-29.md) và [buổi 30](../../labs/week-15/session-30.md). Bài tập tuần ở [assignments/weekly/week-15.md](../../assignments/weekly/week-15.md).
+- Các lệnh và kết quả mong đợi lấy từ hai bài lab: [buổi 29](../../labs/week-15/session-29.md) và [buổi 30](../../labs/week-15/session-30.md). Bài tập tuần ở [Bài tập tuần 15](../../assignments/weekly/week-15.md).
 - Nếu bạn thấy kết quả của mình khác, đừng sửa kết quả cho giống. Hãy tìm lý do khác nhau, vì đó thường là nội dung đáng ghi vào `report.md`.
 - Phần "Hướng dẫn chấm cho mentor" ở cuối giúp bạn tự kiểm tra bài của mình theo đúng cách mentor sẽ hỏi.
-- Đoạn mã đầy đủ của API (`members-repo.js`, `app.js`, `tests/members.test.js`) nằm ngay trong bài lab buổi 30; walkthrough không chép lại mà chỉ giải thích vì sao nó được viết như vậy.
+- Đoạn mã gợi ý đầy đủ của API (`members-repo.js`, `app.js`, `tests/members.test.js`) nằm ở trang [Buổi 30 – Mã gợi ý và thử thách](../../labs/week-15/session-30-challenge.md); walkthrough không chép lại mà chỉ giải thích vì sao nó được viết như vậy.
 
 Về mức độ kiểm chứng: mã API trong lab buổi 30 đã được chạy lại trên Node.js 22 với PostgreSQL 17 (container tạm): 8 test pass, và các mã trạng thái 201, 400, 404, 409, 200, 204 đúng như bảng bên dưới. Phần Kubernetes, GitHub Actions và GHCR chưa được chạy lại; phần đó dựa trên việc đọc manifest và workflow của starter-project.
 
@@ -84,6 +88,19 @@ Một Issue size L (như "chạy trên kind") phải tách thành "cluster và I
 **Thử thách 1 – ADR về chiến lược test.** Quyết định hợp lý: mock ở tầng `repo` cho test đơn vị (nhanh, chạy offline, không cần service container trong CI), cộng một smoke test bằng Compose để bắt lỗi SQL thật. Rủi ro của mock: test xanh nhưng SQL sai (ví dụ sai tên cột). Rủi ro của DB thật trong CI: chậm hơn, cần service container và dữ liệu khởi tạo. Phần Hệ quả phải nêu việc ở buổi 30: viết tối thiểu 5 test, thiết kế `createApp(repo)` để truyền được `repo` giả. Điểm mentor để ý: ADR có comment của reviewer và nhóm đã trả lời.
 
 **Thử thách 2 – Đường găng.** Chuỗi dài nhất thường là API, test, CI, publish. Hai cách giảm thời gian chờ có thể chấp nhận: (1) chốt hợp đồng API (đường dẫn, mã trạng thái, tên trường JSON) ngay từ đầu để frontend làm song song với dữ liệu giả; (2) tách Issue CI thành "chạy test" và "build thử image" để người phụ trách CI bắt đầu từ ngày đầu thay vì đợi test xong. Bài đạt khi sơ đồ chỉ ra một điểm nghẽn thật của nhóm, không phải sơ đồ chép lại từ lab.
+
+Sơ đồ mẫu để đối chiếu (chuyển từ lời giải mẫu trong bài lab):
+
+```mermaid
+flowchart LR
+    API["API CRUD"] --> T["Test CRUD"]
+    API --> FE["Form xoa o frontend"]
+    T --> CI["Workflow CI"]
+    CI --> PUB["Workflow publish"]
+    FE --> CMP["Compose chay toan stack"]
+```
+
+Chuỗi dài nhất: API, Test, CI, Publish. Biện pháp: định nghĩa trước hợp đồng API (đường dẫn, mã trạng thái) để frontend làm song song với backend bằng dữ liệu giả; tách Issue "Workflow CI" thành "chạy test" và "build thử image" để người phụ trách CI bắt đầu sớm.
 
 **Thử thách 3 – Kế hoạch rủi ro.** Ví dụ bảng đạt yêu cầu (rút gọn):
 
@@ -199,7 +216,18 @@ Thứ tự merge: A trước, rồi B, C, D, mỗi người rebase lên `main` m
 
 **2. Chặn merge khi test đỏ.** Gợi ý của lab (đổi tạm giá trị mong đợi từ 201 sang 200) làm đúng một test đỏ. Bằng chứng cần có: link PR, ảnh hoặc output cho thấy nút merge bị khóa vì check `test` thất bại, rồi commit sửa và check xanh. Điểm cần phân tích: ba check hiện tại không bắt được lỗi SQL sai tên cột (vì test dùng repo giả) và không bắt được sai biến môi trường trong manifest Kubernetes.
 
-**3. Chạy thử trên kind.** Chuỗi lệnh trong lab là đáp án; các bẫy thường gặp: tên container trong Deployment là `api` (không phải `club-api`); `kind load docker-image` phải có `--name` nếu cluster không có tên mặc định; `init.sql` không tự chạy trên Kubernetes nên phải nạp bằng `kubectl exec -i ... psql`; sau khi xong phải sửa `image` trong `k8s/backend.yaml` để khớp với cluster. Hai khác biệt Compose và Kubernetes nên ghi vào `report.md`: cách khởi tạo database (volume gắn `init.sql` với thủ công) và cách nạp image (build trong Compose với `kind load`).
+**3. Chạy thử trên kind.** Chuỗi lệnh đáp án (chuyển từ lời giải trong bài lab buổi 30; thay `club` bằng tên cluster của học viên, xem bằng `kind get clusters`):
+
+```bash
+docker build -t club-api:1.1.0 ./backend
+kind load docker-image club-api:1.1.0 --name club
+kubectl set image deployment/club-api api=club-api:1.1.0 -n club
+kubectl rollout status deployment/club-api -n club
+kubectl exec -i -n club postgres-0 -- psql -U club -d clubdb < database/init.sql
+kubectl port-forward -n club svc/backend 3000:3000
+```
+
+Mở terminal khác và chạy `curl -i -X POST http://localhost:3000/api/members ...` như phần demo. Sau khi xong, sửa `image` trong `k8s/backend.yaml` để khớp với những gì đang chạy, tránh lệch giữa manifest và cluster. Cổng 3000 chỉ cần rảnh trong lúc port-forward; nếu bận, đổi cổng bên trái, ví dụ `3100:3000`. Các bẫy thường gặp: tên container trong Deployment là `api` (không phải `club-api`); `kind load docker-image` phải có `--name` nếu cluster không có tên mặc định; `init.sql` không tự chạy trên Kubernetes nên phải nạp bằng `kubectl exec -i ... psql`; sau khi xong phải sửa `image` trong `k8s/backend.yaml` để khớp với cluster. Hai khác biệt Compose và Kubernetes nên ghi vào `report.md`: cách khởi tạo database (volume gắn `init.sql` với thủ công) và cách nạp image (build trong Compose với `kind load`).
 
 #### Lời giải phần Phá lỗi và debug: đổi tên trường API
 
@@ -244,7 +272,7 @@ Phần này gợi ý cách làm cho từng nhiệm vụ của [bài tập tuần
 
 - **A.** Xem lời giải thử thách 2 ở buổi 30. Điểm cần phân tích: ba check bắt lỗi ở bước nào (test thất bại ở job `test`, Dockerfile hỏng ở `build-images`, thiếu biến ở `validate-compose`) và loại lỗi cả ba bỏ sót (SQL sai với DB thật, manifest k8s sai, lỗi chỉ xảy ra khi chạy lâu).
 - **B.** Hai tag `sha-xxxxxxx` và `v1.1.0` của cùng một lần build có cùng digest; chứng minh bằng `docker manifest inspect` hoặc `docker pull` rồi so sánh `Digest`. Rollback: đổi `image` trong manifest về tag cũ (ưu tiên tag SHA hoặc semver), `kubectl apply`, `kubectl rollout status`; hoặc `kubectl rollout undo` nếu bản cũ vẫn nằm trong lịch sử rollout.
-- **C.** Dùng lời giải thử thách 3 ở buổi 30. Với mỗi điểm khác nhau giữa Compose và Kubernetes, kèm một lệnh hoặc dòng log làm bằng chứng.
+- **C.** Dùng lời giải thử thách 3 ở trên. Với mỗi điểm khác nhau giữa Compose và Kubernetes, kèm một lệnh hoặc dòng log làm bằng chứng.
 
 #### Đáp án năm câu hỏi kiểm tra
 

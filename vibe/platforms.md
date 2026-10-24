@@ -2,6 +2,18 @@
 
 > **Tóm tắt:** Bảng so sánh GitHub Pages, Vercel, Netlify, Cloudflare, Supabase, Firebase, Render, Railway kèm cây quyết định, combo khuyến nghị và cảnh báo lock-in, chi phí.
 
+::: tip Bạn làm gì: chọn nơi deploy (trang tra cứu, 2 phút)
+**Bạn sẽ tạo ra:** một lựa chọn nền tảng chính và một phương án dự phòng. Dùng trang này khi cần so sánh, không cần đọc từ đầu tới cuối. Thuật ngữ (hosting, domain, serverless, lock-in): [Thuật ngữ](../resources/glossary.md).
+:::
+
+## Nếu bạn chỉ có 1 phút
+
+- Trang giới thiệu, portfolio, landing page (chỉ hiển thị): **GitHub Pages** (đường khuyến nghị của [bài 02 Hosting tĩnh](02-static-hosting.md)).
+- Cần hàm backend nhẹ hoặc dùng Next.js: **Vercel**, **Netlify** hoặc **Cloudflare Workers**.
+- Cần database và đăng nhập: thêm **Supabase** (thích SQL) hoặc **Firebase** (realtime, di động).
+- Cần server chạy liên tục: **Render** hoặc **Railway** (chú ý giới hạn gói free).
+- Chưa chắc: chọn thứ đơn giản nhất chạy được, code nằm trên GitHub thì đổi sau vẫn dễ.
+
 ## Bạn sẽ làm được gì
 
 Thời lượng ước tính: 30 phút đọc, dùng như trang tra cứu.
@@ -37,7 +49,7 @@ Một sản phẩm thường ghép: một nơi host giao diện cộng một Baa
 | Render | Backend chạy liên tục (Node, Python), thử nghiệm | Chạy ứng dụng như trên máy mình | Free: dịch vụ tự ngủ sau 15 phút không có người truy cập, thức dậy mất khoảng 1 phút. Database free hết hạn sau 30 ngày | 750 giờ chạy mỗi tháng. Postgres free 1 GB, hết hạn 30 ngày. Xem [Free tier](https://render.com/docs/free) |
 | Railway | Backend và database nhỏ, thử nhanh | Giao diện đơn giản, dựng nhiều dịch vụ nhanh | Gói Free chỉ có 1 USD credit mỗi tháng, mỗi dịch vụ giới hạn tài nguyên | Free: 1 USD credit mỗi tháng. Trial: 5 USD một lần. Xem [gói](https://docs.railway.com/reference/pricing/plans) |
 
-Ghi chú về Cloudflare (kiểm tra 21/10/2026): trang tài liệu Cloudflare Pages ghi Workers là nền tảng ứng dụng chính và khuyên bắt đầu dự án mới bằng Workers; Workers có thể phục vụ file tĩnh qua static assets. Vì vậy các bài trong track này dạy Workers static assets làm đường chính ([bài 02](02-static-hosting.md), [bài 03](03-fullstack-serverless.md)) và giữ Pages như đường cũ vẫn dùng được. Cloudflare không nói Pages bị ngừng, nhưng hãy xem lại tài liệu trước khi bắt đầu.
+Ghi chú về Cloudflare (kiểm tra 21/10/2026): trang tài liệu Cloudflare Pages ghi Workers là nền tảng ứng dụng chính và khuyên bắt đầu dự án mới bằng Workers; Workers có thể phục vụ file tĩnh qua static assets. Vì vậy các bài trong track này dạy Workers static assets làm đường chính ([bài 02 Hosting tĩnh](02-static-hosting.md), [bài 03 Fullstack serverless](03-fullstack-serverless.md)) và giữ Pages như đường cũ vẫn dùng được. Cloudflare không nói Pages bị ngừng, nhưng hãy xem lại tài liệu trước khi bắt đầu.
 
 ## Cây quyết định: Tôi nên deploy ở đâu?
 

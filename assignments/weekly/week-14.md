@@ -2,18 +2,29 @@
 
 > **Tóm tắt:** Cho PostgreSQL của Club Management giữ dữ liệu bằng PVC trên kind, mở ứng dụng qua Ingress `club.localhost`, rồi tự phá và tự khôi phục ba lỗi Kubernetes phổ biến (ImagePullBackOff, CrashLoopBackOff, Pending) với bằng chứng từ events, logs và exit code.
 
+**Bài tập = nộp lại bằng chứng của lab, không có việc mới.** Việc duy nhất ngoài lab: thêm email riêng của bạn vào bảng `members` (đã nằm trong lab) và viết `report.md` (giải thích, bảng lệnh đầu tiên cho ba lỗi, báo cáo 5 mục, 5 câu hỏi kiểm tra).
+
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Postgres giữ dữ liệu qua PVC | [Buổi 27 – Storage & Ingress](../../labs/week-14/session-27.md), Phần 1-3 | 1,5 giờ | `get nodes`, `get pvc,pv`, `Pending`, hai lần đếm `members`; `source/postgres.yaml` |
+| 2. Truy cập qua Ingress | [Buổi 27 – Storage & Ingress](../../labs/week-14/session-27.md), Phần 4-5 | 1,5 giờ | `get pods`, `get ingress`, ba lệnh `curl`, `describe ingress`, log controller |
+| 3. Rollout, history, scale, rollback | [Buổi 28 – Kubernetes Operations](../../labs/week-14/session-28.md), Phần 1-3 | 1 giờ | `rollout history`, `get rs`, `rollout status` hết thời gian, `rollout undo`, `jsonpath` |
+| 4. Chẩn đoán ba lỗi | [Buổi 28 – Kubernetes Operations](../../labs/week-14/session-28.md), Phần 3-5 | 1,5 giờ | Events, `logs --previous`, `Last State`, `FailedScheduling`, lệnh dọn dẹp |
+| 5. Troubleshooting report | [Buổi 28 – Kubernetes Operations](../../labs/week-14/session-28.md), mục Nộp bài | 0,5 giờ | `lab-28/report.md` với ít nhất hai sự cố theo mẫu 5 mục |
+
+Hạn nộp và cách nộp ở cuối trang. Mentor chấm theo barem trong [Chấm điểm tuần 14](../../mentors/grading/week-14.md); bảng điểm ngắn nằm bên dưới.
+
 **Hạn nộp:** trước buổi đầu tiên của tuần 15.
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-27/` và `lab-28/`.
-**Bài lab liên quan:** [Buổi 27 – Storage & Ingress](../../labs/week-14/session-27.md), [Buổi 28 – Kubernetes Operations](../../labs/week-14/session-28.md).
-**Mẫu nộp bài:** [templates/lab-template.md](../../templates/lab-template.md).
+**Mẫu nộp bài:** [Mẫu nộp bài lab](../../templates/lab-template.md).
 
 ## Bối cảnh
 
 CLB chuẩn bị demo Club Management chạy trên Kubernetes. Hiện có hai điểm yếu. Thứ nhất, danh sách thành viên nằm trong filesystem tạm của Pod Postgres, nên một lần `kubectl delete pod` là mất sạch. Thứ hai, mỗi lần xem ứng dụng phải `port-forward` từng Service, và khi cập nhật image thì không ai biết chắc bản mới có lên hay không vì rolling update che lỗi bằng các Pod cũ.
 
-Nhiệm vụ của bạn trong tuần: chứng minh dữ liệu sống sót qua việc xóa Pod, chứng minh request đi đúng đường qua Ingress, và chứng minh bạn vận hành được một Deployment (rollout, rollback, scale) cũng như chẩn đoán lỗi bằng bằng chứng thay vì đoán mò.
+Nhiệm vụ của bạn: chứng minh dữ liệu sống sót qua việc xóa Pod, chứng minh request đi đúng đường qua Ingress, và chứng minh bạn vận hành được một Deployment (rollout, rollback, scale) cũng như chẩn đoán lỗi bằng bằng chứng thay vì đoán mò.
 
-Tuần này dùng cluster kind tên `club` tạo từ `starter-project/k8s/kind-config.yaml` (có `extraPortMappings` cho cổng 80, 443 và nhãn `ingress-ready=true`), image `club-api:1.0.0` và `club-web:1.0.0` nạp bằng `kind load docker-image`. Mọi lệnh chạy trong filesystem WSL (ví dụ `~/devops-labs`), không dùng `/mnt/c`. Bài tập chỉ dùng kiến thức của Buổi 27 và 28; nếu kẹt, đọc lại phần "Phá lỗi và debug" và "Lỗi thường gặp" của hai bài lab.
+Tuần này dùng cluster kind `club` (context `kind-club`) tạo từ `starter-project/k8s/kind-config.yaml` (có `extraPortMappings` cho cổng 80, 443 và nhãn `ingress-ready=true`), image `club-api:1.0.0` và `club-web:1.0.0` nạp bằng `kind load docker-image`. Mọi lệnh chạy trong filesystem WSL (ví dụ `~/devops-labs`), không dùng `/mnt/c`. Nếu kẹt, đọc mục Gặp lỗi? của hai bài lab.
 
 ## Nhiệm vụ L1 (bắt buộc)
 
@@ -77,7 +88,7 @@ Tiêu chí hoàn thành:
 
 ## Nhiệm vụ L2 (nâng cao)
 
-L2 là điểm thưởng, chỉ chấm khi L1 đã đạt từ 60 điểm trở lên. Không có gợi ý đi kèm; hãy tự dự đoán trước khi chạy lệnh.
+L2 là điểm thưởng, chỉ chấm khi L1 đã đạt từ 60 điểm trở lên. Gợi ý nằm trong [Buổi 27 – Thử thách nâng cao](../../labs/week-14/session-27-challenge.md) và [Buổi 28 – Thử thách nâng cao](../../labs/week-14/session-28-challenge.md); hãy tự dự đoán trước khi chạy lệnh.
 
 ### Thử thách A. Vòng đời PV và reclaim policy
 
@@ -131,37 +142,24 @@ lab-28/
     └── command-output.txt
 ```
 
-Bằng chứng theo từng nhiệm vụ:
+Quy tắc chung: evidence là output thật của lệnh (có dòng lệnh đi kèm), không chỉnh sửa số liệu; Secret không được đưa vào repo dưới dạng file chứa giá trị thật. Có thể dùng `tee -a evidence/command-output.txt` hoặc `script` để ghi lại phiên làm việc. Ảnh chụp màn hình chỉ bổ sung, không thay evidence dạng text.
 
-| Nhiệm vụ | Bằng chứng bắt buộc |
+## Bảng điểm
+
+| Tiêu chí | Điểm |
 | --- | --- |
-| 1 | `lab-27/evidence/command-output.txt` có `get nodes`, `get pvc,pv`, hai lần đếm `members` trước/sau xóa Pod, dòng PVC `Pending` hoặc Events "waiting for first consumer"; `lab-27/source/postgres.yaml` |
-| 2 | Cùng file evidence có `get pods`, `get ingress`, ba lệnh `curl` (có Host đúng, có tới `/`, không có Host), `describe ingress`, log controller; ảnh `club-localhost.png` chỉ bổ sung |
-| 3 | `lab-28/source/web.yaml`; evidence có `rollout history` (nhiều lần), `get rs`, `scale`, `rollout status` hết thời gian, `rollout undo`, `jsonpath` image |
-| 4 | `lab-28/source/crash.yaml` bản đã sửa; evidence có `describe pod` (Events), `logs --previous`, `Last State`, `FailedScheduling`, và lệnh dọn dẹp |
-| 5 | `lab-28/report.md` với ít nhất hai sự cố theo mẫu 5 mục |
-| L2-A | Bảng dự đoán/kết quả trong `lab-27/report.md`; `get pv` trước và sau |
-| L2-B | `lab-27/source/ingress-api.yaml`; hai lệnh `curl`; `describe ingress` |
-| L2-C | Evidence `lab-28` cho `set image` lỗi và `rollout undo`; log điều tra scenario đã chọn |
+| Nhiệm vụ 1: PVC và dữ liệu bền | 18 |
+| Nhiệm vụ 2: Ingress | 14 |
+| Nhiệm vụ 3: Rollout và rollback | 18 |
+| Nhiệm vụ 4: Chẩn đoán ba lỗi (mỗi lỗi 6, dọn dẹp 2) | 20 |
+| Nhiệm vụ 5: Troubleshooting report | 10 |
+| Câu hỏi kiểm tra kiến thức (mỗi câu 2) | 10 |
+| Cấu trúc nộp bài và an toàn | 10 |
+| **Tổng bắt buộc** | **100** |
+| Thử thách A / B / C (L2) | +4 / +3 / +3 |
+| **Điểm thưởng tối đa** | **10** |
 
-Quy tắc chung: evidence là output thật của lệnh (có dòng lệnh đi kèm), không chỉnh sửa số liệu; Secret không được đưa vào repo dưới dạng file chứa giá trị thật. Có thể dùng `tee -a evidence/command-output.txt` hoặc `script` để ghi lại phiên làm việc.
-
-## Barem chấm
-
-| Tiêu chí | Mô tả mức đạt / không đạt | Điểm |
-| --- | --- | --- |
-| Nhiệm vụ 1: PVC và dữ liệu bền | Đạt: PVC `Bound`, dòng riêng còn sau khi xóa Pod, có bằng chứng Pending hợp lệ và giải thích. Không đạt: thiếu số đếm trước/sau, hoặc dữ liệu mất mà không giải thích. Trừ nửa điểm nếu thiếu giải thích Pending | 18 |
-| Nhiệm vụ 2: Ingress | Đạt: đủ ba lệnh curl với kết quả đúng (JSON, 200, 404), `describe ingress` đúng hai path, giải thích path thắng. Không đạt: chỉ có ảnh trình duyệt, hoặc thiếu trường hợp 404 | 14 |
-| Nhiệm vụ 3: Rollout và rollback | Đạt: history có change-cause, scale không đổi revision, rollback về image hợp lệ có `jsonpath` xác nhận. Không đạt: thiếu `rollout status` hết thời gian hoặc không chứng minh Pod cũ còn phục vụ | 18 |
-| Nhiệm vụ 4: Chẩn đoán ba lỗi | Đạt: mỗi lỗi có đúng loại bằng chứng (Events, `logs --previous` và Exit Code, `FailedScheduling`) và bảng giải thích lệnh đầu tiên. Không đạt: kết luận không kèm output. Mỗi lỗi 6 điểm, dọn dẹp 2 điểm | 20 |
-| Nhiệm vụ 5: Troubleshooting report | Đạt: đủ 5 mục cho hai sự cố, trích dẫn khớp evidence, phòng tránh cụ thể, phân biệt rollback với sửa gốc | 10 |
-| Câu hỏi kiểm tra kiến thức | Mỗi câu 2 điểm: đúng ý chính và dùng đúng thuật ngữ; sai hoặc mơ hồ: 0-1 điểm | 10 |
-| Cấu trúc nộp bài và an toàn | Đạt: đúng cấu trúc thư mục, README đủ 7 mục, manifest chạy lại được, không có secret, PR có review | 10 |
-| **Tổng bắt buộc** | | **100** |
-| Thử thách A (L2) | Bảng dự đoán/kết quả có dự đoán viết trước, có PV `Released`, giải thích đúng | +4 |
-| Thử thách B (L2) | Hai host cùng chạy, tự gây và chẩn đoán một lỗi Ingress bằng bằng chứng | +3 |
-| Thử thách C (L2) | Rollout kẹt được chẩn đoán và undo trên `club-api`, xử lý được tối thiểu một scenario | +3 |
-| **Điểm thưởng tối đa** | L2 không làm tổng vượt quá 110 | **10** |
+Mức đạt và không đạt chi tiết, cùng các lỗi hay bị trừ điểm, nằm ở trang chấm của mentor. Tổng điểm không vượt quá 110.
 
 ## Câu hỏi kiểm tra kiến thức
 
@@ -173,27 +171,13 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục "Câu hỏi kiểm tra" c�
 4. Vì sao khi rollout bản mới bị kẹt, người dùng thường vẫn không thấy lỗi? Tham số nào của Deployment quyết định điều đó?
 5. Pod `CrashLoopBackOff` mà `kubectl logs` trống, bạn làm gì tiếp theo? Và Pod `Pending` có đọc được log không, bằng chứng nằm ở đâu?
 
-## Lỗi hay bị trừ điểm
-
-- Nộp chỉ ảnh chụp màn hình, không có output lệnh dạng text trong `evidence/command-output.txt`.
-- Số đếm `members` trước và sau xóa Pod không có, hoặc không chứng minh được dòng dữ liệu riêng của bạn còn lại.
-- Kết luận nguyên nhân lỗi mà không trích dòng events, logs hay exit code tương ứng; đoán mò rồi "sửa cho chạy" mà không giải thích.
-- Dùng `kubectl logs` thường thay vì `--previous` cho Pod crash và kết luận "không có log".
-- Chỉ rollback rồi coi như xong, không nêu nguyên nhân gốc và cách phòng tránh.
-- Gọi `curl` tới Ingress mà không kiểm tra header Host, rồi kết luận Ingress hỏng.
-- Quên `kind load docker-image` hoặc tạo cluster kind không có `--config`, dẫn tới `ImagePullBackOff` hay `Connection refused` không liên quan tới bài.
-- Commit mật khẩu thật, file Secret chứa giá trị thật hoặc `.env` vào repo.
-- Làm trong `/mnt/c` thay vì filesystem WSL; manifest trong `source/` không khớp với thứ đã chạy.
-- Không dọn tài nguyên thử nghiệm (`crashy`, `hungry`, PVC thừa), làm lần chạy sau nhiễu.
-- PR không có người review, hoặc nộp sau hạn mà không báo trước.
-
 ## Quy trình nộp
 
 1. Tạo branch từ `main` trong repo cá nhân, ví dụ `week-14`.
 2. Hoàn thành `lab-27/` và `lab-28/` theo cấu trúc ở trên, commit nhiều lần với thông điệp rõ ràng.
 3. Mở Pull Request vào `main` của repo cá nhân; mô tả PR ghi rõ đã làm L1 hay cả L2.
 4. Nhờ một bạn review theo [mẫu peer review](../../templates/peer-review-template.md); sửa theo góp ý hợp lý.
-5. Sau khi PR có review, mentor chấm theo barem trên.
+5. Sau khi PR có review, mentor chấm theo barem.
 6. Hạn nộp: trước buổi đầu tiên của tuần 15. Nộp muộn cần báo mentor trước hạn.
 
 ## Checklist trước khi nộp

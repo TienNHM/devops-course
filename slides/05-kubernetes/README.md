@@ -1,41 +1,21 @@
-# Slide deck 05 – Kubernetes Foundation
+# Slide 05 – Kubernetes cơ bản
 
-Kubernetes Foundation: kiến trúc cluster, kind, Pod, ReplicaSet, Deployment. Tổng cộng 40 slide (2 buổi, mỗi buổi 20 slide).
+> **Tóm tắt:** Cluster, Pod và Deployment. Bộ slide gồm 2 buổi (21 đến 22) dành cho mentor chiếu trên lớp.
 
-## Các buổi trong deck
+## Slide dùng để làm gì
 
-| Buổi | Chủ đề | Slide | Bài lab |
+Slide dành cho mentor chiếu trên lớp để dẫn dắt; học viên làm theo bài Lab, không cần đọc slide trước. Slide chỉ giữ khung khái niệm, sơ đồ, demo outline và recap. Lệnh thực hành nằm trong bài Lab.
+
+## Các buổi trong bộ slide
+
+| Buổi | Slide | Bài Lab | Bài tập |
 | --- | --- | --- | --- |
-| 21 | Kubernetes Introduction | [Slide buổi 21](session-21.md) | [Lab buổi 21](../../labs/week-11/session-21.md) |
-| 22 | Pods & Deployments | [Slide buổi 22](session-22.md) | [Lab buổi 22](../../labs/week-11/session-22.md) |
+| Buổi 21 – Kubernetes Introduction | [Slide](session-21.md) | [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md) | [Bài tập tuần 11](../../assignments/weekly/week-11.md) |
+| Buổi 22 – Pods & Deployments | [Slide](session-22.md) | [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md) | [Bài tập tuần 11](../../assignments/weekly/week-11.md) |
 
-## Mục tiêu deck
+## Mẹo chiếu slide bằng trình duyệt
 
-- Hiểu vì sao cần orchestration và Kubernetes giải quyết điều gì mà Compose không làm được.
-- Nắm các thành phần control plane, worker node và đường đi của một yêu cầu `kubectl`.
-- Tự dựng cluster local bằng kind, làm quen kubectl và context.
-- Vận hành Club API bằng Deployment: rolling update, rollback, chẩn đoán ImagePullBackOff.
-
-## Cấu trúc mỗi buổi
-
-1. Learning objectives
-2. Problem statement
-3. Concept
-4. Architecture
-5. How it works
-6. Demo
-7. Hands-on lab (L1 và L2)
-8. Common mistakes
-9. Challenge
-10. Recap
-
-Nguyên tắc: một slide chỉ một ý chính; mỗi câu lệnh có ví dụ đầu vào, kết quả mong đợi và tình huống lỗi. Phần "Ghi chú giảng viên" ở cuối mỗi slide có lời dẫn, thời lượng và câu hỏi cho lớp.
-
-## Mẹo trình bày
-
-- Mở trang slide bằng trình duyệt, phóng to bằng Ctrl và dấu cộng để chữ đọc được từ cuối lớp (nên dùng cỡ chữ tương đương 125% đến 150%).
-- Các khối "Ghi chú giảng viên" đã được thu gọn, chỉ mở khi cần xem lời dẫn; đừng mở khi chiếu cho lớp.
-- Chia sẻ màn hình terminal WSL với cỡ chữ lớn, nền tối, chỉ để một cửa sổ để lớp theo dõi; chạy `clear` trước mỗi bước demo.
-- Chuẩn bị sẵn cluster và image trước giờ học (đặc biệt `docker pull` và `kind load` khi mạng lớp yếu) vì tạo cluster lần đầu mất vài phút.
-- Với lệnh dài, dán sẵn vào file ghi chú và chạy từng đoạn để tránh gõ sai trước lớp.
-- Không hiển thị mật khẩu, token hay nội dung kubeconfig khi chia sẻ màn hình.
+- Mở trang slide trên site, bấm F11 để toàn màn hình và cuộn từng slide.
+- Phóng to chữ bằng Ctrl và dấu cộng tới khi người ngồi cuối lớp đọc được code block.
+- Chia sẻ terminal WSL với cỡ chữ từ 16 đến 18 pt, nền tối, mỗi lần một lệnh; gõ `clear` trước mỗi demo.
+- Chạy thử toàn bộ demo trước giờ học.

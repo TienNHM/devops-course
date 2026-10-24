@@ -2,7 +2,14 @@
 
 > **Tóm tắt:** Đọc console và Network tab, tra lỗi theo triệu chứng (build, trang trắng, 404, biến môi trường, CORS, Supabase, Firebase, domain, quota) và biết cách nhờ AI agent chẩn đoán đúng.
 
-Thời lượng ước tính: 30-60 phút để đọc và thử, sau đó dùng như sổ tra cứu mỗi khi gặp lỗi.
+::: tip Bạn làm gì
+- **Kết quả:** biết mở Console và Network tab, đọc ra lỗi thật, và tra được lỗi của mình trong bảng 35 lỗi phổ biến.
+- **Thời gian:** 30 đến 60 phút để đọc và thử, sau đó dùng như sổ tra cứu mỗi khi gặp lỗi.
+- **Cần gì trước:** một trang đã deploy (ở [Đưa web tĩnh lên mạng](02-static-hosting.md) hoặc bất kỳ module nào).
+- **Module trước:** đây là trang tra cứu, đọc bất cứ lúc nào bạn bị kẹt. Không nằm trong lộ trình tuyến tính.
+:::
+
+Kẹt giữa chừng? Nhảy tới [Nếu bị lỗi](#neu-bi-loi).
 
 ## Bạn sẽ làm được gì
 
@@ -47,7 +54,7 @@ Mở bằng phím `F12` (hoặc `Ctrl+Shift+I`; trên Mac là `Cmd+Option+I`), h
 
 | Tab | Dùng để | Cách đọc |
 | --- | --- | --- |
-| Console | Xem lỗi JavaScript | Dòng đỏ là lỗi. Đọc dòng đầu tiên trên cùng (lỗi gốc), các dòng sau thường là hệ quả. Bên phải có tên file và số dòng |
+| Console ([thuật ngữ](../resources/glossary.md)) | Xem lỗi JavaScript | Dòng đỏ là lỗi. Đọc dòng đầu tiên trên cùng (lỗi gốc), các dòng sau thường là hệ quả. Bên phải có tên file và số dòng |
 | Network | Xem mọi yêu cầu trình duyệt gửi | Mỗi dòng là một request. Cột Status là mã trạng thái, cột Name là tài nguyên. Dòng đỏ là request thất bại |
 | Application | Xem cookie, localStorage, service worker | Dùng khi nghi ngờ cache hoặc phiên đăng nhập |
 
@@ -103,9 +110,11 @@ Không tắt kiểm tra bảo mật, RLS, CORS hay bỏ qua lỗi chỉ để ch
 
 Việc bạn phải tự làm: tự lấy log, tự che secret, tự xác nhận lỗi đã hết bằng cửa sổ ẩn danh.
 
-Không giao cho agent: dán khóa thật hoặc `service_role` vào khung chat để "thử cho nhanh"; cho agent bấm nâng cấp gói khi vượt quota; để agent tắt RLS hoặc Security Rules để hết lỗi 403. Đó là cách biến lỗi nhỏ thành sự cố lớn.
+::: danger Không giao cho agent
+Dán khóa thật hoặc `service_role` vào khung chat để "thử cho nhanh"; cho agent bấm nâng cấp gói khi vượt quota; để agent tắt RLS hoặc Security Rules để hết lỗi 403. Đó là cách biến lỗi nhỏ thành sự cố lớn.
+:::
 
-## Nếu bị lỗi
+## Nếu bị lỗi {#neu-bi-loi}
 
 Tra theo nhóm. Cột "Nhìn ở đâu" cho biết nên mở thứ gì trước. Cột "Prompt" là câu ngắn để gắn vào mẫu prompt ở trên.
 
@@ -202,7 +211,7 @@ Nếu lỗi không có trong bảng: lấy dòng lỗi đầu tiên, dán vào �
 
 ## Tiếp theo + Tài liệu chính thức
 
-Tiếp theo: làm [09 Dự án mini](09-mini-project.md) để luyện cả chuỗi từ code tới production. Xem thêm [Domain, bảo mật và vận hành thật](07-domain-security-production.md) khi lỗi liên quan DNS, secret hay chi phí.
+**Tiếp theo:** đây là trang tra cứu; quay lại bài bạn đang làm, hoặc sang [Dự án nhỏ](09-mini-project.md) để luyện cả chuỗi từ code tới production. Xem thêm [Tên miền, bảo mật, production](07-domain-security-production.md) khi lỗi liên quan DNS, secret hay chi phí; [CLI cheatsheet](cli-cheatsheet.md) để tra lệnh; [Thư viện prompt](prompt-library.md) để lấy prompt chẩn đoán.
 
 Tài liệu chính thức:
 

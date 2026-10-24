@@ -2,6 +2,10 @@
 
 > **Tóm tắt:** Tài liệu bàn giao đầy đủ cho đội mentor: vai trò, cách phân bổ thời gian, điều hành buổi học, tạo lỗi cho phần Break, chấm bài, office hour, quản lý tiến độ bằng GitHub Projects, xử lý máy yếu, an toàn và quy trình đào tạo mentor mới.
 
+::: warning Dành cho mentor
+Trang này dành cho người dạy và chấm bài; học viên không cần đọc.
+:::
+
 Cách dùng: đọc toàn bộ một lần khi nhận vai trò, sau đó tra cứu theo mục. Phần chuẩn bị và điều hành từng buổi nằm ở [Runbook một buổi học](session-runbook.md).
 
 ## 1. Mục tiêu và triết lý dạy

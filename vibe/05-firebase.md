@@ -2,6 +2,13 @@
 
 > **Tóm tắt:** Dùng Firebase để có link công khai, đăng nhập Google và cơ sở dữ liệu Firestore. Tập trung vào Security Rules, gói Spark miễn phí và cách nhờ AI agent làm an toàn.
 
+::: tip Bạn làm gì
+- **Kết quả:** web có link `.web.app`, đăng nhập Google, và dữ liệu Firestore mà mỗi người chỉ thấy phần của mình.
+- **Thời gian:** 60 đến 90 phút.
+- **Cần gì trước:** tài khoản Google, Node.js, một trang web tĩnh; không cần thẻ (gói Spark).
+- **Module trước:** [Fullstack serverless](03-fullstack-serverless.md) hoặc [Đưa web tĩnh lên mạng](02-static-hosting.md). Chặng 2: chọn Firebase hoặc [Supabase](04-supabase.md), không cần cả hai.
+:::
+
 ## Bạn sẽ làm được gì
 
 Thời lượng ước tính: 60 đến 90 phút.
@@ -10,7 +17,7 @@ Thời lượng ước tính: 60 đến 90 phút.
 - Bật đăng nhập Google bằng Authentication và hiểu vì sao `firebaseConfig` không phải secret.
 - Lưu dữ liệu vào Firestore và viết Security Rules theo uid, không bao giờ để chế độ mở toang.
 - Thử mọi thứ an toàn trên máy bằng Emulator Suite trước khi chạm vào dữ liệu thật.
-- Biết khi nào nên chọn Firebase, khi nào nên chọn [Supabase](./04-supabase.md).
+- Biết khi nào nên chọn Firebase, khi nào nên chọn [Supabase](04-supabase.md).
 
 ## Khái niệm trong 5 phút
 
@@ -41,11 +48,13 @@ flowchart LR
 
 Đoạn `firebaseConfig` (apiKey, projectId, appId...) nằm trong code web, ai mở trình duyệt cũng xem được. Điều này bình thường: nó chỉ giống địa chỉ cửa hàng, không phải chìa khóa. Thứ bảo vệ dữ liệu là Security Rules. Nếu rules mở toang thì ai biết địa chỉ cũng vào lấy hàng được.
 
-Thứ TUYỆT ĐỐI không đưa lên repo, frontend hay prompt: file khóa service account (JSON tải từ mục Service accounts), biến `GOOGLE_APPLICATION_CREDENTIALS`, token CI. Đây là chìa khóa admin, bỏ qua mọi rules.
+::: danger Không đưa lên repo, frontend hay prompt
+File khóa service account (JSON tải từ mục Service accounts), biến `GOOGLE_APPLICATION_CREDENTIALS`, token CI. Đây là chìa khóa admin, bỏ qua mọi rules.
+:::
 
 ### Firestore khác SQL thế nào
 
-Firestore là NoSQL. Dữ liệu nằm trong document (giống một tờ phiếu JSON), các document nằm trong collection (giống một ngăn kéo). Không có bảng, không có JOIN.
+Firestore là NoSQL ([thuật ngữ](../resources/glossary.md)). Dữ liệu nằm trong document (giống một tờ phiếu JSON), các document nằm trong collection (giống một ngăn kéo). Không có bảng, không có JOIN.
 
 | | Firestore (NoSQL) | Supabase (Postgres, SQL) |
 | --- | --- | --- |
@@ -72,7 +81,11 @@ Firebase có gói Spark (không cần thẻ) và Blaze (trả theo mức dùng).
 
 Các con số và danh sách này đổi theo thời gian, hãy kiểm tra [trang giá chính thức](https://firebase.google.com/pricing) trước khi quyết định.
 
-Quan trọng: Blaze yêu cầu gắn thẻ thanh toán và có thể phát sinh tiền khi vượt hạn mức miễn phí. Việc nâng cấp là quyết định của riêng bạn, đừng nhờ AI agent bấm hộ. Nếu nâng cấp, hãy đặt ngay budget alert trong Google Cloud Billing, và hiểu rằng cảnh báo ngân sách chỉ báo chứ không tự ngắt dịch vụ. Với người mới, đường ưu tiên là Spark: Hosting + Authentication + Firestore là đủ cho rất nhiều sản phẩm.
+::: danger Blaze là gói trả tiền
+Blaze yêu cầu gắn thẻ thanh toán và có thể phát sinh tiền khi vượt hạn mức miễn phí. Việc nâng cấp là quyết định của riêng bạn, đừng nhờ AI agent bấm hộ. Nếu nâng cấp, hãy đặt ngay budget alert trong Google Cloud Billing, và hiểu rằng cảnh báo ngân sách chỉ báo chứ không tự ngắt dịch vụ.
+:::
+
+Với người mới, đường ưu tiên là Spark: Hosting + Authentication + Firestore là đủ cho rất nhiều sản phẩm.
 
 ## Thực hành từng bước
 
@@ -184,11 +197,13 @@ firebase deploy --only hosting,firestore:rules
 
 Mở web, đăng nhập Google, thêm một ghi chú. Mở cửa sổ ẩn danh, đăng nhập tài khoản khác, xác nhận không thấy ghi chú cũ.
 
-### Bước 10. Cloud Functions, Storage và App Hosting (đọc để biết)
+::: details Nâng cao: Cloud Functions, Storage và App Hosting (đọc để biết)
 
-- Cloud Functions và Cloud Storage cần gói Blaze. Trước khi bấm nâng cấp, hãy tự cân nhắc: có cần thật không? Phần lớn app nhỏ chưa cần. Nếu cần backend đơn giản mà không muốn trả phí, xem [Vercel hoặc Netlify Functions](./03-fullstack-serverless.md). Nếu vẫn dùng Blaze, đặt budget alert ngay.
+- Cloud Functions và Cloud Storage cần gói Blaze. Trước khi bấm nâng cấp, hãy tự cân nhắc: có cần thật không? Phần lớn app nhỏ chưa cần. Nếu cần backend đơn giản mà không muốn trả phí, xem [Vercel hoặc Netlify Functions](03-fullstack-serverless.md). Nếu vẫn dùng Blaze, đặt budget alert ngay.
 - Storage rules mẫu (`storage.rules`) cho mỗi người một thư mục `users/uid`, chỉ nhận ảnh dưới 5 MB.
 - Firebase App Hosting dành cho web app có server (ví dụ Next.js, Angular), kết nối GitHub repo để mỗi lần push là một lần phát hành; theo tài liệu chính thức nó yêu cầu gói Blaze. Với web tĩnh, Firebase Hosting là đủ.
+
+:::
 
 ## Nhờ AI agent làm giúp
 
@@ -226,6 +241,8 @@ một người chưa đăng nhập ghi vào "notes" phải bị từ chối, ng�
 Chỉ chạy trên emulator, không đụng project thật.
 ```
 
+::: details Nâng cao: Firebase MCP server cho agent
+
 Với Firebase MCP server, agent có thể tự thao tác Firebase (xem rules, quản lý user, đọc ghi Firestore, deploy). Cài thủ công cho Claude Code:
 
 ```bash
@@ -235,9 +252,13 @@ claude mcp list
 
 MCP server dùng chung thông tin đăng nhập với Firebase CLI, tức là agent hành động với quyền của bạn. Một số tool đổi được dữ liệu thật (deploy, ghi database, sửa user, gửi tin nhắn). Hạn chế bằng cờ `--only` (ví dụ chỉ `auth,firestore`), và đọc kỹ từng yêu cầu xin phép trước khi duyệt. Cách cài và danh sách tool có thể đổi, xem tài liệu chính thức.
 
+:::
+
 Bạn tự kiểm tra: rules có chữ `if true` hay `if request.auth != null` đơn độc không, query phía client có lọc theo `ownerId` không, `.env` và file service account có nằm ngoài repo không.
 
-Không giao cho agent: dán file service account hoặc token vào chat, bấm nâng cấp Blaze, nhập thông tin thẻ, xác nhận xóa project hoặc dữ liệu, dán dữ liệu cá nhân thật của người dùng vào prompt.
+::: danger Không giao cho agent
+Dán file service account hoặc token vào chat, bấm nâng cấp Blaze, nhập thông tin thẻ, xác nhận xóa project hoặc dữ liệu, dán dữ liệu cá nhân thật của người dùng vào prompt.
+:::
 
 ## Nếu bị lỗi
 
@@ -286,11 +307,13 @@ Không giao cho agent: dán file service account hoặc token vào chat, bấm n
 
 ## Tiếp theo
 
-- Bài kế tiếp: giao việc cho agent có kiểm soát ở [AI agent và deploy](./06-ai-agent-deploy.md).
-- Cần cơ sở dữ liệu SQL và Row Level Security: [Supabase](./04-supabase.md).
-- Bảo mật, domain riêng và chạy thật: [Domain, bảo mật và production](./07-domain-security-production.md).
-- Làm việc cùng AI agent trên toàn bộ quy trình: [AI agent và deploy](./06-ai-agent-deploy.md).
-- Gặp lỗi: [Xử lý sự cố](./08-troubleshooting.md).
+**Tiếp theo:** ráp mọi thứ thành một sản phẩm hoàn chỉnh ở [Dự án nhỏ](09-mini-project.md).
+
+Tra cứu khi cần:
+
+- Cần cơ sở dữ liệu SQL và Row Level Security: [Supabase](04-supabase.md).
+- Giao việc cho agent có kiểm soát: [Deploy cùng AI agent](06-ai-agent-deploy.md).
+- Gặp lỗi: [Xử lý sự cố](08-troubleshooting.md).
 - Ví dụ chạy được: [examples/vibe/firebase](../examples/vibe/firebase/README.md).
 
 Tài liệu chính thức:

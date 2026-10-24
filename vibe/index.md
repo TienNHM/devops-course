@@ -4,7 +4,11 @@
 
 Bạn nhờ AI (Claude Code, Cursor, Lovable, Bolt...) viết xong một trang web hay một ứng dụng nhỏ. Nó chạy được trên máy bạn. Giờ bạn muốn bạn bè mở được bằng một đường link. Track này dạy đúng đoạn đường đó, và chỉ dạy vừa đủ để bạn không tự bắn vào chân: lộ khóa bí mật, mở database cho cả thế giới đọc, hoặc nhận hóa đơn bất ngờ.
 
-Track này **độc lập** với 16 tuần DevOps của khóa. Bạn không cần học Docker hay Kubernetes trước. Khi sản phẩm lớn lên và cần thêm, phần cuối trang này chỉ bạn nên quay lại học gì.
+Track này **độc lập** với 16 tuần DevOps của khóa: bạn không cần học Docker hay Kubernetes trước, và không cần làm các tuần của khóa chính. Khi sản phẩm lớn lên và cần thêm, phần cuối trang này chỉ bạn nên quay lại học gì.
+
+::: tip Bắt đầu ở đây
+**Bắt đầu: đọc [00 Tư duy](00-mindset.md)** (10 phút). Rồi đi theo lộ trình 3 chặng ở dưới, từ trên xuống, không cần chọn đường. Thuật ngữ lạ thì tra [Thuật ngữ](../resources/glossary.md).
+:::
 
 ## Bạn sẽ làm được gì
 
@@ -22,70 +26,66 @@ Sau track này, bạn có thể:
 | --- | --- |
 | Sinh viên chưa từng code, muốn làm sản phẩm bằng AI | Không cần nền tảng, mọi khái niệm giải thích bằng ví dụ đời thường |
 | Người đã dùng Lovable, Bolt, v0, Replit và muốn "mang sản phẩm ra khỏi nền tảng" | Có phần repo, domain, export, tránh phụ thuộc một nơi |
-| Thành viên CLB cần đưa landing page, form đăng ký, trang sự kiện lên mạng | Có dự án mini hoàn chỉnh ở [module 09](09-mini-project.md) |
-| Người đang học DevOps và muốn có link demo nhanh | Track này là đường tắt, cuối track có cầu nối quay lại khóa chính |
+| Thành viên CLB cần đưa landing page, form đăng ký, trang sự kiện lên mạng | Có dự án mini hoàn chỉnh ở [09 Dự án mini](09-mini-project.md) (Chặng 3) |
+| Người đang học DevOps và muốn có link demo nhanh | Làm Chặng 1 là có link; cuối trang có cầu nối quay lại khóa chính |
 
 ## Điều kiện cần (gần như bằng 0)
 
 - Một laptop và trình duyệt.
-- Một tài khoản GitHub miễn phí (module 01 hướng dẫn cách dùng).
+- Một tài khoản GitHub miễn phí ([01 Git và GitHub](01-git-github.md) hướng dẫn cách dùng).
 - Biết gõ tiếng Việt vào khung chat. Có AI agent thì tốt, chưa có vẫn học được.
 - Không cần thẻ ngân hàng. Mọi ví dụ ưu tiên gói miễn phí, bạn tự quyết định nếu muốn trả tiền.
 
-## Ba con đường học
+## Lộ trình tuyến tính: 3 chặng
+
+Đi theo thứ tự, mỗi chặng kết thúc bằng một sản phẩm nhìn thấy được. Tick vào ô khi xong từng bước.
 
 ```mermaid
 flowchart LR
-    A["Bắt đầu: AI đã viết code"] --> B{"Bạn cần gì?"}
-    B -->|"Link công khai, 1 buổi"| C["Đường siêu tốc"]
-    B -->|"Đăng nhập, database"| F["Đường có đăng nhập và database"]
-    B -->|"Đã làm app bằng Lovable, Bolt, v0, Replit"| G["Đường app-builder"]
-    C --> D["Đường đầy đủ"]
-    F --> D
-    G --> D
-    D --> E["Cầu nối sang khóa DevOps"]
+    A["Chặng 1: Có link công khai"] --> B["Chặng 2: Thêm database và đăng nhập"]
+    B --> C["Chặng 3: Hoàn thiện dự án thật"]
+    C --> D["Cầu nối sang khóa DevOps"]
 ```
 
-### Cấp 1: Đường siêu tốc, 1 buổi (khoảng 3 giờ)
+### Chặng 1. Có link công khai (khoảng 3 giờ)
 
-Mục tiêu: có sản phẩm với link công khai và domain riêng, biết 7 quy tắc sống còn.
+Kết quả: trang web của bạn có đường link mở được từ điện thoại của bạn bè. Chưa có database, chưa có đăng nhập.
 
-1. [00 Tư duy](00-mindset.md): hiểu deploy là gì, vòng lặp làm việc với AI.
-2. [01 Git và GitHub](01-git-github.md): đưa code lên GitHub, làm "kho gốc" an toàn.
-3. [02 Hosting tĩnh](02-static-hosting.md): GitHub Pages, Cloudflare (Workers static assets) hoặc Netlify, có link ngay.
-4. [07 Domain, bảo mật, production](07-domain-security-production.md): trong đường tắt chỉ đọc hai phần: gắn domain (kèm HTTPS) và checklist bảo mật. Các phần về chi phí, giám sát, backup để lại cho đường đầy đủ.
+- [ ] [00 Tư duy](00-mindset.md): hiểu deploy là gì, thuộc 7 quy tắc sống còn (10 phút đọc).
+- [ ] [01 Git và GitHub](01-git-github.md): đưa code lên GitHub bằng GitHub Desktop, không lộ secret.
+- [ ] [02 Hosting tĩnh](02-static-hosting.md): deploy lên GitHub Pages (chỉ cần một nền tảng), có link công khai.
 
-Muốn gửi link cho người lạ ngay sau đó, đọc thêm phần B (preview khi chia sẻ link) và phần G (checklist go-live) của [11 Hoàn thiện và ra mắt](11-launch-polish.md).
+### Chặng 2. Thêm database và đăng nhập (khoảng 2 giờ)
 
-Lưu ý: đường siêu tốc **chưa có database và chưa có đăng nhập**. Sản phẩm cuối là trang tĩnh (giới thiệu, landing page, portfolio). Nếu cần lưu dữ liệu người dùng, đi tiếp đường dưới.
+Kết quả: sản phẩm lưu được dữ liệu và có đăng nhập, bật đúng lớp bảo vệ. Chọn **một** trong hai.
 
-### Đường có đăng nhập và database
+- [ ] [04 Supabase](04-supabase.md): database SQL, đăng nhập, RLS (khuyến nghị cho người mới).
+- [ ] hoặc [05 Firebase](05-firebase.md): Firestore, Auth, Rules.
 
-Dành cho sản phẩm cần lưu dữ liệu (đăng ký, ghi chú, danh sách). Đi sau đường siêu tốc, hoặc song song nếu bạn đã quen Git.
+Cần gọi API có khóa bí mật (AI, email) từ phía server thì đọc thêm [03 Fullstack serverless](03-fullstack-serverless.md) trước khi làm Chặng 2.
 
-1. Hoàn thành module 00, 01, 02.
-2. [03 Fullstack serverless](03-fullstack-serverless.md): hiểu env var và API phía server.
-3. [04 Supabase](04-supabase.md): database, đăng nhập, RLS. Đây là bước bắt buộc phải bật đúng lớp bảo vệ. Có thể thay bằng [05 Firebase](05-firebase.md).
-4. [07 Domain, bảo mật, production](07-domain-security-production.md): đọc đủ, đặc biệt phần secret và chi phí.
-5. Làm [09 Dự án mini](09-mini-project.md) để ráp lại tất cả, rồi [11 Hoàn thiện và ra mắt](11-launch-polish.md) trước khi gửi link cho nhiều người.
+### Chặng 3. Hoàn thiện dự án thật (khoảng 3 giờ)
 
-### Đường app-builder
+Kết quả: một landing page CLB hoàn chỉnh có domain, bảo mật, sẵn sàng gửi link cho người lạ.
 
-Nếu bạn đã làm sản phẩm bằng Lovable, Bolt, v0 hay Replit: đọc [00 Tư duy](00-mindset.md) và [01 Git và GitHub](01-git-github.md), rồi sang [10 App-builder](10-app-builders.md) để đưa code về repo của bạn, deploy lên nền tảng bạn kiểm soát và rà lỗi bảo mật hay gặp.
+- [ ] [09 Dự án mini](09-mini-project.md): ráp mọi thứ thành một sản phẩm thật.
+- [ ] [07 Domain, bảo mật, production](07-domain-security-production.md): domain, HTTPS, secret, chi phí.
+- [ ] [11 Hoàn thiện và ra mắt](11-launch-polish.md): chống spam form, preview khi chia sẻ link, checklist go-live.
 
-### Cấp 2: Đường đầy đủ, 2 đến 3 buổi
+### Tra cứu (đọc khi cần, không nằm trên đường chính)
 
-Làm hết các module theo thứ tự, kể cả [11 Hoàn thiện và ra mắt](11-launch-polish.md). Thêm backend, database, đăng nhập, agent và dự án mini.
-
-### Cấp 3: Cầu nối sang khóa DevOps
-
-Khi bạn thấy cần kiểm soát sâu hơn (nhiều dịch vụ chạy chung, đội nhiều người, test tự động), xem mục "Khi nào nên học DevOps" ở cuối trang.
+- [06 AI agent và deploy](06-ai-agent-deploy.md): giao việc cho Claude Code, Cursor, MCP, CLI một cách có kiểm soát.
+- [08 Xử lý sự cố](08-troubleshooting.md): lỗi thường gặp khi deploy.
+- [10 App-builder](10-app-builders.md): đã làm sản phẩm bằng Lovable, Bolt, v0, Replit và muốn mang code về repo của mình.
+- [So sánh nền tảng](platforms.md): chọn nơi deploy.
+- [Thư viện prompt](prompt-library.md): prompt sao chép được để giao việc cho agent.
+- [Bảng lệnh CLI](cli-cheatsheet.md): các lệnh hay dùng.
 
 ## Bảng module
 
 | Module | Nội dung | Thời lượng | Kết quả |
 | --- | --- | --- | --- |
-| [00 Tư duy](00-mindset.md) | Deploy, frontend, backend, database, env var, vòng lặp AI | 45 phút | Hiểu bản đồ, biết 7 quy tắc sống còn |
+| [00 Tư duy](00-mindset.md) | Deploy, frontend, backend, database, env var, vòng lặp AI | 10 phút đọc | Hiểu bản đồ, biết 7 quy tắc sống còn |
 | [01 Git và GitHub](01-git-github.md) | Repo, commit, push, .gitignore | 60 phút | Code nằm trên GitHub, không lộ secret |
 | [02 Hosting tĩnh](02-static-hosting.md) | GitHub Pages, Cloudflare (Workers và Pages), Netlify, Vercel | 60 phút | Trang web có link công khai |
 | [03 Fullstack serverless](03-fullstack-serverless.md) | Vercel, Netlify Functions, Cloudflare Functions | 90 phút | Có API chạy trên mạng, biết dùng env var |
@@ -134,17 +134,17 @@ Track này đủ cho trang giới thiệu, ứng dụng nhỏ, sản phẩm th�
 
 | Dấu hiệu | Nên học |
 | --- | --- |
-| "Chạy được trên máy tôi nhưng khác trên server" | Docker: [tuần 4 buổi 7](../labs/week-04/session-07.md) |
-| Nhiều người sửa chung, hay đè code nhau | Git workflow và Pull Request, xem [tuần 1](../labs/week-01/session-01.md) |
+| "Chạy được trên máy tôi nhưng khác trên server" | Docker: [Buổi 07 – Container Fundamentals](../labs/week-04/session-07.md) |
+| Nhiều người sửa chung, hay đè code nhau | Git workflow và Pull Request, xem [Buổi 01 – DevOps Introduction](../labs/week-01/session-01.md) |
 | Muốn tự động chạy test mỗi lần đẩy code | CI/CD với GitHub Actions |
 | Nhiều dịch vụ phải chạy cùng nhau, cần theo dõi và scale | Compose, rồi Kubernetes |
 | Cần theo dõi lỗi, log, cảnh báo nghiêm túc | Monitoring và observability |
 
-Xem toàn cảnh ở [Giới thiệu khóa học](../curriculum/getting-started.md) và [hướng dẫn cài môi trường](../resources/setup-guide.md).
+Xem toàn cảnh ở [Bắt đầu từ đây](../curriculum/getting-started.md) và [hướng dẫn cài môi trường](../resources/setup-guide.md).
 
 ## Tiếp theo
 
-Bắt đầu với [00 Tư duy: từ prompt tới production](00-mindset.md). Thứ tự đầy đủ là 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11; mỗi module kết thúc bằng mục "Tiếp theo" trỏ tới bài kế.
+Bắt đầu với [00 Tư duy: từ prompt tới production](00-mindset.md), rồi đi theo Chặng 1. Mỗi module kết thúc bằng mục "Tiếp theo" trỏ tới bài kế.
 
 ## Tài liệu chính thức
 

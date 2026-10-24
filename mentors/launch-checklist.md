@@ -2,7 +2,11 @@
 
 > **Tóm tắt:** Checklist có thể tick để xác nhận khóa DevOps sẵn sàng khai giảng. Điều kiện cốt lõi: một mentor clone repo và chạy toàn bộ lab từ máy mới, không cần can thiệp ngoài hướng dẫn.
 
-Điều kiện mở khóa theo [ROADMAP](../ROADMAP.md): một mentor clone repo và chạy toàn bộ lab từ máy mới, không cần can thiệp ngoài hướng dẫn. Trang này chia điều kiện đó thành các mục kiểm tra cụ thể theo từng giai đoạn. Cách dùng: sao chép trang này vào một Issue "Launch readiness", mentor chạy kiểm tra tick từng mục và ghi bằng chứng (link Issue, đoạn log).
+::: warning Dành cho mentor
+Trang này dành cho đội mentor kiểm tra khóa trước khi khai giảng; học viên không cần đọc.
+:::
+
+Điều kiện mở khóa theo [ROADMAP](https://github.com/TienNHM/devops-course/blob/master/ROADMAP.md): một mentor clone repo và chạy toàn bộ lab từ máy mới, không cần can thiệp ngoài hướng dẫn. Trang này chia điều kiện đó thành các mục kiểm tra cụ thể theo từng giai đoạn. Cách dùng: sao chép trang này vào một Issue "Launch readiness", mentor chạy kiểm tra tick từng mục và ghi bằng chứng (link Issue, đoạn log).
 
 Quy tắc: một mục chỉ được tick khi có người khác ngoài tác giả đã xác nhận. Mục nào chưa tick là lý do để chưa mở khóa.
 

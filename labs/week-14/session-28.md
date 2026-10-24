@@ -1,202 +1,82 @@
 # Buổi 28 – Kubernetes Operations
 
-Tuần 14 · Giai đoạn 4 – Kubernetes Engineering · Slide: [Slide buổi 28](../../slides/07-operations/session-28.md)
+Tuần 14/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 28/32
+
+[Slide](../../slides/07-operations/session-28.md) · [Bài tập tuần](../../assignments/weekly/week-14.md) · [Hub tuần](README.md)
 
 > **Tóm tắt:** Vận hành workload trên Kubernetes: rollout, rollback, scale, đọc events, và chẩn đoán ImagePullBackOff, CrashLoopBackOff, Pending theo quy trình từ triệu chứng đến nguyên nhân gốc.
 
-## Mục tiêu học tập
+::: tip Buổi này bạn làm gì
+- **Bạn sẽ tạo ra:** một Deployment `web` bạn tự nâng cấp, scale, rollback, cùng bằng chứng chẩn đoán ba lỗi (ImagePullBackOff, CrashLoopBackOff, Pending) do chính bạn gây ra và tự sửa.
+- **Thời gian thật:** đọc 15 phút, lab bắt buộc 60 phút, thử thách làm ở nhà.
+- **Cần chuẩn bị:**
+  - [ ] Cluster kind `club` đang chạy, `kubectl config current-context` in `kind-club`; có Internet để kéo image `nginx` và `busybox`.
+  - [ ] Đã làm [Buổi 27 – Storage & Ingress](session-27.md) (namespace `club` còn `club-api`, `postgres-0`).
+  - [ ] Làm trong filesystem WSL (không dùng `/mnt/c`); xem [Hướng dẫn cài đặt](../../resources/setup-guide.md) và [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md).
+- **Phải nộp:** `README.md` (7 câu của mẫu); `source/web.yaml`, `source/crash.yaml` (bản đã sửa); `evidence/command-output.txt` (history, describe, events, `logs --previous`); `report.md` (ít nhất hai sự cố theo mẫu 5 mục).
+- **Đi nhanh:** Đọc > [Làm lab](#hands-on-lab) > [Gặp lỗi?](#gap-loi) > [Tự kiểm tra](#tu-kiem-tra) > [Nộp bài](#nop-bai). Kẹt? Nhảy tới [Gặp lỗi?](#gap-loi).
 
-- Giải thích Deployment cập nhật Pod bằng ReplicaSet mới như thế nào, và vai trò của `maxSurge`, `maxUnavailable`.
-- Chạy được `kubectl rollout status`, `history`, `undo` và `kubectl scale` trên một Deployment.
-- Đọc được `kubectl describe` và `kubectl get events` để tìm lý do thật sự một Pod không chạy.
-- Chẩn đoán được ImagePullBackOff, CrashLoopBackOff và Pending bằng bằng chứng (events, logs, exit code), không đoán mò.
-- Phân biệt "rollback để cứu dịch vụ" với "sửa nguyên nhân gốc", và viết Troubleshooting report 5 mục.
-
-## Điều kiện cần
-
-- Đã hoàn thành buổi 22-27: Pod, Deployment, Service, ConfigMap/Secret, probes, PVC/Ingress.
-- Cluster kind `club` đang chạy (tạo ở buổi 27 bằng `kind create cluster --name club --config starter-project/k8s/kind-config.yaml`), `kubectl` trỏ đúng context. Cần Internet để kéo image `nginx` và `busybox` từ Docker Hub.
-- Làm việc trong filesystem của WSL (ví dụ `~/devops-labs/lab-28`), không dùng `/mnt/c`.
-
-Kiểm tra nhanh:
-
-```bash
-kubectl config current-context
-kubectl get nodes
-```
-
-Kết quả mong đợi (nếu bạn đặt tên cluster khác `club` thì context và tên node sẽ khác):
-
-```text
-kind-club
-NAME                 STATUS   ROLES           AGE   VERSION
-club-control-plane   Ready    control-plane   2d    v1.30.x
-```
-
-Nếu `NotReady` hoặc lỗi kết nối, dừng lại và nhờ mentor trước khi làm tiếp.
+**Từ mới trong buổi** (xem [Thuật ngữ](../../resources/glossary.md)):
+- [Deployment](../../resources/glossary.md): đối tượng quản lý các Pod giống nhau và cách cập nhật chúng.
+- [ReplicaSet](../../resources/glossary.md): nhóm Pod cùng một phiên bản mà Deployment tạo ra.
+- [rollout](../../resources/glossary.md): quá trình đổi dần Pod cũ sang Pod mới.
+- [ImagePullBackOff](../../resources/glossary.md): kubelet không kéo được image.
+- [CrashLoopBackOff](../../resources/glossary.md): container khởi động rồi thoát liên tục.
+- [Events](../../resources/glossary.md): nhật ký sự kiện Kubernetes ghi lại, nơi chứa lý do thật của lỗi.
+:::
 
 ## Vấn đề thực tế
 
-Trước buổi demo của CLB, một bạn đẩy bản `club-api` mới lên cluster. Năm phút sau trang web vẫn chạy, nhưng bản mới không lên: `kubectl get pods` đầy chữ đỏ, và cả nhóm chat "sập rồi". Người chưa có quy trình sẽ xóa Pod, apply lại, đổi lung tung cho tới khi "có vẻ ổn" mà không biết vì sao. Lần sau lỗi quay lại.
+Trước buổi demo CLB, một bạn đẩy bản `club-api` mới lên cluster. Năm phút sau trang web vẫn chạy nhưng bản mới không lên: `kubectl get pods` đầy chữ đỏ và cả nhóm chat "sập rồi". Người chưa có quy trình sẽ xóa Pod, apply lại, đổi lung tung cho tới khi "có vẻ ổn" mà không biết vì sao, nên lần sau lỗi quay lại. Vận hành là kỹ năng đọc bằng chứng theo thứ tự cố định: trạng thái, events, logs. Kubernetes luôn ghi lại lý do, nhưng nó nằm ở `describe` và events chứ không nằm ở dòng `STATUS`. Buổi này bạn tự phá ba loại lỗi phổ biến nhất, tự khôi phục và ghi lại bằng một báo cáo mà đồng đội đọc là hiểu.
 
-Vận hành là kỹ năng đọc bằng chứng theo thứ tự cố định: trạng thái, events, logs. Kubernetes luôn ghi lại lý do, nhưng nó nằm ở `describe` và events chứ không nằm ở dòng `STATUS`. Buổi này bạn tự phá ba loại lỗi phổ biến nhất, tự khôi phục, và ghi lại bằng một báo cáo mà đồng đội đọc là hiểu.
+## Khái niệm cốt lõi {#khai-niem}
 
-## Khái niệm cốt lõi
+**Rollout.** Khi bạn đổi `spec.template` của Deployment (image, env, probe), Deployment tạo một ReplicaSet mới và chuyển Pod dần từ ReplicaSet cũ sang mới. ReplicaSet cũ được giữ lại với 0 replica để làm điểm quay về (`rollout undo`). Chỉ đổi `replicas` (scale) thì không tạo revision mới. Ví von: thay từng nhân viên ca cũ bằng ca mới, người cũ chỉ ra về khi người mới đã đứng vững.
 
-### Rollout: cập nhật có kiểm soát
+**An toàn nhưng dễ che lỗi.** Mặc định `maxSurge` là 25% (làm tròn lên) và `maxUnavailable` là 25% (làm tròn xuống). Với 3 replicas: tạo 1 Pod mới, chờ nó `Ready` rồi mới xóa 1 Pod cũ. Bản mới hỏng thì Pod cũ vẫn phục vụ, nên người dùng không thấy lỗi, và bạn cũng không thấy nếu quên chạy `rollout status`.
 
-Khi bạn đổi `spec.template` của Deployment (image, env, probe...), Deployment tạo một **ReplicaSet mới** và chuyển Pod từ ReplicaSet cũ sang mới dần dần (RollingUpdate). ReplicaSet cũ được giữ lại (với 0 replicas) để làm điểm quay về. Chỉ đổi `replicas` thì không tạo revision mới.
+**Ba trạng thái lỗi kinh điển.**
 
-| Tham số | Ý nghĩa | Mặc định |
+| Trạng thái | Nghĩa là | Bằng chứng đầu tiên |
 | --- | --- | --- |
-| `maxSurge` | Số Pod dư tối đa được tạo thêm trong lúc cập nhật | 25% (làm tròn lên) |
-| `maxUnavailable` | Số Pod tối đa được phép không sẵn sàng | 25% (làm tròn xuống) |
-| `revisionHistoryLimit` | Số ReplicaSet cũ được giữ để rollback | 10 |
-| `progressDeadlineSeconds` | Sau bao lâu rollout không tiến triển thì bị coi là thất bại | 600 |
+| `ImagePullBackOff` | Kubelet không kéo được image (sai tên hoặc tag, image chưa nạp vào kind, cần đăng nhập) | `describe pod`, mục Events |
+| `CrashLoopBackOff` | Container khởi động rồi thoát liên tục | `logs --previous` và `Last State` |
+| `Pending` | Chưa có node nào được gán cho Pod (thiếu tài nguyên, PVC chưa bind) | Events `FailedScheduling` |
 
-Với 3 replicas: `maxSurge` = 1, `maxUnavailable` = 0. Nghĩa là Kubernetes tạo 1 Pod mới, chờ nó Ready rồi mới xóa 1 Pod cũ. Vì vậy khi bản mới hỏng, các Pod cũ vẫn phục vụ: đây là lý do rolling update an toàn, và cũng là lý do lỗi dễ bị bỏ sót nếu bạn không chạy `rollout status`.
+`BackOff` chỉ là thời gian chờ tăng dần giữa các lần thử (10s, 20s, 40s, tối đa 5 phút), không phải lỗi riêng; nguyên nhân thật nằm ở lần thất bại trước đó.
 
-### Ba trạng thái lỗi kinh điển
-
-| Trạng thái | Nghĩa là | Nơi tìm bằng chứng đầu tiên |
-| --- | --- | --- |
-| `ErrImagePull` / `ImagePullBackOff` | Kubelet không kéo được image (sai tên/tag, registry cần đăng nhập, image chưa nạp vào kind) | `kubectl describe pod`, mục Events |
-| `CrashLoopBackOff` | Container khởi động rồi thoát liên tục; kubelet chờ lâu dần giữa các lần restart (tối đa 5 phút) | `kubectl logs --previous` và Last State trong `describe` |
-| `Pending` | Pod đã tạo nhưng chưa được scheduler gán vào node (thiếu tài nguyên, nodeSelector/taint không khớp, PVC chưa bind) | Events với lý do `FailedScheduling` |
-
-`BackOff` là cơ chế chờ tăng dần (10s, 20s, 40s... tối đa 5 phút), không phải lỗi riêng. Nguyên nhân thật nằm ở lần thất bại trước đó.
-
-### Công cụ chẩn đoán
-
-| Lệnh | Dùng khi |
-| --- | --- |
-| `kubectl get pods -o wide` | Xem trạng thái, restart, node |
-| `kubectl describe pod TEN_POD` | Xem Events, Last State, exit code, điều kiện |
-| `kubectl get events --sort-by=.lastTimestamp` | Xem dòng thời gian sự kiện trong namespace |
-| `kubectl logs TEN_POD --previous` | Xem log của lần chạy trước (khi container đã crash) |
-| `kubectl rollout history deployment/TEN` | Xem các revision |
-| `kubectl rollout undo deployment/TEN` | Quay về revision trước |
-
-Events chỉ được giữ khoảng 1 giờ theo mặc định, nên hãy lưu output vào `evidence/command-output.txt` ngay khi chẩn đoán.
-
-## Kiến trúc và cách hoạt động
-
-```mermaid
-flowchart TD
-    A["Bạn sửa image trong Deployment"] --> B["Deployment tạo ReplicaSet mới"]
-    B --> C["Scheduler gán Pod mới vào node"]
-    C --> D["Kubelet kéo image và chạy container"]
-    D --> E{"Readiness probe đạt?"}
-    E -- "Có" --> F["Pod Ready: xóa bớt Pod cũ"]
-    E -- "Không" --> G["Rollout kẹt: Pod cũ vẫn phục vụ"]
-    G --> H["rollout undo hoặc sửa nguyên nhân"]
-```
-
-Giải thích từng bước:
-
-1. Controller của Deployment so sánh `spec.template` với ReplicaSet hiện tại. Khác nhau thì tạo ReplicaSet mới và ghi revision.
-2. Scheduler chọn node cho từng Pod mới. Nếu không có node nào đủ chỗ, Pod ở trạng thái `Pending` kèm event `FailedScheduling`.
-3. Kubelet trên node kéo image. Thất bại thì chuyển `ErrImagePull`, rồi `ImagePullBackOff`.
-4. Kubelet chạy container. Container thoát liên tục thì thành `CrashLoopBackOff`.
-5. Khi readiness probe đạt, Pod được thêm vào Service endpoints, và Deployment mới xóa Pod cũ tương ứng.
-6. Nếu bước nào kẹt, rollout dừng giữa chừng: một phần Pod cũ và một phần Pod mới cùng tồn tại.
-
-Quy trình chẩn đoán dùng cho cả buổi:
+**Quy trình chẩn đoán.** Luôn theo thứ tự trạng thái, events, logs; không đoán mò, không xóa Pod rồi hy vọng. Ví von: bác sĩ xem triệu chứng, xét nghiệm, rồi mới kê đơn.
 
 ```mermaid
 flowchart LR
     S["get pods: xem STATUS"] --> D["describe: đọc Events"]
-    D --> L["logs --previous: đọc lỗi ứng dụng"]
+    D --> L["logs --previous: lỗi ứng dụng"]
     L --> R["Xác định nguyên nhân gốc"]
     R --> F["Sửa hoặc rollback"]
     F --> V["Kiểm chứng và ghi report"]
 ```
 
-## Demo của mentor
+::: details Tìm hiểu thêm (đọc sau)
+Hai tham số khác của Deployment: `revisionHistoryLimit` (mặc định 10, số ReplicaSet cũ giữ để rollback) và `progressDeadlineSeconds` (mặc định 600; quá hạn thì rollout bị coi là thất bại, nên `rollout status` có thể treo lâu, hãy thêm `--timeout=60s`). Events chỉ được giữ khoảng 1 giờ, nên lưu output vào `evidence/` ngay khi chẩn đoán. Sơ đồ các bước của một rollout (lỗi ở bước nào thì ra trạng thái nào) và bộ công cụ chẩn đoán nằm ở [Buổi 28 – Thử thách nâng cao](session-28-challenge.md).
+:::
 
-Mentor làm trong namespace riêng `ops-demo` để không đụng workload của học viên. Mỗi bước dừng lại hỏi lớp.
+## Hands-on lab (60 phút, bắt buộc) {#hands-on-lab}
 
-1. Tạo Deployment 3 replicas và quan sát rollout:
+Trên lớp, mentor demo trước; tự học thì làm thẳng phần này.
 
-```bash
-kubectl create namespace ops-demo
-kubectl create deployment web --image=nginx:1.26 --replicas=3 -n ops-demo
-kubectl rollout status deployment/web -n ops-demo
-```
-
-```text
-deployment "web" successfully rolled out
-```
-
-Hỏi lớp: "Phía sau lệnh này có những object nào được tạo?" (Deployment, ReplicaSet, 3 Pod.)
-
-2. Cập nhật image và xem hai ReplicaSet:
-
-```bash
-kubectl set image deployment/web nginx=nginx:1.27 -n ops-demo
-kubectl rollout status deployment/web -n ops-demo
-kubectl get rs -n ops-demo
-```
-
-```text
-NAME             DESIRED   CURRENT   READY   AGE
-web-5d9f8c7b6    3         3         3       10s
-web-7c6b4f9d8    0         0         0       2m
-```
-
-Hỏi lớp: "Vì sao ReplicaSet cũ vẫn còn?" (làm điểm rollback.)
-
-3. Cố tình đặt tag không tồn tại:
-
-```bash
-kubectl set image deployment/web nginx=nginx:1.27-khong-ton-tai -n ops-demo
-kubectl rollout status deployment/web -n ops-demo --timeout=45s
-kubectl get pods -n ops-demo
-```
-
-```text
-Waiting for deployment "web" rollout to finish: 1 out of 3 new replicas have been updated...
-error: timed out waiting for the condition
-NAME                   READY   STATUS             RESTARTS   AGE
-web-5d9f8c7b6-aaaaa    1/1     Running            0          2m
-web-5d9f8c7b6-bbbbb    1/1     Running            0          2m
-web-5d9f8c7b6-ccccc    1/1     Running            0          2m
-web-6f7d9b5c4-ddddd    0/1     ImagePullBackOff   0          45s
-```
-
-Hỏi lớp: "Người dùng có thấy lỗi không?" (Không: 3 Pod cũ vẫn phục vụ. Lỗi im lặng nếu không theo dõi rollout.)
-
-4. Đọc nguyên nhân rồi rollback:
-
-```bash
-kubectl get events -n ops-demo --field-selector type=Warning --sort-by=.lastTimestamp
-kubectl rollout undo deployment/web -n ops-demo
-kubectl rollout status deployment/web -n ops-demo
-```
-
-Hỏi lớp: "Rollback xong là hết việc chưa?" (Chưa: cần tìm vì sao tag sai lọt vào, ví dụ typo, và phòng tránh.)
-
-5. Dọn dẹp: `kubectl delete namespace ops-demo`.
-
-## Hands-on lab
-
-Mục tiêu: tự phá và tự khôi phục ba loại lỗi, ghi bằng chứng cho mỗi loại. Thời gian gợi ý: chuẩn bị 5', Phần 1-2 15', Phần 3-4 25', Phần 5 và L2 15'.
-
-### Chuẩn bị
+### Chuẩn bị (5 phút)
 
 ```bash
 mkdir -p ~/devops-labs/lab-28/{source,screenshots,evidence}
 cd ~/devops-labs/lab-28
+export EV=$PWD/evidence/command-output.txt
+kubectl config current-context
+kubectl get nodes
 kubectl create namespace ops-lab
 kubectl config set-context --current --namespace=ops-lab
 ```
 
-```text
-namespace/ops-lab created
-Context "kind-club" modified.
-```
-
-Từ giờ mọi lệnh chạy trong namespace `ops-lab`. Lưu toàn bộ output quan trọng vào file bằng `tee -a evidence/command-output.txt`.
+Kết quả mong đợi: `kind-club`, node `club-control-plane` `Ready`, rồi `namespace/ops-lab created`. Nếu `NotReady` hoặc lỗi kết nối, dừng lại và nhờ mentor. Từ giờ mọi lệnh chạy trong namespace `ops-lab`; lệnh quan trọng thì thêm `| tee -a "$EV"`.
 
 Tạo `source/web.yaml`:
 
@@ -209,12 +89,10 @@ metadata:
 spec:
   replicas: 3
   selector:
-    matchLabels:
-      app: web
+    matchLabels: {app: web}
   template:
     metadata:
-      labels:
-        app: web
+      labels: {app: web}
     spec:
       containers:
         - name: nginx
@@ -222,145 +100,83 @@ spec:
           ports:
             - containerPort: 80
           resources:
-            requests:
-              cpu: 50m
-              memory: 32Mi
-            limits:
-              memory: 64Mi
+            requests: {cpu: 50m, memory: 32Mi}
+            limits: {memory: 64Mi}
 ```
 
-### Phần 1 – Triển khai và đọc history
-
-1. Apply và chờ rollout:
+### Phần 1. Triển khai và đọc history (8 phút)
 
 ```bash
 kubectl apply -f source/web.yaml
 kubectl rollout status deployment/web
-kubectl get pods -o wide
-```
-
-```text
-deployment.apps/web created
-deployment "web" successfully rolled out
-NAME                   READY   STATUS    RESTARTS   AGE   IP           NODE
-web-5d9f8c7b6-xxxxx    1/1     Running   0          15s   10.244.0.x   club-control-plane
-```
-
-2. Ghi lý do thay đổi để history dễ đọc:
-
-```bash
 kubectl annotate deployment/web kubernetes.io/change-cause="deploy nginx 1.26" --overwrite
-kubectl rollout history deployment/web
+kubectl rollout history deployment/web | tee -a "$EV"
 ```
 
-```text
-REVISION  CHANGE-CAUSE
-1         deploy nginx 1.26
-```
+Kết quả mong đợi: `deployment "web" successfully rolled out`, ba Pod `1/1 Running`, và history có một dòng `1  deploy nginx 1.26`.
 
-Vì sao: `change-cause` là ghi chú cho con người; không có nó cột này là `none` và bạn không biết revision nào là gì khi cần rollback gấp.
+Vì sao: `change-cause` là ghi chú cho con người; thiếu nó cột này là `none` và bạn không biết revision nào là gì khi cần rollback gấp.
 
-### Phần 2 – Rollout bản mới và scale
+::: tip Kiểm tra: bạn đúng khi
+`kubectl get pods` có ba Pod `web-...` `Running` và `rollout history` có change-cause.
+:::
 
-1. Nâng cấp lên bản hợp lệ:
+### Phần 2. Rollout bản mới và scale (7 phút)
 
 ```bash
 kubectl set image deployment/web nginx=nginx:1.27
 kubectl annotate deployment/web kubernetes.io/change-cause="upgrade nginx 1.27" --overwrite
 kubectl rollout status deployment/web
-kubectl rollout history deployment/web
-```
-
-```text
-deployment "web" successfully rolled out
-REVISION  CHANGE-CAUSE
-1         deploy nginx 1.26
-2         upgrade nginx 1.27
-```
-
-2. Scale lên rồi xuống, và kiểm tra history không đổi:
-
-```bash
+kubectl get rs | tee -a "$EV"
 kubectl scale deployment/web --replicas=5
-kubectl get deployment web
 kubectl scale deployment/web --replicas=3
-kubectl rollout history deployment/web
+kubectl rollout history deployment/web | tee -a "$EV"
 ```
 
-```text
-deployment.apps/web scaled
-NAME   READY   UP-TO-DATE   AVAILABLE   AGE
-web    5/5     5            5           3m
-```
+Kết quả mong đợi: `get rs` có hai ReplicaSet (một cái `DESIRED` bằng 0); history có đúng hai revision (`deploy nginx 1.26`, `upgrade nginx 1.27`) dù bạn đã scale hai lần.
 
-Vì sao: scale chỉ đổi `replicas`, không đổi `spec.template`, nên không có revision mới.
+Vì sao: scale chỉ đổi `replicas`, không đổi `spec.template`, nên không có revision mới. Cột `NAME` của ReplicaSet có hash khác máy bạn; điều cần khớp là cơ chế.
 
-### Phần 3 – Break 1: ImagePullBackOff, chẩn đoán và rollback
+::: tip Kiểm tra: bạn đúng khi
+Có hai ReplicaSet và đúng hai revision sau khi scale lên 5 rồi về 3.
+:::
 
-1. Phá: đặt tag sai (giả lập typo):
+### Phần 3. Break 1: ImagePullBackOff, chẩn đoán và rollback (12 phút)
+
+1. Phá: đặt tag sai (giả lập typo) và ghi lại ngay lý do thay đổi:
 
 ```bash
 kubectl set image deployment/web nginx=nginx:1.27.999
+kubectl annotate deployment/web kubernetes.io/change-cause="tag sai 1.27.999 (co y)" --overwrite
 kubectl rollout status deployment/web --timeout=45s
-kubectl get pods
+kubectl get pods | tee -a "$EV"
 ```
 
-```text
-error: timed out waiting for the condition
-NAME                   READY   STATUS             RESTARTS   AGE
-web-xxxxxxxxxx-aaaaa   1/1     Running            0          5m
-web-xxxxxxxxxx-bbbbb   1/1     Running            0          5m
-web-xxxxxxxxxx-ccccc   1/1     Running            0          5m
-web-yyyyyyyyyy-ddddd   0/1     ImagePullBackOff   0          45s
-```
+Kết quả mong đợi: `error: timed out waiting for the condition`; ba Pod cũ `Running` cùng một Pod mới `0/1 ImagePullBackOff` (hoặc `ErrImagePull`).
 
-2. Chẩn đoán: đọc events của Pod lỗi (thay tên Pod bằng tên thật của bạn):
+2. Chẩn đoán: đọc Events của Pod lỗi (thay `TEN_POD_LOI` bằng tên thật):
 
 ```bash
-kubectl describe pod web-yyyyyyyyyy-ddddd | sed -n '/Events:/,$p'
-kubectl get events --sort-by=.lastTimestamp | tail -8
+kubectl describe pod TEN_POD_LOI | sed -n '/Events:/,$p' | tee -a "$EV"
 ```
 
-```text
-Events:
-  Type     Reason     Age   From               Message
-  Normal   Scheduled  50s   default-scheduler  Successfully assigned ops-lab/web-... to club-control-plane
-  Normal   Pulling    49s   kubelet            Pulling image "nginx:1.27.999"
-  Warning  Failed     47s   kubelet            Failed to pull image "nginx:1.27.999": ... not found
-  Warning  Failed     47s   kubelet            Error: ErrImagePull
-  Normal   BackOff    20s   kubelet            Back-off pulling image "nginx:1.27.999"
-  Warning  Failed     20s   kubelet            Error: ImagePullBackOff
-```
+Kết quả mong đợi (rút gọn): các dòng `Failed to pull image "nginx:1.27.999": ... not found`, `Error: ErrImagePull`, rồi `Error: ImagePullBackOff`. Hãy khoanh dòng chứa lý do. Nguyên nhân gốc: tag `1.27.999` không tồn tại trong registry. Câu chữ có thể khác theo container runtime; hãy tìm từ khóa `not found`, `manifest unknown`, `unauthorized`.
 
-Nguyên nhân gốc: tag `1.27.999` không tồn tại trong registry. Câu chữ chính xác của thông báo có thể khác tùy phiên bản container runtime; hãy tìm từ khóa `not found`, `manifest unknown`, `unauthorized`.
-
-3. Khôi phục bằng rollback:
+3. Khôi phục bằng rollback và xác nhận image:
 
 ```bash
 kubectl rollout undo deployment/web
 kubectl rollout status deployment/web
-kubectl get pods
-kubectl rollout history deployment/web
+kubectl get deployment web -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}' | tee -a "$EV"
 ```
 
-```text
-deployment.apps/web rolled back
-deployment "web" successfully rolled out
-```
+Kết quả mong đợi: `deployment.apps/web rolled back`, rồi `nginx:1.27`. Revision được đánh số lại: bản vừa quay về xuất hiện với số mới.
 
-Vì sao: `undo` đưa `spec.template` về revision liền trước. Lưu ý revision được đánh số lại: bản vừa quay về xuất hiện với số mới.
+::: tip Kiểm tra: bạn đúng khi
+Bạn chỉ ra được dòng event chứa lý do kéo image lỗi, và `jsonpath` in ra `nginx:1.27`. Kẹt thì xem [Gặp lỗi?](#gap-loi).
+:::
 
-4. Xác nhận image đang chạy:
-
-```bash
-kubectl get deployment web -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
-```
-
-```text
-nginx:1.27
-```
-
-### Phần 4 – Break 2: CrashLoopBackOff
+### Phần 4. Break 2: CrashLoopBackOff (15 phút)
 
 1. Tạo `source/crash.yaml`: container in log lỗi rồi thoát với mã 1.
 
@@ -373,12 +189,10 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: crashy
+    matchLabels: {app: crashy}
   template:
     metadata:
-      labels:
-        app: crashy
+      labels: {app: crashy}
     spec:
       containers:
         - name: app
@@ -386,45 +200,22 @@ spec:
           command: ["sh", "-c", "echo booting; echo 'FATAL: thieu bien DB_HOST' >&2; exit 1"]
 ```
 
-2. Apply và theo dõi Pod:
+2. Apply, theo dõi Pod (Ctrl+C sau khoảng 1 phút), rồi chẩn đoán theo thứ tự logs trước, exit code sau:
 
 ```bash
 kubectl apply -f source/crash.yaml
 kubectl get pods -l app=crashy -w
+kubectl logs deploy/crashy --previous | tee -a "$EV"
+kubectl describe pod -l app=crashy | grep -A6 "Last State" | tee -a "$EV"
 ```
 
-Nhấn Ctrl+C sau khoảng 1 phút.
+Kết quả mong đợi: trạng thái đi từ `Error` sang `CrashLoopBackOff`; log có `booting` và `FATAL: thieu bien DB_HOST`; `Last State` là `Terminated`, `Reason: Error`, `Exit Code: 1`.
 
-```text
-NAME                     READY   STATUS             RESTARTS      AGE
-crashy-xxxxxxxxxx-aaaaa  0/1     Error              0             5s
-crashy-xxxxxxxxxx-aaaaa  0/1     CrashLoopBackOff   1 (8s ago)    12s
-crashy-xxxxxxxxxx-aaaaa  0/1     CrashLoopBackOff   3 (15s ago)   60s
-```
+Nguyên nhân gốc: ứng dụng tự thoát mã 1 vì thiếu cấu hình; Kubernetes chỉ khởi động lại theo `restartPolicy: Always`. Gợi ý đọc exit code: 1 là lỗi ứng dụng chung, 137 là bị kill (xem `Reason`, thường là OOMKilled), 127 là lệnh không tồn tại.
 
-3. Chẩn đoán theo thứ tự: logs, rồi exit code:
-
-```bash
-kubectl logs deploy/crashy --previous
-kubectl describe pod -l app=crashy | grep -A6 "Last State"
-```
-
-```text
-booting
-FATAL: thieu bien DB_HOST
-    Last State:     Terminated
-      Reason:       Error
-      Exit Code:    1
-```
-
-Nguyên nhân gốc: ứng dụng tự thoát với mã 1 vì thiếu cấu hình. Kubernetes chỉ khởi động lại theo `restartPolicy: Always`. Gợi ý đọc exit code: 1 là lỗi ứng dụng chung, 137 là bị kill (thường OOMKilled, xem `Reason`), 127 là lệnh không tồn tại.
-
-4. Sửa nguyên nhân gốc: cung cấp biến môi trường và giữ tiến trình chạy. Sửa `source/crash.yaml`, thay phần `containers`:
+3. Sửa nguyên nhân gốc: trong `source/crash.yaml`, thay dòng `command` cũ bằng đoạn dưới (cấp biến môi trường và giữ tiến trình chạy, thụt lề ngang với `image`), rồi apply:
 
 ```yaml
-      containers:
-        - name: app
-          image: busybox:1.36
           env:
             - name: DB_HOST
               value: postgres
@@ -434,199 +225,125 @@ Nguyên nhân gốc: ứng dụng tự thoát với mã 1 vì thiếu cấu hìn
 ```bash
 kubectl apply -f source/crash.yaml
 kubectl rollout status deployment/crashy
-kubectl logs deploy/crashy
+kubectl logs deploy/crashy | tee -a "$EV"
 ```
 
-```text
-deployment "crashy" successfully rolled out
-DB_HOST=postgres
-```
+Kết quả mong đợi: `deployment "crashy" successfully rolled out` và log `DB_HOST=postgres`. Không dùng `rollout undo` ở đây vì revision 1 cũng hỏng: rollback chỉ cứu được khi có một bản tốt trước đó.
 
-Vì sao không dùng `rollout undo` ở đây: revision 1 cũng hỏng. Rollback chỉ cứu được khi có một bản tốt trước đó.
+::: tip Kiểm tra: bạn đúng khi
+Bạn có `logs --previous` hiện lỗi, thấy `Exit Code`, và `crashy` đã `Running` ổn định sau khi sửa.
+:::
 
-### Phần 5 – Break 3: Pending
+### Phần 5. Break 3: Pending (10 phút)
 
 1. Phá: yêu cầu CPU vượt xa khả năng của node.
 
 ```bash
 kubectl create deployment hungry --image=nginx:1.27 --replicas=1
+kubectl rollout status deployment/hungry --timeout=60s
 kubectl set resources deployment/hungry --requests=cpu=100
 kubectl get pods -l app=hungry
 ```
 
-```text
-NAME                      READY   STATUS    RESTARTS   AGE
-hungry-xxxxxxxxxx-aaaaa   1/1     Running   0          40s
-hungry-yyyyyyyyyy-bbbbb   0/1     Pending   0          10s
-```
+Kết quả mong đợi: Pod cũ (chưa có request) vẫn `Running`, Pod mới từ template có request quá lớn bị `Pending`. Đây lại là rolling update che lỗi, giống Phần 3.
 
-Pod cũ (chưa có request) vẫn `Running`; Pod mới từ template có request quá lớn bị `Pending`. Đây lại là rolling update che lỗi, giống Phần 3.
-
-2. Chẩn đoán: Pod `Pending` chưa chạy nên không có log; bằng chứng nằm ở events.
+2. Chẩn đoán: Pod `Pending` chưa có container nên không có log; bằng chứng nằm ở events.
 
 ```bash
-kubectl get events --field-selector reason=FailedScheduling
+kubectl get events --field-selector reason=FailedScheduling | tee -a "$EV"
 kubectl describe node | grep -A8 "Allocatable"
 ```
 
-```text
-LAST SEEN   TYPE      REASON             OBJECT                        MESSAGE
-15s         Warning   FailedScheduling   pod/hungry-yyyyyyyyyy-bbbbb   0/1 nodes are available: 1 Insufficient cpu. ...
-```
+Kết quả mong đợi: `Warning FailedScheduling ... 0/1 nodes are available: 1 Insufficient cpu`. Nguyên nhân gốc: `requests.cpu` bằng 100 core trong khi node chỉ có vài core; scheduler dựa trên `requests`, không phải mức dùng thực tế.
 
-Nguyên nhân gốc: `requests.cpu` bằng 100 core, trong khi node chỉ có vài core. Scheduler dựa trên `requests`, không phải mức dùng thực tế.
-
-3. Khôi phục: đặt request hợp lý.
+3. Khôi phục và dọn dẹp:
 
 ```bash
 kubectl set resources deployment/hungry --requests=cpu=100m
 kubectl rollout status deployment/hungry
-```
-
-```text
-deployment "hungry" successfully rolled out
-```
-
-4. Dọn dẹp:
-
-```bash
 kubectl delete deployment hungry crashy
+kubectl get deployment
 ```
 
-### L1 – Foundation
+Kết quả mong đợi: `deployment "hungry" successfully rolled out`, cuối cùng chỉ còn `web`.
 
-- [ ] Tạo namespace `ops-lab` và Deployment `web` với 3 replicas; `rollout history` có ít nhất 2 revision kèm change-cause.
-- [ ] Gây ImagePullBackOff bằng tag sai, chỉ ra dòng event chứa lý do, rồi `rollout undo` thành công.
-- [ ] Gây CrashLoopBackOff, lấy được thông báo lỗi bằng `logs --previous` và exit code từ `describe`.
-- [ ] Gây Pending, chỉ ra event `FailedScheduling` và sửa được.
-- [ ] Lưu output các lệnh chẩn đoán vào `evidence/command-output.txt`.
+::: tip Kiểm tra: bạn đúng khi
+Bạn có dòng `FailedScheduling` trong evidence, `rollout status` của `hungry` báo thành công, và `crashy` với `hungry` đã được xóa.
+:::
 
-### L2 – Engineering
+### Checklist L1
 
-Thử thách 1: xử lý ba tình huống trong `examples/troubleshooting/scenario-07/`, `scenario-08/` và `scenario-09/` (ImagePullBackOff, CrashLoopBackOff, Pod Pending). Bạn chỉ nhận triệu chứng, phải tự tìm nguyên nhân gốc. Tiêu chí hoàn thành: mỗi tình huống có bằng chứng (lệnh và output) chỉ ra nguyên nhân, cách sửa, cách kiểm chứng đã khôi phục.
+- [ ] Namespace `ops-lab`, Deployment `web` 3 replicas; `rollout history` có ít nhất 2 revision kèm change-cause.
+- [ ] ImagePullBackOff: chỉ ra dòng event chứa lý do, rồi `rollout undo` thành công, image là `nginx:1.27`.
+- [ ] CrashLoopBackOff: có thông báo lỗi từ `logs --previous` và exit code từ `describe`; bản sửa chạy ổn.
+- [ ] Pending: có event `FailedScheduling` và đã sửa.
+- [ ] Output các lệnh chẩn đoán đã lưu vào `evidence/command-output.txt`.
 
-Thử thách 2: áp dụng trên ứng dụng thật của CLB. Triển khai starter-project (xem `starter-project/k8s/` và README ở đó), sau đó chạy:
+Tự kiểm tra một dòng (kỳ vọng chỉ còn `web`, image `nginx:1.27`):
 
 ```bash
-kubectl -n club set image deployment/club-api api=club-api:9.9.9
-kubectl -n club rollout status deployment/club-api --timeout=60s
+kubectl get deployment -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.spec.template.spec.containers[0].image}{"\n"}{end}'
 ```
 
-Tiêu chí hoàn thành: giải thích tại sao ứng dụng vẫn phục vụ được trong lúc rollout kẹt, tìm ra nguyên nhân (image không có trong node kind, `imagePullPolicy: IfNotPresent` nên kubelet thử kéo từ registry), khôi phục bằng `rollout undo`, và chạy lại `kubectl -n club get pods` để chứng minh 2 replicas Ready.
+Khi xong cả buổi, đặt lại namespace mặc định bằng `kubectl config set-context --current --namespace=default` để các buổi sau không chạy nhầm namespace.
 
-Thử thách 3: viết `report.md` theo mẫu 5 mục dưới đây cho ít nhất hai sự cố.
+## Gặp lỗi? {#gap-loi}
 
-```text
-## Sự cố NN – tên ngắn
-1. Triệu chứng: bạn thấy gì, lúc nào, lệnh nào cho thấy
-2. Bằng chứng: trích events, logs, exit code (kèm lệnh)
-3. Nguyên nhân gốc: một câu, giải thích vì sao xảy ra
-4. Cách khắc phục: lệnh hoặc thay đổi YAML đã làm, và cách kiểm chứng
-5. Phòng tránh: thay đổi quy trình hoặc cấu hình để không lặp lại
-```
-
-<details>
-<summary>Gợi ý cho Thử thách 2</summary>
-
-Trong lúc rollout kẹt, `maxUnavailable` mặc định 25% làm tròn xuống: với 2 replicas là 0, nên Pod cũ chỉ bị xóa sau khi Pod mới Ready. Dùng `kubectl -n club get rs` để thấy hai ReplicaSet và `kubectl -n club describe pod` trên Pod mới để đọc event. Sau khi undo, đừng quên kiểm tra image bằng `kubectl -n club get deployment club-api -o jsonpath='{.spec.template.spec.containers[0].image}'`, kết quả mong đợi là `club-api:1.0.0`.
-
-</details>
-
-<details>
-<summary>Lời giải gợi ý cho Thử thách 2</summary>
-
-```bash
-kubectl -n club describe pod -l app=club-api | sed -n '/Events:/,$p'
-kubectl -n club rollout undo deployment/club-api
-kubectl -n club rollout status deployment/club-api
-kubectl -n club get pods
-```
-
-Nguyên nhân gốc: tag `9.9.9` chưa từng được build hay nạp vào kind. Cách đúng để phát hành bản mới là `docker build -t club-api:1.0.1 ./backend`, rồi `kind load docker-image club-api:1.0.1`, rồi mới `set image`. Phòng tránh: tag bất biến, kiểm tra image tồn tại trước khi deploy, luôn chạy `rollout status` sau khi deploy.
-
-</details>
-
-## Phá lỗi và debug
-
-Tình huống tổng hợp: "bản mới của API chết sau khi deploy". Người giao đề (mentor hoặc bạn cùng nhóm) chỉ nói: "Sau khi cập nhật, `get pods` có Pod không Ready, nhưng web vẫn mở được".
-
-Cách phá (mentor chuẩn bị): đặt `readinessProbe.httpGet.path` của một Deployment thành đường dẫn không tồn tại, ví dụ `/readyz`, rồi apply.
-
-Triệu chứng: Pod `Running` nhưng `READY 0/1`, rollout không hoàn tất, không có `Restarts`.
-
-Hướng điều tra từng bước:
-
-1. `kubectl get pods`: STATUS Running nhưng READY 0/1 nghĩa là container sống, chỉ readiness chưa đạt.
-2. `kubectl describe pod TEN_POD`: tìm event `Readiness probe failed: HTTP probe failed with statuscode: 404`.
-3. `kubectl get pods -o wide` và `kubectl port-forward` rồi `curl` từng đường dẫn: `/ready` trả 200, `/readyz` trả 404. Lưu ý backend `starter-project` không ghi log từng request nên `kubectl logs` không cho thấy đường dẫn sai.
-4. So `readinessProbe.path` trong YAML với route thật trong `starter-project/backend/app.js` (`/health` và `/ready`).
-5. Sửa path đúng, apply, `rollout status` để xác nhận.
-
-Nguyên nhân gốc: cấu hình probe không khớp route của ứng dụng; không phải lỗi image hay tài nguyên.
-
-Phòng tránh: kiểm tra probe bằng `kubectl port-forward` và `curl` trước khi apply, dùng `kubectl diff -f` để xem thay đổi, và luôn theo dõi `rollout status`. Tình huống tương tự được đào sâu ở buổi 26 (tình huống 10).
-
-## Lỗi thường gặp
-
-| Triệu chứng | Nguyên nhân | Cách xử lý |
+| Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `ImagePullBackOff` với image tự build trong kind | Image chỉ có trong Docker, chưa nạp vào node kind | `kind load docker-image TEN:TAG`, và dùng `imagePullPolicy: IfNotPresent` |
+| `ImagePullBackOff` với image tự build trong kind | Image chỉ có trong Docker, chưa nạp vào node kind | `kind load docker-image TEN:TAG --name club`, và dùng `imagePullPolicy: IfNotPresent` |
 | `ImagePullBackOff` với `unauthorized` | Image private chưa có imagePullSecret | Tạo Secret kiểu docker-registry và khai báo `imagePullSecrets` (không commit token) |
-| `CrashLoopBackOff`, `logs` trống | Đang xem log của container mới khởi động lại | Dùng `kubectl logs --previous` |
-| `CrashLoopBackOff` với exit code 137 | Bị kill do vượt `limits.memory` (OOMKilled) hoặc bị kill bởi hệ thống | Xem `Reason` trong Last State; tăng limit hoặc sửa rò rỉ bộ nhớ |
+| `CrashLoopBackOff`, `logs` trống | Đang xem log của container mới khởi động lại | `kubectl logs TEN_POD --previous` |
+| `CrashLoopBackOff` với exit code 137 | Vượt `limits.memory` (OOMKilled) hoặc bị hệ thống kill | Xem `Reason` trong Last State; tăng limit hoặc sửa rò rỉ bộ nhớ |
 | `Pending` và `Insufficient cpu` hoặc `Insufficient memory` | `requests` lớn hơn phần còn trống của node | Giảm `requests`, hoặc thêm node |
 | `Pending` với `unbound immediate PersistentVolumeClaims` | PVC chưa bind (sai StorageClass, hết dung lượng) | `kubectl get pvc`, `describe pvc`, sửa StorageClass |
-| `rollout undo` xong nhưng lỗi quay lại ở lần deploy sau | Chỉ rollback, không sửa nguyên nhân gốc | Sửa nguồn gốc (tag, config), ghi vào report |
+| `Running` nhưng `READY 0/1`, không có restart | Readiness probe chưa đạt (ví dụ path sai) | `describe pod` đọc event `Readiness probe failed`, so path với route thật của ứng dụng |
 | `rollout status` treo rất lâu | Mặc định chờ tới `progressDeadlineSeconds` | Thêm `--timeout=60s` khi thực hành |
+| `rollout undo` xong nhưng lỗi quay lại ở lần deploy sau | Chỉ rollback, không sửa nguyên nhân gốc | Sửa nguồn gốc (tag, config) và ghi vào report |
+| Lệnh chạy sai namespace, `No resources found` | Quên `set-context --current --namespace=ops-lab` | Chạy lại lệnh đó, hoặc thêm `-n ops-lab` |
 
-## Tự kiểm tra
+## Tự kiểm tra {#tu-kiem-tra}
 
 1. Vì sao khi rollout kẹt với 3 replicas, người dùng thường không thấy lỗi?
-2. `kubectl logs` trống với Pod `CrashLoopBackOff`. Bạn làm gì tiếp?
-3. Pod `Pending` có chạy được `kubectl logs` không? Bằng chứng nằm ở đâu?
-4. `kubectl scale` có tạo revision mới trong `rollout history` không?
-5. Tình huống: bạn deploy `club-api:1.0.1`, Pod mới `ImagePullBackOff`. Mô tả hai bước đầu tiên của bạn.
-6. Khi nào `rollout undo` không giúp được gì?
-7. `BackOff` trong `CrashLoopBackOff` là lỗi gì?
+2. `kubectl logs` trống với Pod `CrashLoopBackOff`. Bạn làm gì tiếp, và `BackOff` là lỗi gì? Pod `Pending` có đọc được log không?
+3. `kubectl scale` có tạo revision mới trong `rollout history` không?
+4. Bạn deploy `club-api:1.0.1`, Pod mới `ImagePullBackOff`. Mô tả hai bước đầu tiên của bạn, và nêu một trường hợp `rollout undo` không giúp được.
 
-<details>
-<summary>Đáp án</summary>
+::: details Đáp án gợi ý
+1. `maxUnavailable` làm tròn xuống thành 0, nên Pod cũ chỉ bị xóa khi Pod mới `Ready`; các Pod cũ vẫn nhận traffic.
+2. Chạy `kubectl logs TEN_POD --previous` để xem log lần chạy trước, và `describe` để xem exit code. `BackOff` không phải lỗi riêng, chỉ là thời gian chờ tăng dần giữa các lần khởi động lại; nguyên nhân là việc container thoát liên tục. Pod `Pending` không đọc được log vì container chưa được tạo; bằng chứng nằm ở events `FailedScheduling` trong `kubectl describe pod`.
+3. Không. Chỉ thay đổi `spec.template` mới tạo revision.
+4. Chạy `kubectl describe pod` đọc Events để lấy thông báo kéo image lỗi (tag không tồn tại, chưa nạp vào kind, unauthorized); kiểm tra tag đã build và `kind load` chưa; sau đó mới quyết định rollback hay sửa. `rollout undo` không giúp khi không có revision tốt trước đó (lần deploy đầu đã hỏng) hoặc lỗi nằm ngoài template (Secret, ConfigMap, dữ liệu).
+:::
 
-1. `maxUnavailable` làm tròn xuống thành 0, nên Pod cũ chỉ bị xóa khi Pod mới Ready; các Pod cũ vẫn nhận traffic.
-2. Chạy `kubectl logs TEN_POD --previous` để xem log của lần chạy trước, và `describe` để xem exit code.
-3. Không: container chưa được tạo. Bằng chứng nằm ở events `FailedScheduling` trong `kubectl describe pod`.
-4. Không. Chỉ thay đổi `spec.template` mới tạo revision.
-5. Chạy `kubectl describe pod` đọc Events để lấy thông báo kéo image lỗi (tag không tồn tại, chưa nạp vào kind, unauthorized); kiểm tra tag đã build và `kind load` chưa. Sau đó mới quyết định rollback hay sửa.
-6. Khi không có revision tốt trước đó (ví dụ lần deploy đầu đã hỏng), hoặc lỗi nằm ngoài template (ví dụ Secret, ConfigMap, dữ liệu).
-7. Không phải lỗi riêng. Đó là thời gian chờ tăng dần giữa các lần kubelet khởi động lại container; nguyên nhân là việc container thoát liên tục.
+## Nộp bài {#nop-bai}
 
-</details>
-
-## Nộp bài
-
-Nộp vào `lab-28/` trong repository cá nhân (ví dụ `devops-labs`) theo `templates/lab-template.md`.
+Nộp vào thư mục `lab-28/` trong repo `devops-labs` theo `templates/lab-template.md`. Bài tập tuần: [Bài tập tuần 14](../../assignments/weekly/week-14.md).
 
 - [ ] `README.md` trả lời đủ 7 câu của mẫu và đánh dấu level đã làm (L1 hoặc L2).
 - [ ] `source/` chứa `web.yaml`, `crash.yaml` (bản đã sửa) và mọi YAML bạn dùng.
 - [ ] `evidence/command-output.txt` chứa output của `rollout history`, `describe`, `get events`, `logs --previous` cho từng sự cố.
-- [ ] `report.md` có ít nhất hai sự cố theo mẫu 5 mục (L2: gồm tình huống 07, 08, 09).
-- [ ] `screenshots/` có ảnh minh họa trạng thái trước và sau khi khôi phục (không thay thế evidence dạng text).
-- [ ] Đã kiểm tra: không có secret, token, password thật trong bất kỳ file nào.
+- [ ] `report.md` có ít nhất hai sự cố theo mẫu 5 mục: Triệu chứng, Bằng chứng (kèm lệnh), Nguyên nhân gốc, Cách khắc phục (kèm cách kiểm chứng), Phòng tránh. Mẫu đầy đủ ở [Buổi 28 – Thử thách nâng cao](session-28-challenge.md#mau-report).
+- [ ] `screenshots/` có ảnh trạng thái trước và sau khi khôi phục (không thay thế evidence dạng text).
+- [ ] Không có secret, token, password thật trong bất kỳ file nào.
 
 ## Recap
 
-- Rollout tạo ReplicaSet mới; ReplicaSet cũ được giữ lại để `rollout undo`.
-- Luôn chạy `kubectl rollout status` sau deploy: rolling update che lỗi vì Pod cũ vẫn phục vụ.
-- Thứ tự chẩn đoán: `get pods`, `describe` (Events), `logs --previous`, rồi mới sửa.
-- ImagePullBackOff là lỗi lấy image, CrashLoopBackOff là ứng dụng thoát liên tục, Pending là chưa được lên lịch.
-- Rollback cứu dịch vụ nhưng không thay thế việc tìm nguyên nhân gốc.
-- Ghi lại triệu chứng, bằng chứng, nguyên nhân, cách sửa, phòng tránh: đó là Troubleshooting report.
+- Rollout tạo ReplicaSet mới, ReplicaSet cũ giữ lại để `undo`; luôn chạy `rollout status` sau deploy vì Pod cũ che lỗi.
+- Chẩn đoán theo thứ tự `get pods`, `describe` (Events), `logs --previous`, rồi mới sửa.
+- Rollback cứu dịch vụ nhưng không thay việc tìm nguyên nhân gốc; ghi lại bằng report 5 mục.
 
-## Tài liệu tham khảo
+Buổi tiếp theo: [Buổi 29 – Architecture & Planning](../week-15/session-29.md).
 
-- [Deployments (rolling update, rollback)](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-- [Debug Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/)
-- [Pod lifecycle: container states và restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)
-- [Images: pull policy và imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/)
-- [kubectl rollout](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/)
-- [kind: Loading an image into your cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster)
+::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
+Ba thử thách (ba tình huống `scenario-07`, `08`, `09` chỉ nhận triệu chứng; sự cố trên ứng dụng thật `club-api`; viết report) kèm tiêu chí hoàn thành và gợi ý nằm ở [Buổi 28 – Thử thách nâng cao](session-28-challenge.md). Hãy tự thử 15 phút trước khi mở gợi ý; đáp án chỉ ở phía mentor, đối chiếu bằng [Walkthrough tuần 14](../../mentors/walkthroughs/week-14.md) sau khi nộp bài.
+:::
+
+::: details Phá lỗi nâng cao
+Tình huống tổng hợp "bản mới của API chết sau khi deploy": bạn cùng nhóm hoặc mentor phá giúp bạn, bạn chỉ nhận triệu chứng và tự điều tra. Xem [Buổi 28 – Thử thách nâng cao](session-28-challenge.md).
+:::
+
+::: details Tài liệu tham khảo
+- [Deployments (rolling update, rollback)](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) · [Debug Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/) · [Pod lifecycle: container states và restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)
+- [Images: pull policy và imagePullSecrets](https://kubernetes.io/docs/concepts/containers/images/) · [kubectl rollout](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/) · [kind: Loading an image into your cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster)
+:::

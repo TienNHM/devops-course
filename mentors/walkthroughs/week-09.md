@@ -1,5 +1,9 @@
 # Walkthrough tuần 9 – Automated Testing & Docker CI
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 17 (unit và integration test, report, branch protection) và Buổi 18 (publish image lên GHCR bằng Buildx), kèm đáp án bài tập tuần 9 và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -78,6 +82,18 @@ test("GET /api/members returns 500 when table is missing", async (t) => {
   await pool.query("DROP TABLE members");
   const res = await fetch(`${baseUrl}/api/members`);
   assert.equal(res.status, 500);
+});
+```
+
+Chạy lại schema trong `beforeEach` (đặt trước `TRUNCATE`, phần chèn dữ liệu mẫu giữ như cũ) và đọc `schema` một lần ở đầu file:
+
+```js
+const schema = await readFile(new URL("../../database/init.sql", import.meta.url), "utf8");
+
+beforeEach(async () => {
+  await pool.query(schema);
+  await pool.query("TRUNCATE members RESTART IDENTITY");
+  // ...insert dữ liệu mẫu như cũ
 });
 ```
 
@@ -164,6 +180,65 @@ Lời giải tham khảo của đề đúng. Phần học viên phải tự gi�
 - **Tag theo git tag**: cần cả hai thứ, `tags: ["v*"]` trong `on.push` và dòng `type=ref,event=tag` trong `metadata-action`. Thiếu một trong hai thì không có tag `v1.0.0`. Khi đẩy tag, `type=sha` vẫn sinh thêm tag `sha-`, nên mỗi image có đủ hai tag như tiêu chí.
 - **Cache**: `cache-from: type=gha,scope=...` và `cache-to: type=gha,scope=...,mode=max`. `mode=max` lưu cả layer của stage trung gian `dependencies` (chứa `npm ci`), nên lần sau bỏ qua `npm ci` nếu `package-lock.json` không đổi. Mỗi image một `scope`, nếu không hai job matrix ghi đè cache của nhau.
 - **Pull request chỉ build**: `if: github.event_name != 'pull_request'` cho bước login và `push: ${{ github.event_name != 'pull_request' }}`. Token của PR từ fork không có quyền ghi.
+
+Workflow L2 đầy đủ (lời giải tham khảo, chuyển từ bài Buổi 18). Trên sự kiện `pull_request`, GITHUB_TOKEN của PR từ fork không có quyền ghi nên không push và không login; build vẫn chạy để bắt lỗi Dockerfile sớm.
+
+```yaml
+name: Publish images
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - name: club-api
+            context: lab-18/source/backend
+          - name: club-web
+            context: lab-18/source/frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}
+          tags: |
+            type=sha
+            type=ref,event=tag
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,scope=${{ matrix.name }},mode=max
+```
+
+Gợi ý từng bậc cho học viên bị kẹt (chuyển từ bài Buổi 18): matrix dùng `strategy.matrix.include` với hai phần tử có `name` và `context`; tag theo git tag cần `tags: ["v*"]` trong `on.push` và `type=ref,event=tag`; cache cần hai dòng `type=gha` (với matrix thêm `scope` riêng cho từng image); PR không push bằng biểu thức điều kiện cho `push` và `if: github.event_name != 'pull_request'` cho login; đẩy git tag bằng `git tag v1.0.0` rồi `git push origin v1.0.0`.
 
 Cách tìm bằng chứng cache trong log lần chạy thứ hai: dòng có `CACHED` hoặc `importing cache manifest from gha`. Học viên phải ghi thời gian hai run kèm link và trích đúng dòng đó; số liệu trùng tài liệu hay trùng bạn khác là dấu hiệu bất thường.
 

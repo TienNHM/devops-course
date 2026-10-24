@@ -30,14 +30,14 @@
 <style scoped>
 .hero-code {
   width: 100%;
-  max-width: 480px;
+  max-width: 400px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
   background: var(--vp-c-bg-soft);
   box-shadow: var(--vp-shadow-3);
   overflow: hidden;
   font-family: var(--vp-font-family-mono);
-  font-size: 12.5px;
+  font-size: 11.5px;
   line-height: 1.6;
   text-align: left;
 }

@@ -2,7 +2,33 @@
 
 > **Tóm tắt:** Checklist chuẩn bị theo mốc thời gian (D-7 đến D+2), cách chạy lại lab trên máy sạch, pre-pull image qua mạng CLB, đồng hồ từng phút cho buổi 120 phút, phương án dự phòng khi mạng hoặc môi trường hỏng, và cách xử lý sự cố ngày học.
 
+::: warning Dành cho mentor
+Trang này dành cho người dạy; học viên không cần đọc.
+:::
+
 Runbook dành cho Technical Mentor và Lab Assistant. Phần quy trình tổng quát nằm ở [Sổ tay mentor](handbook.md). Mỗi buổi dùng một bản sao của checklist này (có thể dán vào Issue của buổi và tick dần).
+
+## Cách dùng kịch bản từng buổi
+
+Runbook này là khung chung cho mọi buổi. Nội dung riêng của từng buổi nằm ở kịch bản của buổi đó (đường dẫn `mentors/sessions/session-NN`, xem bảng 16 tuần ở [mục lục mentor](index.md)).
+
+- **Runbook (trang này):** quy trình, mốc chuẩn bị D-7 đến D+2, mạng, phòng, sự cố, dọn dẹp, biên bản.
+- **Kịch bản buổi:** demo của mentor, câu hỏi nên hỏi lớp, khung thời gian của buổi, ghi chú giảng viên, lưu ý riêng của buổi đó, link ngược về bài học viên.
+- **Barem chấm tuần:** `mentors/grading/week-NN`, dùng khi chấm bài sau buổi.
+- **Đáp án:** [mục lục đáp án](walkthroughs/index.md), dùng để đối chiếu, không phát trước.
+
+Cách làm cho một buổi: mở bài học viên, đọc kịch bản buổi, chạy lại lab theo mục 2, rồi tick checklist bên dưới. Trong lớp, mở kịch bản buổi trên máy của mentor, còn học viên chỉ mở bài học viên.
+
+## Checklist trước giờ học
+
+- [ ] Đã đọc kịch bản buổi (`mentors/sessions/session-NN`) và bài học viên của buổi đó.
+- [ ] Đã chạy lại phần "Làm lab" trên máy sạch trong 3 ngày gần nhất (mục 2), kết quả khớp "Kết quả mong đợi".
+- [ ] Đã pre-pull image và kiểm tra mạng phòng học (mục 3).
+- [ ] Phòng, máy chiếu, ổ cắm, Wi-Fi dự phòng đã sẵn sàng (mục 4).
+- [ ] Đã chuẩn bị lỗi cho phần Break, không để lộ nguyên nhân (mục 5).
+- [ ] Đã in hoặc mở sẵn đồng hồ 120 phút (mục 6) và danh sách điểm danh.
+- [ ] Đã mở sẵn trang [Gặp lỗi?](../resources/troubleshooting-setup.md) cho các lỗi môi trường phổ biến.
+- [ ] Nhắc học viên chuẩn bị bài buổi trước theo mục "Cần chuẩn bị" trong bài học viên.
 
 ## 1. Dòng thời gian chuẩn bị
 

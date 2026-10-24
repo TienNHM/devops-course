@@ -2,7 +2,11 @@
 
 > **Tóm tắt:** Chạy thử khóa với 3 đến 5 thành viên trước khi khai giảng chính thức: mục tiêu, đối tượng, lịch, cách thu thập feedback, mẫu feedback form và tiêu chí go/no-go để quyết định mở khóa.
 
-Pilot là mục 7 trong [ROADMAP](../ROADMAP.md) và là điều kiện để hoàn thiện Curriculum v1.0. Kết quả pilot là đầu vào cho [Điều kiện mở khóa](launch-checklist.md).
+::: warning Dành cho mentor
+Trang này dành cho đội mentor chạy thử khóa; học viên không cần đọc.
+:::
+
+Pilot là mục 7 trong [ROADMAP](https://github.com/TienNHM/devops-course/blob/master/ROADMAP.md) và là điều kiện để hoàn thiện Curriculum v1.0. Kết quả pilot là đầu vào cho [Điều kiện mở khóa](launch-checklist.md).
 
 ## 1. Mục tiêu
 
@@ -171,6 +175,6 @@ Người quyết định và ngày:
 - [ ] Đóng hoặc lên lịch mọi Issue gắn nhãn `pilot`.
 - [ ] Cập nhật tài liệu, slide, starter project.
 - [ ] Chạy lại phần bị lỗi trên máy sạch để xác nhận đã sửa.
-- [ ] Cập nhật [ROADMAP](../ROADMAP.md): mục 7 và mục 8 chuyển trạng thái.
+- [ ] Cập nhật [ROADMAP](https://github.com/TienNHM/devops-course/blob/master/ROADMAP.md): mục 7 và mục 8 chuyển trạng thái.
 - [ ] Mời học viên pilot làm Lab Assistant, ghi nhận đóng góp của họ.
 - [ ] Rà [Điều kiện mở khóa](launch-checklist.md) và tick các mục tương ứng.

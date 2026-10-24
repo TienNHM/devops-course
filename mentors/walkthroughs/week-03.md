@@ -1,5 +1,9 @@
 # Walkthrough tuần 3 – Networking và Git Collaboration
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 05 (chẩn đoán mạng theo tầng) và Buổi 06 (Git, Pull Request, conflict, branch protection), kèm đáp án bài tập tuần 3 và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -70,9 +74,38 @@ Tiêu chí "ít nhất ba lệnh làm chứng" thường đạt bằng `curl -v`
 
 **Thử thách B – Chứng minh ping không đủ.** Lời giải trong đề đã đủ. Điểm cần kiểm tra là học viên có kết luận đúng: `ping 127.0.0.1` thành công, `curl` tới 9001 bị `Connection refused`, nghĩa là máy sống nhưng không ai lắng nghe port 9001. Cách tiếp cận khác: dùng `ss -ltn` rồi so sánh với `curl` ở nhiều port.
 
-**Thử thách C – `curl --resolve`.** Lệnh `curl -v --resolve demo.club.test:9000:127.0.0.1 http://demo.club.test:9000/` tạo một ánh xạ tên sang IP chỉ tồn tại trong lần chạy đó, nên không cần sửa `/etc/hosts`. Output có `> Host: demo.club.test:9000`. Header `Host` quan trọng vì một reverse proxy (Nginx, Ingress) dùng nó để chọn service phía sau khi nhiều tên miền dùng chung một IP và một port.
+Bộ lệnh tham khảo (server Python bind `127.0.0.1:9000` đang chạy ở terminal khác):
+
+```bash
+ping -c 2 127.0.0.1
+ss -ltn | grep -E ':9000|:9001'
+curl -sS -o /dev/null -w "9000 status=%{http_code}
+" http://127.0.0.1:9000/
+curl -sS http://127.0.0.1:9001/
+```
+
+Ping thành công, `ss` chỉ có 9000, curl 9000 ra 200, curl 9001 ra `Connection refused`. Kết luận: máy sống không có nghĩa service sống; phải kiểm tra đúng port bằng `ss` và `curl`.
+
+**Thử thách C – `curl --resolve`.** Lệnh `curl -v --resolve demo.club.test:9000:127.0.0.1 http://demo.club.test:9000/` tạo một ánh xạ tên sang IP chỉ tồn tại trong lần chạy đó, nên không cần sửa `/etc/hosts`. Output có `> Host: demo.club.test:9000`. Lệnh đầy đủ (server `python3 -m http.server 9000 --bind 127.0.0.1` phải đang chạy ở terminal khác):
+
+```bash
+curl -v --resolve demo.club.test:9000:127.0.0.1 http://demo.club.test:9000/ -o /dev/null 2>&1 | grep -E 'Host|HTTP/'
+```
+
+Header `Host` quan trọng vì một reverse proxy (Nginx, Ingress) dùng nó để chọn service phía sau khi nhiều tên miền dùng chung một IP và một port.
 
 **Thử thách D – Cổng của starter-project.** Kiểm tra theo đề: `/health` chỉ có trực tiếp ở cổng 3000. Cấu hình Nginx trong `starter-project/frontend/nginx.conf` chỉ chuyển tiếp đường dẫn `/api/` sang `http://backend:3000`; mọi đường dẫn khác rơi vào `location /` và trả `index.html`, nên `http://localhost:8080/health` trả trang frontend. Frontend gọi được `/api/members` mà không cần IP backend vì tên `backend` được DNS nội bộ của Docker network phân giải. Nhớ chạy `docker compose down` và không commit `.env`.
+
+Lệnh kiểm tra tham khảo sau `cp .env.example .env`, đặt `DB_PASSWORD` giả như `change-me-local` và `docker compose up -d --build`:
+
+```bash
+ss -ltn | grep -E ':8080|:3000'
+curl -s http://localhost:8080/health ; echo
+curl -s http://localhost:3000/health ; echo
+curl -s http://localhost:8080/api/members
+```
+
+Tên mạng Docker của starter-project là `club-network`; phần này học kỹ ở Buổi 11.
 
 #### Lời giải phần Phá lỗi ("Port đã được sử dụng")
 

@@ -1,5 +1,9 @@
 # Walkthrough tuần 7 – Docker Compose
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải tuần 7: Compose cho starter-project, healthcheck, restart, secrets, backup và restore PostgreSQL, kèm gợi ý bài tập và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -353,7 +357,21 @@ Thử thách 1 – `/health` hay `/ready` cho healthcheck. Chọn `/health` cho 
 
 Thử thách 2 – OOM. Đặt `memory: 8M` cho backend (rồi `docker compose up -d`) thì kernel OOM kill tiến trình: `docker inspect --format '{{.State.OOMKilled}} {{.State.ExitCode}} {{.RestartCount}}'` cho `true 137` và số restart tăng liên tục, trạng thái `restarting`. Với `16M`, Node idle dùng khoảng 14 MiB nên có thể vẫn chạy được trên máy bạn; đó là kết quả hợp lệ nếu bạn ghi đúng số liệu `docker stats`. Giá trị cuối cùng nên có biên an toàn lớn so với mức đo (đo thực tế khoảng 14 MiB lúc rảnh), ví dụ `256M`, kèm lý giải rằng tải thật cao hơn lúc rảnh.
 
-Thử thách 3 – `backup.sh`: dùng đúng script mẫu trong lab (`set -euo pipefail`, `cd "$(dirname "$0")"`, kiểm tra `test -s`, giữ 5 bản bằng `ls -1t ... | tail -n +6 | xargs -r rm --`). Chạy bảy lần cách nhau hơn một giây (tên file có giờ phút giây) rồi `ls backups | wc -l` phải ra `5`. Script không chứa mật khẩu vì dùng socket nội bộ của container. Một `restore.sh` tốt nhận đường dẫn làm tham số, kiểm tra file tồn tại, tạo database trống mới rồi nạp, in số dòng bảng `members`.
+Thử thách 3 – `backup.sh`: script mẫu (`set -euo pipefail`, `cd "$(dirname "$0")"`, kiểm tra `test -s`, giữ 5 bản bằng `ls -1t ... | tail -n +6 | xargs -r rm --`). Đặt `backup.sh` cạnh `compose.yaml` (trong `source/`) để `docker compose` tìm đúng project:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+mkdir -p backups
+out="backups/clubdb-$(date +%Y%m%d-%H%M%S).sql"
+docker compose exec -T postgres pg_dump -U club -d clubdb > "$out"
+test -s "$out" || { echo "backup rong"; rm -f "$out"; exit 1; }
+ls -1t backups/clubdb-*.sql | tail -n +6 | xargs -r rm --
+echo "OK: $out"
+```
+
+Chạy bảy lần cách nhau hơn một giây (tên file có giờ phút giây) rồi `ls backups | wc -l` phải ra `5`. Script không chứa mật khẩu vì dùng socket nội bộ của container. Một `restore.sh` tốt nhận đường dẫn làm tham số, kiểm tra file tồn tại, tạo database trống mới rồi nạp, in số dòng bảng `members`.
 
 Thử thách 4 – secret cho backend. Hướng làm: trong `db.js` đọc mật khẩu từ file nếu có `DB_PASSWORD_FILE`:
 

@@ -1,5 +1,9 @@
 # Walkthrough tuần 1 – DevOps Workflow và môi trường phát triển
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải Buổi 01 (vẽ workflow triển khai, tìm điểm nghẽn) và Buổi 02 (WSL2, Git, SSH, check-env.sh), kèm đáp án bài tập tuần 1 và hướng dẫn chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -345,3 +349,30 @@ Lưu ý chấm:
 - Bài chấp nhận trường hợp docker thiếu: mã thoát 1 là đúng ở tuần này. Trừ điểm khi mã thoát 0 mà log vẫn có `THIEU`.
 - Điểm L2 chỉ cộng khi L1 đạt từ 60. Với Thử thách B, kiểm tra evidence có hai lần chạy và dùng key thử nghiệm.
 - Ảnh chụp chỉ bổ trợ; bài chỉ có ảnh mà thiếu log text nhận 0 cho tiêu chí đó.
+
+### Bổ sung sau khi cải tổ bài học
+
+Phần này bổ sung các ý đã được chuyển ra khỏi bài học viên, để không mất nội dung.
+
+**Ví dụ L2 Buổi 01 thứ hai (bot Discord của CLB).** Đây là ví dụ rút gọn từng nằm trong bài lab, cùng cách tiếp cận với ví dụ ứng dụng điểm danh ở trên:
+
+| Điểm nghẽn | Số liệu ước lượng | Tự động hóa | Học ở |
+| --- | --- | --- | --- |
+| Deploy tay qua SSH | 15 phút, 2 lần mỗi tuần | Đóng gói bằng container, deploy bằng một lệnh | Giai đoạn Docker |
+| Không có test, lỗi phát hiện khi người dùng báo | 1 lỗi mỗi tuần | CI chạy test mỗi lần push | Giai đoạn CI/CD |
+| Cấu hình token nằm trong máy một người | Mất token là ngừng bot | Biến môi trường, không commit secret | Giai đoạn Docker, Compose |
+
+Chỉ số đo: thời gian từ commit đến bot chạy bản mới, số lần deploy phải làm lại. Rủi ro: pipeline hỏng thì cả nhóm không phát hành được, cần ít nhất 2 người biết sửa.
+
+**Bản `check-env.sh` rút gọn tự viết (Buổi 02, thử thách L2).** Bài lab cũ yêu cầu mọi học viên tự viết script; nay L1 chạy `resources/check-env.sh` có sẵn và tự viết là L2. Bản rút gọn và giải thích `set -u`, `chmod +x`, cờ `-V` của `ssh` nằm ở [Buổi 02 – Thử thách thêm](../../labs/week-01/session-02-challenge.md). Lời giải L2 ở trên (có `KEY_FILE`) vẫn là đáp án tham khảo cho Thử thách 1.
+
+**Phá lỗi quyền key: dùng khóa thử.** Bài học viên giờ tạo khóa thử rồi phá quyền của nó, thay vì `ssh-add -D` và `chmod 644` lên khóa thật. Cách làm tương đương và an toàn hơn:
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/test_key -N "" -C "test-only"
+chmod 644 ~/.ssh/test_key
+ssh -o IdentitiesOnly=yes -i ~/.ssh/test_key -T git@github.com
+chmod 600 ~/.ssh/test_key
+```
+
+`IdentitiesOnly=yes` buộc SSH chỉ thử khóa chỉ định và bỏ qua khóa trong agent, nên không cần `ssh-add -D`. Cây điều tra giữ nguyên như mô tả ở phần "Tình huống – quyền file key quá rộng". Khi chấm Thử thách B, kiểm tra học viên dùng khóa thử và dọn `test_key` xong.

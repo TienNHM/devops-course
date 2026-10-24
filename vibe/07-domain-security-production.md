@@ -2,7 +2,12 @@
 
 > **Tóm tắt:** Trỏ domain về nền tảng, giữ secret an toàn, kiểm tra bảo mật trước khi public, kiểm soát chi phí, giám sát tối thiểu, sao lưu, rollback và biết khi nào cần học DevOps sâu hơn.
 
-Thời lượng ước tính: 60-90 phút (phần DNS có thể phải chờ vài phút đến vài giờ để lan truyền).
+::: tip Bạn làm gì
+- **Kết quả:** web có địa chỉ riêng với HTTPS, secret nằm đúng chỗ, và một checklist bảo mật bạn đã đi hết trước khi gửi link cho người lạ.
+- **Thời gian:** 60 đến 90 phút (phần DNS có thể phải chờ vài phút đến vài giờ để lan truyền).
+- **Cần gì trước:** một sản phẩm đã có link công khai (làm xong [Dự án nhỏ](09-mini-project.md) là vừa) và tài khoản GitHub, nền tảng hosting.
+- **Module trước:** [Dự án nhỏ](09-mini-project.md).
+:::
 
 ## Bạn sẽ làm được gì
 
@@ -21,7 +26,7 @@ Hãy nghĩ deploy là mở cửa hàng. Những thứ trong bài này là phần
 | Domain | Tên cửa hàng trên bảng hiệu | `tiemhoa.com` |
 | DNS | Danh bạ: tên cửa hàng ứng với địa chỉ nào | Bảng ghi `A`, `CNAME`, `TXT` |
 | HTTPS | Cửa có khóa, người ngoài không nghe lén được | Chứng chỉ SSL, nền tảng tự cấp |
-| Env var | Két sắt phía sau quầy, khách không nhìn thấy | `SUPABASE_SERVICE_ROLE_KEY` |
+| Env var ([thuật ngữ](../resources/glossary.md)) | Két sắt phía sau quầy, khách không nhìn thấy | `SUPABASE_SERVICE_ROLE_KEY` |
 | RLS / Rules | Quy định ai được mở ngăn kéo nào | Row Level Security, Firebase Security Rules |
 | Rollback | Quay về bảng giá hôm qua khi in nhầm | Promote lại bản deploy cũ |
 
@@ -107,7 +112,9 @@ Quy tắc vàng: **secret chỉ sống ở hai nơi là máy bạn (file `.env`,
 
 Nếu bạn đặt `VITE_SECRET_KEY`, khóa đó sẽ nằm nguyên văn trong file JavaScript gửi cho mọi khách. Tiền tố public nghĩa là "ai cũng đọc được".
 
-**Hai loại khóa Supabase, rất quan trọng:**
+::: danger Hai loại khóa Supabase, rất quan trọng
+Khóa có chữ secret hoặc `service_role` bỏ qua RLS và tuyệt đối không được nằm ở frontend, repo, prompt. Bảng dưới đây cho biết khóa nào đặt ở đâu.
+:::
 
 | Khóa | Đặt ở frontend? | Ghi chú |
 | --- | --- | --- |
@@ -118,7 +125,9 @@ Theo tài liệu Supabase (kiểm tra 10/2026), publishable/secret là kiểu kh
 
 **Firebase:** `apiKey` trong cấu hình web của Firebase là định danh dự án, không phải mật khẩu, nên để trong frontend là bình thường. Bảo vệ thật sự nằm ở Security Rules và danh sách domain được phép đăng nhập. Service account JSON (file khóa quản trị) thì tuyệt đối không commit.
 
-**Nếu lỡ lộ khóa:**
+::: danger Nếu lỡ lộ khóa
+Làm theo thứ tự dưới đây, bước 1 trước tiên.
+:::
 
 1. Vào dịch vụ phát hành khóa, tạo khóa mới (rotate) và thu hồi khóa cũ ngay. Đây là bước quan trọng nhất; xóa commit không đủ vì git lưu lịch sử và bot quét GitHub liên tục.
 2. Cập nhật khóa mới trong env var của nền tảng, deploy lại.
@@ -169,37 +178,7 @@ Việc nên làm:
 4. **Thói quen hằng tuần (5 phút, đặt lịch vào sáng thứ Hai):** mở trang Usage/Billing của từng dịch vụ, nhìn băng thông, số request, dung lượng database và hóa đơn. Nếu có số tăng đột biến, xem log để tìm ai đang gọi.
 5. **Chặn nguồn gây tốn kém:** Captcha cho form, rate limit, không để API gọi AI (OpenAI, Claude, Gemini) chạy công khai không giới hạn. Nếu web của bạn gọi API AI, đặt hạn mức chi tiêu tối đa ở phía nhà cung cấp AI và để khóa ở server.
 
-### Phần E. Giám sát tối thiểu
-
-| Việc | Công cụ miễn phí gợi ý | Vì sao |
-| --- | --- | --- |
-| Biết khi web sập | UptimeRobot, Better Stack, hoặc công cụ tương đương (kiểm tra gói free trên trang giá) | Gửi email khi web không phản hồi, kiểm tra mỗi vài phút |
-| Xem log lỗi | Vercel: tab Logs. Netlify: tab Logs và Functions. Cloudflare: Workers & Pages, Logs. Supabase: Logs. Firebase: Logs Explorer | Chẩn đoán lỗi function và database |
-| Biết có bao nhiêu người ghé | Vercel Web Analytics, Cloudflare Web Analytics, Plausible, Umami | Thấy xu hướng, thấy đỉnh bất thường |
-| Báo lỗi trình duyệt | Sentry (có gói free, kiểm tra giới hạn) | Biết người dùng gặp lỗi gì mà bạn không thấy |
-
-Thiết lập tối thiểu: một uptime check cho trang chủ và một cho đường API quan trọng nhất, gửi email cho bạn. Mất 5 phút.
-
-### Phần F. Sao lưu (backup)
-
-| Thứ cần sao lưu | Cách làm |
-| --- | --- |
-| Code | Đã có trên GitHub. Đẩy lên thường xuyên (`git push`) |
-| Database Supabase | Tài liệu Supabase nêu gói Pro, Team, Enterprise có backup tự động hằng ngày; dự án gói Free nên tự xuất dữ liệu định kỳ bằng `supabase db dump` và cất ở nơi khác (lưu ý: lệnh này chạy `pg_dump` trong container nên máy bạn cần Docker, và bản dump mặc định không gồm role tùy chỉnh) |
-| Firestore | Xuất dữ liệu định kỳ (tính năng export của Firestore, có thể tốn phí lưu trữ) hoặc tự viết script; kiểm tra tài liệu Firebase |
-| Ảnh/file người dùng tải lên | Tải về định kỳ, hoặc dùng tính năng sao chép của dịch vụ storage |
-| Cấu hình | Giữ danh sách env var (chỉ tên biến, không ghi giá trị) trong `README.md` của dự án để dựng lại nhanh |
-
-Ví dụ xuất dữ liệu Supabase từ máy bạn (cần cài Supabase CLI và đã link dự án, chuỗi kết nối lấy từ dashboard, đừng dán vào chat):
-
-```bash
-supabase db dump --linked -f backup-schema.sql
-supabase db dump --linked --data-only -f backup-data.sql
-```
-
-Backup chỉ có giá trị nếu bạn đã thử khôi phục ít nhất một lần. Hãy thử nạp vào một dự án trống.
-
-### Phần G. Rollback: quay về bản chạy tốt
+### Phần E. Rollback: quay về bản chạy tốt
 
 Khi bản mới hỏng, việc đầu tiên là **khôi phục dịch vụ**, tìm nguyên nhân sau.
 
@@ -221,30 +200,9 @@ git push
 
 `git revert` tạo một commit mới đảo ngược commit trước đó, an toàn hơn việc xóa lịch sử. Lưu ý: rollback không hoàn lại dữ liệu trong database và không đổi env var. Nếu lỗi nằm ở database (ví dụ migration xóa cột), cần khôi phục từ backup. Vì vậy hãy xuất dữ liệu trước khi chạy thay đổi lớn về schema.
 
-### Phần H. Khi nào cần DevOps thật sự
+### Phần F. Đọc thêm: giám sát, sao lưu, khi nào cần DevOps
 
-Track Vibe Deploy là đường nhanh. Hầu hết dự án nhỏ, CLB, MVP, portfolio có thể dừng ở đây rất lâu. Những dấu hiệu bạn nên học thêm:
-
-| Dấu hiệu | Nên học | Ở đâu |
-| --- | --- | --- |
-| "Chạy trên máy tôi được nhưng chỗ bạn thì không", cần môi trường giống hệt nhau | Docker | [Tuần 4 trong khóa chính](../labs/week-04/README.md) |
-| Muốn mỗi lần push tự chạy kiểm thử trước khi lên production | CI/CD với GitHub Actions | [Giáo trình](../curriculum/syllabus.md) |
-| Cần chạy backend riêng (không phải function ngắn), cron, hàng đợi, nhiều service | Docker Compose, VPS hoặc container hosting | [Giáo trình](../curriculum/syllabus.md) |
-| Nhiều người cùng sửa, cần môi trường staging và quy trình duyệt | CI/CD, quản lý môi trường | [Giáo trình](../curriculum/syllabus.md) |
-| Lượng người dùng lớn, cần tự co giãn, nhiều service | Kubernetes, monitoring chuyên sâu | [Giáo trình](../curriculum/syllabus.md) |
-| Yêu cầu tuân thủ, dữ liệu nhạy cảm, SLA | Hạ tầng dưới dạng mã, bảo mật nâng cao | [Giáo trình](../curriculum/syllabus.md) |
-
-Kiến trúc nâng cấp thường đi theo từng bước nhỏ, không cần nhảy thẳng lên Kubernetes:
-
-```mermaid
-flowchart LR
-  A["Web tĩnh + Pages"] --> B["Thêm Supabase / Firebase"]
-  B --> C["Thêm function / API"]
-  C --> D["Thêm CI: test tự động"]
-  D --> E["Container hóa bằng Docker"]
-  E --> F["Chạy trên VPS / cloud"]
-  F --> G["Kubernetes khi thật sự cần"]
-```
+Ba chủ đề này nằm ở trang [Tên miền, bảo mật, production: nâng cao](07-domain-security-production-advanced.md): giám sát tối thiểu (uptime check, log, analytics), sao lưu database và file, và các dấu hiệu cho thấy bạn nên học DevOps thật sự. Tối thiểu hãy đặt một uptime check cho trang chủ và xuất backup database ít nhất một lần.
 
 ## Nhờ AI agent làm giúp
 
@@ -267,13 +225,13 @@ Hãy giúp tôi viết README mục "Vận hành": liệt kê tên các biến m
 
 Việc bạn phải tự kiểm tra: đọc lại báo cáo, tự mở cửa sổ ẩn danh để thử đọc dữ liệu không đăng nhập, tự xem trang Usage/Billing.
 
-Những việc **không giao cho agent**:
-
+::: danger Những việc không giao cho agent
 - Dán secret, `service_role`, token, mật khẩu hoặc file khóa vào khung chat. Hãy tự nhập vào dashboard hoặc dùng `vercel env add` trong terminal của bạn.
 - Nhập thông tin thẻ, nâng cấp gói, bấm trả tiền, mua domain.
 - Đổi nameserver hoặc xóa bản ghi `MX` khi chưa hiểu hậu quả.
 - Dán dữ liệu cá nhân thật của người dùng (email, số điện thoại, dữ liệu học viên) vào prompt.
 - Tắt RLS, Security Rules hay CORS "cho chạy được". Nếu agent đề nghị, hãy hỏi lại lý do và cách sửa đúng.
+:::
 
 ## Nếu bị lỗi
 
@@ -299,7 +257,7 @@ Chi tiết hơn về từng lỗi và cách đọc log nằm ở [Troubleshootin
 3. Bạn lỡ commit file `.env` chứa khóa lên GitHub. Việc đầu tiên phải làm là gì?
 4. Biến `VITE_API_SECRET` có an toàn không? Tại sao?
 5. Sau khi Instant Rollback, vì sao push mới không lên production?
-6. Dự án nào nên bắt đầu học Docker và CI/CD?
+6. Dự án nào nên bắt đầu học Docker và CI/CD? (xem phần "Khi nào cần DevOps thật sự" ở [trang nâng cao](07-domain-security-production-advanced.md))
 
 <details><summary>Đáp án</summary>
 
@@ -327,9 +285,7 @@ Chi tiết hơn về từng lỗi và cách đọc log nằm ở [Troubleshootin
 
 ## Tiếp theo + Tài liệu chính thức
 
-Tiếp theo: [08 Xử lý sự cố](08-troubleshooting.md), rồi làm [09 Dự án mini](09-mini-project.md). Dùng công cụ như Lovable, Bolt, v0, Replit thì đọc thêm [10 App-builder](10-app-builders.md). Muốn đi sâu hạ tầng: [giáo trình DevOps](../curriculum/syllabus.md) và [Docker ở tuần 4](../labs/week-04/README.md).
-
-Trước khi gửi link cho nhiều người (chống spam form, SEO và preview khi chia sẻ, analytics, backup thực hành, Lighthouse, checklist go-live 20 mục): xem [Trước khi chia sẻ link](11-launch-polish.md).
+**Tiếp theo:** [Hoàn thiện và ra mắt](11-launch-polish.md) (chống spam form, preview khi chia sẻ link, analytics, Lighthouse, checklist go-live 20 mục) trước khi gửi link cho nhiều người. Đọc thêm khi cần: [nâng cao](07-domain-security-production-advanced.md) (giám sát, backup, khi nào cần DevOps), [Xử lý sự cố](08-troubleshooting.md). Dùng công cụ như Lovable, Bolt, v0, Replit thì đọc [App builders](10-app-builders.md). Muốn đi sâu hạ tầng: [giáo trình DevOps](../curriculum/syllabus.md) và [Docker ở tuần 4](../labs/week-04/README.md).
 
 Tài liệu chính thức:
 

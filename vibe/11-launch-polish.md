@@ -2,7 +2,12 @@
 
 > **Tóm tắt:** Làm những việc cuối trước khi gửi link cho người lạ: chống spam form, hiển thị đẹp khi chia sẻ, đo lượt truy cập riêng tư, sao lưu dữ liệu, đo tốc độ và tick checklist 20 mục.
 
-Thời lượng ước tính: 90-120 phút (làm từng phần, không cần xong một lần).
+::: tip Bạn làm gì
+- **Kết quả:** form có chống spam, link chia sẻ hiện đẹp trên Zalo và Facebook, và checklist go-live 20 mục đã tick.
+- **Thời gian:** 90 đến 120 phút (làm từng phần, không cần xong một lần).
+- **Cần gì trước:** một sản phẩm đã có link công khai, đã qua phần bảo mật ở [Tên miền, bảo mật, production](07-domain-security-production.md).
+- **Module trước:** [Tên miền, bảo mật, production](07-domain-security-production.md). Đây là chặng cuối của lộ trình.
+:::
 
 ## Bạn sẽ làm được gì
 
@@ -20,7 +25,7 @@ Hãy nghĩ bạn sắp khai trương quán. Bài [Domain, bảo mật và vận 
 
 | Khái niệm | Ví dụ đời thường | Trong thực tế |
 | --- | --- | --- |
-| Honeypot | Cái hộp "trống" mà chỉ kẻ gian mới thò tay vào | Ô nhập ẩn; người thật không thấy nên không điền, bot điền |
+| Honeypot ([thuật ngữ](../resources/glossary.md)) | Cái hộp "trống" mà chỉ kẻ gian mới thò tay vào | Ô nhập ẩn; người thật không thấy nên không điền, bot điền |
 | Captcha / Turnstile | Bảo vệ hỏi nhanh "bạn là người à?" | Widget của Cloudflare, người thật thường không phải giải đố |
 | Rate limit | Mỗi người chỉ được lấy số thứ tự vài lần mỗi phút | Giới hạn số request trên mỗi IP hoặc mỗi tài khoản |
 | Open Graph (OG) | Tấm danh thiếp in sẵn | Thẻ meta cho Zalo, Facebook biết hiện tiêu đề, ảnh gì |
@@ -40,7 +45,7 @@ Nguyên tắc xuyên suốt: mọi lớp chống spam ở trình duyệt chỉ l
 
 ## Thực hành từng bước
 
-Làm theo thứ tự các phần A đến G. Ví dụ dùng form đăng ký của CLB (xem [club-landing](../examples/vibe/club-landing/README.md)), nhưng cách làm áp dụng cho form liên hệ bất kỳ.
+Làm theo thứ tự các phần A đến D. Ví dụ dùng form đăng ký của CLB (xem [club-landing](../examples/vibe/club-landing/README.md)), nhưng cách làm áp dụng cho form liên hệ bất kỳ.
 
 ### Phần A. Chống spam và bot cho form
 
@@ -157,36 +162,7 @@ Bạn sẽ thấy: gửi một tên dài 500 ký tự bằng công cụ như `cu
 
 Mẹo: ảnh `og-image.png` cỡ khoảng 1200 x 630 pixel, dùng địa chỉ đầy đủ bắt đầu bằng `https://`, dung lượng nhẹ (dưới vài trăm KB). Title nên dưới khoảng 60 ký tự, description khoảng 120-160 ký tự.
 
-**Bước 6. Favicon, sitemap và robots.**
-
-```html
-<link rel="icon" href="/favicon.ico" sizes="any" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-```
-
-Tạo file `robots.txt` ở thư mục gốc (đặt trong thư mục `public` hoặc thư mục gốc của web tĩnh):
-
-```text
-User-agent: *
-Allow: /
-
-Sitemap: https://ten-mien-cua-ban.vn/sitemap.xml
-```
-
-Và `sitemap.xml` cho web nhỏ vài trang:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://ten-mien-cua-ban.vn/</loc></url>
-  <url><loc>https://ten-mien-cua-ban.vn/gioi-thieu.html</loc></url>
-</urlset>
-```
-
-Nếu muốn một trang (ví dụ trang admin) không bị Google lập chỉ mục, đừng chỉ dựa vào `robots.txt` (ai cũng đọc được file này). Hãy bảo vệ trang bằng đăng nhập và thêm `meta name="robots" content="noindex"`.
-
-Bạn sẽ thấy: mở `https://ten-mien-cua-ban.vn/robots.txt` và `/sitemap.xml` trên trình duyệt hiện đúng nội dung vừa tạo.
+**Bước 6. Favicon, sitemap và robots.** Ba thứ này nằm ở [trang nâng cao](11-launch-polish-advanced.md#favicon-sitemap-robots): một thẻ `link` cho favicon, file `robots.txt` và `sitemap.xml` ở thư mục gốc.
 
 **Bước 7. Kiểm tra preview khi gửi link.**
 
@@ -196,82 +172,11 @@ Bạn sẽ thấy: mở `https://ten-mien-cua-ban.vn/robots.txt` và `/sitemap.x
 
 Bạn sẽ thấy: thẻ có đúng ảnh, tiêu đề và mô tả. Nếu chỉ hiện đường link trần, thường do thiếu `og:image` hoặc ảnh dùng địa chỉ tương đối.
 
-### Phần C. Analytics thân thiện riêng tư và cookie
+### Phần C. Đọc thêm: analytics, thanh toán, backup, Lighthouse
 
-Bảng dưới là các lựa chọn phổ biến. Gói và giá thay đổi, hãy mở trang chính thức trước khi quyết định (kiểm tra 10/2026):
+Bốn chủ đề này nằm ở trang [Hoàn thiện và ra mắt: nâng cao](11-launch-polish-advanced.md): analytics thân thiện riêng tư và cookie, vì sao thanh toán nằm ngoài phạm vi, sao lưu dữ liệu ở mức thực hành, và đo hiệu năng bằng Lighthouse (kèm prompt cho agent). Các mục 14, 15, 19, 20 của checklist go-live ở cuối bài cần trang đó.
 
-| Công cụ | Điểm chính | Lưu ý gói miễn phí |
-| --- | --- | --- |
-| Cloudflare Web Analytics | Tài liệu mô tả là phân tích ưu tiên riêng tư, không cần đổi DNS hay dùng proxy của Cloudflare, có trên mọi gói | Đọc trang chính thức để biết giới hạn hiện hành |
-| Vercel Web Analytics | Bật trong tab Analytics của dự án trên Vercel | Gói Hobby kèm 50.000 sự kiện mỗi tháng; vượt thì ngừng thu thập, không bị tính phí thêm (theo trang giá, 10/2026) |
-| Plausible | Gọn, ưu tiên riêng tư, có thể tự host | Bản dịch vụ đám mây thường tính phí, có thể có dùng thử; xem trang giá |
-| Umami | Mã nguồn mở, tự host hoặc dùng bản cloud | Có thể có gói free cho cloud; kiểm tra trang giá |
-
-Chọn một cái là đủ. Với người mới trên Vercel, bật Vercel Web Analytics nhanh nhất; với web ở nơi khác, thử Cloudflare Web Analytics.
-
-Về cookie và đồng ý (consent), mức cơ bản:
-
-- Công cụ không dùng cookie theo dõi thì thường không cần banner phức tạp, nhưng bạn vẫn nên có một trang "Quyền riêng tư" ngắn nói rõ bạn thu thập gì, dùng để làm gì, liên hệ ai để xóa dữ liệu.
-- Nếu bạn dùng Google Analytics, pixel quảng cáo hoặc công cụ đặt cookie theo dõi, nhiều nơi (như châu Âu) yêu cầu hỏi đồng ý trước. Quy định mỗi quốc gia mỗi khác; nếu nhắm tới người dùng ngoài Việt Nam hoặc thu dữ liệu nhạy cảm, hãy hỏi người am hiểu pháp lý.
-- Form thu email, số điện thoại là dữ liệu cá nhân: chỉ hỏi điều thật sự cần, ghi rõ mục đích bên cạnh nút gửi.
-
-Bạn sẽ thấy: sau khi bật, mở web ở cửa sổ ẩn danh vài lần, vài phút sau bảng analytics có số lượt xem tăng lên.
-
-### Phần D. Thanh toán nằm ngoài phạm vi
-
-Track này không dạy bạn nhận tiền bằng code tự viết. Lý do: lỗi trong xử lý thẻ có thể gây mất tiền thật và vi phạm quy định bảo mật thẻ, rủi ro quá lớn cho sản phẩm do AI viết.
-
-Nếu cần nhận tiền:
-
-- Dùng trang thanh toán dựng sẵn của nhà cung cấp, ví dụ [Stripe Payment Links](https://docs.stripe.com/payment-links) hoặc Stripe Checkout: bạn tạo link trong dashboard của họ, web của bạn chỉ có một nút dẫn tới link đó.
-- Ở Việt Nam, có thể dùng cổng thanh toán nội địa có sẵn trang thanh toán hoặc link thanh toán; tự đọc điều khoản, phí và quy trình đăng ký của từng bên.
-- Không tự thu số thẻ trong form của bạn. Không lưu số thẻ vào database.
-- Không dán khóa thanh toán (secret key, webhook secret) vào prompt hay vào repo. Nếu sau này cần webhook, hãy học kỹ từ tài liệu của nhà cung cấp và nhờ người có kinh nghiệm xem lại.
-- Việc tạo tài khoản, xác minh danh tính, nhập thông tin ngân hàng là việc bạn tự làm; không nhờ agent làm hộ.
-
-### Phần E. Sao lưu dữ liệu ở mức thực hành
-
-Bài [07](07-domain-security-production.md) đã nói tổng quan; ở đây bạn làm thật một lần.
-
-**Supabase, cách 1: xuất CSV.** Vào Table Editor, chọn bảng, dùng nút xuất ra CSV. Dễ nhất, đủ dùng cho bảng vài trăm dòng.
-
-**Supabase, cách 2: dump bằng CLI.** Theo tài liệu Supabase, dự án gói Free nên tự xuất dữ liệu định kỳ (gói trả phí mới có backup hằng ngày). Với CLI đã `supabase login` và `supabase link` ở máy bạn:
-
-```bash
-supabase db dump --linked -f backup-schema.sql
-supabase db dump --linked --data-only -f backup-data.sql
-```
-
-Lưu ý quan trọng: backup của Supabase không gồm file đã tải lên Storage (chỉ có thông tin mô tả), nên ảnh và tệp cần tải về riêng. File backup có thể chứa dữ liệu cá nhân: đừng đẩy lên GitHub công khai, thêm `backup-*.sql` vào `.gitignore`.
-
-**Firebase.** Với Firestore, xem tính năng export/import trong tài liệu Firebase và Google Cloud (có thể cần gói Blaze và tốn phí lưu trữ, bạn tự cân nhắc). Dự án nhỏ có thể tự viết một script đọc collection ra file JSON bằng tài khoản của bạn.
-
-**Đặt lịch nhắc.** Backup không đặt lịch thì sẽ không bao giờ làm. Tạo sự kiện lặp trong Google Calendar hoặc điện thoại: "Chủ nhật 20:00: backup dữ liệu web CLB". Tần suất tùy mức quan trọng: tuần một lần cho dữ liệu thay đổi nhiều, tháng một lần cho dữ liệu ít đổi. Cất bản sao ở một nơi khác với nơi chạy dự án (ổ đĩa của bạn, Google Drive riêng tư).
-
-Bạn sẽ thấy: file `backup-data.sql` hoặc CSV có dung lượng lớn hơn 0 và mở bằng trình soạn thảo thấy dữ liệu của bạn. Thử nạp vào một dự án trống ít nhất một lần để biết nó dùng được.
-
-### Phần F. Đo hiệu năng bằng Lighthouse
-
-1. Mở web đã deploy bằng Chrome, ở cửa sổ ẩn danh (để tiện ích mở rộng không làm sai điểm).
-2. Nhấn F12, chọn tab Lighthouse, chọn Mobile, tích Performance, Accessibility, Best practices, SEO, bấm Analyze page load.
-3. Chờ vài chục giây. Báo cáo cho 4 điểm từ 0 đến 100 và danh sách "Opportunities", "Diagnostics".
-4. Ghi lại điểm ban đầu, sửa từng nhóm lỗi, đo lại. Xem [giới thiệu Lighthouse của Chrome](https://developer.chrome.com/docs/lighthouse/overview) nếu muốn biết chi tiết từng chỉ số.
-
-Các cảnh báo hay gặp với web AI viết và cách xử lý:
-
-| Cảnh báo | Nghĩa là gì | Hướng sửa |
-| --- | --- | --- |
-| Properly size images / Serve images in next-gen formats | Ảnh quá to hoặc định dạng nặng | Thu nhỏ đúng kích thước hiển thị, đổi sang WebP hoặc AVIF |
-| Largest Contentful Paint chậm | Nội dung chính hiện muộn | Nén ảnh đầu trang, bỏ script chặn hiển thị |
-| Image elements do not have alt attributes | Thiếu văn bản thay thế ảnh | Thêm `alt` mô tả ngắn |
-| Document does not have a meta description | Thiếu mô tả cho SEO | Thêm thẻ `description` như Phần B |
-| Links do not have a discernible name / Buttons without accessible name | Nút hoặc link chỉ có biểu tượng | Thêm chữ hoặc `aria-label` |
-| Background and foreground colors do not have a sufficient contrast ratio | Chữ khó đọc | Đổi màu chữ hoặc nền cho đủ tương phản |
-| Does not use HTTPS / mixed content | Còn tải tài nguyên bằng `http://` | Đổi hết sang `https://` |
-
-Điểm 100 không phải mục tiêu bắt buộc. Với web CLB hay portfolio, mục tiêu hợp lý là Performance và Accessibility trên khoảng 80-90 trên di động, SEO và Best practices cao.
-
-### Phần G. Checklist go-live 20 mục
+### Phần D. Checklist go-live 20 mục
 
 Đây là danh sách để bạn tự tick trước khi gửi link rộng rãi (phiên bản có thể sao chép nằm ở phần Checklist hoàn thành cuối bài). Mỗi nhóm có phần việc đã nói ở trên hoặc ở bài [07](07-domain-security-production.md).
 
@@ -314,30 +219,6 @@ Tôi sẽ tự tạo widget và tự nhập khóa thật vào dashboard. Đừng
 Hãy thêm vào trang chủ: title, meta description, canonical, Open Graph, Twitter card, favicon; tạo robots.txt và sitemap.xml cho các trang hiện có. Domain chính là (điền domain của bạn). Nội dung mô tả viết bằng tiếng Việt, tiêu đề dưới 60 ký tự, mô tả 120-160 ký tự. Ảnh chia sẻ dùng đường dẫn tuyệt đối https. Liệt kê những file đã sửa. Nhắc tôi cần tạo ảnh og-image 1200x630 vì bạn không tự bịa ảnh.
 ```
 
-**Prompt 4: analytics.**
-
-```text
-Hãy hướng dẫn và thêm đoạn mã bật (chọn một: Vercel Web Analytics / Cloudflare Web Analytics) vào dự án theo tài liệu chính thức. Không thêm Google Analytics hay pixel quảng cáo. Sau đó soạn trang quyền riêng tư ngắn bằng tiếng Việt nói rõ: web thu thập dữ liệu gì, dùng để làm gì, liên hệ ở đâu để xóa dữ liệu. Ghi chú rõ phần nào tôi cần tự kiểm tra với quy định pháp lý.
-```
-
-**Prompt 5: thanh toán (chỉ để tránh sai lầm).**
-
-```text
-Tôi muốn nhận tiền cho sản phẩm này. KHÔNG viết code xử lý thẻ và không yêu cầu bất kỳ khóa thanh toán nào. Chỉ giúp tôi: thêm một nút "Thanh toán" dẫn tới link thanh toán có sẵn mà tôi sẽ tự tạo ở nhà cung cấp, và viết trang cảm ơn. Liệt kê những việc tôi phải tự làm ở dashboard của nhà cung cấp.
-```
-
-**Prompt 6: backup.**
-
-```text
-Hãy viết file BACKUP.md hướng dẫn tôi sao lưu dữ liệu dự án này: xuất CSV ở Table Editor và lệnh supabase db dump --linked (kèm --data-only). Thêm backup-*.sql và thư mục backups/ vào .gitignore. Soạn danh sách tên bảng cần sao lưu từ code. KHÔNG tự chạy lệnh dump và không yêu cầu chuỗi kết nối cơ sở dữ liệu của tôi.
-```
-
-**Prompt 7: Lighthouse.**
-
-```text
-Đây là danh sách cảnh báo Lighthouse của web tôi (dán phần chữ của báo cáo, KHÔNG dán đường link có token). Hãy sắp xếp theo mức tác động, rồi sửa các lỗi dễ và an toàn: thêm alt cho ảnh, aria-label cho nút biểu tượng, thêm kích thước width và height cho ảnh, nén hoặc đổi định dạng ảnh nếu có công cụ phù hợp, thêm thẻ meta thiếu. Với mỗi thay đổi, nêu lý do. Không xóa tính năng để tăng điểm.
-```
-
 **Prompt 8: rà soát go-live.**
 
 ```text
@@ -351,13 +232,13 @@ Việc bạn phải tự kiểm tra:
 - Tự nhìn bảng analytics, tự mở file backup, tự chạy Lighthouse để xem điểm thật.
 - Tự đọc điều khoản của nhà cung cấp analytics và thanh toán.
 
-Việc **không giao cho agent**:
-
+::: danger Việc không giao cho agent
 - Dán `secret key` của Turnstile, `service_role`, token, khóa thanh toán hay chuỗi kết nối database vào prompt.
 - Tạo tài khoản, đăng ký nhà cung cấp thanh toán, nhập thẻ, nâng cấp gói trả phí.
 - Tự code phần nhận số thẻ hoặc xử lý webhook tiền mà không có người có kinh nghiệm xem lại.
 - Dán dữ liệu thành viên thật hoặc file backup thật vào chat.
 - Tắt kiểm tra Turnstile hay RLS "cho tiện thử" rồi quên bật lại.
+:::
 
 ## Nếu bị lỗi
 
@@ -368,10 +249,6 @@ Việc **không giao cho agent**:
 | Form bình thường cũng bị chặn | Honeypot bị trình duyệt tự điền, hoặc ô ẩn dùng tên như `email` | Đặt tên ô lạ như `website`, thêm `autocomplete="off"`, không dùng tên trùng ô thật |
 | Zalo hoặc Facebook vẫn hiện hình cũ | Bản nhớ đệm của nền tảng chia sẻ | Bấm Scrape Again trên Facebook Debugger, đổi tên file ảnh rồi gửi lại |
 | Ảnh chia sẻ không hiện | `og:image` dùng đường dẫn tương đối, ảnh quá nặng hoặc cần đăng nhập mới xem được | Dùng địa chỉ đầy đủ `https://`, nén ảnh, kiểm tra ảnh mở được ở cửa sổ ẩn danh |
-| Số liệu analytics luôn bằng 0 | Chưa deploy lại sau khi thêm mã, bị trình chặn quảng cáo, hoặc đã hết hạn mức gói | Deploy lại, thử cửa sổ ẩn danh không có tiện ích, xem trang Usage |
-| `supabase db dump` báo lỗi kết nối hoặc cần Docker | Chưa `supabase link`, mật khẩu database sai, hoặc phiên bản CLI cũ | Chạy `supabase link`, cập nhật CLI, đọc thông báo lỗi và [tài liệu lệnh](https://supabase.com/docs/reference/cli/supabase-db-dump) |
-| Điểm Lighthouse mỗi lần đo một khác | Máy bận, mạng dao động, tiện ích mở rộng | Đo 3 lần ở cửa sổ ẩn danh, lấy giá trị giữa |
-| Sau khi sửa SEO, Google chưa cập nhật | Công cụ tìm kiếm cần thời gian thu thập lại | Chờ vài ngày đến vài tuần; không cần làm gì thêm cho web nhỏ |
 
 Xem thêm [Troubleshooting tổng hợp](08-troubleshooting.md) cho cách đọc log và Network tab.
 
@@ -424,10 +301,14 @@ Go-live 20 mục:
 
 ## Tiếp theo và tài liệu chính thức
 
-- Quay lại [Domain, bảo mật và vận hành](07-domain-security-production.md) nếu chưa làm xong DNS, secret, rollback.
-- Gặp lỗi lạ: [Troubleshooting tổng hợp](08-troubleshooting.md).
-- Áp dụng toàn bộ vào dự án thật: [Mini project](09-mini-project.md).
-- Cần prompt mẫu thêm: [Prompt library](prompt-library.md).
+**Tiếp theo:** bạn đã đi hết lộ trình. Gửi link cho người dùng thật, rồi quay lại xem [trang nâng cao](11-launch-polish-advanced.md) khi cần analytics, backup hay Lighthouse.
+
+Tra cứu:
+
+- Quay lại [Tên miền, bảo mật, production](07-domain-security-production.md) nếu chưa làm xong DNS, secret, rollback.
+- Gặp lỗi lạ: [Xử lý sự cố](08-troubleshooting.md).
+- Áp dụng toàn bộ vào dự án thật: [Dự án nhỏ](09-mini-project.md).
+- Cần prompt mẫu thêm: [Thư viện prompt](prompt-library.md).
 
 Tài liệu chính thức (kiểm chứng 10/2026, giao diện và gói có thể đổi):
 

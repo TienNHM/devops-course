@@ -1,5 +1,9 @@
 # Walkthrough tuần 13 – Configuration, Resources & Health
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải buổi 25 và 26: tách cấu hình bằng ConfigMap và Secret, hiểu khi nào Pod thấy giá trị mới, đặt requests, limits, ba loại probe, chẩn đoán OOMKilled và readiness fail, kèm hướng dẫn chấm.
 
 ## Cách dùng tài liệu này
@@ -45,7 +49,7 @@ printf 'club.name=HCMUTE DSC\nfeature.members=true\n' > source/app.properties
 kubectl create configmap app-config -n club --from-file=app.properties=source/app.properties
 ```
 
-Manifest `config-demo2` dùng `volumeMounts` với `mountPath: /etc/club/app.properties` và `subPath: app.properties` (đúng như lời giải trong lab). Kiểm tra:
+Manifest `config-demo2` dùng `volumeMounts` với `mountPath: /etc/club/app.properties` và `subPath: app.properties` (manifest đầy đủ ở Phụ lục bên dưới). Kiểm tra:
 
 ```bash
 kubectl exec -n club config-demo2 -- cat /etc/club/app.properties
@@ -135,6 +139,113 @@ Tình huống container chết không có log lỗi: `describe` mục `Last Stat
 - Trỏ liveness vào `/ready` "cho chắc": gây restart dây chuyền khi DB sập.
 - `kubectl top` báo `Metrics API not available` trên kind là bình thường, không phải lỗi bài làm.
 - Tưởng rằng `patch` thay thế được manifest: manifest trong Git mới là nguồn sự thật, `patch` chỉ để thử nghiệm.
+
+### Phụ lục – manifest lời giải L2 (chuyển từ bài lab)
+
+Các lời giải dưới đây trước đây nằm trong phần "Lời giải" của bài lab. Bài học viên mới chỉ còn gợi ý theo bậc, nên manifest đầy đủ để ở đây. Lưu ý: bài hiện tại làm thử thách A trong namespace `lab25` (tạo lại bằng `kubectl create namespace lab25` nếu đã xóa); thử thách B chạy Pod `secret-demo` trong namespace `club`. Đổi `namespace` trong manifest cho khớp.
+
+Buổi 25, thử thách A – Pod `config-demo2` mount một file bằng `subPath`:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-demo2
+  namespace: lab25
+spec:
+  containers:
+    - name: demo
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+      volumeMounts:
+        - name: props
+          mountPath: /etc/club/app.properties
+          subPath: app.properties
+          readOnly: true
+  volumes:
+    - name: props
+      configMap:
+        name: app-config
+```
+
+Mount thông thường thay cả thư mục đích, nên cần `subPath` để chỉ chèn một file. Đổi lại, kubelet không cập nhật file mount bằng `subPath`: sau khi `patch` ConfigMap, nội dung trong Pod giữ nguyên cho tới khi tạo lại Pod. Nếu cần tự cập nhật, mount cả thư mục vào một đường dẫn riêng (ví dụ `/etc/club/conf.d`) và cho ứng dụng đọc từ đó.
+
+Buổi 25, thử thách B – Pod `secret-demo` mount Secret với quyền `0400`:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-demo
+  namespace: club
+spec:
+  containers:
+    - name: demo
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 3600"]
+      volumeMounts:
+        - name: creds
+          mountPath: /etc/secrets
+          readOnly: true
+  volumes:
+    - name: creds
+      secret:
+        secretName: club-secrets
+        defaultMode: 0400
+```
+
+Secret mount được lưu trên tmpfs của node nên không ghi xuống đĩa. Container chạy bằng user khác root có thể không đọc được file `0400` thuộc root; khi đó đặt `securityContext.fsGroup` hoặc chạy cùng user. Dọn dẹp: `kubectl delete pod secret-demo -n club --ignore-not-found`.
+
+Buổi 25, phá lỗi nâng cao – Pod tham chiếu Secret không tồn tại: tạo Pod busybox có `env` với `secretKeyRef` tên `khong-ton-tai`; `kubectl describe pod` cho trạng thái `CreateContainerConfigError` và Events `secret "khong-ton-tai" not found`. Tạo Secret đúng tên thì Pod tự khởi động.
+
+Buổi 25, bài thêm rollout restart: sau khi `patch` `club-config` thêm `LOG_LEVEL=debug`, `printenv LOG_LEVEL` trong Pod cũ không in gì (exit code 1); sau `rollout restart` và `rollout status`, Pod mới in `debug`. Dọn bằng `kubectl patch configmap club-config -n club --type merge -p '{"data":{"LOG_LEVEL":null}}'` rồi `rollout restart` lần nữa.
+
+Buổi 26, thử thách A – phần `resources` của Deployment để Pod thành Guaranteed (lưu thành `source/backend-guaranteed.yaml`):
+
+```yaml
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+```
+
+Kiểm tra:
+
+```bash
+kubectl -n club get pods -l app=club-api -o jsonpath='{range .items[*]}{.status.qosClass}{"\n"}{end}'
+```
+
+Áp dụng bằng `kubectl apply -f source/backend-guaranteed.yaml`, xong thì khôi phục bằng `kubectl apply -f source/backend-deploy.yaml`. Guaranteed được bảo vệ cuối cùng khi Node thiếu tài nguyên, nhưng bạn đặt cọc đủ limit làm request nên scheduler khó xếp Pod hơn và Node dùng kém hiệu quả. Nếu chỉ đặt limits mà bỏ requests, Kubernetes tự lấy requests bằng limits, cũng cho ra Guaranteed.
+
+Buổi 26, thử thách B – lệnh đầy đủ:
+
+```bash
+kubectl -n club patch deploy club-api --type=json -p='[{"op":"replace","path":"/spec/template/spec/containers/0/livenessProbe/httpGet/path","value":"/ready"}]'
+kubectl -n club rollout status deploy/club-api
+kubectl -n club scale statefulset postgres --replicas=0
+kubectl -n club get pods -l app=club-api -w
+```
+
+Khi DB mất, `/ready` trả 503, liveness fail, kubelet restart container; container mới vẫn không thấy DB nên tiếp tục fail: RESTARTS tăng đều và có thể chuyển sang `CrashLoopBackOff` khi kubelet tăng dần thời gian chờ. Restart không sửa được DB, chỉ thêm tải và làm mất log, trạng thái. Khôi phục:
+
+```bash
+kubectl -n club scale statefulset postgres --replicas=1
+kubectl apply -f source/backend-deploy.yaml
+```
+
+Buổi 26, thử thách C – lệnh đầy đủ:
+
+```bash
+kubectl -n club patch deploy club-api --type=json -p='[{"op":"replace","path":"/spec/template/spec/containers/0/startupProbe/httpGet/port","value":3001},{"op":"replace","path":"/spec/template/spec/containers/0/startupProbe/failureThreshold","value":3}]'
+kubectl -n club describe pod -l app=club-api | grep -i "startup probe failed"
+```
+
+Sau 3 lần fail cách nhau 2 giây, kubelet giết container và restart (Events `Container api failed startup probe, will be restarted`). Pod mới của rollout không thành Ready nên rollout treo, Pod cũ vẫn phục vụ. Khôi phục bằng `kubectl apply -f source/backend-deploy.yaml`.
+
+Buổi 26, câu hỏi tình huống app khởi động 90 giây: dùng `startupProbe` với `failureThreshold x periodSeconds` lớn hơn 90 giây (ví dụ 30 x 5), còn liveness giữ chu kỳ ngắn vì nó chỉ bắt đầu sau khi startup thành công.
 
 ### Bài tập tuần
 

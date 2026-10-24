@@ -1,5 +1,9 @@
 # Walkthrough tuần 12 – kubectl và Services
 
+::: warning Dành cho mentor và học viên đã nộp bài
+Trang này là đáp án đối chiếu: mentor dùng để chấm, học viên chỉ mở sau khi đã nộp bài của mình.
+:::
+
 > **Tóm tắt:** Hướng dẫn giải buổi 23 (kubectl: context, namespace, apply, logs, exec, jsonpath) và buổi 24 (Service, DNS, Endpoints rỗng), kèm bài tập tuần và bảng chấm cho mentor.
 
 ## Cách dùng tài liệu này
@@ -155,7 +159,7 @@ Tình huống phụ: `kubectl get pods` khi context đặt namespace `default` b
 
 #### Đáp án câu tự kiểm tra của buổi 23
 
-Lab đã có đáp án 8 câu trong `details`. Mentor cần nghe được các ý chính: kubeconfig gồm cluster, user, context và current-context; kubectl chỉ xem namespace của context; `apply` khai báo còn `create` báo lỗi nếu trùng; `port-forward` không thay Service; `--previous` cho log lần chạy trước và `-l app=demo-web --prefix` cho nhiều Pod; ImagePullBackOff thì `get`, `describe` Events, kiểm tra tag, rồi credential; `scale` live bị manifest ghi đè; lệnh jsonpath với `range`, `metadata.name` và `status.podIP`.
+Lab có đáp án 5 câu trong `details` (4 câu thêm ở trang thử thách nâng cao, xem phụ lục cuối trang). Mentor cần nghe được các ý chính: kubeconfig gồm cluster, user, context và current-context; kubectl chỉ xem namespace của context; `apply` khai báo còn `create` báo lỗi nếu trùng; `port-forward` không thay Service; `--previous` cho log lần chạy trước và `-l app=demo-web --prefix` cho nhiều Pod; ImagePullBackOff thì `get`, `describe` Events, kiểm tra tag, rồi credential; `scale` live bị manifest ghi đè; lệnh jsonpath với `range`, `metadata.name` và `status.podIP`.
 
 ### Buổi 24 – Kubernetes Services
 
@@ -374,3 +378,68 @@ Gợi ý chấm nhanh:
 - Kiểm tra `kubectl diff` sạch: học viên có thể chạy lại trên máy của mình với repo đã nộp (mentor chạy `kubectl diff -f lab-23/source/notice-board.yaml` nếu có cluster).
 - Điểm L2 chỉ tính khi L1 từ 70: thử thách A cần ba lần chạy kèm mã thoát; thử thách B cần cả lần thất bại và thành công kèm `resolv.conf`; thử thách C cần bảng so sánh có lệnh thật.
 - Lưu ý khi chấm bài làm trong `source/`: nếu `exported.yaml` hay file lỗi nằm cạnh `notice-board.yaml`, thì `kubectl apply -f lab-23/source/` sẽ áp dụng cả chúng; đây là một lý do đề yêu cầu `broken/`.
+
+### Phụ lục: mã lời giải chuyển từ bài lab
+
+Phần này bổ sung các lời giải L2 từng nằm trong bài lab học viên (đã chuyển sang đây để bài học viên gọn hơn).
+
+#### Buổi 23 – script `inspect.sh` (thử thách 1)
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+NS="${1:?Usage: inspect.sh NAMESPACE}"
+
+echo "== Pods in $NS"
+kubectl get pods -n "$NS" -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName,IP:.status.podIP,RESTARTS:.status.containerStatuses[0].restartCount,IMAGE:.spec.containers[0].image
+
+echo "== Unique images"
+kubectl get pods -n "$NS" -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq -c
+
+echo "== Pods not Running"
+kubectl get pods -n "$NS" --field-selector=status.phase!=Running
+```
+
+Chạy lại demo-web (`kubectl apply -f source/demo-web.yaml`) trước khi thử script.
+
+#### Buổi 23 – lưu ý về `exported.yaml` (thử thách 2)
+
+`kubectl apply -f source/` áp dụng mọi file `.yaml` trong thư mục, kể cả `exported.yaml` (còn chứa `resourceVersion` nên dễ báo xung đột). Nếu học viên hay apply cả thư mục, hãy lưu bản xuất vào `evidence/exported.yaml` thay vì `source/`. Trong `exported.yaml`, bỏ `status`, `metadata.uid`, `resourceVersion`, `creationTimestamp`, `managedFields` và annotation sinh tự động; giữ lại `spec` làm manifest.
+
+#### Buổi 23 – câu hỏi tình huống thêm
+
+Bài lab chỉ còn 5 câu tự kiểm tra; 4 câu còn lại nằm ở trang [thử thách nâng cao](../../labs/week-12/session-23-challenge.md) với đáp án gợi ý. Ý chính cho câu ImagePullBackOff: `get pods` xác nhận trạng thái, `describe pod` đọc Events, kiểm tra tên và tag image trong spec, rồi `imagePullSecrets` nếu image private, rồi mạng và registry.
+
+#### Buổi 24 – manifest `backend-svc-lab.yaml` (thử thách 1)
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-lab
+  namespace: club
+spec:
+  type: ClusterIP
+  selector:
+    app: club-api
+  ports:
+    - port: 8080
+      targetPort: 3000
+```
+
+```bash
+kubectl apply -f source/backend-svc-lab.yaml
+kubectl get endpoints backend-lab
+```
+
+#### Buổi 24 – gọi chéo namespace (thử thách 2)
+
+```bash
+kubectl create namespace lab24
+kubectl run debug -n lab24 --rm -it --restart=Never --image=busybox:1.36 -- sh
+# trong shell:
+wget -qO- http://backend:3000/health          # lỗi: bad address
+wget -qO- http://backend.club:3000/health     # chạy được
+exit
+kubectl delete namespace lab24
+```

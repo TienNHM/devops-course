@@ -1,161 +1,112 @@
 # Buổi 27 – Storage & Ingress
 
-Tuần 14 · Giai đoạn 4 – Kubernetes Engineering · Slide: [Slide buổi 27](../../slides/07-operations/session-27.md)
+Tuần 14/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 27/32
+
+[Slide](../../slides/07-operations/session-27.md) · [Bài tập tuần](../../assignments/weekly/week-14.md) · [Hub tuần](README.md)
 
 > **Tóm tắt:** Dùng PV, PVC, StorageClass để PostgreSQL giữ dữ liệu khi Pod bị xóa, và dùng ingress-nginx trên kind để truy cập ứng dụng qua host club.localhost.
 
-## Mục tiêu học tập
+::: tip Buổi này bạn làm gì
+- **Bạn sẽ tạo ra:** Postgres trên kind giữ nguyên dữ liệu sau khi xóa Pod, và cả ứng dụng Club Management mở được bằng `http://club.localhost`.
+- **Thời gian thật:** đọc 15 phút, lab bắt buộc 60 phút, thử thách làm ở nhà.
+- **Cần chuẩn bị:**
+  - [ ] Cluster kind `club` đang chạy (context `kind-club`), đã học [Buổi 26 – Resource & Health](../week-13/session-26.md).
+  - [ ] Image `club-api:1.0.0`, `club-web:1.0.0` có trong Docker; repo giáo trình ở `~/devops-course`.
+  - [ ] Môi trường theo [Hướng dẫn cài đặt](../../resources/setup-guide.md); repo `devops-labs` theo [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md).
+- **Phải nộp:** `README.md` (7 câu của mẫu); `evidence/command-output.txt` (PVC, số đếm `members` trước và sau xóa Pod, Ingress, ba lệnh curl); `report.md` (giải thích Pending và 404); `source/postgres.yaml`, `source/ingress.yaml`.
+- **Đi nhanh:** Đọc > [Làm lab](#hands-on-lab) > [Gặp lỗi?](#gap-loi) > [Tự kiểm tra](#tu-kiem-tra) > [Nộp bài](#nop-bai). Kẹt? Nhảy tới [Gặp lỗi?](#gap-loi).
 
-- Giải thích được vòng đời PV, PVC, StorageClass và vì sao Pod bị xóa nhưng dữ liệu vẫn còn.
-- Chạy được PostgreSQL dạng StatefulSet có PVC trên cluster kind và chứng minh dữ liệu còn sau khi xóa Pod.
-- Phân biệt được reclaim policy Delete và Retain, dự đoán điều gì xảy ra khi xóa PVC.
-- Cài được ingress-nginx cho kind và định tuyến host club.localhost tới frontend và backend.
-- Chẩn đoán được lỗi Ingress (404, 502, không truy cập được) và PVC bị Pending bằng kubectl describe.
-
-## Điều kiện cần
-
-- Đã hoàn thành buổi 23-26: Pod, Deployment, Service, ConfigMap, Secret, resource và probe.
-- Có Docker Desktop (WSL2 integration bật), kind 0.23+, kubectl, làm việc trong filesystem WSL (ví dụ `~/devops-labs`).
-- Có thư mục `starter-project/` đã sao chép vào repo cá nhân; image `club-api:1.0.0` và `club-web:1.0.0` đã build.
-- Port 80 và 443 của máy chưa bị chương trình khác chiếm (kind sẽ map hai port này).
-
-Kiểm tra nhanh:
-
-```bash
-docker version --format '{{.Server.Version}}'
-kind version
-kubectl version --client
-docker image ls | grep -E 'club-(api|web)'
-```
-
-Kết quả mong đợi: Docker Server 27 trở lên, kind v0.23 trở lên, hai image có tag `1.0.0`. Nếu thiếu image, build lại:
-
-```bash
-cd ~/devops-labs/starter-project
-docker build -t club-api:1.0.0 ./backend
-docker build -t club-web:1.0.0 ./frontend
-```
+**Từ mới trong buổi** (xem [Thuật ngữ](../../resources/glossary.md)):
+- [PersistentVolumeClaim (PVC)](../../resources/glossary.md): yêu cầu dung lượng lưu trữ của một workload.
+- [PersistentVolume (PV)](../../resources/glossary.md): phần dung lượng lưu trữ thật trong cluster.
+- [StorageClass](../../resources/glossary.md): mô tả loại storage và cách tạo PV tự động.
+- [StatefulSet](../../resources/glossary.md): workload cho ứng dụng có trạng thái, như database.
+- [Ingress](../../resources/glossary.md): luật chuyển request HTTP theo host và path tới Service.
+- [Ingress controller](../../resources/glossary.md): Pod proxy thật đọc Ingress và thực thi luật.
+:::
 
 ## Vấn đề thực tế
 
-CLB chạy Club Management trên Kubernetes. Sau buổi 25, Postgres chạy như một Pod, nhưng khi một bạn lỡ chạy `kubectl delete pod` hoặc node khởi động lại, danh sách thành viên biến mất vì dữ liệu nằm trong filesystem tạm của container. Một cơ sở dữ liệu mà mất dữ liệu mỗi khi Pod chết thì không dùng được.
+Sau buổi 26, Postgres của CLB chạy trong một Pod. Nếu ai đó lỡ chạy `kubectl delete pod` hoặc node khởi động lại, danh sách thành viên biến mất vì dữ liệu nằm trong filesystem tạm của container. Database mà mất dữ liệu mỗi khi Pod chết thì không dùng được.
 
-Vấn đề thứ hai: Service kiểu ClusterIP chỉ truy cập được từ trong cluster. Để xem ứng dụng, bạn đang dùng `kubectl port-forward` cho từng Service, mỗi lần một cổng khác nhau. Người dùng thật không làm vậy; họ gõ một tên miền, và một cổng vào duy nhất quyết định request đi tới frontend hay API. Buổi này giải quyết cả hai: lưu trữ bền vững (PVC) và cổng vào HTTP (Ingress).
+Vấn đề thứ hai: Service `ClusterIP` chỉ truy cập được từ trong cluster, nên bạn đang `port-forward` từng Service với từng cổng khác nhau. Người dùng thật chỉ gõ một tên miền. Buổi này giải quyết cả hai: lưu trữ bền (PVC) và một cổng vào HTTP duy nhất (Ingress).
 
-## Khái niệm cốt lõi
+## Khái niệm cốt lõi {#khai-niem}
 
-### Vì sao cần storage riêng
+**PV, PVC, StorageClass.** PVC là yêu cầu "tôi cần 1Gi", PV là phần dung lượng thật đáp ứng yêu cầu, StorageClass là bộ máy tự tạo PV khi có PVC. Developer chỉ tạo PVC. Ví von: PVC là phiếu đặt chỗ, PV là chỗ ngồi thật, StorageClass là nhà hàng tự xếp chỗ.
 
-Filesystem của container gắn với vòng đời container. Container bị thay thế thì lớp ghi (writable layer) bị bỏ. Kubernetes tách "chỗ chứa dữ liệu" khỏi Pod bằng ba đối tượng.
+**Reclaim policy và binding mode.** Với `Delete`, xóa PVC thì PV và dữ liệu mất theo; với `Retain`, PV còn lại (trạng thái `Released`) để admin xử lý. Trên kind, StorageClass `standard` dùng `Delete` và `WaitForFirstConsumer`: PV chỉ được tạo khi có Pod dùng PVC, nên PVC `Pending` lúc mới tạo là bình thường. Ví von: `Delete` như thuê tủ gửi đồ rồi trả tủ thì tủ bị dọn sạch; `Retain` như giữ lại tủ và đồ bên trong.
 
-| Đối tượng | Ý nghĩa | Ai tạo | Ví dụ |
-| --- | --- | --- | --- |
-| PersistentVolume (PV) | Một phần dung lượng lưu trữ thật trong cluster | Admin hoặc provisioner tự động | Thư mục trên node kind |
-| PersistentVolumeClaim (PVC) | Yêu cầu dung lượng và kiểu truy cập của một workload | Developer | `postgres-pvc`, 1Gi |
-| StorageClass | Mô tả "loại" storage và cách tạo PV tự động | Admin | `standard` trên kind |
+**StatefulSet.** Dành cho ứng dụng có trạng thái như database: Pod tên ổn định (`postgres-0`) và mount lại đúng PVC cũ khi được tạo lại. Xóa Pod hoặc StatefulSet không xóa PVC; chỉ xóa PVC mới (có thể) làm mất dữ liệu.
 
-Chuỗi hoạt động: Pod tham chiếu PVC, PVC được gắn (bind) với một PV, PV trỏ tới storage thật. Với dynamic provisioning, bạn chỉ tạo PVC; StorageClass tự tạo PV phù hợp.
-
-### Access mode, reclaim policy, binding mode
-
-| Thuộc tính | Giá trị | Ý nghĩa |
-| --- | --- | --- |
-| accessModes | ReadWriteOnce (RWO) | Một node đọc/ghi tại một thời điểm; phù hợp database |
-| accessModes | ReadOnlyMany, ReadWriteMany | Cần storage hỗ trợ; kind mặc định không có RWX |
-| reclaimPolicy | Delete | Xóa PVC thì PV và dữ liệu bị xóa theo |
-| reclaimPolicy | Retain | Xóa PVC thì PV còn, ở trạng thái Released, dữ liệu giữ lại để admin xử lý |
-| volumeBindingMode | Immediate | Tạo PV ngay khi có PVC |
-| volumeBindingMode | WaitForFirstConsumer | Chờ tới khi có Pod dùng PVC mới tạo PV, để chọn đúng node |
-
-Trên kind, StorageClass mặc định tên `standard` (local-path provisioner), reclaimPolicy `Delete`, binding mode `WaitForFirstConsumer`. Hệ quả quan trọng: PVC vừa tạo ở trạng thái `Pending` là bình thường cho tới khi có Pod dùng nó.
-
-### StatefulSet và PVC
-
-Deployment dùng cho workload không trạng thái. Database cần danh tính ổn định và storage riêng, nên dùng StatefulSet. Trong lab này, `starter-project/k8s/postgres.yaml` tạo PVC `postgres-pvc` riêng rồi để StatefulSet mount vào. Với nhiều replica, bạn sẽ dùng `volumeClaimTemplates` để mỗi Pod có PVC riêng; với một replica, cách PVC tường minh giúp bạn thấy rõ từng đối tượng. Lưu ý: xóa StatefulSet hoặc Pod không xóa PVC; chỉ xóa PVC mới (có thể) làm mất dữ liệu.
-
-### Ingress và Ingress controller
-
-| Thành phần | Vai trò |
-| --- | --- |
-| Ingress (đối tượng API) | Khai báo luật: host nào, path nào, chuyển tới Service nào |
-| Ingress controller (ví dụ ingress-nginx) | Pod chạy proxy thật, đọc các Ingress và áp dụng luật |
-| IngressClass | Chọn controller nào xử lý Ingress (`ingressClassName: nginx`) |
-
-Chỉ tạo Ingress mà không cài controller thì không có gì xảy ra: Ingress chỉ là khai báo. Ingress hoạt động ở tầng HTTP (host, path), khác với Service LoadBalancer hoạt động ở tầng TCP/UDP. Trên kind không có cloud load balancer, nên ta map port 80 và 443 của container node ra máy host bằng `extraPortMappings`, và gắn nhãn `ingress-ready=true` để controller được xếp lịch lên đúng node đó.
-
-### Path matching
-
-| pathType | Hành vi |
-| --- | --- |
-| Prefix | Khớp theo tiền tố từng đoạn path: `/api` khớp `/api` và `/api/members` |
-| Exact | Chỉ khớp đúng path |
-| ImplementationSpecific | Tùy controller |
-
-Nhiều rule cùng khớp thì rule có path dài hơn được ưu tiên, nên `/api` thắng `/`.
-
-## Kiến trúc và cách hoạt động
+**Ingress và Ingress controller.** Ingress chỉ là luật ("host nào, path nào, tới Service nào"); controller (ở đây là ingress-nginx) là Pod proxy thật đọc luật và thực thi. Chỉ tạo Ingress mà không cài controller thì không có gì xảy ra. Path dài hơn thắng: `/api` thắng `/`. Ví von: Ingress là bảng chỉ đường, controller là bảo vệ đọc bảng rồi dẫn khách.
 
 ```mermaid
 flowchart LR
-    B["Trình duyệt<br/>club.localhost"] --> H["Host port 80"]
-    H --> N["Node kind<br/>ingress-nginx"]
+    B["Trình duyệt<br/>club.localhost"] --> N["Node kind<br/>ingress-nginx :80"]
     N -->|"/api"| S1["Service backend:3000"]
     N -->|"/"| S2["Service club-web:80"]
     S1 --> P1["Pods club-api"]
-    S2 --> P2["Pod club-web"]
     P1 --> S3["Service postgres:5432"]
     S3 --> PG["Pod postgres-0"]
     PG --> PVC["PVC postgres-pvc"]
     PVC --> PV["PV tự tạo"]
 ```
 
-Từng bước của một request `GET http://club.localhost/api/members`:
+::: details Tìm hiểu thêm (đọc sau)
+Kind không có cloud load balancer, nên `kind-config.yaml` map port 80 và 443 của node ra máy (`extraPortMappings`) và gắn nhãn `ingress-ready=true` để controller được xếp lịch vào đúng node đó. Port mapping chỉ đặt được lúc tạo cluster.
 
-1. Trình duyệt phân giải `club.localhost` về 127.0.0.1 (tên miền `.localhost` luôn trỏ về máy local).
-2. Request tới port 80 của máy; Docker map vào port 80 của container node kind (do `extraPortMappings`).
-3. ingress-nginx nhận request, tìm Ingress có host `club.localhost` và path `/api`, chuyển tới Service `backend` port 3000.
-4. Service chọn một trong hai Pod `club-api`; Pod này truy vấn Service `postgres`.
-5. Pod `postgres-0` đọc dữ liệu từ `/var/lib/postgresql/data`, thực chất là PV gắn qua PVC `postgres-pvc`.
+Database dùng access mode ReadWriteOnce (một node đọc/ghi tại một thời điểm); `pathType: Prefix` khớp theo tiền tố từng đoạn nên `/api` khớp cả `/api/members`. Bảng access mode và pathType, sơ đồ tuần tự vòng đời PVC và năm bước đi của một request nằm ở [Buổi 27 – Thử thách nâng cao](session-27-challenge.md).
+:::
 
-```mermaid
-sequenceDiagram
-    participant U as Người dùng
-    participant D as Dev
-    participant K as Kubernetes
-    participant S as StorageClass standard
-    D->>K: apply PVC
-    K-->>D: PVC Pending
-    D->>K: apply StatefulSet
-    K->>S: Pod được xếp lịch, yêu cầu volume
-    S-->>K: Tạo PV và bind
-    K-->>D: PVC Bound, Pod Running
-    U->>K: Xóa Pod
-    K->>K: Tạo lại Pod, mount lại PVC
-```
+## Hands-on lab (60 phút, bắt buộc) {#hands-on-lab}
 
-## Demo của mentor
+Trên lớp, mentor demo trước; tự học thì làm thẳng phần này. Mọi lệnh chạy trong WSL, trong thư mục `~/devops-course/starter-project`, nên đường dẫn `k8s/...` và `database/...` tính từ đó.
 
-Mục đích: cho cả lớp thấy dữ liệu sống sót qua việc xóa Pod, và Ingress là "bảng chỉ đường". Dùng cluster đã tạo sẵn (hoặc tạo ở phần Chuẩn bị của lab). Thời lượng khoảng 15 phút trong 30 phút lý thuyết.
-
-1. Quan sát StorageClass:
+### Chuẩn bị (5 phút)
 
 ```bash
-kubectl get storageclass
+mkdir -p ~/devops-labs/lab-27/{source,evidence,screenshots}
+export EV=~/devops-labs/lab-27/evidence/command-output.txt
+cd ~/devops-course/starter-project
+kubectl config current-context
+kubectl get nodes
+docker ps --filter name=club-control-plane --format '{{.Ports}}'
+docker image ls | grep -E 'club-(api|web)'
 ```
 
-Kết quả mong đợi (rút gọn):
+Kết quả mong đợi: context `kind-club`, node `club-control-plane` ở trạng thái `Ready`, cột port có `0.0.0.0:80->80/tcp`, và hai image có tag `1.0.0`. Lệnh quan trọng thì thêm `| tee -a "$EV"` để lưu vào bằng chứng (biến `EV` mất khi đóng terminal, khai báo lại là được).
 
-```text
-NAME                 PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE
-standard (default)   rancher.io/local-path   Delete          WaitForFirstConsumer
-```
+Thiếu image thì build lại: `docker build -t club-api:1.0.0 ./backend` và `docker build -t club-web:1.0.0 ./frontend`. Thiếu port mapping thì xem hộp dưới đây.
 
-Hỏi lớp: "Vì sao binding mode là WaitForFirstConsumer? Nếu cluster có 3 node thì điều gì có thể sai nếu PV tạo trước khi biết Pod chạy ở node nào?"
-
-2. Tạo riêng PVC và quan sát trạng thái Pending:
+::: danger Chỉ làm khi cluster thiếu dòng 80->80
+`kind delete cluster --name club` xóa toàn bộ workload trong cluster `club`. Chỉ chạy khi `docker ps` ở trên không có `0.0.0.0:80->80/tcp`, vì port mapping không sửa được sau khi tạo:
 
 ```bash
-kubectl apply -f starter-project/k8s/namespace.yaml
+kind delete cluster --name club
+kind create cluster --name club --config k8s/kind-config.yaml
+```
+:::
+
+### Phần 1. Làm sạch namespace, nạp image, thấy PVC Pending (8 phút)
+
+Các buổi trước đã dựng sẵn Postgres trong namespace `club`. Để bắt đầu lại sạch (và thấy được PVC `Pending`), xóa namespace này.
+
+::: danger Xóa namespace club
+Lệnh dưới xóa mọi thứ trong namespace `club` (Pod, PVC, Secret). Chỉ chạy đúng tên `club`; không bao giờ chạy với `kube-system` hay `ingress-nginx`.
+:::
+
+```bash
+kubectl delete namespace club --ignore-not-found
+kubectl wait --for=delete namespace/club --timeout=120s
+kubectl apply -f k8s/namespace.yaml
+kind load docker-image club-api:1.0.0 --name club
+kind load docker-image club-web:1.0.0 --name club
+```
+
+Vì sao: kind không tự thấy image trong Docker local, nên phải nạp vào node. Bây giờ tạo một PVC thử và đọc trạng thái:
+
+```bash
 kubectl apply -n club -f - <<'EOF'
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -167,199 +118,84 @@ spec:
     requests:
       storage: 100Mi
 EOF
-kubectl get pvc -n club demo-pvc
+kubectl get pvc -n club demo-pvc | tee -a "$EV"
+kubectl describe pvc demo-pvc -n club | tail -4 | tee -a "$EV"
+kubectl delete pvc demo-pvc -n club
 ```
 
-Kết quả mong đợi: `STATUS` là `Pending`. Chạy `kubectl describe pvc demo-pvc -n club`, mục Events nói "waiting for first consumer". Hỏi lớp: "Pending ở đây là lỗi không?" (Không.)
+Kết quả mong đợi: `STATUS` là `Pending`, và Events nói `waiting for first consumer`. Đây không phải lỗi: chưa có Pod dùng PVC nên kind chưa tạo PV.
 
-3. Tạo Pod dùng PVC, ghi file, xóa Pod, tạo lại:
+::: tip Kiểm tra: bạn đúng khi
+`demo-pvc` ở `Pending` kèm dòng "waiting for first consumer", và output đã nằm trong `command-output.txt`.
+:::
+
+### Phần 2. Postgres với PVC và init.sql (12 phút)
+
+1. Tạo ConfigMap, Secret (tạo bằng lệnh, không commit giá trị thật) và triển khai Postgres:
 
 ```bash
-kubectl apply -n club -f - <<'EOF'
-apiVersion: v1
-kind: Pod
-metadata:
-  name: demo-writer
-spec:
-  containers:
-    - name: busybox
-      image: busybox:1.36
-      command: ["sh", "-c", "date >> /data/log.txt; sleep 3600"]
-      volumeMounts:
-        - name: data
-          mountPath: /data
-  volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: demo-pvc
-EOF
-kubectl wait -n club --for=condition=Ready pod/demo-writer --timeout=60s
-kubectl get pvc,pv -n club
-kubectl delete pod demo-writer -n club
-```
-
-Kết quả mong đợi: PVC chuyển `Bound`, có một PV tên dạng `pvc-xxxxxxxx`. Sau đó apply lại Pod rồi `kubectl exec -n club demo-writer -- cat /data/log.txt` thấy hai dòng ngày giờ: dữ liệu còn nguyên. Hỏi lớp: "Nếu giờ xóa PVC thì file còn không?"
-
-4. Dọn dẹp demo: `kubectl delete pod demo-writer -n club --ignore-not-found` rồi `kubectl delete pvc demo-pvc -n club`. Cho lớp thấy `kubectl get pv` không còn PV tương ứng (reclaimPolicy Delete).
-
-5. Ingress: giải thích file `starter-project/k8s/ingress.yaml` từng dòng (`ingressClassName`, `host`, hai `path`). Hỏi lớp: "Nếu đổi thứ tự hai path, `/api/members` đi đâu?" (Vẫn tới backend vì path dài hơn thắng.)
-
-## Hands-on lab
-
-Thời gian dự kiến: 60 phút. Mục tiêu: chạy toàn bộ Club Management trên kind, Postgres có PVC, truy cập qua `http://club.localhost`.
-
-### Chuẩn bị
-
-Làm việc trong WSL:
-
-```bash
-cd ~/devops-labs
-mkdir -p lab-27/source lab-27/evidence lab-27/screenshots
-cp -r ~/devops-labs/starter-project lab-27/source/ 2>/dev/null || true
-cd lab-27/source/starter-project
-```
-
-Nếu bạn dùng thư mục starter-project ở nơi khác, hãy `cd` vào đó. Từ đây các đường dẫn `k8s/...` tính từ thư mục `starter-project`.
-
-Xóa cluster cũ (nếu có) để dùng cấu hình có port mapping:
-
-```bash
-kind get clusters
-kind delete cluster --name club
-```
-
-Lệnh này xóa toàn bộ workload trong cluster `club` cũ; nếu chưa có cluster thì kind chỉ báo không tìm thấy, bỏ qua.
-
-Ghi toàn bộ lệnh và kết quả vào file bằng cách chạy `script` hoặc sao chép tay vào `../../evidence/command-output.txt`.
-
-### Phần 1. Tạo cluster kind có port mapping
-
-1. Xem cấu hình cluster:
-
-```bash
-cat k8s/kind-config.yaml
-```
-
-Hai điểm quan trọng: nhãn `ingress-ready=true` và `extraPortMappings` cho port 80, 443. Thiếu hai điểm này, ingress-nginx không nhận được traffic từ máy host.
-
-2. Tạo cluster:
-
-```bash
-kind create cluster --name club --config k8s/kind-config.yaml
-kubectl cluster-info --context kind-club
-```
-
-Kết quả mong đợi:
-
-```text
-Creating cluster "club" ...
- ✓ Ensuring node image
- ✓ Preparing nodes
-Set kubectl context to "kind-club"
-```
-
-Vì sao: cluster kind là một container Docker; port mapping chỉ có thể đặt lúc tạo cluster, không sửa sau được.
-
-3. Nạp image vào kind (kind không tự thấy image trong Docker local):
-
-```bash
-kind load docker-image club-api:1.0.0 --name club
-kind load docker-image club-web:1.0.0 --name club
-```
-
-Nếu lệnh báo không tìm thấy image, quay lại phần Điều kiện cần để build.
-
-### Phần 2. Postgres với PVC
-
-1. Tạo namespace, ConfigMap và Secret (Secret tạo bằng lệnh, không commit giá trị thật):
-
-```bash
-kubectl apply -f k8s/namespace.yaml
 kubectl apply -f k8s/configmap.yaml
 kubectl create secret generic club-secrets -n club --from-literal=db-password='lab-local-pass-27'
-```
-
-Kết quả mong đợi: `secret/club-secrets created`. Giá trị mật khẩu chỉ dùng cho lab local.
-
-2. Triển khai Postgres:
-
-```bash
 kubectl apply -f k8s/postgres.yaml
-kubectl get pvc -n club
-kubectl get pods -n club -w
+kubectl wait -n club --for=condition=Ready pod/postgres-0 --timeout=120s
+kubectl get pvc,pv -n club | tee -a "$EV"
 ```
 
-Kết quả mong đợi: ban đầu PVC `Pending`, vài giây sau `Bound`; Pod `postgres-0` chuyển `Running` và `READY 1/1`. Nhấn Ctrl+C để thoát chế độ `-w`.
+Kết quả mong đợi: `secret/club-secrets created`; `postgres-0` `Ready`; PVC `postgres-pvc` `Bound`; một PV có `CLAIM` là `club/postgres-pvc`, `RECLAIM POLICY` là `Delete`, StorageClass `standard`. Lệnh `wait` hết thời gian thì chạy `kubectl describe pod postgres-0 -n club` và xem [Gặp lỗi?](#gap-loi).
 
-Vì sao: PVC Pending cho tới khi Pod `postgres-0` được xếp lịch (WaitForFirstConsumer), sau đó local-path provisioner tạo PV.
-
-3. Xem PV và PVC liên kết với nhau:
-
-```bash
-kubectl get pv
-kubectl describe pvc postgres-pvc -n club
-```
-
-Kết quả mong đợi: một PV `Bound` với `CLAIM` là `club/postgres-pvc`, `RECLAIM POLICY` là `Delete`, StorageClass `standard`. Ghi lại tên PV, bạn sẽ cần ở L2.
-
-4. Tạo bảng và dữ liệu mẫu (Kubernetes không tự chạy `init.sql` như Compose):
+2. Kubernetes không tự chạy `init.sql` như Compose, bạn nạp tay rồi thêm một dòng của riêng bạn (email chứa MSSV hoặc username GitHub, để dễ nhận ra):
 
 ```bash
 kubectl exec -i -n club postgres-0 -- psql -U club -d clubdb < database/init.sql
-kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT id, name, email FROM members;"
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "INSERT INTO members (name, email) VALUES ('Ban', 'ban-mssv@example.com');"
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT id, name, email FROM members;" | tee -a "$EV"
 ```
 
-Kết quả mong đợi:
+Kết quả mong đợi: ba dòng gồm Alice, Bob và dòng của bạn.
 
 ```text
- id | name  |      email
-----+-------+-------------------
+ id | name  |       email
+----+-------+--------------------
   1 | Alice | alice@example.com
   2 | Bob   | bob@example.com
+  3 | Ban   | ban-mssv@example.com
 ```
 
-Nếu không thấy thư mục `database/`, tìm đúng đường dẫn file `init.sql` trong starter-project.
+::: tip Kiểm tra: bạn đúng khi
+`kubectl get pvc -n club` báo `Bound` và bảng `members` có đúng ba dòng, trong đó có email của bạn.
+:::
 
-5. Thêm một dòng "của riêng bạn" để dễ nhận ra dữ liệu:
-
-```bash
-kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "INSERT INTO members (name, email) VALUES ('Ban', 'ban@example.com');"
-```
-
-### Phần 3. Chứng minh dữ liệu còn sau khi xóa Pod
-
-1. Xóa Pod:
+### Phần 3. Chứng minh dữ liệu còn sau khi xóa Pod (8 phút)
 
 ```bash
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;" | tee -a "$EV"
 kubectl delete pod postgres-0 -n club
-kubectl get pods -n club -w
+kubectl wait -n club --for=condition=Ready pod/postgres-0 --timeout=120s
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;" | tee -a "$EV"
+kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT email FROM members WHERE name='Ban';" | tee -a "$EV"
 ```
 
-Kết quả mong đợi: StatefulSet tạo lại Pod cùng tên `postgres-0`, trở lại `Running`.
+Kết quả mong đợi: StatefulSet tạo lại Pod cùng tên `postgres-0`; `count` là 3 cả hai lần; dòng `ban-mssv@example.com` vẫn còn.
 
-2. Kiểm tra dữ liệu:
+Vì sao: Pod mới mount lại cùng PVC nên thấy cùng dữ liệu. Biến `PGDATA=/var/lib/postgresql/data/pgdata` (đặt sẵn trong `postgres.yaml`) tránh lỗi Postgres từ chối khởi tạo khi thư mục mount không rỗng.
 
-```bash
-kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;"
-```
+::: tip Kiểm tra: bạn đúng khi
+Hai lần `count(*)` bằng nhau và dòng email riêng của bạn còn sau khi Pod bị xóa.
+:::
 
-Kết quả mong đợi: `count` là 3, bao gồm dòng `Ban`.
-
-Vì sao: Pod mới mount lại cùng PVC, nên thấy cùng dữ liệu. Biến `PGDATA=/var/lib/postgresql/data/pgdata` (đặt trong `postgres.yaml`) tránh lỗi Postgres từ chối khởi tạo khi thư mục mount có thư mục `lost+found` hoặc không rỗng.
-
-### Phần 4. Triển khai backend và frontend
+### Phần 4. Triển khai backend và frontend (10 phút)
 
 ```bash
 kubectl apply -f k8s/backend.yaml
 kubectl apply -f k8s/frontend.yaml
 kubectl rollout status deployment/club-api -n club
 kubectl rollout status deployment/club-web -n club
-kubectl get pods -n club
+kubectl get pods -n club | tee -a "$EV"
 ```
 
-Kết quả mong đợi: hai Pod `club-api`, một Pod `club-web`, một Pod `postgres-0`, tất cả `1/1 Running`.
+Kết quả mong đợi: hai Pod `club-api`, một Pod `club-web`, một Pod `postgres-0`, tất cả `1/1 Running`. Bước `ErrImageNeverPull` hoặc `ImagePullBackOff` thì xem [Gặp lỗi?](#gap-loi).
 
-Kiểm tra backend trước khi có Ingress, để biết lỗi (nếu có) không thuộc về Ingress:
+Kiểm tra backend trước khi có Ingress, để biết lỗi (nếu có) không thuộc về Ingress. Dùng cổng 3001 để tránh xung đột cổng 3000:
 
 ```bash
 kubectl port-forward -n club svc/backend 3001:3000 &
@@ -369,282 +205,133 @@ curl -s http://localhost:3001/api/members
 kill %1
 ```
 
-Kết quả mong đợi: `{"status":"ready"}` và danh sách ba thành viên dạng JSON. Dùng port 3001 để tránh xung đột port 3000 trên máy.
+Kết quả mong đợi: `{"status":"ready"}` và danh sách ba thành viên dạng JSON.
 
-### Phần 5. Cài ingress-nginx và tạo Ingress
+::: tip Kiểm tra: bạn đúng khi
+Bốn Pod đều `1/1 Running` và `curl` tới backend qua port-forward trả JSON có dòng của bạn.
+:::
 
-1. Cài ingress-nginx bản manifest dành cho kind (do dự án kind duy trì, đã kèm toleration và nhãn node cần thiết):
+### Phần 5. Cài ingress-nginx và truy cập qua club.localhost (15 phút)
+
+1. Cài ingress-nginx bản dành cho kind (URL ghim tag `controller-v1.12.1` để cả lớp cùng một phiên bản) và chờ controller sẵn sàng:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/kind/deploy.yaml
-kubectl wait --namespace ingress-nginx \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/component=controller \
-  --timeout=120s
+kubectl wait --namespace ingress-nginx --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller --timeout=120s
 ```
 
-Kết quả mong đợi: `pod/ingress-nginx-controller-... condition met`. Lần đầu có thể mất 1-2 phút để kéo image.
+Kết quả mong đợi: `pod/ingress-nginx-controller-... condition met`. Lần đầu có thể mất 1-2 phút để kéo image. Dự án ingress-nginx đã thông báo ngừng bảo trì từ tháng 3/2026; bản ghim vẫn chạy tốt cho lab local, còn hệ thống thật nên xem Gateway API hoặc controller khác (xem [kind – Ingress](https://kind.sigs.k8s.io/docs/user/ingress/)).
 
-Vì sao: manifest này yêu cầu node có nhãn `ingress-ready=true`, và bạn đã đặt nhãn đó trong `kind-config.yaml`. URL ghim vào tag `controller-v1.12.1` để mọi học viên cài cùng một phiên bản. Lưu ý: dự án ingress-nginx đã thông báo ngừng bảo trì từ tháng 3/2026; bản đã ghim vẫn chạy tốt cho lab local, nhưng với hệ thống thật hãy xem xét Gateway API hoặc controller khác (xem trang kind - Ingress để biết hướng dẫn mới nhất).
-
-2. Áp dụng Ingress của dự án:
+2. Áp dụng Ingress của dự án và xem luật:
 
 ```bash
 cat k8s/ingress.yaml
 kubectl apply -f k8s/ingress.yaml
-kubectl get ingress -n club
+kubectl get ingress -n club | tee -a "$EV"
+kubectl describe ingress club -n club | tee -a "$EV"
 ```
 
-Kết quả mong đợi: Ingress `club`, HOSTS là `club.localhost`, CLASS là `nginx`.
+Kết quả mong đợi: Ingress `club`, HOSTS là `club.localhost`, CLASS là `nginx`; `describe` liệt kê hai path: `/api` tới `backend:3000` và `/` tới `club-web:80`.
 
-3. Truy cập qua Ingress. Dùng header Host để không phụ thuộc DNS của WSL:
+3. Gọi qua Ingress bằng header Host (không phụ thuộc DNS của WSL), rồi thử gọi thiếu Host:
 
 ```bash
-curl -s -H "Host: club.localhost" http://127.0.0.1/api/members
-curl -s -o /dev/null -w "%{http_code}\n" -H "Host: club.localhost" http://127.0.0.1/
+curl -s -H "Host: club.localhost" http://127.0.0.1/api/members | tee -a "$EV"
+curl -s -o /dev/null -w "%{http_code}\n" -H "Host: club.localhost" http://127.0.0.1/ | tee -a "$EV"
+curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1/api/members | tee -a "$EV"
+kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller --tail=5 | tee -a "$EV"
 ```
 
-Kết quả mong đợi: JSON thành viên và mã `200`. Trên Windows, mở trình duyệt vào `http://club.localhost` sẽ thấy giao diện frontend.
+Kết quả mong đợi: JSON thành viên (có dòng của bạn), mã `200`, rồi mã `404` ở lệnh thiếu Host; năm dòng log cuối thấy các request vừa gửi. Trên Windows, mở `http://club.localhost` trong trình duyệt sẽ thấy giao diện frontend; chụp ảnh vào `screenshots/`.
 
-Vì sao: Ingress chọn luật theo header Host; không có header đúng, controller trả 404.
+Vì sao: ingress-nginx chọn luật theo header Host; không có luật cho host `127.0.0.1` thì controller trả 404. Request `/api/members` khớp cả `/api` lẫn `/`, và path dài hơn thắng nên đi tới backend. Hãy ghi hai điều này vào `report.md`, cùng một câu giải thích vì sao PVC `Pending` ở Phần 1 không phải lỗi.
 
-4. Xem log controller để thấy request đi qua:
+::: tip Kiểm tra: bạn đúng khi
+Ba lệnh curl trả JSON, `200` và `404`; `describe ingress` có hai path; log controller có các request vừa gửi.
+:::
+
+### Checklist L1
+
+- [ ] Cluster `club` có `Ready`, port mapping 80 hoạt động.
+- [ ] Có output `Pending` của PVC (hoặc "waiting for first consumer") và `Bound` của `postgres-pvc` trong `command-output.txt`.
+- [ ] Bảng `members` có dòng của riêng bạn; hai lần `count(*)` trước và sau khi xóa `postgres-0` bằng nhau.
+- [ ] Bốn Pod `1/1 Running`, `kubectl get ingress -n club` có host `club.localhost`.
+- [ ] Ba lệnh curl (JSON, 200, 404) và 5 dòng log controller đã lưu.
+
+Tự kiểm tra một dòng (kỳ vọng `Bound` rồi `200`):
 
 ```bash
-kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller --tail=5
+kubectl get pvc postgres-pvc -n club -o jsonpath='{.status.phase}{"\n"}' && curl -s -o /dev/null -w "%{http_code}\n" -H "Host: club.localhost" http://127.0.0.1/api/members
 ```
 
-### L1 – Foundation: checklist hoàn thành
+## Gặp lỗi? {#gap-loi}
 
-- [ ] Cluster `club` tạo bằng `k8s/kind-config.yaml`, `kubectl get nodes` báo `Ready`.
-- [ ] PVC `postgres-pvc` ở trạng thái `Bound`, có chụp/ghi lại kết quả `kubectl get pvc,pv`.
-- [ ] Bảng `members` có dữ liệu, kể cả dòng do bạn thêm.
-- [ ] Sau khi xóa `postgres-0`, truy vấn vẫn thấy đủ dữ liệu.
-- [ ] `curl -H "Host: club.localhost" http://127.0.0.1/api/members` trả JSON.
-- [ ] Lưu lệnh và output vào `evidence/command-output.txt`.
-
-### L2 – Engineering: thử thách tự làm
-
-Thử thách 1. Chứng minh vòng đời PV/PVC. Không xem gợi ý trước.
-
-- Ghi tên PV hiện tại và reclaim policy.
-- Dự đoán rồi kiểm chứng: xóa StatefulSet `postgres` (không xóa PVC) thì dữ liệu còn không? Tạo lại StatefulSet, truy vấn lại.
-- Dự đoán rồi kiểm chứng: xóa PVC thì chuyện gì xảy ra với PV và dữ liệu?
-- Tiêu chí hoàn thành: bảng 3 dòng (hành động, dự đoán, kết quả thực tế) trong `report.md`, và giải thích vì sao khi xóa PVC mà Pod vẫn đang dùng, PVC ở trạng thái `Terminating`.
-
-<details>
-<summary>Gợi ý</summary>
-
-- `kubectl delete statefulset postgres -n club` rồi `kubectl apply -f k8s/postgres.yaml`: PVC không bị đụng tới.
-- `kubectl delete pvc postgres-pvc -n club` khi Pod còn chạy sẽ treo ở `Terminating` do finalizer `kubernetes.io/pvc-protection`; xóa Pod/StatefulSet trước.
-- Theo dõi PV bằng `kubectl get pv -w` ở terminal thứ hai.
-
-</details>
-
-<details>
-<summary>Lời giải</summary>
-
-```bash
-kubectl get pv
-kubectl delete statefulset postgres -n club
-kubectl get pvc -n club                 # vẫn Bound
-kubectl apply -f k8s/postgres.yaml
-kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;"   # còn dữ liệu
-
-kubectl delete statefulset postgres -n club
-kubectl delete pvc postgres-pvc -n club
-kubectl get pv                          # PV biến mất vì reclaimPolicy Delete
-kubectl apply -f k8s/postgres.yaml      # tạo lại PVC mới, database rỗng
-kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "\dt"   # không có bảng members
-```
-
-Kết luận: xóa PVC với reclaimPolicy Delete làm mất dữ liệu vĩnh viễn; phải chạy lại `init.sql`.
-
-</details>
-
-Thử thách 2. Chuyển sang Retain. Đặt PV hiện tại về `Retain` bằng `kubectl patch pv`, xóa StatefulSet và PVC, quan sát PV chuyển `Released`. Giải thích vì sao PV `Released` chưa thể bind lại cho PVC mới và nêu cách admin phục hồi (gợi ý: `claimRef`).
-
-- Tiêu chí hoàn thành: output `kubectl get pv` trước và sau, cùng lời giải thích 3-5 câu.
-
-<details>
-<summary>Gợi ý</summary>
-
-Lệnh patch có dạng `kubectl patch pv TEN_PV -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'`. Thay `TEN_PV` bằng tên PV thật từ `kubectl get pv`. PV Released còn `claimRef` trỏ tới PVC cũ, nên không bind cho PVC khác.
-
-</details>
-
-<details>
-<summary>Lời giải</summary>
-
-```bash
-PV=$(kubectl get pvc postgres-pvc -n club -o jsonpath='{.spec.volumeName}')
-kubectl patch pv "$PV" -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
-kubectl delete statefulset postgres -n club
-kubectl delete pvc postgres-pvc -n club
-kubectl get pv     # STATUS: Released
-```
-
-PV giữ dữ liệu nhưng còn `claimRef` cũ. Để dùng lại: xóa `spec.claimRef` (`kubectl patch pv "$PV" --type=json -p='[{"op":"remove","path":"/spec/claimRef"}]'`) để PV về `Available`, rồi tạo PVC khớp (storageClassName, dung lượng) hoặc đặt `volumeName` trong PVC. Với local-path, dữ liệu nằm trên node nên phải dọn thủ công khi không cần nữa.
-
-</details>
-
-Thử thách 3 (nếu còn thời gian). Thêm host thứ hai. Tạo Ingress mới (file `lab-27/source/ingress-api.yaml`, tức `../ingress-api.yaml` tính từ thư mục `starter-project`) để `api.club.localhost` chuyển toàn bộ tới Service `backend`, trong khi `club.localhost` vẫn hoạt động. Kiểm tra bằng curl với header Host.
-
-- Tiêu chí hoàn thành: hai lệnh curl khác host trả đúng nội dung, `kubectl describe ingress` hiển thị cả hai rule.
-
-<details>
-<summary>Lời giải</summary>
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: club-api-host
-  namespace: club
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: api.club.localhost
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: backend
-                port:
-                  number: 3000
-```
-
-```bash
-kubectl apply -f ../ingress-api.yaml
-curl -s -H "Host: api.club.localhost" http://127.0.0.1/api/members
-```
-
-</details>
-
-## Phá lỗi và debug
-
-### Tình huống A. PVC bị Pending mãi (liên quan Tình huống 09 – Pod Pending)
-
-Phá: tạo PVC tham chiếu StorageClass không tồn tại.
-
-```bash
-kubectl apply -n club -f - <<'EOF'
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: broken-pvc
-spec:
-  storageClassName: fast-ssd
-  accessModes: [ReadWriteOnce]
-  resources:
-    requests:
-      storage: 1Gi
-EOF
-kubectl get pvc -n club broken-pvc
-```
-
-Triệu chứng: `STATUS` là `Pending` không đổi; nếu Pod dùng PVC này, Pod cũng `Pending`.
-
-Điều tra theo bước:
-
-1. `kubectl describe pvc broken-pvc -n club`: đọc Events, thấy `storageclass.storage.k8s.io "fast-ssd" not found`.
-2. `kubectl get storageclass`: chỉ có `standard`.
-3. Phân biệt với Pending bình thường của WaitForFirstConsumer (Events nói "waiting for first consumer").
-
-Nguyên nhân gốc: tên StorageClass sai nên không có provisioner nào xử lý PVC. Cách sửa: xóa PVC, tạo lại với `standard` hoặc bỏ trường `storageClassName` để dùng mặc định. Phòng tránh: kiểm tra `kubectl get storageclass` trước khi viết PVC; PVC không đổi được `storageClassName` sau khi tạo.
-
-Dọn dẹp: `kubectl delete pvc broken-pvc -n club`. Xem thêm `examples/troubleshooting/scenario-09`.
-
-### Tình huống B. Ingress trả 404 hoặc 503
-
-Phá 1: gọi không có header Host đúng.
-
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1/api/members
-```
-
-Triệu chứng: mã `404` từ nginx vì không có rule cho host `127.0.0.1`.
-
-Phá 2: tạo bản lỗi từ file gốc bằng `sed 's/name: backend$/name: backendd/' k8s/ingress.yaml | kubectl apply -f -`, tức là sửa tên Service trong Ingress thành `backendd` rồi apply lại, gọi `curl -i -H "Host: club.localhost" http://127.0.0.1/api/members`.
-
-Triệu chứng: `503 Service Temporarily Unavailable` (không có endpoint hợp lệ).
-
-Điều tra:
-
-1. `kubectl describe ingress club -n club`: cột Backends hiển thị `backendd:3000 (<error: endpoints "backendd" not found>)`.
-2. `kubectl get svc,endpoints -n club`: đối chiếu tên Service và có endpoint hay không.
-3. `kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller --tail=20`.
-
-Nguyên nhân gốc: Ingress tham chiếu Service không tồn tại, hoặc Service không có Pod Ready. Phòng tránh: dùng `kubectl describe ingress` ngay sau khi apply; kiểm tra readiness của backend. Khôi phục bằng `kubectl apply -f k8s/ingress.yaml`.
-
-### Tình huống C. Cluster thiếu port mapping
-
-Nếu cluster tạo bằng `kind create cluster` mặc định (không có `--config`), `curl http://127.0.0.1/` báo `Connection refused` dù controller chạy tốt. Điều tra bằng `docker ps` và xem cột PORTS của container `club-control-plane`: không có `0.0.0.0:80->80/tcp`. Cách sửa: xóa cluster và tạo lại với `k8s/kind-config.yaml`.
-
-## Lỗi thường gặp
-
-| Triệu chứng | Nguyên nhân | Cách xử lý |
+| Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| PVC `Pending` ngay sau khi tạo | WaitForFirstConsumer, chưa có Pod dùng PVC | Bình thường; tạo Pod dùng PVC |
-| PVC `Pending` mãi dù có Pod | StorageClass sai tên hoặc không có provisioner | `kubectl describe pvc`, sửa `storageClassName` |
-| `postgres-0` CrashLoopBackOff, log báo thư mục data không rỗng | Thiếu `PGDATA` trỏ thư mục con | Dùng `PGDATA=/var/lib/postgresql/data/pgdata`, xóa PVC cũ hỏng và tạo lại |
-| Xóa PVC xong database rỗng | reclaimPolicy Delete | Sao lưu trước; dùng Retain cho dữ liệu quan trọng |
-| `curl` tới localhost:80 bị refused | Cluster tạo thiếu `extraPortMappings`, hoặc port 80 bị chiếm | Tạo lại cluster với `kind-config.yaml`; kiểm tra port 80 |
-| Ingress có nhưng trả 404 | Sai host/header, hoặc thiếu `ingressClassName: nginx` | Gọi đúng Host; kiểm tra `kubectl get ingressclass` |
+| PVC `Pending` ngay sau khi tạo | `WaitForFirstConsumer`, chưa có Pod dùng PVC | Bình thường; tạo Pod dùng PVC thì tự `Bound` |
+| PVC `Pending` mãi dù có Pod; Events có `storageclass ... not found` | `storageClassName` sai tên nên không provisioner nào xử lý | `kubectl describe pvc`, `kubectl get storageclass`; xóa PVC, tạo lại với `standard` hoặc bỏ trường này (không sửa tại chỗ được) |
+| `postgres-0` CrashLoopBackOff, log báo thư mục data không rỗng | Thiếu `PGDATA` trỏ thư mục con (khi bạn tự sửa YAML) | Dùng `PGDATA=/var/lib/postgresql/data/pgdata`, xóa PVC hỏng và tạo lại |
+| `exec` báo container chưa chạy hoặc không kết nối được | Gọi quá sớm khi Pod chưa `Ready` | `kubectl wait -n club --for=condition=Ready pod/postgres-0 --timeout=120s` |
+| `/api/members` trả 500, bảng không tồn tại | Chưa chạy `init.sql` trên Postgres mới | Chạy lại lệnh `psql < database/init.sql` |
+| Xóa PVC xong database rỗng | `reclaimPolicy` là `Delete` | Sao lưu trước; dùng `Retain` cho dữ liệu quan trọng |
+| `ErrImageNeverPull` hoặc `ImagePullBackOff` ở backend | Quên `kind load docker-image` vào đúng cluster | Nạp lại: `kind load docker-image club-api:1.0.0 --name club` |
+| `curl` tới `127.0.0.1` báo `Connection refused` | Cluster thiếu `extraPortMappings` (cột PORTS của `docker ps` không có `80->80`), hoặc port 80 bị chiếm | Tạo lại cluster với `k8s/kind-config.yaml` (hộp danger ở Chuẩn bị); tắt chương trình đang dùng port 80 |
 | Controller `Pending` | Node thiếu nhãn `ingress-ready=true` | Tạo lại cluster đúng cấu hình |
-| `ErrImageNeverPull` hoặc `ImagePullBackOff` ở backend | Quên `kind load docker-image` | Nạp lại image vào cluster `club` |
-| `/api/members` trả 500, bảng không tồn tại | Chưa chạy `init.sql` trên Postgres mới | Chạy lại lệnh `psql < init.sql` |
+| Ingress có nhưng trả 404 | Sai header Host, hoặc thiếu `ingressClassName: nginx` | Gọi đúng `-H "Host: club.localhost"`; `kubectl get ingressclass` |
+| Ingress trả 503 `Service Temporarily Unavailable` | Ingress trỏ tới Service không tồn tại hoặc Service không có Pod Ready | `kubectl describe ingress club -n club` (cột Backends báo lỗi endpoints), `kubectl get svc,endpoints -n club`; khôi phục bằng `kubectl apply -f k8s/ingress.yaml` |
 
-## Tự kiểm tra
+Cách tìm lỗi theo lớp, từ trong ra ngoài: PVC (`describe`), Pod, Service và endpoints, Ingress, cuối cùng là log của controller.
+
+## Tự kiểm tra {#tu-kiem-tra}
 
 1. PV, PVC và StorageClass khác nhau thế nào? Developer thường tạo đối tượng nào?
-2. Vì sao PVC trên kind ở trạng thái Pending trước khi có Pod, và đó có phải lỗi không?
-3. reclaimPolicy Delete và Retain khác nhau thế nào khi xóa PVC?
-4. Chỉ cài Ingress mà không có Ingress controller thì điều gì xảy ra?
-5. Vì sao kind cần `extraPortMappings` và nhãn `ingress-ready=true`?
-6. Tình huống: bạn xóa `postgres-0`, Pod tạo lại, dữ liệu còn. Hôm sau bạn xóa PVC rồi apply lại `postgres.yaml`, database rỗng. Giải thích cả hai kết quả.
-7. Tình huống: `curl http://127.0.0.1/api/members` trả 404 còn port-forward trực tiếp vào Service thì chạy. Bạn kiểm tra gì theo thứ tự?
+2. Vì sao PVC trên kind ở trạng thái `Pending` trước khi có Pod, và đó có phải lỗi không?
+3. Bạn xóa `postgres-0`, dữ liệu còn. Hôm sau bạn xóa PVC rồi apply lại `postgres.yaml`, database rỗng. Giải thích cả hai kết quả bằng reclaim policy.
+4. Chỉ cài Ingress mà không có Ingress controller thì điều gì xảy ra, và vì sao kind cần `extraPortMappings` cùng nhãn `ingress-ready=true`?
+5. `curl http://127.0.0.1/api/members` trả 404 còn port-forward trực tiếp vào Service thì chạy. Bạn kiểm tra gì theo thứ tự?
 
-<details>
-<summary>Đáp án</summary>
-
+::: details Đáp án gợi ý
 1. PV là dung lượng thật; PVC là yêu cầu của workload; StorageClass mô tả loại storage và cách tạo PV tự động. Developer tạo PVC.
-2. Binding mode WaitForFirstConsumer chờ Pod được xếp lịch để chọn node; không phải lỗi. Dùng `describe pvc` để thấy Events.
-3. Delete: xóa PV và dữ liệu cùng PVC. Retain: PV còn ở trạng thái Released, dữ liệu giữ lại, admin phải xử lý thủ công.
-4. Không có gì: Ingress chỉ là khai báo, cần controller (ví dụ ingress-nginx) đọc và thực thi.
-5. Cluster kind chạy trong container Docker; port mapping đưa port 80/443 của host vào node, nhãn giúp controller chạy đúng node có mapping.
-6. Xóa Pod: PVC và PV vẫn còn, Pod mới mount lại nên còn dữ liệu. Xóa PVC với policy Delete: PV và dữ liệu bị xóa, PVC mới cấp PV mới trống.
-7. Có gửi đúng header Host `club.localhost` không; `kubectl describe ingress`; `ingressClassName`; Service và endpoints có tồn tại không; log controller.
+2. `WaitForFirstConsumer` chờ Pod được xếp lịch để chọn node; không phải lỗi. `describe pvc` cho thấy Events "waiting for first consumer".
+3. Xóa Pod: PVC và PV vẫn còn, Pod mới mount lại nên còn dữ liệu. Xóa PVC với policy `Delete`: PV và dữ liệu bị xóa, PVC mới được cấp PV mới trống. Với `Retain`, PV còn ở `Released` và dữ liệu giữ lại để admin xử lý.
+4. Không có gì xảy ra: Ingress chỉ là khai báo, cần controller đọc và thực thi. Kind chạy trong container Docker nên cần port mapping để đưa port 80/443 của máy vào node; nhãn giúp controller chạy đúng node có mapping.
+5. Có gửi đúng header Host `club.localhost` không; `kubectl describe ingress`; `ingressClassName`; Service và endpoints có tồn tại không; log controller.
+:::
 
-</details>
+## Nộp bài {#nop-bai}
 
-## Nộp bài
-
-Nộp vào thư mục `lab-27/` trong repository cá nhân theo `templates/lab-template.md`.
+Nộp vào thư mục `lab-27/` trong repo `devops-labs` theo `templates/lab-template.md`. Bài tập tuần: [Bài tập tuần 14](../../assignments/weekly/week-14.md).
 
 - [ ] `README.md` trả lời đủ 7 câu theo template, ghi rõ đã làm L1 hay L2.
-- [ ] `source/` chứa manifest bạn dùng hoặc sửa (`postgres.yaml`, `ingress.yaml`, `ingress-api.yaml` nếu làm L2).
-- [ ] `evidence/command-output.txt` có output của `kubectl get pvc,pv`, `kubectl get ingress -n club`, truy vấn dữ liệu trước và sau khi xóa Pod, và hai lệnh curl.
-- [ ] `report.md` có bảng dự đoán/kết quả của thử thách 1, phân tích một lỗi bạn đã gặp (hoặc Tình huống A/B) kèm nguyên nhân gốc.
-- [ ] `screenshots/` có ảnh trình duyệt mở `http://club.localhost` (bổ sung, không thay cho evidence).
-- [ ] Không commit mật khẩu thật; Secret chỉ tạo bằng lệnh, không có file chứa giá trị thật trong repo.
+- [ ] `source/` chứa manifest bạn dùng hoặc sửa (`postgres.yaml`, `ingress.yaml`, thêm `ingress-api.yaml` nếu làm L2).
+- [ ] `evidence/command-output.txt` có `kubectl get pvc,pv`, `kubectl get ingress -n club`, số đếm trước và sau khi xóa Pod, và ba lệnh curl.
+- [ ] `report.md` giải thích PVC `Pending`, vì sao 404 khi thiếu Host, path nào thắng; kèm bảng dự đoán/kết quả nếu làm thử thách 1.
+- [ ] `screenshots/` có ảnh trình duyệt mở `http://club.localhost` (bổ sung, không thay evidence).
+- [ ] Không commit mật khẩu thật; Secret chỉ tạo bằng lệnh.
 
 ## Recap
 
-- PVC tách dữ liệu khỏi vòng đời Pod; Pod bị xóa không làm mất dữ liệu, xóa PVC thì có thể.
-- StorageClass cấp PV tự động; trên kind là `standard` với policy Delete và WaitForFirstConsumer.
-- Database trên Kubernetes dùng StatefulSet, RWO, `PGDATA` trỏ thư mục con, và init dữ liệu là việc của bạn.
-- Ingress chỉ là luật; cần Ingress controller để chạy, và kind cần port mapping cùng nhãn node.
-- Path dài hơn thắng: `/api` tới backend, `/` tới frontend.
-- Debug theo lớp: PVC (describe) rồi Pod, Service và endpoints, Ingress, cuối cùng log controller.
+- PVC tách dữ liệu khỏi vòng đời Pod: xóa Pod không mất dữ liệu, xóa PVC (policy `Delete`) thì mất.
+- Ingress chỉ là luật; cần controller, và kind cần port mapping cùng nhãn node. Path dài hơn thắng.
+- Debug theo lớp: PVC, Pod, Service và endpoints, Ingress, log controller.
 
-## Tài liệu tham khảo
+Buổi tiếp theo: [Buổi 28 – Kubernetes Operations](session-28.md).
 
+::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
+Ba thử thách đầy đủ, kèm tiêu chí hoàn thành và gợi ý từng bậc, nằm ở [Buổi 27 – Thử thách nâng cao](session-27-challenge.md). Hãy tự thử 15 phút trước khi mở gợi ý; lời giải ở [Walkthrough tuần 14](../../mentors/walkthroughs/week-14.md) (mở sau khi nộp bài).
+Gồm: vòng đời PV/PVC, chuyển PV sang `Retain`, và Ingress cho host thứ hai `api.club.localhost`.
+:::
+
+::: details Phá lỗi nâng cao
+Hai tình huống tự phá và tự chẩn đoán (PVC `Pending` mãi vì StorageClass sai, Ingress trả 503 vì sai tên Service) có từng bước ở [Buổi 27 – Thử thách nâng cao](session-27-challenge.md). Bảng Gặp lỗi? ở trên là bản tóm tắt.
+:::
+
+::: details Tài liệu tham khảo
 - [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 - [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
 - [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 - [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 - [kind – Ingress](https://kind.sigs.k8s.io/docs/user/ingress/)
 - [ingress-nginx documentation](https://kubernetes.github.io/ingress-nginx/)
+:::

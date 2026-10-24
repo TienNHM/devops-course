@@ -1,20 +1,40 @@
 # Bài tập tuần 15 – Capstone Planning & Implementation
 
-> **Tóm tắt:** Cùng nhóm biến đề bài Capstone thành kế hoạch kiểm chứng được (requirement, kiến trúc, backlog, ADR), rồi cài đặt CRUD API có test, chạy toàn stack bằng Compose với dữ liệu bền vững, và dựng CI trên Pull Request cùng publish image lên GHCR. Mỗi người nộp bằng chứng từ source, log, kết quả test và lịch sử PR của chính mình.
+> **Tóm tắt:** Cùng nhóm biến đề bài Capstone thành kế hoạch kiểm chứng được, cài đặt CRUD API có test, chạy toàn stack bằng Compose với dữ liệu bền vững, dựng CI trên Pull Request và publish image lên GHCR. Mỗi người nộp bằng chứng từ source, log, kết quả test và lịch sử PR của chính mình.
+
+**Bài tập = nộp lại bằng chứng của lab, không có việc mới.** Phần việc của nhóm (repo, Project board, `main`) đã làm trong hai buổi lab; bạn chỉ gom lại dấu vết cá nhân: Issue bạn là owner, PR bạn tạo, PR bạn review, lỗi bạn gặp.
+
+| Nhiệm vụ | Làm ở Phần nào của lab | Giờ ước lượng | Bằng chứng nộp |
+| --- | --- | --- | --- |
+| 1. Requirement và repo sạch | [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md), Phần 1-2 | 1 giờ | `requirements.md`, `git check-ignore -v .env`, `git ls-files` lọc `.env` rỗng, `git log` |
+| 2. Kiến trúc, phân vai, backlog | [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md), Phần 3-4 | 1 giờ | `README-architecture.md`, bảng đối chiếu sơ đồ, danh sách Issue dạng text |
+| 3. Ba ADR | [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md), Phần 5 | 1 giờ | ba file ADR, link ba PR, comment của reviewer |
+| 4. CRUD API, test và stack | [Buổi 30 – Implementation](../../labs/week-15/session-30.md), Phần 1-3 | 1,5 giờ | `test-results.txt`, bảy lệnh `curl` kèm mã, chuỗi `down` rồi `up` |
+| 5. CI, GHCR và quy trình PR | [Buổi 30 – Implementation](../../labs/week-15/session-30.md), Phần 4-5 | 1,5 giờ | `gh run list`, link run xanh, image `sha-` trên GHCR, bảng PR tạo và review |
 
 **Hạn nộp:** trước buổi đầu tiên của tuần 16.
 **Hình thức:** Pull Request vào repo cá nhân `devops-labs`, thư mục `lab-29/` và `lab-30/`.
-**Bài lab liên quan:** [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md), [Buổi 30 – Implementation](../../labs/week-15/session-30.md).
 **Đề bài và mốc:** [Đề bài Capstone](../capstone/README.md), [Milestones](../capstone/milestones.md) (bài tập này tương ứng mốc M1 và M2).
-**Mẫu nộp bài:** [templates/lab-template.md](../../templates/lab-template.md).
+**Mẫu nộp bài:** [Mẫu nộp bài lab](../../templates/lab-template.md).
+Mentor chấm theo barem trong [Chấm điểm tuần 15](../../mentors/grading/week-15.md); bảng điểm ngắn nằm bên dưới.
+
+## Bảng điểm ngắn
+
+| Tiêu chí | Điểm |
+| --- | --- |
+| Nhiệm vụ 1: Requirement và repo sạch | 15 |
+| Nhiệm vụ 2: Kiến trúc, phân vai, backlog | 15 |
+| Nhiệm vụ 3: Ba ADR | 12 |
+| Nhiệm vụ 4: CRUD, test và stack | 22 |
+| Nhiệm vụ 5: CI, GHCR và quy trình PR | 16 |
+| Câu hỏi kiểm tra kiến thức | 10 |
+| Cấu trúc nộp bài và an toàn (không có secret) | 10 |
+| **Tổng bắt buộc** | **100** |
+| Nhiệm vụ L2 (A, B, C: +4, +3, +3) | tối đa +10, tổng không vượt quá 110 |
 
 ## Bối cảnh
 
-Đến tuần 15, mỗi bạn đã dùng từng công cụ riêng lẻ: Docker, Compose, GitHub Actions, Kubernetes. Capstone đòi hỏi điều khác: nhóm 3 đến 4 người phải ghép chúng thành một hệ thống chạy được, và mỗi người phải giải thích được cả hệ thống ở buổi bảo vệ. Rủi ro lớn nhất không phải là thiếu kỹ năng mà là thiếu kế hoạch chung và tích hợp muộn: không ai biết "xong" nghĩa là gì, `.env` lỡ nằm trong Git, API đổi mà frontend không hay, CI chưa từng chạy nên không ai biết test đang đỏ.
-
-Bài tập tuần này mô phỏng hai giai đoạn đầu của một dự án thật. Giai đoạn lập kế hoạch (buổi 29) tạo ra repo sạch, requirement kiểm chứng được, sơ đồ kiến trúc, backlog có tiêu chí hoàn thành và ba ADR. Giai đoạn cài đặt (buổi 30) mở rộng `starter-project/` từ chỗ chỉ có `GET /api/members` thành CRUD đầy đủ có test, giao diện thêm và xóa, Compose giữ được dữ liệu, CI chạy trên mỗi PR và image được publish lên GHCR.
-
-Đây là bài làm nhóm với trách nhiệm cá nhân: repo, Project board và `main` là của cả nhóm, nhưng mỗi bạn nộp một bộ bằng chứng riêng thể hiện phần việc của mình (Issue bạn là owner, PR bạn tạo, PR bạn review, lỗi bạn gặp). Chỉ có kết quả của nhóm mà không có dấu vết đóng góp cá nhân thì không đạt tiêu chí. Mọi lệnh chạy trong filesystem WSL (ví dụ `~/club-management`, `~/devops-labs`), không dùng `/mnt/c`. Bài tập chỉ dùng kiến thức đã học đến hết buổi 30; nếu kẹt, đọc lại phần "Phá lỗi và debug" và "Lỗi thường gặp" của hai bài lab.
+Capstone đòi hỏi nhóm 3 đến 4 người ghép Docker, Compose, GitHub Actions và Kubernetes thành một hệ thống chạy được, và mỗi người phải giải thích được cả hệ thống ở buổi bảo vệ. Rủi ro lớn nhất là thiếu kế hoạch chung và tích hợp muộn. Đây là bài làm nhóm với trách nhiệm cá nhân: repo, Project board và `main` là của cả nhóm, nhưng mỗi bạn nộp một bộ bằng chứng riêng; chỉ có kết quả của nhóm mà không có dấu vết đóng góp cá nhân thì không đạt tiêu chí. Mọi lệnh chạy trong filesystem WSL (ví dụ `~/club-management`, `~/devops-labs`), không dùng `/mnt/c`. Nếu kẹt, đọc bảng Gặp lỗi? của hai bài lab.
 
 ## Nhiệm vụ L1 (bắt buộc)
 
@@ -83,7 +103,7 @@ Tiêu chí hoàn thành:
 
 ## Nhiệm vụ L2 (nâng cao)
 
-L2 là điểm thưởng, chỉ chấm khi L1 đã đạt từ 60 điểm trở lên. Không có gợi ý đi kèm; hãy tự dự đoán trước khi chạy lệnh và ghi dự đoán vào `report.md`.
+L2 là điểm thưởng, chỉ chấm khi L1 đã đạt từ 60 điểm trở lên. Nền tảng làm L2 nằm ở [Buổi 29 – Thử thách thêm](../../labs/week-15/session-29-challenge.md) và [Buổi 30 – Mã gợi ý và thử thách](../../labs/week-15/session-30-challenge.md). Không có gợi ý đi kèm; hãy tự dự đoán trước khi chạy lệnh và ghi dự đoán vào `report.md`.
 
 ### Thử thách A. Chặn merge khi CI đỏ
 
@@ -164,23 +184,6 @@ Bằng chứng theo từng nhiệm vụ:
 
 Quy tắc chung: evidence là output thật của lệnh (có dòng lệnh đi kèm), không chỉnh sửa số liệu; có thể dùng `tee -a evidence/command-output.txt` hoặc `script` để ghi lại phiên làm việc. Thông tin như email của bạn trong dữ liệu thử nghiệm là giá trị giả, không dùng email hay mật khẩu thật. Không đưa `.env`, token hay mật khẩu thật vào bất kỳ file nộp nào.
 
-## Barem chấm
-
-| Tiêu chí | Mô tả mức đạt / không đạt | Điểm |
-| --- | --- | --- |
-| Nhiệm vụ 1: Requirement và repo sạch | Đạt: F1 đến F8 và 3 dòng phi chức năng, mỗi dòng có cách kiểm chứng đo được; `check-ignore` và `ls-files` có output đúng. Không đạt: requirement mơ hồ, hoặc `.env` nằm trong repo. Trừ nửa điểm nếu thiếu owner hoặc thiếu dòng phi chức năng | 15 |
-| Nhiệm vụ 2: Kiến trúc, phân vai, backlog | Đạt: sơ đồ khớp hệ thống thật (có bảng đối chiếu), vòng review khép kín, từ 12 Issue có tiêu chí hoàn thành, owner, size, milestone. Không đạt: sơ đồ không phản ánh `compose.yaml` hoặc `k8s/`, Issue không có checklist, một người giữ gần hết việc | 15 |
-| Nhiệm vụ 3: Ba ADR | Đạt: ba ADR đủ bốn phần, so sánh thật, Hệ quả có cả mặt khó, mỗi ADR có review kèm comment. Không đạt: ADR chỉ có một lựa chọn, hoặc viết cho đủ số lượng | 12 |
-| Nhiệm vụ 4: CRUD, test và stack | Đạt: từ 5 test pass không cần DB, đủ bảy kết quả `curl`, dữ liệu còn sau `down` và `up`, 409 cho email trùng. Không đạt: thiếu `test-results.txt`, test cần DB thật, hoặc email trùng trả 500. Phần test 8 điểm, `curl` và dữ liệu bền vững 10 điểm, giao diện và 409 4 điểm | 22 |
-| Nhiệm vụ 5: CI, GHCR và quy trình PR | Đạt: CI chạy ba lớp trên PR, publish thành công, image có tag SHA trên GHCR, mỗi người có PR đã merge và review chéo, một lỗi tích hợp được chẩn đoán bằng bằng chứng. Không đạt: workflow chưa từng chạy, secret nằm trong file, hoặc không có dấu vết review | 16 |
-| Câu hỏi kiểm tra kiến thức | Mỗi câu 2 điểm: đúng ý chính và dùng đúng thuật ngữ; sai hoặc mơ hồ: 0 đến 1 điểm | 10 |
-| Cấu trúc nộp bài và an toàn | Đạt: đúng cấu trúc thư mục, README đủ 7 mục và đánh dấu L1/L2, source chạy lại được, không có secret, PR có review | 10 |
-| **Tổng bắt buộc** | | **100** |
-| Thử thách A (L2) | CI đỏ chặn merge có bằng chứng, phân tích đúng điểm mù của ba check | +4 |
-| Thử thách B (L2) | Tag semver hoạt động, so sánh digest, mô tả rollback chính xác | +3 |
-| Thử thách C (L2) | Bản mới chạy trên kind, `POST` thành công, so sánh Compose và Kubernetes có bằng chứng | +3 |
-| **Điểm thưởng tối đa** | L2 không làm tổng vượt quá 110 | **10** |
-
 ## Câu hỏi kiểm tra kiến thức
 
 Trả lời ngắn (2-4 câu mỗi câu) trong mục "Câu hỏi kiểm tra" của `lab-30/report.md`.
@@ -190,23 +193,6 @@ Trả lời ngắn (2-4 câu mỗi câu) trong mục "Câu hỏi kiểm tra" c�
 3. Email trùng nên trả 409 chứ không phải 500. Lỗi nào của PostgreSQL gây ra tình huống này và bước nào trong API biến nó thành 409?
 4. `docker compose down` và `docker compose down -v` khác nhau thế nào về dữ liệu, và tại sao thêm cột mới vào `database/init.sql` không làm database cũ có cột đó?
 5. Một PR có CI xanh nhưng sau khi merge, workflow publish đỏ. Hãy nêu ba điều bạn kiểm tra đầu tiên và vì sao trigger của hai workflow có thể cho kết quả khác nhau.
-
-## Lỗi hay bị trừ điểm
-
-- Nộp chỉ ảnh chụp màn hình, không có output lệnh dạng text trong `evidence/`.
-- Requirement mơ hồ, không có mã trạng thái, lệnh hoặc số liệu để kiểm chứng.
-- Chia Issue theo công cụ ("làm Docker", "làm Kubernetes") thay vì theo kết quả có thể demo, hoặc Issue không có checklist tiêu chí hoàn thành.
-- Sơ đồ kiến trúc dán nguyên mẫu, không đối chiếu với `compose.yaml` và `k8s/`, hoặc mũi tên không có nhãn dữ liệu.
-- ADR chỉ nêu một lựa chọn, bỏ trống mục Hệ quả, hoặc ADR được merge mà không có reviewer comment.
-- `.env`, mật khẩu hay token nằm trong repo hoặc trong file nộp; hoặc chỉ xóa file ở commit sau mà không nói gì về rotate secret.
-- Push thẳng lên `main`, PR không có reviewer khác tác giả, hoặc một người nhận hầu hết PR và Issue của nhóm.
-- `npm test` chỉ pass khi PostgreSQL đang chạy, hoặc test không phủ 400, 404, 409.
-- Email trùng trả 500, DELETE trả 200 có body thay vì 204, hoặc id không hợp lệ làm API sập.
-- Kiểm tra bằng `docker compose down -v` rồi kết luận "dữ liệu còn" (thực ra đã xóa volume), hoặc đọc dữ liệu ngay khi backend chưa `ready`.
-- Workflow để sai `context` (còn tiền tố `starter-project/`), thiếu `permissions` cho publish, hoặc chưa từng chạy mà vẫn báo "CI xong".
-- Dùng mỗi tag `latest` cho image và không giải thích truy vết hay rollback.
-- Làm trong `/mnt/c` thay vì filesystem WSL; file trong `source/` không khớp với thứ đã chạy.
-- PR không có người review, hoặc nộp sau hạn mà không báo trước.
 
 ## Quy trình nộp
 
