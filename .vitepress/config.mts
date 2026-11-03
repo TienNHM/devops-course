@@ -378,7 +378,6 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
           { text: 'Dự án mẫu', link: '/starter-project/' },
         ],
       },
-      { text: 'Mentor', link: '/mentors/' },
     ],
     sidebar: {
       // Khóa dài hơn được kiểm tra trước ('/curriculum/basic' trước '/curriculum/'): VitePress chọn theo độ sâu, bằng nhau thì theo thứ tự khai báo
