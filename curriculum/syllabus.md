@@ -6,6 +6,17 @@ Khóa dành cho sinh viên và người đi làm mới muốn đưa ứng dụng
 
 Triết lý: **Learn, Build, Break, Debug, Deploy, Explain.** Học trên máy của mình (local-first), mỗi buổi đều có phần thực hành.
 
+## Hai lộ trình
+
+Khóa chia thành hai lộ trình nối tiếp nhau. Bạn có thể học xong Cơ bản rồi dừng, hoặc học tiếp Nâng cao.
+
+| Lộ trình | Giai đoạn | Tuần | Buổi | Trang riêng |
+| --- | --- | --- | --- | --- |
+| Cơ bản | 1 Nền tảng, 2 Container, 3 CI/CD | 01–10 | 01–20 | [Lộ trình Cơ bản](basic.md) |
+| Nâng cao | 4 Kubernetes, 5 Capstone | 11–16 | 21–32 | [Lộ trình Nâng cao](advanced.md) |
+
+Ngoài ra có [Vibe Deploy](../vibe/index.md): một lộ trình riêng, độc lập, để đưa web lên mạng nhanh mà không cần học các phần trên.
+
 ## Bốn điều cần biết trước
 
 - Mỗi buổi 120 phút gồm 15 phút ôn tập, 30 phút kiến thức, 60 phút thực hành, 15 phút review. Khi tự học, bạn đi theo thứ tự đọc, làm lab, gặp lỗi, tự kiểm tra, nộp bài.

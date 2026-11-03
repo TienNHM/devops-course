@@ -4,7 +4,7 @@
 
 Bạn nhờ AI (Claude Code, Cursor, Lovable, Bolt...) viết xong một trang web hay một ứng dụng nhỏ. Nó chạy được trên máy bạn. Giờ bạn muốn bạn bè mở được bằng một đường link. Track này dạy đúng đoạn đường đó, và chỉ dạy vừa đủ để bạn không tự bắn vào chân: lộ khóa bí mật, mở database cho cả thế giới đọc, hoặc nhận hóa đơn bất ngờ.
 
-Track này **độc lập** với 16 tuần DevOps của khóa: không cần học Docker hay Kubernetes trước, không cần làm các tuần của khóa chính.
+Đây là **lộ trình riêng**, độc lập với [Lộ trình Cơ bản](../curriculum/basic.md) và [Lộ trình Nâng cao](../curriculum/advanced.md): không cần học Docker hay Kubernetes trước, không cần làm các tuần của khóa chính.
 
 ::: tip Bắt đầu ở đây
 **Đường tắt 1 buổi chiều (khoảng 3 đến 4 giờ): chỉ làm Chặng 1.** Bạn kết thúc với một link công khai mở được từ điện thoại. Bắt đầu bằng [00 Tư duy](00-mindset.md) (10 phút), rồi 01, rồi 02. Chặng 2 và 3 là tùy chọn, làm vào buổi khác khi bạn thật sự cần. Thuật ngữ lạ thì tra [Thuật ngữ](../resources/glossary.md).

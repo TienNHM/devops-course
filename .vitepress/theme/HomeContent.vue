@@ -4,32 +4,46 @@ import { withBase } from 'vitepress'
 import { data as phases } from './course.data'
 import { loadProgress, weekDone } from './progress'
 
-const sessionCount = phases.reduce((n, p) => n + p.weeks.reduce((k, w) => k + w.sessions.length, 0), 0)
-const weekCount = phases.reduce((n, p) => n + p.weeks.length, 0)
+const basicPhases = phases.filter((p) => p.track === 'basic')
+const advancedPhases = phases.filter((p) => p.track === 'advanced')
+const groups = [
+  {
+    id: 'basic',
+    title: 'Lộ trình Cơ bản',
+    meta: 'Tuần 1–10 · 20 buổi',
+    lead: 'Dành cho người mới. Học Linux, Git, Docker, Compose và GitHub Actions, rồi tự động hóa việc kiểm thử và đóng gói ứng dụng.',
+    link: '/curriculum/basic',
+    cta: 'Xem Lộ trình Cơ bản',
+    phases: basicPhases,
+  },
+  {
+    id: 'advanced',
+    title: 'Lộ trình Nâng cao',
+    meta: 'Tuần 11–16 · 12 buổi',
+    lead: 'Học sau Cơ bản. Chạy ứng dụng trên Kubernetes, rồi làm dự án cuối khóa theo nhóm.',
+    link: '/curriculum/advanced',
+    cta: 'Xem Lộ trình Nâng cao',
+    phases: advancedPhases,
+  },
+]
 
 onMounted(loadProgress)
 </script>
 
 <template>
   <div class="home-content">
-    <section class="section">
-      <h2>16 tuần, 5 giai đoạn</h2>
+    <section v-for="g in groups" :key="g.id" class="section">
+      <div class="group-head">
+        <h2>{{ g.title }}</h2>
+        <span class="meta">{{ g.meta }}</span>
+      </div>
       <p class="lead">
-        {{ weekCount }} tuần, {{ sessionCount }} buổi. Mỗi buổi: học khái niệm, tự dựng, cố tình làm hỏng rồi tự sửa. Bấm vào
-        một tuần để xem các buổi của tuần đó, hoặc xem
-        <a :href="withBase('/curriculum/syllabus')">lộ trình chi tiết</a>. Bắt đầu từ Giai đoạn 1.
+        {{ g.lead }} <a :href="withBase(g.link)">{{ g.cta }}</a>
       </p>
-      <div class="stages">
-        <div
-          v-for="p in phases"
-          :key="p.no"
-          class="stage"
-          :class="{ capstone: p.capstone, first: p.no === 1 }"
-        >
+      <div class="stages" :class="'n' + g.phases.length">
+        <div v-for="p in g.phases" :key="p.no" class="stage" :class="{ capstone: p.capstone }">
           <div class="stage-head">
             <span class="badge">Giai đoạn {{ p.no }}</span>
-            <span v-if="p.no === 1" class="tag start">Bắt đầu ở đây</span>
-            <span v-if="p.capstone" class="tag">Dự án nhóm</span>
             <h3>{{ p.name }}</h3>
             <p class="focus">{{ p.focus }}</p>
           </div>
@@ -46,6 +60,10 @@ onMounted(loadProgress)
         </div>
       </div>
     </section>
+    <p class="vibe-note">
+      Chỉ muốn đưa web lên mạng nhanh? Có lộ trình riêng, không cần học Docker hay Kubernetes:
+      <a :href="withBase('/vibe/')">Vibe Deploy</a>.
+    </p>
   </div>
 </template>
 
@@ -76,16 +94,16 @@ a:hover { text-decoration: underline; }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.stages.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 4px; }
+.group-head h2 { margin: 0; }
+.meta { font-size: 14px; font-weight: 600; color: var(--vp-c-text-2); }
+.vibe-note { margin: 40px 0 0; font-size: 15px; color: var(--vp-c-text-2); }
 .stage {
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
   padding: 20px 16px 12px;
   background: var(--vp-c-bg-soft);
-}
-.stage.first {
-  grid-column: 1 / -1;
-  border: 2px solid var(--vp-c-brand-1);
-  background: var(--vp-c-brand-soft);
 }
 .stage-head {
   padding: 0 4px 12px;
@@ -114,7 +132,6 @@ a:hover { text-decoration: underline; }
 .focus { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--vp-c-text-2); }
 .stage.capstone { border-style: dashed; background: transparent; }
 .stage ul { list-style: none; padding: 0; margin: 0; }
-.stage.first ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 12px; }
 .stage li a {
   display: flex;
   gap: 10px;
@@ -137,13 +154,12 @@ a:hover { text-decoration: underline; }
 .tick { flex: none; color: var(--vp-c-green-1); font-weight: 700; }
 
 @media (max-width: 960px) {
-  .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stages, .stages.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .home-content { padding: 0 16px 64px; }
   .section { margin-top: 40px; }
   .home-content h2 { font-size: 22px; }
-  .stages { grid-template-columns: 1fr; }
-  .stage.first ul { grid-template-columns: 1fr; }
+  .stages, .stages.n2 { grid-template-columns: 1fr; }
 }
 </style>

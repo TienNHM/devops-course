@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { withBase } from 'vitepress'
 import { data as phases } from './course.data'
 import {
+  TRACKS,
   TOTAL_SESSIONS,
   doneSessions,
   loadProgress,
@@ -10,10 +11,14 @@ import {
   pad,
   resetProgress,
   sessionLink,
+  trackDone,
+  trackTotal,
 } from './progress'
 
 const count = computed(() => doneSessions.value.length)
-const percent = computed(() => Math.round((count.value / TOTAL_SESSIONS) * 100))
+const basic = computed(() => ({ done: trackDone('basic'), total: trackTotal('basic') }))
+const advanced = computed(() => ({ done: trackDone('advanced'), total: trackTotal('advanced') }))
+const pct = (d: number, t: number) => Math.round((d / t) * 100)
 const next = computed(() => {
   const n = doneSessions.value.length >= 0 ? nextSession() : null
   if (!n) return null
@@ -34,26 +39,38 @@ function reset() {
 <template>
   <div class="home-start">
     <section class="block">
-      <h2>Bạn là ai?</h2>
-      <div class="who">
-        <a class="who-card" :href="withBase('/curriculum/getting-started')">
-          <strong>Mình muốn học DevOps bài bản</strong>
-          <span>Bắt đầu từ trang hướng dẫn: cần gì, học thế nào, làm gì đầu tiên.</span>
+      <h2>Chọn lộ trình của bạn</h2>
+      <div class="tracks">
+        <a class="track basic" :href="withBase(TRACKS.basic.link)">
+          <span class="tag start">Bắt đầu ở đây</span>
+          <strong>Cơ bản</strong>
+          <span class="range">Tuần 1–10 · 20 buổi</span>
+          <span class="desc">Linux, Git, Docker, Compose và GitHub Actions. Cuối lộ trình, ứng dụng của bạn tự được kiểm thử, đóng gói và đưa lên kho image.</span>
+          <span class="who">Dành cho: người mới, chưa cần biết DevOps.</span>
         </a>
-        <a class="who-card" :href="withBase('/vibe/')">
-          <strong>Mình chưa biết code, chỉ muốn có link web nhanh</strong>
-          <span>Track Vibe: khoảng 3 đến 4 giờ là có link mở được từ điện thoại.</span>
+        <a class="track" :href="withBase(TRACKS.advanced.link)">
+          <span class="tag">Sau khi xong Cơ bản</span>
+          <strong>Nâng cao</strong>
+          <span class="range">Tuần 11–16 · 12 buổi</span>
+          <span class="desc">Kubernetes trên máy bạn (kind), rồi dự án cuối khóa theo nhóm: dựng, cố tình làm hỏng, tự sửa và bảo vệ.</span>
+          <span class="who">Dành cho: người đã dùng được Docker, Compose và CI.</span>
         </a>
-        <a class="who-card" :href="withBase('/mentors/')">
-          <strong>Mình là mentor</strong>
-          <span>Kịch bản buổi dạy, barem chấm và đáp án tham khảo.</span>
+        <a class="track vibe" :href="withBase('/vibe/')">
+          <span class="tag">Lộ trình riêng</span>
+          <strong>Vibe Deploy</strong>
+          <span class="range">Khoảng 3–4 giờ</span>
+          <span class="desc">Đưa website lên mạng nhanh bằng hosting miễn phí và công cụ AI, không cần Docker hay Kubernetes.</span>
+          <span class="who">Dành cho: ai chỉ muốn có link web mở được từ điện thoại.</span>
         </a>
       </div>
-      <p class="who-note">Đã biết lập trình? Cứ học theo khóa và làm thêm mức L2 ở mỗi bài.</p>
+      <p class="who-note">
+        Đã biết lập trình? Cứ học theo lộ trình và làm thêm mức L2 ở mỗi bài. Là mentor?
+        <a :href="withBase('/mentors/')">Vào khu Mentor</a>.
+      </p>
     </section>
 
     <section class="block">
-      <h2>Học theo 3 bước</h2>
+      <h2>Bắt đầu Cơ bản trong 3 bước</h2>
       <ol class="steps">
         <li>
           <span class="n">1</span>
@@ -66,7 +83,7 @@ function reset() {
           <span class="n">2</span>
           <div>
             <strong>Làm Buổi 01</strong>
-            <p>Đọc 15 phút, làm lab 60 phút theo từng phần có kiểm tra.</p>
+            <p>Đọc 15 phút, làm lab theo từng phần, mỗi phần có bước tự kiểm tra.</p>
           </div>
         </li>
         <li>
@@ -82,14 +99,23 @@ function reset() {
 
     <section class="block progress">
       <div class="progress-text">
-        <strong>Bạn đã hoàn thành {{ count }}/{{ TOTAL_SESSIONS }} buổi</strong>
-        <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="TOTAL_SESSIONS" :aria-valuenow="count">
-          <span class="fill" :style="{ width: percent + '%' }" />
+        <strong>Tiến độ của bạn: {{ count }}/{{ TOTAL_SESSIONS }} buổi</strong>
+        <div class="row">
+          <span>Cơ bản {{ basic.done }}/{{ basic.total }}</span>
+          <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="basic.total" :aria-valuenow="basic.done">
+            <span class="fill" :style="{ width: pct(basic.done, basic.total) + '%' }" />
+          </div>
+        </div>
+        <div class="row">
+          <span>Nâng cao {{ advanced.done }}/{{ advanced.total }}</span>
+          <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="advanced.total" :aria-valuenow="advanced.done">
+            <span class="fill" :style="{ width: pct(advanced.done, advanced.total) + '%' }" />
+          </div>
         </div>
       </div>
       <div class="progress-actions">
         <a v-if="next && count > 0" class="button small" :href="withBase(next.link)">Học tiếp: {{ next.label }}</a>
-        <span v-else-if="!next" class="done-all">Bạn đã hoàn thành cả khóa.</span>
+        <span v-else-if="!next" class="done-all">Bạn đã hoàn thành cả hai lộ trình.</span>
         <button v-if="count > 0" type="button" class="reset" @click="reset">Xóa tiến độ</button>
       </div>
     </section>
@@ -111,22 +137,36 @@ function reset() {
 a { color: var(--vp-c-brand-1); font-weight: 500; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-.who { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.who-card {
+.tracks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.track {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
-  padding: 20px;
+  padding: 22px 20px;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
   font-weight: 400;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, transform 0.2s;
 }
-.who-card:hover { border-color: var(--vp-c-brand-1); text-decoration: none; }
-.who-card strong { font-size: 17px; line-height: 1.4; color: var(--vp-c-brand-1); }
-.who-card span { font-size: 14px; line-height: 1.6; color: var(--vp-c-text-2); }
+.track:hover { border-color: var(--vp-c-brand-1); text-decoration: none; transform: translateY(-2px); }
+.track.basic { border: 2px solid var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
+.track strong { font-size: 22px; line-height: 1.3; color: var(--vp-c-brand-1); }
+.range { font-size: 13px; font-weight: 600; color: var(--vp-c-text-2); }
+.desc { font-size: 15px; line-height: 1.6; color: var(--vp-c-text-1); }
+.who { margin-top: auto; padding-top: 6px; font-size: 13.5px; line-height: 1.5; color: var(--vp-c-text-2); }
+.tag {
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-default-soft);
+}
+.tag.start { color: var(--vp-button-brand-text); background: var(--vp-c-brand-1); }
 
 .who-note { margin: 16px 0 0; font-size: 14px; color: var(--vp-c-text-2); }
 .steps { list-style: none; margin: 0 0 20px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -166,8 +206,9 @@ a:hover { text-decoration: underline; }
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
 }
-.progress-text { flex: 1 1 260px; }
-.bar { margin-top: 8px; height: 6px; border-radius: 3px; background: var(--vp-c-default-soft); overflow: hidden; }
+.progress-text { flex: 1 1 280px; }
+.row { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 12px; margin-top: 8px; font-size: 13.5px; color: var(--vp-c-text-2); }
+.bar { height: 6px; border-radius: 3px; background: var(--vp-c-default-soft); overflow: hidden; }
 .fill { display: block; height: 100%; background: var(--vp-c-brand-1); transition: width 0.3s; }
 .progress-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .reset {
@@ -183,7 +224,7 @@ a:hover { text-decoration: underline; }
 .done-all { font-size: 14px; color: var(--vp-c-text-2); }
 
 @media (max-width: 860px) {
-  .who, .steps { grid-template-columns: 1fr; }
+  .tracks, .steps { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .home-start { padding: 0 16px; }

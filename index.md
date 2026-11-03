@@ -5,14 +5,14 @@ title: DevOps – From Code to Deployment
 hero:
   name: DevOps – From Code to Deployment
   text: Học DevOps bằng cách tự dựng, tự phá và tự sửa một hệ thống thật
-  tagline: Khóa 16 tuần, 32 buổi cho thành viên HCMUTE DSC. Từ Linux và Git tới Docker, CI/CD và Kubernetes, trên một ứng dụng chạy hoàn toàn trên máy bạn.
+  tagline: Ba lộ trình cho thành viên HCMUTE DSC. Cơ bản (tuần 1–10), Nâng cao (tuần 11–16) và Vibe Deploy để đưa web lên mạng nhanh.
   actions:
     - theme: brand
-      text: Bắt đầu học
+      text: Bắt đầu Lộ trình Cơ bản
       link: /curriculum/getting-started
     - theme: alt
-      text: Xem lộ trình 16 tuần
-      link: /curriculum/syllabus
+      text: Xem Lộ trình Nâng cao
+      link: /curriculum/advanced
 
 features:
   - icon: 🧱

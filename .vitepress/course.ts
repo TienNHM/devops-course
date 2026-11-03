@@ -16,8 +16,11 @@ export interface Week {
   sessions: number[] // [13, 14]
 }
 
+export type TrackId = 'basic' | 'advanced'
+
 export interface Phase {
   no: number
+  track: TrackId // giai đoạn 1–3 thuộc lộ trình Cơ bản, 4–5 thuộc Nâng cao
   name: string // "Nền tảng"
   title: string // "Giai đoạn 1 · Nền tảng"
   focus: string
@@ -56,6 +59,7 @@ function week(n: number): Week {
 export function courseTree(): Phase[] {
   return phaseDefs.map((p, i) => ({
     no: i + 1,
+    track: i < 3 ? 'basic' : 'advanced',
     name: p.name,
     title: `Giai đoạn ${i + 1} · ${p.name}`,
     focus: p.focus,

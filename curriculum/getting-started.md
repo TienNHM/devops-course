@@ -23,17 +23,18 @@ Từ nào lạ thì tra [Thuật ngữ](../resources/glossary.md). Cần dùng G
 ```mermaid
 flowchart TD
     A["Bạn là ai?"] --> B["Người mới, chưa biết DevOps"]
-    A --> C["Đã biết lập trình và Git"]
+    A --> C["Đã dùng được Docker, Compose, CI"]
     A --> D["Chỉ muốn đưa web lên mạng nhanh"]
-    B --> E["Học khóa 16 tuần, làm lab mức L1"]
-    C --> F["Học khóa 16 tuần, làm thêm thử thách L2"]
-    D --> G["Vibe Deploy: đưa web lên mạng không cần Kubernetes"]
+    B --> E["Lộ trình Cơ bản (tuần 1-10)"]
+    C --> F["Lộ trình Nâng cao (tuần 11-16)"]
+    D --> G["Vibe Deploy: lộ trình riêng, không cần Kubernetes"]
 ```
 
-- Người mới: học theo thứ tự từ Tuần 1. Làm mức L1 là đủ để hoàn thành khóa.
-- Đã biết lập trình: học cùng lộ trình, làm thêm các thử thách L2 ở cuối mỗi bài (tự quyết định, tự giải thích).
-- Chỉ muốn lên mạng nhanh: xem [Vibe Deploy](../vibe/index.md), một nhánh riêng ngắn hơn.
-- Muốn xem toàn cảnh trước: [Lộ trình 16 tuần](syllabus.md).
+- **Người mới:** bắt đầu từ [Lộ trình Cơ bản](basic.md) (tuần 1–10). Làm mức L1 là đủ.
+- **Đã dùng được Docker, Compose và CI:** vào [Lộ trình Nâng cao](advanced.md) (tuần 11–16), nhớ tự kiểm tra điều kiện ở đầu trang đó.
+- **Đã biết lập trình:** vẫn học theo lộ trình, làm thêm các thử thách L2 ở cuối mỗi bài.
+- **Chỉ muốn lên mạng nhanh:** [Vibe Deploy](../vibe/index.md), một lộ trình riêng, ngắn hơn, không cần Kubernetes.
+- **Muốn xem toàn cảnh trước:** [Lộ trình đầy đủ 16 tuần](syllabus.md).
 
 ## Xong 5 việc? Vào học
 

@@ -121,3 +121,41 @@ export function parseLesson(path: string): { week: number; session: number } | n
 export function checkKey(path: string, index: number): string {
   return `${CHECK_PREFIX}${path.replace(/\.html$/, '').replace(/\/$/, '')}#${index}`
 }
+
+// Hai lộ trình: Cơ bản (giai đoạn 1–3, tuần 1–10) và Nâng cao (giai đoạn 4–5, tuần 11–16)
+export type TrackId = 'basic' | 'advanced'
+
+export const TRACKS: Record<
+  TrackId,
+  { id: TrackId; name: string; weekRange: string; link: string; firstSession: number; lastSession: number }
+> = {
+  basic: { id: 'basic', name: 'Cơ bản', weekRange: 'Tuần 1–10', link: '/curriculum/basic', firstSession: 1, lastSession: 20 },
+  advanced: { id: 'advanced', name: 'Nâng cao', weekRange: 'Tuần 11–16', link: '/curriculum/advanced', firstSession: 21, lastSession: 32 },
+}
+
+export const trackTotal = (id: TrackId) => TRACKS[id].lastSession - TRACKS[id].firstSession + 1
+
+export function trackOfWeek(week: number): TrackId {
+  return week <= 10 ? 'basic' : 'advanced'
+}
+
+export function trackDone(id: TrackId): number {
+  const t = TRACKS[id]
+  return doneSessions.value.filter((n) => n >= t.firstSession && n <= t.lastSession).length
+}
+
+// Trang nào thuộc lộ trình nào (để hiện bộ chuyển lộ trình ở sidebar); null nếu không thuộc lộ trình nào.
+// Vibe Deploy là lộ trình riêng, không tính vào 32 buổi.
+export type PathTrack = TrackId | 'vibe'
+
+export function trackOfPath(path: string): PathTrack | null {
+  let m = path.match(/\/(?:labs|assignments\/weekly)\/week-(\d{2})(?:\/|\.html|$)/)
+  if (m) return trackOfWeek(Number(m[1]))
+  m = path.match(/\/slides\/(\d{2})-/)
+  if (m) return Number(m[1]) <= 4 ? 'basic' : 'advanced'
+  if (/\/curriculum\/basic(?:\.html|\/|$)/.test(path)) return 'basic'
+  if (/\/curriculum\/advanced(?:\.html|\/|$)/.test(path)) return 'advanced'
+  if (/\/assignments\/capstone\//.test(path)) return 'advanced'
+  if (/\/vibe(?:\/|$)/.test(path)) return 'vibe'
+  return null
+}

@@ -8,6 +8,7 @@ import LessonProgress from './LessonProgress.vue'
 import LessonDone from './LessonDone.vue'
 import SidebarProgress from './SidebarProgress.vue'
 import SlidePresenter from './SlidePresenter.vue'
+import TrackSwitcher from './TrackSwitcher.vue'
 import './custom.css'
 
 export default {
@@ -19,6 +20,7 @@ export default {
       'doc-before': () => [h(LessonProgress), h(SlidePresenter)],
       'doc-after': () => h(LessonDone),
       'layout-bottom': () => h(SidebarProgress),
+      'sidebar-nav-before': () => h(TrackSwitcher),
     }),
   enhanceApp({ app }) {
     app.component('HomeContent', HomeContent)

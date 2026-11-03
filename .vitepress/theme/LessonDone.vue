@@ -6,9 +6,13 @@ import { doneSessions, loadProgress, parseLesson, setDone, sessionLink, TOTAL_SE
 const route = useRoute()
 const lesson = computed(() => parseLesson(route.path))
 const done = computed(() => !!lesson.value && doneSessions.value.includes(lesson.value.session))
-const nextLink = computed(() =>
-  lesson.value && lesson.value.session < TOTAL_SESSIONS ? withBase(sessionLink(lesson.value.session + 1)) : null,
-)
+// Buổi 20 là buổi cuối của lộ trình Cơ bản: dẫn sang trang Nâng cao thay vì thẳng vào buổi 21
+const endOfBasic = computed(() => lesson.value?.session === 20)
+const nextLink = computed(() => {
+  if (!lesson.value) return null
+  if (endOfBasic.value) return withBase('/curriculum/advanced')
+  return lesson.value.session < TOTAL_SESSIONS ? withBase(sessionLink(lesson.value.session + 1)) : null
+})
 
 onMounted(loadProgress)
 
@@ -22,7 +26,10 @@ function toggle() {
     <button type="button" class="done-btn" :class="{ on: done }" :aria-pressed="done" @click="toggle">
       <span v-if="done" aria-hidden="true">&#10003; </span>{{ done ? 'Đã xong buổi này (bấm để bỏ)' : 'Đánh dấu đã xong' }}
     </button>
-    <a v-if="done && nextLink" class="next-link" :href="nextLink">Sang buổi tiếp theo &rarr;</a>
+    <p v-if="done && endOfBasic" class="finish">Bạn đã xong Lộ trình Cơ bản.</p>
+    <a v-if="done && nextLink" class="next-link" :href="nextLink">
+      {{ endOfBasic ? 'Xem Lộ trình Nâng cao' : 'Sang buổi tiếp theo' }} &rarr;
+    </a>
     <p class="note">Tiến độ chỉ lưu trên trình duyệt này.</p>
   </div>
 </template>
@@ -52,5 +59,6 @@ function toggle() {
 .done-btn:hover { background: var(--vp-button-brand-hover-bg); }
 .done-btn.on { background: transparent; color: var(--vp-c-brand-1); }
 .next-link { font-weight: 500; font-size: 14px; }
+.finish { flex-basis: 100%; margin: 0; font-weight: 600; color: var(--vp-c-green-1); }
 .note { flex-basis: 100%; margin: 0; font-size: 12.5px; color: var(--vp-c-text-2); }
 </style>

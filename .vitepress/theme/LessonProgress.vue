@@ -2,7 +2,7 @@
 import { computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, withBase, onContentUpdated } from 'vitepress'
 import {
-  TOTAL_SESSIONS,
+  TRACKS,
   doneSessions,
   loadProgress,
   parseLesson,
@@ -12,13 +12,18 @@ import {
   checkKey,
   storageGet,
   storageSet,
+  trackDone,
+  trackOfWeek,
+  trackTotal,
 } from './progress'
 
 const route = useRoute()
 const lesson = computed(() => parseLesson(route.path))
 const done = computed(() => !!lesson.value && doneSessions.value.includes(lesson.value.session))
-const count = computed(() => doneSessions.value.length)
-const percent = computed(() => Math.round((count.value / TOTAL_SESSIONS) * 100))
+const track = computed(() => (lesson.value ? trackOfWeek(lesson.value.week) : 'basic'))
+const count = computed(() => (doneSessions.value.length >= 0 ? trackDone(track.value) : 0))
+const total = computed(() => trackTotal(track.value))
+const percent = computed(() => Math.round((count.value / total.value) * 100))
 const phase = computed(() => (lesson.value ? phaseOfWeek(lesson.value.week) : 1))
 
 // Gắn nhãn cho các khối đặc biệt và lưu trạng thái checkbox theo trang
@@ -40,7 +45,8 @@ function enhanceDoc() {
     })
   }
 
-  if (!lesson.value) return
+  // Ô đánh dấu chỉ bật ở bài học và ở hai trang lộ trình (danh sách tự kiểm tra)
+  if (!lesson.value && !/\/curriculum\/(basic|advanced)(?:\.html|\/)?$/.test(route.path)) return
   const path = route.path
   const boxes = root.querySelectorAll<HTMLInputElement>('li input[type="checkbox"]')
   boxes.forEach((box, i) => {
@@ -67,7 +73,7 @@ onContentUpdated(() => nextTick(enhanceDoc))
 <template>
   <div v-if="lesson" class="lesson-progress">
     <nav class="crumbs" aria-label="Vị trí bài học">
-      <a :href="withBase('/curriculum/syllabus')">Học 16 tuần</a>
+      <a :href="withBase(TRACKS[track].link)">Lộ trình {{ TRACKS[track].name }}</a>
       <span class="sep">&rsaquo;</span>
       <span>Giai đoạn {{ phase }} · {{ phaseNames[phase - 1] }}</span>
       <span class="sep">&rsaquo;</span>
@@ -79,9 +85,9 @@ onContentUpdated(() => nextTick(enhanceDoc))
         Tuần {{ lesson.week }}/16 · Buổi {{ pad(lesson.session) }}/32
         <span v-if="done" class="sr-only">(đã xong)</span>
       </span>
-      <span class="lp-count">Đã xong {{ count }}/{{ TOTAL_SESSIONS }} buổi</span>
+      <span class="lp-count">Lộ trình {{ TRACKS[track].name }}: đã xong {{ count }}/{{ total }} buổi</span>
     </div>
-    <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="TOTAL_SESSIONS" :aria-valuenow="count">
+    <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="total" :aria-valuenow="count">
       <span class="fill" :style="{ width: percent + '%' }" />
     </div>
   </div>
