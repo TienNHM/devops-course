@@ -10,7 +10,7 @@ import {
   nextSession,
   pad,
   resetProgress,
-  sessionLink,
+  slideLink,
   trackDone,
   trackTotal,
 } from './progress'
@@ -24,7 +24,7 @@ const next = computed(() => {
   if (!n) return null
   const week = Math.ceil(n / 2)
   const w = phases.flatMap((p) => p.weeks).find((x) => x.n === week)
-  return { n, label: `Buổi ${pad(n)}${w ? ' – ' + w.name : ''}`, link: sessionLink(n) }
+  return { n, label: `Buổi ${pad(n)}${w ? ' – ' + w.name : ''}`, link: slideLink(n) }
 })
 
 onMounted(loadProgress)
@@ -82,8 +82,8 @@ function reset() {
         <li>
           <span class="n">2</span>
           <div>
-            <strong>Làm Buổi 01</strong>
-            <p>Đọc 15 phút, làm lab theo từng phần, mỗi phần có bước tự kiểm tra.</p>
+            <strong>Xem slide, rồi làm lab</strong>
+            <p>Slide giúp hiểu khái niệm. Lab là phần tự tay làm, mỗi phần có bước tự kiểm tra.</p>
           </div>
         </li>
         <li>
@@ -94,7 +94,7 @@ function reset() {
           </div>
         </li>
       </ol>
-      <a class="button" :href="withBase('/labs/week-01/session-01')">Vào Buổi 01</a>
+      <a class="button" :href="withBase(slideLink(1))">Bắt đầu Buổi 01: xem slide</a>
     </section>
 
     <section class="block progress">

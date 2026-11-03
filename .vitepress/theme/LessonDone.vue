@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute, withBase } from 'vitepress'
-import { doneSessions, loadProgress, parseLesson, setDone, sessionLink, TOTAL_SESSIONS } from './progress'
+import { doneSessions, loadProgress, parseLesson, setDone, slideLink, TOTAL_SESSIONS } from './progress'
 
 const route = useRoute()
 const lesson = computed(() => parseLesson(route.path))
@@ -11,7 +11,7 @@ const endOfBasic = computed(() => lesson.value?.session === 20)
 const nextLink = computed(() => {
   if (!lesson.value) return null
   if (endOfBasic.value) return withBase('/curriculum/advanced')
-  return lesson.value.session < TOTAL_SESSIONS ? withBase(sessionLink(lesson.value.session + 1)) : null
+  return lesson.value.session < TOTAL_SESSIONS ? withBase(slideLink(lesson.value.session + 1)) : null
 })
 
 onMounted(loadProgress)

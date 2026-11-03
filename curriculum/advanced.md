@@ -32,7 +32,7 @@ Các tuần của giai đoạn 4: [Tuần 11](../labs/week-11/README.md), [12](.
 
 ## Bắt đầu thế nào
 
-Vào [Buổi 21 – Kubernetes Introduction](../labs/week-11/session-21.md). Mọi thứ chạy trên máy bạn, không cần cloud và không mở máy ra Internet.
+Vào [Buổi 21: xem slide](../slides/05-kubernetes/session-21.md), rồi làm [lab Buổi 21](../labs/week-11/session-21.md). Mọi thứ chạy trên máy bạn, không cần cloud và không mở máy ra Internet.
 
 ## Tiêu chí hoàn thành khóa
 

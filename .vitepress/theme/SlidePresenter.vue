@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
-import { useRoute } from 'vitepress'
+import { useRoute, withBase } from 'vitepress'
+import { parseSlide, sessionLink } from './progress'
 
 const route = useRoute()
 const isSlidePage = computed(() => /\/slides\/[^/]+\/session-\d+(\.html)?$/.test(route.path))
+
+// Slide cuối: gợi ý sang lab của buổi này
+const labHref = computed(() => {
+  const n = parseSlide(route.path)
+  return n ? withBase(sessionLink(n)) : null
+})
 
 const open = ref(false)
 const slides = ref<string[]>([])
@@ -145,6 +152,7 @@ onBeforeUnmount(() => {
         <button type="button" :disabled="index === 0" aria-label="Slide trước" @click="go(-1)">&larr;</button>
         <span class="present-count">{{ index + 1 }} / {{ slides.length }}</span>
         <button type="button" :disabled="index === slides.length - 1" aria-label="Slide sau" @click="go(1)">&rarr;</button>
+        <a v-if="labHref && index === slides.length - 1" class="to-lab" :href="labHref">Làm lab &rarr;</a>
         <button type="button" class="spacer" aria-label="Bật hoặc tắt toàn màn hình" @click="toggleFullscreen">&#x26F6;</button>
         <button type="button" aria-label="Thoát trình chiếu" @click="close">&#10005;</button>
       </div>
@@ -225,6 +233,20 @@ onBeforeUnmount(() => {
 .present-controls button:hover:not(:disabled) { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
 .present-controls button:disabled { opacity: 0.35; cursor: default; }
 .present-controls .spacer { margin-left: auto; }
+.present-controls .to-lab {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 18px;
+  background: var(--vp-button-brand-bg);
+  color: var(--vp-button-brand-text);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 8px;
+}
+.present-controls .to-lab + .spacer { margin-left: 8px; }
 .present-count { font-size: 14px; color: var(--vp-c-text-2); min-width: 64px; text-align: center; }
 
 /* Nội dung slide: chữ lớn, thoáng, dễ đọc khi chiếu. */

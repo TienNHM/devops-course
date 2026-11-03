@@ -27,8 +27,8 @@ Mỗi tuần có 2 buổi 120 phút. Xem kế hoạch từng tuần ở trang tu
 ## Bắt đầu thế nào
 
 1. Làm [5 việc trước Buổi 01](getting-started.md#truoc-buoi-01-5-viec-khoang-30-phut) (khoảng 30 phút, chỉ một lần).
-2. Vào [Buổi 01 – DevOps Introduction](../labs/week-01/session-01.md).
-3. Mỗi buổi: đọc, làm lab theo từng phần có bước tự kiểm tra, gặp lỗi thì xem bảng "Gặp lỗi?", rồi nộp bài.
+2. Vào [Buổi 01: xem slide](../slides/01-foundation/session-01.md) (có nút Trình chiếu), rồi làm [lab Buổi 01](../labs/week-01/session-01.md).
+3. Mỗi buổi đi theo thứ tự: xem slide, làm lab theo từng phần có bước tự kiểm tra, gặp lỗi thì xem bảng "Gặp lỗi?", rồi nộp bài.
 
 Cần biết cách học một buổi và hai mức L1, L2? Xem [Cách học khóa này](how-to-learn.md).
 

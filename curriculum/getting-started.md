@@ -40,7 +40,7 @@ flowchart TD
 
 Mở [Tuần 1](../labs/week-01/README.md) để xem kế hoạch tuần, hoặc vào thẳng buổi đầu tiên.
 
-**[Vào Buổi 01 – DevOps Introduction](../labs/week-01/session-01.md)**
+**[Vào Buổi 01: xem slide trước](../slides/01-foundation/session-01.md)**, rồi làm [lab Buổi 01](../labs/week-01/session-01.md).
 
 ## Cần tra cứu sau này
 

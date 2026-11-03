@@ -159,3 +159,34 @@ export function trackOfPath(path: string): PathTrack | null {
   if (/\/vibe(?:\/|$)/.test(path)) return 'vibe'
   return null
 }
+
+// Học theo thứ tự: Slide (khái niệm) -> Lab (thực hành) -> Bài tập tuần
+const deckRanges: [string, number, number][] = [
+  ['01-foundation', 1, 6],
+  ['02-docker', 7, 12],
+  ['03-compose', 13, 14],
+  ['04-cicd', 15, 20],
+  ['05-kubernetes', 21, 22],
+  ['06-kubectl', 23, 25],
+  ['07-operations', 26, 28],
+  ['08-capstone', 29, 32],
+]
+
+export function slideLink(n: number): string {
+  const dir = deckRanges.find(([, a, b]) => n >= a && n <= b)?.[0] ?? deckRanges[0][0]
+  return `/slides/${dir}/session-${pad(n)}`
+}
+
+export const weekOfSession = (n: number) => Math.ceil(n / 2)
+export const assignmentLink = (week: number) => `/assignments/weekly/week-${pad(week)}`
+
+export function parseSlide(path: string): number | null {
+  const m = path.match(/\/slides\/\d{2}-[a-z]+\/session-(\d{2})(?:\.html)?\/?$/)
+  return m ? Number(m[1]) : null
+}
+
+// Trang hub tuần: /labs/week-07/
+export function parseWeekHub(path: string): number | null {
+  const m = path.match(/\/labs\/week-(\d{2})(?:\/|\/index(?:\.html)?)?$/)
+  return m ? Number(m[1]) : null
+}

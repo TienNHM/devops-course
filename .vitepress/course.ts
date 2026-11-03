@@ -14,6 +14,7 @@ export interface Week {
   title: string // "Tuần 07 · Docker Compose"
   link: string // "/labs/week-07/"
   sessions: number[] // [13, 14]
+  sessionNames: string[] // ["Docker Compose", "Production-minded Compose"]
 }
 
 export type TrackId = 'basic' | 'advanced'
@@ -37,6 +38,14 @@ const phaseDefs = [
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
+// Tên buổi đọc từ dòng "# Buổi 13 – Docker Compose" của labs/week-XX/session-NN.md
+function sessionName(s: number): string {
+  const file = join(labsDir, `week-${pad(Math.ceil(s / 2))}`, `session-${pad(s)}.md`)
+  if (!existsSync(file)) return `Buổi ${pad(s)}`
+  const h1 = readFileSync(file, 'utf8').match(/^# (.+)$/m)?.[1]
+  return h1 ? h1.replace(/^Buổi \d+\s*[–·:-]\s*/, '').trim() : `Buổi ${pad(s)}`
+}
+
 function week(n: number): Week {
   const id = `week-${pad(n)}`
   const file = join(labsDir, id, 'README.md')
@@ -53,6 +62,7 @@ function week(n: number): Week {
     title: `Tuần ${pad(n)} · ${name}`,
     link: `/labs/${id}/`,
     sessions: [2 * n - 1, 2 * n],
+    sessionNames: [2 * n - 1, 2 * n].map(sessionName),
   }
 }
 
