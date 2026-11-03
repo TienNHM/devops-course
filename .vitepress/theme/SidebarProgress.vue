@@ -16,11 +16,14 @@ function mark() {
     } catch {
       return
     }
-    const m = path.match(/\/labs\/week-(\d{2})(?:\/(?:session-(\d{2})(?:\.html)?)?|\/README(?:\.html)?)?$/)
+    // Mục buổi (slide hoặc lab) đánh dấu theo buổi; tiêu đề tuần (nhóm gập có link) chỉ đánh dấu khi xong cả tuần
+    const lab = path.match(/\/labs\/week-(\d{2})(?:\/(?:session-(\d{2})(?:\.html)?)?|\/README(?:\.html)?)?$/)
+    const slide = path.match(/\/slides\/\d{2}-[a-z]+\/session-(\d{2})(?:\.html)?$/)
+    const session = slide ? Number(slide[1]) : lab?.[2] ? Number(lab[2]) : null
+    const isHeader = !!a.closest('.item')?.parentElement?.classList.contains('collapsible')
     let done = false
-    if (m) {
-      done = m[2] ? isDone(Number(m[2])) : weekDone(Number(m[1]))
-    }
+    if (session !== null) done = isHeader ? weekDone(Math.ceil(session / 2)) : isDone(session)
+    else if (lab) done = weekDone(Number(lab[1]))
     a.classList.toggle('is-done', done)
   })
 }

@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import { courseTree } from './course'
+import { slideLink } from './deck'
 
 const repo = process.env.REPO_URL || 'https://github.com/TienNHM/devops-course'
 
@@ -60,10 +61,24 @@ function learningSidebar(track?: TrackId): Item[] {
     { collapsed: true },
   )
   const shown = track ? phases.filter((p) => p.track === track) : phases
+  // Mỗi tuần là một nhóm gập; bấm tên tuần đi thẳng vào slide của buổi đầu. Thứ tự: slide trước, lab sau.
+  const weekItem = (w: (typeof phases)[number]['weeks'][number]): Item | null =>
+    group(
+      w.title,
+      [
+        ...w.sessions.flatMap((s, i) => [
+          page(`Buổi ${pad(s)} · Slide: ${w.sessionNames[i]}`, slideLink(s)),
+          page(`Buổi ${pad(s)} · Lab`, `/labs/week-${w.no}/session-${pad(s)}`),
+        ]),
+        page('Bài tập tuần', `/assignments/weekly/week-${w.no}`),
+        page('Tổng quan tuần', w.link),
+      ],
+      { collapsed: true, link: slideLink(w.sessions[0]) },
+    )
   const stages = shown.map((phase, i) =>
     group(
       track ? phase.title : `${trackName[phase.track]} · ${phase.title}`,
-      phase.weeks.map((w) => page(w.title, w.link)),
+      phase.weeks.map(weekItem),
       track ? {} : { collapsed: i > 0 },
     ),
   )
@@ -233,7 +248,7 @@ for (let n = 1; n <= 16; n++) {
   weekSidebars[`/assignments/weekly/week-${pad(n)}`] = learningSidebar(trackOfWeek(n))
 }
 const deckSidebars: Record<string, Item[]> = {}
-for (const d of slideDecks) deckSidebars[`/slides/${d.dir}/`] = slidesSidebar(deckPhase[d.dir] <= 3 ? 'basic' : 'advanced')
+for (const d of slideDecks) deckSidebars[`/slides/${d.dir}/`] = learningSidebar(deckPhase[d.dir] <= 3 ? 'basic' : 'advanced')
 
 export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>({
   lang: 'vi-VN',
