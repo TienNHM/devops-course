@@ -26,7 +26,8 @@ function collectSlides(): string[] {
     .map((g) => {
       const box = document.createElement('div')
       for (const el of g) box.appendChild(el.cloneNode(true))
-      box.querySelectorAll('.header-anchor, button.copy, .lang').forEach((n) => n.remove())
+      // Ghi chú cho mentor (::: details) chỉ hiện ở chế độ đọc, không hiện khi chiếu.
+      box.querySelectorAll('.header-anchor, button.copy, .lang, details').forEach((n) => n.remove())
       // Giữ id của SVG: style của mermaid được gắn theo id đó.
       box.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach((n) => n.removeAttribute('id'))
       return box.innerHTML
@@ -257,5 +258,5 @@ onBeforeUnmount(() => {
 .present-slide :deep(.mermaid svg) { width: 100%; max-width: none !important; height: auto; max-height: 62vh; }
 .present-slide :deep(svg) { max-height: 62vh; }
 .present-slide :deep(.mermaid) { display: flex; justify-content: center; }
-.present-slide :deep(img) { max-width: 100%; max-height: 62vh; }
+.present-slide :deep(img) { display: block; margin: 0.4em auto; max-width: 100%; max-height: 66vh; border-radius: 14px; }
 </style>
