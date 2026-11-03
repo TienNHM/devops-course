@@ -1,6 +1,6 @@
 # Buổi 27 – Storage & Ingress
 
-Tuần 14/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 27/32
+Lộ trình Nâng cao · Phần 4 · Buổi 27
 
 [Slide](../../slides/07-operations/session-27.md) · [Bài tập tuần](../../assignments/weekly/week-14.md) · [Hub tuần](README.md)
 

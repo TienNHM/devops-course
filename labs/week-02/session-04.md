@@ -1,6 +1,6 @@
 # Buổi 04 – Linux Administration
 
-Tuần 2/16 · Giai đoạn 1 – Engineering Foundation · Buổi 04/32
+Lộ trình Nâng cao · Phần 1 · Buổi 04
 
 [Slide](../../slides/01-foundation/session-04.md) · [Bài tập tuần](../../assignments/weekly/week-02.md) · [Hub tuần](README.md)
 

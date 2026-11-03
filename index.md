@@ -5,7 +5,7 @@ title: DevOps – From Code to Deployment
 hero:
   name: DevOps – From Code to Deployment
   text: Học DevOps bằng cách tự dựng, tự phá và tự sửa một hệ thống thật
-  tagline: Ba lộ trình cho thành viên HCMUTE DSC. Cơ bản (tuần 1–10), Nâng cao (tuần 11–16) và Vibe Deploy để đưa web lên mạng nhanh.
+  tagline: Ba lộ trình cho thành viên HCMUTE DSC. Cơ bản học trong 14 ngày bằng một dự án thật, Nâng cao đi tiếp tới Kubernetes, và Vibe Deploy để đưa web lên mạng nhanh.
   actions:
     - theme: brand
       text: Bắt đầu Lộ trình Cơ bản

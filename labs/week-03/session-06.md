@@ -1,217 +1,148 @@
-# Buổi 06 – Git & GitHub Workflow
+# Ngày 3 – Đưa dự án Club vào Git bằng Pull Request
 
-Tuần 3/16 · Giai đoạn 1 – Engineering Foundation · Buổi 06/32
+Lộ trình Cơ bản · Ngày 3/10 · khoảng 2 giờ
 
-[Slide buổi 06](../../slides/01-foundation/session-06.md) · [Bài tập tuần 3](../../assignments/weekly/week-03.md) · [Hub Tuần 3](README.md)
+[Slide Ngày 3](../../slides/01-foundation/session-06.md) · [Thử thách thêm](session-06-challenge.md)
 
-> **Tóm tắt:** Làm việc nhóm với Git và GitHub: feature branch, Pull Request, code review, xử lý merge conflict đúng cách và không đưa secret lên repo.
+> **Tóm tắt:** Copy dự án Club vào repo `devops-labs`, đưa lên `main` bằng branch, commit và Pull Request, rồi tự tạo và gỡ một merge conflict.
 
-::: tip Buổi này bạn làm gì
-**Bạn sẽ tạo ra:** một repo nhóm `club-team-lab` có lịch sử sạch: `.gitignore` chặn `.env`, ít nhất một Pull Request đã được bạn khác review và merge, và một merge conflict do chính bạn tạo rồi gỡ.
+::: tip Hôm nay bạn làm gì
+**Sản phẩm cuối ngày:** thư mục `club/` nằm trên nhánh `main` của repo `devops-labs` (qua một Pull Request đã merge), có `.gitignore` chặn `.env`, và bạn đã gỡ một conflict thật.
 
-**Thời gian thật:** đọc 15 phút · lab bắt buộc 60 phút · thử thách tùy chọn (kể cả branch protection) làm ở nhà.
+**Thời gian:** 15 phút xem slide, 85 phút làm, 20 phút ghi note và commit.
 
-**Cần chuẩn bị:**
+**Cần có:**
 
-- [ ] Xong [Buổi 05 – Networking Fundamentals](session-05.md); môi trường theo [Hướng dẫn cài đặt](../../resources/setup-guide.md).
-- [ ] Tài khoản GitHub, đã đăng nhập hoặc cấu hình xác thực (SSH key hoặc Git Credential Manager) theo [Tài khoản và repo GitHub](../../resources/setup-github.md). Không dán token hay password vào lệnh, file hay chat.
-- [ ] Một bạn cùng nhóm (2-3 người). Học một mình vẫn làm được, xem ghi chú ở Phần 4.
-
-**Sản phẩm phải nộp:** `lab-06/` trong repo `devops-labs` gồm `README.md`, `evidence/command-output.txt` (log Git thật), `report.md` (link PR, cách resolve conflict), ảnh PR đã Approve và merged.
-
-**Đi nhanh:** [Đọc](#doc) → [Làm lab](#hands-on-lab) → [Gặp lỗi?](#gap-loi) → [Tự kiểm tra](#tu-kiem-tra) → [Nộp bài](#nop-bai). Kẹt? Nhảy tới [Gặp lỗi?](#gap-loi).
+- [ ] Đã xong [Ngày 2 – Dùng Linux CLI đọc dự án Club](../week-02/session-03.md).
+- [ ] Repo `devops-labs` đã clone ở `~/devops-labs` trong WSL, đăng nhập GitHub bằng SSH key (xem [Tài khoản và repo GitHub](../../resources/setup-github.md)). Không dán token hay password vào lệnh, file hay chat.
+- [ ] Thư mục `~/devops-course/starter-project` còn nguyên.
 :::
 
-Từ mới trong buổi (xem [Thuật ngữ](../../resources/glossary.md)):
+## Bài toán thật
 
-- **Commit**: một điểm lưu trong lịch sử Git, gồm thay đổi, tác giả, thông điệp.
-- **Branch (nhánh)**: dòng lịch sử độc lập để làm một việc mà không ảnh hưởng nhánh chính.
-- **Pull Request (PR)**: đề nghị gộp branch của bạn vào `main` trên GitHub.
-- **Merge conflict**: hai nhánh sửa cùng một vùng, Git không tự chọn được.
-- **`.gitignore`**: danh sách file Git bỏ qua, như `.env`.
-- **Branch protection**: quy tắc GitHub bắt buộc PR và review trước khi vào `main`.
+Dự án Club Management đang nằm trong `~/devops-course/starter-project`, nơi bạn chỉ đọc. Từ hôm nay bạn cần một bản của riêng mình để sửa, nên phải đưa nó vào repo `devops-labs`. Nếu push thẳng lên `main`, một lỗi nhỏ hoặc một file `.env` chứa mật khẩu cũng vào lịch sử vĩnh viễn. Cách làm của các đội thật: mỗi thay đổi nằm trên một branch riêng, đi qua Pull Request (PR) rồi mới vào `main`. Các ngày sau (CI ở Ngày 9) đều chạy trên PR, nên bạn cần quen luồng này ngay.
 
-Buổi 01 và trang [Git trong 10 phút](../../curriculum/how-to-learn.md#git-10-phut) chỉ cho bản rút gọn để nộp bài; buổi này là nơi giải thích đầy đủ. Trên lớp, mentor demo trước; tự học thì làm thẳng phần [Làm lab](#hands-on-lab).
+## Làm
 
-## Vấn đề thực tế {#doc}
+Làm trong WSL, trong `~/` (không dùng `/mnt/c`).
 
-CLB có 5 bạn cùng sửa một dự án quản lý thành viên. Không có quy ước, mỗi người push thẳng lên `main`. Một bạn commit nhầm file `.env` chứa mật khẩu database, một bạn khác `git push --force` làm mất commit của cả nhóm, và đến buổi demo thì `main` không chạy được vì không ai biết commit nào gây lỗi.
+### Bước 1. Kiểm tra Git và cập nhật `main`
 
-Git và GitHub Workflow giải quyết đúng các vấn đề đó: mỗi thay đổi nằm trên một nhánh riêng, đi qua Pull Request để người khác đọc và kiểm tra, và `main` luôn chạy được. Đây cũng là nền của CI/CD ở các tuần sau: GitHub Actions sẽ chạy tự động trên mỗi Pull Request.
-
-## Khái niệm cốt lõi
-
-- **Bốn vùng của Git.** Thay đổi đi qua working directory (file đang sửa) rồi `git add` vào staging, `git commit` vào local repository, `git push` lên remote (`origin` trên GitHub). Giống gửi bưu kiện: bỏ đồ vào hộp (add), dán nhãn niêm phong (commit), mang ra bưu điện (push).
-- **Commit, branch, merge.** Commit là một ảnh chụp dự án có hash, tác giả, thời gian; branch chỉ là con trỏ có tên tới một commit; merge gộp lịch sử hai branch. Giống bản nháp: mỗi branch là một bản photo để bạn sửa thoải mái, merge là ghép bản photo vào bản chính.
-- **Pull Request và code review.** PR là đề nghị gộp branch vào `main` trên GitHub, có chỗ thảo luận, review và chạy kiểm tra tự động. Giống nộp bài cho thầy chấm trước khi đưa vào sách giáo khoa. Review góp ý về code, không về con người: đúng mô tả chưa, có lộ secret không, có file thừa không.
-- **`.gitignore` và secret.** `.gitignore` chỉ có tác dụng với file chưa theo dõi; file đã commit phải `git rm --cached`; secret đã lên GitHub coi như đã lộ và phải đổi, không chỉ xóa file. Giống thư đã gửi đi: xóa bản nháp không lấy lại được thư.
-- **Conflict.** Hai nhánh cùng sửa một vùng thì Git chỉ đánh dấu chỗ khác nhau, con người quyết định kết quả. Người merge sau xử lý: đưa `main` mới nhất vào branch của mình, sửa, push lại. Giống hai người cùng sửa một câu trong bài chung: phải bàn rồi mới chốt.
-
-Luồng làm việc chuẩn của một thay đổi:
-
-```mermaid
-sequenceDiagram
-    participant A as Dev A (local)
-    participant GH as GitHub (origin)
-    participant B as Reviewer B
-    A->>A: git switch -c feature/x
-    A->>A: git add, git commit
-    A->>GH: git push -u origin feature/x
-    A->>GH: Mo Pull Request vao main
-    GH->>B: Thong bao review
-    B->>GH: Comment / Approve
-    GH->>GH: Merge vao main
-    A->>GH: git pull (cap nhat main local)
-```
-
-## Hands-on lab (60 phút, bắt buộc) {#hands-on-lab}
-
-Nhóm 2-3 người. Quy ước vai: **Bạn A** tạo repo, **Bạn B** và **Bạn C** (nếu có) là collaborator; nhóm 2 người thì B đảm nhiệm cả vai C. Bước nào lỗi, xem [Gặp lỗi?](#gap-loi).
-
-### Chuẩn bị (5 phút)
-
-1. Kiểm tra Git và xác thực:
+Bạn cần Git biết bạn là ai, và `main` local phải mới nhất.
 
 ```bash
-git --version
+cd ~/devops-labs
 git config --global user.name
 git config --global user.email
-ssh -T git@github.com
-```
-
-Kết quả mong đợi (rút gọn): phiên bản Git (ví dụ `git version 2.43.0`), tên, email của bạn, và `Hi TENCUABAN! You've successfully authenticated, but GitHub does not provide shell access.` Nếu thiếu `user.name` hoặc `user.email`: `git config --global user.name "Tên của bạn"` và `git config --global user.email "email@example.com"`. Đặt thêm một lần `git config --global pull.rebase false` (pull = fetch + merge) vì Git bản mới từ chối pull khi lịch sử phân kỳ nếu chưa chọn. Nếu dùng HTTPS thay SSH, bỏ qua `ssh -T` và dùng URL `https://github.com/...` khi clone.
-
-2. Bạn A tạo repo `club-team-lab` trên GitHub (public, chọn "Add a README file"), mời B, C ở Settings, Collaborators (B, C chấp nhận lời mời). Rồi tất cả clone về WSL (không dùng `/mnt/c`):
-
-```bash
-mkdir -p ~/work && cd ~/work
-git clone git@github.com:OWNER/club-team-lab.git
-cd club-team-lab
+git config --global pull.rebase false
+git switch main
+git pull
 git status
 ```
 
-Kết quả mong đợi: `On branch main` và `nothing to commit, working tree clean`. Thay `OWNER` bằng tên tài khoản của Bạn A (hoặc dùng URL HTTPS).
+Kết quả mong đợi: tên và email của bạn, rồi `On branch main` và `nothing to commit, working tree clean`. Thiếu tên hoặc email thì đặt: `git config --global user.name "Tên của bạn"`.
 
-### Phần 1 – Commit đầu tiên và .gitignore (Bạn A, 10 phút)
+::: tip Kiểm tra: bạn đúng khi
+`git status` báo `working tree clean` và `ssh -T git@github.com` trả lời `Hi <tên-bạn>!`.
+:::
 
-1. Tạo cấu trúc ban đầu và một `.env` giả (cố tình, để luyện thói quen: file này không được lên GitHub):
+### Bước 2. Tạo branch và copy dự án Club vào
+
+Branch là một dòng lịch sử riêng, nên `main` không bị ảnh hưởng cho tới khi PR được merge. Tên branch nên mô tả việc: `feature/add-club`.
 
 ```bash
-mkdir docs
-printf '# Club Team Lab\n\nRepo luyen tap Git workflow.\n' > README.md
-printf '# Thanh vien\n\n- Ten thanh vien 1\n' > docs/team.md
-printf 'DB_PASSWORD=dummy-only-for-lab\n' > .env
+git switch -c feature/add-club
+cp -r ~/devops-course/starter-project ~/devops-labs/club
+ls -a club
 git status --short
 ```
 
-Kết quả mong đợi: `M README.md`, `?? docs/` và `?? .env`.
+Kết quả mong đợi: `ls -a club` có `backend`, `frontend`, `database`, `compose.yaml`, `.gitignore`, `.env.example`; `git status` chỉ có một dòng `?? club/`.
 
-2. Tạo `.gitignore` trước khi add, rồi kiểm tra Git thật sự bỏ qua `.env`:
+### Bước 3. Kiểm tra `.gitignore` trước khi `git add`
+
+Dự án có sẵn `.gitignore` chặn `.env` và `node_modules`. Bạn tạo một `.env` giả để chứng minh nó hoạt động. Luôn kiểm tra bằng `git check-ignore` trước khi add.
 
 ```bash
-printf '.env\nnode_modules/\n*.log\n.DS_Store\n' > .gitignore
-git status --short
+cd ~/devops-labs/club
+cat .gitignore
+cp .env.example .env
 git check-ignore -v .env
+git status --short
 ```
 
-Kết quả mong đợi: `.env` biến mất khỏi danh sách; `git check-ignore -v` in dạng `.gitignore:1:.env	.env`.
-
-3. Commit thẳng lên `main` (lần cuối và duy nhất, vì repo còn trống), rồi B và C chạy `git pull`:
-
-```bash
-git add .gitignore README.md docs/team.md
-git commit -m "Add project skeleton and gitignore"
-git push origin main
-```
-
-Kết quả mong đợi: commit báo `3 files changed`. Vì sao: `git check-ignore -v` cho biết mẫu nào đang chặn file; add từng file thay vì `git add .` là thói quen an toàn khi chưa chắc `.gitignore` đầy đủ.
+Kết quả mong đợi: `git check-ignore -v .env` in một dòng có chứa `.gitignore:1:.env`, và `git status` không liệt kê `.env`. Giá trị trong `.env.example` chỉ là giá trị mẫu, không phải secret thật.
 
 ::: tip Kiểm tra: bạn đúng khi
-`git ls-files` không có `.env`, và trên GitHub (tab Code) không thấy file `.env`.
+`git check-ignore -v .env` có in ra một dòng, và `.env` không nằm trong `git status`.
 :::
 
-### Phần 2 – Feature branch và Pull Request (cả nhóm, 12 phút)
+### Bước 4. Commit
 
-Mỗi bạn làm trên branch riêng và chỉ thêm file của mình để tránh conflict ngoài ý muốn.
-
-1. Tạo branch (thay `ten-ban` bằng tên không dấu của bạn), tạo file hồ sơ, commit, thêm vai trò rồi commit lần hai, và push:
+Add đúng thư mục `club/` (không dùng `git add .` khi chưa chắc `.gitignore` đủ). Đọc `git status` trước khi commit.
 
 ```bash
-git switch main
-git pull
-git switch -c feature/add-ten-ban
-mkdir -p docs/members
-echo "# Ten Ban" > docs/members/ten-ban.md
-git add docs/members/ten-ban.md
-git commit -m "Add Ten Ban profile"
-echo "- Vai tro: thanh vien CLB" >> docs/members/ten-ban.md
-git diff
-git add docs/members/ten-ban.md
-git commit -m "Add role to Ten Ban profile"
-git push -u origin feature/add-ten-ban
+cd ~/devops-labs
+git add club
+git status --short
+git commit -m "Add Club project"
+git ls-files club | head -20
+git ls-files | grep -i '\.env$' || echo "OK: khong co file .env"
 ```
 
-Kết quả mong đợi: `Switched to a new branch 'feature/add-ten-ban'`; commit đầu báo `1 file changed, 1 insertion(+)` và `create mode 100644 docs/members/ten-ban.md`; `git diff` hiển thị một dòng bắt đầu bằng `+`; commit hai báo `1 insertion(+)`. Vì sao `git diff` trước `git add`: đọc lại thay đổi của chính mình là lớp review đầu tiên. `git diff` chỉ hiện file đã theo dõi; file mới chỉ hiện trong `git status`.
+Kết quả mong đợi: commit báo `N files changed` (N là số file), và dòng cuối là `OK: khong co file .env`. File `.env.example` thì được phép có mặt (nó không chứa secret).
 
-2. Mở Pull Request trên GitHub ("Compare & pull request", base là `main`, compare là branch của bạn). Mô tả gồm: đã thay đổi gì, vì sao, cách kiểm tra. Chỉ định một bạn làm Reviewer.
+::: tip Kiểm tra: bạn đúng khi
+`git ls-files | grep -i '\.env$'` không in gì, và `git log --oneline -1` có commit `Add Club project`.
+:::
 
-3. Reviewer mở tab "Files changed", để lại ít nhất một comment trên một dòng cụ thể, rồi "Review changes" và "Approve" (không thể Approve PR của chính mình).
+### Bước 5. Push và mở Pull Request
 
-4. Tác giả bấm "Merge pull request" (kiểu mặc định "Create a merge commit"; chọn Squash thì `git branch -d` báo chưa merge và phải dùng `-D`), xóa branch trên GitHub, rồi dọn local:
+`-u` ghi nhớ upstream để lần sau chỉ cần `git push`.
+
+```bash
+git push -u origin feature/add-club
+```
+
+Mở GitHub, repo `devops-labs`, bấm "Compare & pull request" (base là `main`, compare là `feature/add-club`). Viết mô tả ngắn: đã thêm gì, vì sao, cách kiểm tra. Mở tab "Files changed" và tự đọc lại diff như một reviewer: có file thừa hoặc secret không?
+
+Nếu học một mình, bạn không thể Approve PR của chính mình, chỉ cần tự review và bấm "Merge pull request" (kiểu mặc định "Create a merge commit"). Làm theo nhóm thì nhờ một bạn comment một dòng và Approve trước.
+
+### Bước 6. Merge và cập nhật `main` local
 
 ```bash
 git switch main
 git pull
-git branch -d feature/add-ten-ban
+git branch -d feature/add-club
 git log --oneline --graph -5
+ls club
 ```
 
-Kết quả mong đợi: `main` local có commit của bạn (có thể thêm merge commit), `git branch -d` báo `Deleted branch feature/add-ten-ban`. PR báo conflict ở bước này là chủ đề Phần 4.
+Kết quả mong đợi: `Deleted branch feature/add-club`, `git log` có commit `Add Club project` và merge commit, `ls club` có đủ thư mục dự án.
 
 ::: tip Kiểm tra: bạn đúng khi
-PR có trạng thái Merged, có một comment trên dòng cụ thể và một Approve, và `git log --oneline --graph` có commit của cả nhóm.
+Trên GitHub PR có nhãn Merged, và tab Code của `main` hiện thư mục `club/`.
 :::
 
-### Phần 3 – Hoàn tác an toàn bằng revert (cá nhân, 6 phút)
+### Bước 7. Tạo và gỡ một merge conflict
 
-Hoàn tác bằng `git revert` (tạo commit mới đảo ngược thay đổi, không viết lại lịch sử), thực hành trên branch riêng:
-
-```bash
-git switch -c practice/revert-demo
-echo "dong sai" >> README.md
-git commit -am "Add wrong line"
-git revert --no-edit HEAD
-git log --oneline -3
-cat README.md
-```
-
-Kết quả mong đợi: `git log` có hai commit mới, commit sau tên `Revert "Add wrong line"`; `README.md` không còn dòng `dong sai`. Vì sao: `git reset --hard` cùng `git push --force` làm mất lịch sử của người khác; `git revert` là cách hoàn tác an toàn cho nhánh chung.
-
-Quay về `main` và xóa nhánh thực hành:
+Conflict xảy ra khi hai branch sửa cùng một dòng. Bạn tự tạo để lần đầu gặp không hoảng. Hai branch `title-a` và `title-b` cùng đi ra từ `main` và cùng sửa dòng 1 của `club/README.md`.
 
 ```bash
 git switch main
-git branch -D practice/revert-demo
-```
+git switch -c feature/title-a
+sed -i '1s/.*/# Club Management - ban A/' club/README.md
+git commit -am "Change title (A)"
+git push -u origin feature/title-a
 
-### Phần 4 – Tạo và resolve merge conflict (theo cặp, 15 phút)
-
-Hai bạn (P và Q) cố tình sửa **cùng một dòng**. Học một mình: tự đóng cả P và Q bằng hai branch `feature/title-p`, `feature/title-q` tạo từ cùng một điểm của `main`, và merge lần lượt qua hai PR.
-
-1. Cả hai cập nhật `main`, tạo branch từ cùng một điểm. P đổi dòng tiêu đề của `README.md` thành `# Club Team Lab - Phien ban cua P`, Q thành `# Club Team Lab - Phien ban cua Q`; mỗi người commit và push (lệnh của P; Q thay `P` bằng `Q`, `title-p` bằng `title-q`):
-
-```bash
 git switch main
-git pull
-git switch -c feature/title-p
-sed -i '1s/.*/# Club Team Lab - Phien ban cua P/' README.md
-git commit -am "Change title (P)"
-git push -u origin feature/title-p
+git switch -c feature/title-b
+sed -i '1s/.*/# Club Management - ban B/' club/README.md
+git commit -am "Change title (B)"
+git push -u origin feature/title-b
 ```
 
-2. Mở PR cho cả hai branch. P (sau review) merge PR của mình trước; PR của Q chuyển sang "This branch has conflicts that must be resolved". Nhóm có C thì C review cả hai PR.
-
-3. Q đưa `main` mới nhất vào branch của mình:
+Trên GitHub mở PR cho cả hai branch. Merge PR của `title-a` trước; PR của `title-b` sẽ báo "This branch has conflicts that must be resolved". Người merge sau là người gỡ conflict. Đưa `main` mới nhất vào branch của bạn:
 
 ```bash
 git fetch origin
@@ -221,127 +152,112 @@ git merge origin/main
 Kết quả mong đợi:
 
 ```text
-Auto-merging README.md
-CONFLICT (content): Merge conflict in README.md
+Auto-merging club/README.md
+CONFLICT (content): Merge conflict in club/README.md
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-4. Mở `README.md`, bạn thấy:
+Mở file bằng VS Code (`code club/README.md`). Bạn thấy:
 
 ```text
 <<<<<<< HEAD
-# Club Team Lab - Phien ban cua Q
+# Club Management - ban B
 =======
-# Club Team Lab - Phien ban cua P
+# Club Management - ban A
 >>>>>>> origin/main
 ```
 
-Phần giữa `<<<<<<< HEAD` và `=======` là của bạn, phần giữa `=======` và `>>>>>>> origin/main` là của `main`. Hai bạn bàn để chọn kết quả, ví dụ `# Club Team Lab - P va Q`. Xóa cả ba dòng dấu hiệu, giữ đúng một dòng kết quả.
-
-5. Xác nhận hết dấu hiệu, hoàn tất merge và push:
+Phần trên `=======` là của bạn, phần dưới là của `main`. Chọn một dòng kết quả, ví dụ `# Club Management - A va B`, và xóa cả ba dòng dấu hiệu. Rồi kiểm tra, commit, push:
 
 ```bash
-grep -rn '^<<<<<<<\|^=======\|^>>>>>>>' README.md docs/ || echo "Khong con conflict marker"
-git add README.md
-git commit -m "Merge main into feature/title-q and resolve title conflict"
+grep -n '^<<<<<<<\|^=======\|^>>>>>>>' club/README.md || echo "Khong con conflict marker"
+git add club/README.md
+git commit -m "Merge main into feature/title-b and resolve title conflict"
 git push
 ```
 
-Kết quả mong đợi: `Khong con conflict marker`; PR của Q có thể merge sau khi P xem lại phần đã gộp và Approve. Vì sao: Git không biết ý định của con người, chỉ đánh dấu chỗ khác nhau; xóa sạch code của người kia là sai. Dấu hiệu còn sót: xem [Gặp lỗi?](#gap-loi).
-
-::: tip Kiểm tra: bạn đúng khi
-Bạn thấy dòng `CONFLICT (content)` thật, lệnh `grep` in `Khong con conflict marker`, và PR của Q đã merge.
-:::
-
-Sau khi cả hai PR đã merge, mỗi người chạy `git switch main`, `git pull`, rồi `git branch -d` các branch đã xong.
-
-::: warning Chưa bật branch protection
-Branch protection chặn mọi lần push thẳng lên `main`, nên chỉ bật sau khi đã xong các bước push trực tiếp ở Phần 1 và phần "Phá lỗi nâng cao". Hướng dẫn bật nằm ở [Buổi 06 – Thử thách nâng cao](session-06-challenge.md).
-:::
-
-### Checklist L1 và lệnh tự kiểm tra
-
-- [ ] Repo nhóm `club-team-lab` có `.gitignore` chứa `.env` và `node_modules/`; `.env` không có trên GitHub.
-- [ ] Bạn có ít nhất 2 commit trên một feature branch, thông điệp rõ ràng.
-- [ ] Bạn đã mở một Pull Request có tiêu đề và mô tả đầy đủ.
-- [ ] Một bạn trong nhóm đã review (ít nhất một comment trên dòng cụ thể) và Approve.
-- [ ] PR đã merge, branch đã xóa, `main` local đã `git pull`.
-- [ ] `git log --oneline --graph` hiển thị lịch sử có commit của cả nhóm.
+Quay lại GitHub, PR của `title-b` hết conflict; bấm Merge. Cuối cùng dọn:
 
 ```bash
-git ls-files | grep -i env || echo "OK: khong co file env"; git log --oneline --graph --all | head -n 15
+git switch main
+git pull
+git branch -d feature/title-a feature/title-b
+head -1 club/README.md
 ```
 
-Kết quả mong đợi: `OK: khong co file env` rồi một đồ thị lịch sử có các nhánh nhập vào `main`.
+::: tip Kiểm tra: bạn đúng khi
+Bạn đã thấy dòng `CONFLICT (content)` thật, `grep` in `Khong con conflict marker`, và `head -1 club/README.md` là dòng bạn đã chọn.
+:::
 
-## Gặp lỗi? {#gap-loi}
+### Bước 8. Ghi note ngày 3
+
+Tạo `notes/day-03.md` (trong `~/devops-labs/notes/`) trên một branch riêng, và đưa vào `main` bằng PR, giống các bước trên:
+
+```bash
+git switch -c docs/day-03-note
+cat > notes/day-03.md <<'EOF'
+# Ngày 3 - Git và Pull Request
+
+- Link PR đã merge: <dán link PR "Add Club project">
+- Link PR có conflict: <dán link PR title-b>
+- Điều tôi hiểu: <2-3 câu: vì sao dùng branch + PR thay vì push thẳng main>
+EOF
+git add notes/day-03.md
+git commit -m "Add day 3 note"
+git push -u origin docs/day-03-note
+```
+
+Mở PR, merge, rồi `git switch main && git pull`.
+
+## Gặp lỗi?
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `Permission denied (publickey)` khi clone hoặc push | Chưa thêm SSH key vào GitHub hoặc ssh-agent chưa nạp key | `ssh -T git@github.com` để chẩn đoán, thêm public key vào Settings, SSH keys, hoặc dùng HTTPS |
-| `.env` hoặc `node_modules` xuất hiện trong `git status` | Chưa có `.gitignore`, hoặc file đã bị theo dõi từ trước | Thêm vào `.gitignore`; nếu đã tracked thì `git rm --cached` |
-| `rejected ... (fetch first)` khi push | Remote có commit mới mà local chưa có (hai người cùng commit lên `main`) | `git fetch origin`, `git log --oneline --graph --all`, rồi `git pull`, xử lý conflict, push lại. Không `git push --force` |
-| Conflict marker còn sót trong file sau khi commit | Quên xóa `<<<<<<<`, `=======`, `>>>>>>>` | Chạy lệnh `grep` ở Phần 4 trước khi `git add` |
-| `Please tell me who you are` khi commit | Chưa cấu hình `user.name`, `user.email` | `git config --global user.name "Tên"` và `git config --global user.email "email"` |
-| Merge xong nhưng `main` local chưa có thay đổi | Quên `git pull` sau khi merge trên web | `git switch main` rồi `git pull` |
-| Push bị từ chối với `GH006` hoặc `GH013` | Branch protection hoặc ruleset đang bật | Làm việc qua branch và PR; xem [Buổi 06 – Thử thách nâng cao](session-06-challenge.md) |
+| `Permission denied (publickey)` khi push | SSH key chưa thêm vào GitHub | `ssh -T git@github.com` để chẩn đoán, làm lại phần SSH trong [Tài khoản và repo GitHub](../../resources/setup-github.md) |
+| `.env` xuất hiện trong `git status` | `.gitignore` thiếu dòng `.env`, hoặc file đã bị theo dõi | Thêm `.env` vào `.gitignore`; nếu đã tracked thì `git rm --cached club/.env` rồi commit |
+| `rejected ... (fetch first)` khi push | Remote có commit mới mà local chưa có | `git pull`, xử lý conflict nếu có, push lại. Không `git push --force` |
+| `cp: cannot create directory ... File exists` | `club/` đã tồn tại từ lần thử trước | Xem `ls ~/devops-labs/club`; nếu chỉ là bản thử, xóa nó (xem hộp cảnh báo dưới) rồi copy lại |
+| Conflict marker còn sót trong file sau commit | Quên xóa `<<<<<<<`, `=======`, `>>>>>>>` | Chạy lệnh `grep` ở Bước 7, sửa, commit lại |
+| Merge xong nhưng `main` local chưa có `club/` | Quên `git pull` sau khi merge trên web | `git switch main` rồi `git pull` |
 
-## Tự kiểm tra {#tu-kiem-tra}
+::: danger Trước khi xóa
+Chỉ xóa `club/` nếu bạn chắc nó là bản thử chưa có gì đáng giữ: `rm -rf ~/devops-labs/club`. Kiểm tra đường dẫn hai lần; không bao giờ chạy `rm -rf` với đường dẫn bạn không chắc.
+:::
 
-1. Bạn thêm `.env` vào `.gitignore` nhưng `git status` vẫn báo `.env` thay đổi. Vì sao và xử lý thế nào?
+## Nộp bài
+
+- [ ] Thư mục `club/` có trên nhánh `main` của repo `devops-labs` (qua PR đã merge).
+- [ ] `git ls-files | grep -i '\.env$'` không in gì (không có `.env` trên GitHub).
+- [ ] Đã có PR chứa conflict, đã gỡ và merge; `club/README.md` không còn conflict marker.
+- [ ] `notes/day-03.md` có link hai PR và 2-3 câu giải thích vì sao dùng branch + PR.
+
+## Tự kiểm tra
+
+1. Bạn thêm `.env` vào `.gitignore` nhưng `git status` vẫn báo `.env` thay đổi. Vì sao?
 
 ::: details Đáp án gợi ý
-File đã được theo dõi từ trước; `.gitignore` chỉ áp dụng cho file untracked. Chạy `git rm --cached .env`, commit. Nếu là secret thật đã push thì phải đổi secret.
+File đã được Git theo dõi từ trước; `.gitignore` chỉ áp dụng cho file chưa theo dõi. Chạy `git rm --cached .env` rồi commit. Nếu đó là secret thật đã push lên GitHub thì phải đổi secret.
 :::
 
-2. `git revert` khác `git reset --hard` ở điểm nào, và khi nào dùng cái nào cho nhánh chung?
+2. Vì sao người merge sau là người gỡ conflict?
 
 ::: details Đáp án gợi ý
-`revert` tạo commit mới đảo ngược thay đổi, giữ nguyên lịch sử, an toàn cho nhánh đã push. `reset --hard` di chuyển nhánh và bỏ thay đổi, cần `--force` để push, có thể làm mất việc của người khác, chỉ nên dùng trên nhánh cá nhân chưa chia sẻ.
+`main` đã đổi khi PR đầu merge. Branch của bạn phải đưa `main` mới vào (`git merge origin/main`), tự quyết định kết quả, rồi push lại. Git chỉ đánh dấu chỗ khác nhau, không biết ý định của con người.
 :::
 
-3. Tình huống: đồng đội báo "mình push lên main mà bị rejected, mình nên `git push --force` đúng không?" Bạn trả lời gì?
+3. Đồng đội báo "push bị rejected, mình `git push --force` nhé?". Bạn trả lời gì?
 
 ::: details Đáp án gợi ý
-Không. Rejected nghĩa là remote có commit mới; force push sẽ xóa commit đó. Hãy `git pull` (fetch và merge), xử lý conflict nếu có, rồi push thường. Tốt hơn là chuyển sang feature branch và PR.
+Không. Rejected nghĩa là remote có commit mới; force push sẽ xóa chúng. Chạy `git pull`, gỡ conflict nếu có, rồi push thường. Tốt hơn là làm trên branch riêng và dùng PR.
 :::
 
-## Nộp bài {#nop-bai}
+## Tiếp theo
 
-Nộp vào thư mục `lab-06/` trong repo `devops-labs` theo [mẫu lab](../../templates/lab-template.md). Chi tiết nhiệm vụ và tiêu chí: [Bài tập tuần 3](../../assignments/weekly/week-03.md).
-
-- [ ] `README.md` trả lời đủ 7 câu hỏi của mẫu (vấn đề, kiến thức, các bước, kết quả, lỗi đã gặp, cách khắc phục, cải thiện); ghi level đã làm (L1 hoặc L2).
-- [ ] `evidence/command-output.txt` chứa lệnh và kết quả thật: `git log --oneline --graph --all`, `git status`, và output khi gặp conflict hoặc khi push bị từ chối.
-- [ ] `report.md` có link tới PR của bạn, PR bạn đã review, cách bạn resolve conflict và (nếu làm L2) kết quả branch protection.
-- [ ] `source/` có bản sao `.gitignore`, `docs/team.md`, `README.md` cuối; `screenshots/` có ảnh PR đã Approve và merged (và ảnh branch protection nếu làm L2).
-- [ ] Không commit `.env`, password, token, private key; kiểm tra bằng `git ls-files | grep -i env` trước khi push.
-
-## Recap
-
-- Mỗi thay đổi nằm trên một feature branch nhỏ, commit rõ ràng, và vào `main` qua Pull Request có review.
-- Conflict là bình thường: người merge sau xử lý, bàn với tác giả, không xóa code của người khác.
-- `.gitignore` chỉ ngăn file chưa tracked, secret lộ phải đổi; không `push --force` lên nhánh chung, dùng `git revert`.
-
-Buổi tiếp theo: [Buổi 07 – Container Fundamentals](../week-04/session-07.md).
-
-::: details Tìm hiểu thêm (đọc sau)
-- **Quy ước nên có:** tên branch `feature/add-member-list` hoặc `fix/readme-typo`; thông điệp commit là câu mệnh lệnh ngắn (`Add members section to README`); PR nhỏ, một mục đích, dưới khoảng 300 dòng; `main` luôn chạy được và chỉ nhận thay đổi qua PR.
-- **HEAD** cho biết bạn đang ở branch nào; buổi này dùng merge, rebase viết lại lịch sử nên chưa dùng. Bảng bốn vùng, giải thích từng bước của sơ đồ, luồng của một conflict: xem [Buổi 06 – Thử thách nâng cao](session-06-challenge.md#doc-them).
-:::
-
-::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Ba thử thách: tự tạo conflict ở `docs/team.md`, bật branch protection cho `main` (chỉ làm sau khi xong mọi push trực tiếp), và xử lý `.env` lỡ commit bằng `git rm --cached`. Có gợi ý từng bậc ở [Buổi 06 – Thử thách nâng cao](session-06-challenge.md). Tự thử 15 phút trước khi mở gợi ý.
-:::
-
-::: details Phá lỗi nâng cao
-Tình huống "push bị từ chối, pull thì báo conflict" (tái hiện, điều tra từng bước, nguyên nhân gốc, phòng tránh): xem [Buổi 06 – Thử thách nâng cao](session-06-challenge.md#pha-loi). Làm trước khi bật branch protection.
-:::
+[Ngày 4 – Chạy trang Club bằng container](../week-04/session-07.md).
 
 ::: details Tài liệu tham khảo
-- [Pro Git (sách chính thức, tiếng Việt và tiếng Anh)](https://git-scm.com/book/vi/v2)
-- [Git reference documentation](https://git-scm.com/docs)
+- [Pro Git (sách chính thức)](https://git-scm.com/book/vi/v2)
 - [GitHub Docs – About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
 - [GitHub Docs – Addressing merge conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts)
-- [GitHub Docs – About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 - [GitHub Docs – Connecting to GitHub with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 :::

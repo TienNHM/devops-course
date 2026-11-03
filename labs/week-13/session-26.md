@@ -1,6 +1,6 @@
 # Buổi 26 – Resource & Health
 
-Tuần 13/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 26/32
+Lộ trình Nâng cao · Phần 4 · Buổi 26
 
 [Slide](../../slides/07-operations/session-26.md) · [Bài tập tuần](../../assignments/weekly/week-13.md) · [Hub tuần](README.md)
 

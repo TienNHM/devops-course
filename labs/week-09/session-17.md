@@ -1,6 +1,6 @@
 # Buổi 17 – Automated Testing
 
-Tuần 9/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 17/32
+Lộ trình Nâng cao · Phần 3 · Buổi 17
 
 [Slide buổi 17](../../slides/04-cicd/session-17.md) · [Bài tập tuần 9](../../assignments/weekly/week-09.md) · [Hub tuần 9](README.md)
 

@@ -1,6 +1,6 @@
 # Buổi 10 – Image Optimization
 
-Tuần 5/16 · Giai đoạn 2 – Containerization · Buổi 10/32
+Lộ trình Nâng cao · Phần 2 · Buổi 10
 
 [Slide buổi 10](../../slides/02-docker/session-10.md) · [Bài tập tuần 5](../../assignments/weekly/week-05.md) · [Hub tuần 5](README.md)
 

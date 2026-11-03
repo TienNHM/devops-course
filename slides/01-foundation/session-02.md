@@ -1,13 +1,13 @@
-# Slide buổi 02 – Development Environment
+# Slide Ngày 01 – Môi trường Linux và repo devops-labs
 
-> **Tóm tắt:** Dựng môi trường Linux thật trên Windows 11 bằng WSL2 Ubuntu, VS Code Remote WSL, Git và SSH key GitHub, rồi kiểm tra bằng script check-env. Bài lab tương ứng: [Buổi 02 – Development Environment](../../labs/week-01/session-02.md).
+> **Tóm tắt:** Dựng môi trường Linux thật trên Windows 11 bằng WSL2 Ubuntu, VS Code, Git và SSH key GitHub, clone repo `devops-labs` và push `notes/day-01.md`. Bài lab tương ứng: [Ngày 1 – Môi trường Linux và repo devops-labs](../../labs/week-01/session-02.md).
 
 ## Slide 1: Hôm nay bạn làm được gì
 
 ![Ba mục tiêu: dựng Linux, nối GitHub, tự kiểm tra](/slides/img/s02-goals.svg)
 
 ::: details Ghi chú cho mentor
-- Mục tiêu đầy đủ: giải thích WSL2 khác WSL1 và máy ảo ở đâu; cài WSL2 + Ubuntu và xác minh VERSION 2; phân biệt `~` với `/mnt/c`; cấu hình Git, tạo SSH key ed25519, xác thực với GitHub; mở dự án bằng VS Code Remote WSL và chạy script kiểm tra môi trường.
+- Cuối ngày mỗi bạn có: WSL2 Ubuntu, VS Code mở trong Ubuntu, SSH key đăng nhập GitHub, `~/devops-labs` đã clone và `notes/day-01.md` đã push.
 - Hỏi: máy ai đang là Windows 10, Windows 11, macOS?
 :::
 
@@ -18,140 +18,90 @@
 ![Cùng lệnh docker compose up, ba máy cho ba kết quả khác nhau](/slides/img/s02-problem.svg)
 
 ::: details Ghi chú cho mentor
-- CLB có 20 thành viên: Windows 10, Windows 11, vài máy macOS.
-- Cùng lệnh `docker compose up`, người chạy được, người báo not found. Script có ký tự xuống dòng Windows gây lỗi `\r: command not found`.
-- Server thật gần như luôn chạy Linux, nên luyện tập trên môi trường giống Linux từ máy cá nhân.
+- CLB có 20 thành viên: Windows 10, Windows 11, vài máy macOS. Cùng lệnh `docker compose up`, người chạy được, người báo not found.
+- Script có ký tự xuống dòng Windows gây lỗi `\r: command not found`. Server thật gần như luôn chạy Linux, nên cả lớp dùng chung môi trường Linux (WSL2).
 :::
 
 ---
 
-## Slide 3: WSL2 chạy nhân Linux thật
+## Slide 3: "Chạy được trên máy tôi"
 
-![WSL1 dịch syscall sang nhân Windows, WSL2 chạy nhân Linux thật trong VM nhẹ](/slides/img/s02-wsl-compare.svg)
+![Nam gửi zip cho Lan, Lan chạy lỗi vì Node khác phiên bản, thiếu DB_PASSWORD, không có test](/slides/img/s01-works-on-my-machine.svg)
 
 ::: details Ghi chú cho mentor
-- Chạy Linux ngay trên Windows, không cần dual-boot. Windows tự khởi động và tắt máy ảo khi cần. Docker Desktop ở các buổi sau tích hợp với WSL2.
-- So sánh nhanh: nhân Linux (WSL1 là lớp dịch syscall; WSL2 và máy ảo là nhân thật); filesystem Linux (WSL1 trung bình; WSL2 và máy ảo nhanh); truy cập `/mnt/c` (WSL1 nhanh hơn, WSL2 chậm); Docker (WSL1 hạn chế, WSL2 tốt).
-- Trong khóa chỉ dùng WSL2.
+- Kể ngắn 1 phút: Nam gửi zip qua Zalo, Lan cài Node khác phiên bản và quên biến mật khẩu database, hai bạn mất cả buổi tối.
+- Đây là vấn đề DevOps giải quyết: lỗi nằm ở quy trình, không phải ở code. Không kể lịch sử DevOps.
 :::
 
 ---
 
-## Slide 4: Terminal, shell, lệnh
+## Slide 4: Đường đi của code trong 10 ngày
 
-![Terminal là cửa sổ, shell bash là chương trình đọc lệnh, lệnh là chương trình được gọi](/slides/img/s02-shell-layers.svg)
+![Quy trình tự động: push, build và test, đóng gói image, registry, deploy, kiểm tra](/slides/img/s01-auto-flow.svg)
+
+- Dev viết code, **Git** lưu và chia sẻ (Ngày 3).
+- **Build** và **test** tự động mỗi lần push (Ngày 9).
+- Đóng gói thành **image**, đưa lên registry (Ngày 6 và Ngày 10).
+- **Chạy** bằng container, giống nhau ở mọi máy (Ngày 4 đến 8).
+- DevOps là làm cho cả đường này tự động và lặp lại được.
 
 ::: details Ghi chú cho mentor
-- Terminal là cửa sổ (Windows Terminal); shell là chương trình đọc và chạy lệnh (`bash`, `zsh`, PowerShell); lệnh là chương trình được gọi (`ls`, `git`, `cd`).
-- Ví von: terminal là bàn điều khiển, shell là người phiên dịch.
-- Bash đọc `~/.bashrc` mỗi lần mở shell tương tác.
+- Giữ đúng 10 phút cho phần giới thiệu, chỉ hỏi "bước nào bạn từng làm tay?".
+- Chưa cần giải thích từng ô: mỗi ô sẽ được làm thật ở một ngày sau.
 :::
 
 ---
 
-## Slide 5: Hai thế giới filesystem
+## Slide 5: Mã nguồn nằm trong ~, không nằm trong /mnt/c
 
 ![Linux ext4 trong ~ nhanh; ổ Windows dưới /mnt/c chậm và hay lỗi](/slides/img/s02-filesystems.svg)
 
 ::: details Ghi chú cho mentor
 - Linux (ext4): `/home/TEN_BAN` hay `~`, dùng cho mã nguồn, Docker build, mọi lab. Ổ Windows: `/mnt/c/Users/...`, chỉ để trao đổi file.
 - `/mnt/c` đi qua lớp mạng 9P nên chậm với nhiều file nhỏ (`npm install`, `git status`), còn gây lỗi quyền file và xuống dòng.
-- Ví von: nấu ăn trong bếp nhà mình, đừng chạy sang bếp hàng xóm lấy từng hạt gia vị.
+- Lệnh `apt`: luôn `sudo apt update` (làm mới danh sách gói) rồi mới `sudo apt install`.
 :::
 
 ---
 
-## Slide 6: Demo: đo tốc độ hai filesystem
-
-```bash
-mkdir ~/io-test && cd ~/io-test
-time (for i in $(seq 1 2000); do echo x > f$i; done)
-cd /mnt/c/Users/TEN_WINDOWS && mkdir io-test && cd io-test
-time (for i in $(seq 1 2000); do echo x > f$i; done)
-```
-
-So sánh dòng `real`: trong `~` nhanh hơn rõ rệt.
-
-::: details Ghi chú cho mentor
-- Xem `pwd` trong `~` và danh sách `/mnt/c`: hai đường dẫn, hai ổ đĩa khác nhau.
-- Kỳ vọng: lần trong `~` nhanh hơn rõ rệt, thường vài lần trở lên. Số chính xác tùy máy, xu hướng mới quan trọng.
-- Chỉ xóa đúng thư mục `io-test` vừa tạo.
-:::
-
----
-
-## Slide 7: apt: update rồi mới install
-
-![apt update làm mới danh sách gói, apt install cài phần mềm](/slides/img/s02-apt.svg)
-
-```bash
-sudo apt update
-sudo apt install -y git
-```
-
-::: details Ghi chú cho mentor
-- Ubuntu cài phần mềm qua `apt` từ kho đã ký số. `update` làm mới danh sách gói, không nâng cấp phần mềm.
-- `sudo` chạy lệnh với quyền root.
-- Ví von: xem thực đơn mới nhất trước khi gọi món.
-:::
-
----
-
-## Slide 8: Kiến trúc môi trường
-
-![Windows chứa VS Code, Terminal, Docker; WSL2 chứa Ubuntu, Home, VS Code Server](/slides/img/s02-architecture.svg)
-
-::: details Ghi chú cho mentor
-- VS Code trên Windows chỉ là giao diện; VS Code Server chạy bên trong WSL2 và làm việc với Home của Ubuntu.
-- Docker Desktop tích hợp với WSL2 từ Buổi 07.
-- Ubuntu nói chuyện với GitHub qua SSH.
-:::
-
----
-
-## Slide 9: SSH key: chìa khóa và ổ khóa
+## Slide 6: SSH key: chìa khóa và ổ khóa
 
 ![Private key ở lại máy, public key dán lên GitHub](/slides/img/s02-ssh-keys.svg)
 
-::: details Ghi chú cho mentor
-- Private key `~/.ssh/id_ed25519`: ở lại máy bạn, không chia sẻ, không commit. Public key `~/.ssh/id_ed25519.pub`: dán lên GitHub.
-- Ví von: public key là ổ khóa đưa cho GitHub, private key là chìa khóa bạn giữ.
-- Tạo khóa: `ssh-keygen -t ed25519 -C "email"`, nên đặt passphrase.
-:::
-
----
-
-## Slide 10: Đăng nhập GitHub bằng SSH
-
-![Trình tự git push qua SSH: thử thách, ký bằng private key, xác thực](/slides/img/s02-ssh-handshake.svg)
+```bash
+ssh-keygen -t ed25519 -C "email"
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com
+```
 
 ::: details Ghi chú cho mentor
-- GitHub dùng public key để thử thách máy bạn; chỉ người giữ private key mới trả lời đúng.
-- ssh-agent giữ sẵn khóa đã mở để bạn không gõ lại passphrase; agent chỉ sống trong phiên terminal hiện tại.
+- Private key `~/.ssh/id_ed25519`: ở lại máy bạn, không chia sẻ, không commit. Public key `.pub`: dán lên GitHub.
+- ssh-agent giữ sẵn khóa đã mở; agent chỉ sống trong phiên terminal hiện tại.
 - `ssh -T git@github.com` báo "successfully authenticated" là đúng; mã thoát 1 của lệnh này là bình thường.
 :::
 
 ---
 
-## Slide 11: Lab: 60 phút ở lớp, phần còn lại ở nhà
+## Slide 7: Lab: bảy bước trong 85 phút
 
-| Khi nào | Việc làm | Mốc xong |
+| Bước | Việc làm | Mốc xong |
 | --- | --- | --- |
-| Ở lớp | WSL2 + Ubuntu, VS Code Remote WSL, `git config`, `check-env.sh` | VERSION 2, `exit code: 0` |
-| Ở nhà | SSH key, thêm lên GitHub, nối remote bằng SSH | `ssh -T` thành công |
-| Nộp | `lab-02/` có `evidence/command-output.txt` | log thật |
+| 1-2 | WSL2 + Ubuntu, VS Code trong Ubuntu | VERSION 2, nhãn "WSL: Ubuntu" |
+| 3-4 | `git config`, SSH key, thêm lên GitHub | `ssh -T` thành công |
+| 5-6 | Clone `devops-labs`, chạy `check-env.sh` | `exit code: 0` |
+| 7 | Ghi `notes/day-01.md`, commit, push | File hiện trên GitHub |
 
-Làm theo bài [Buổi 02 – Development Environment](../../labs/week-01/session-02.md). Cài đặt chi tiết: [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md).
+Lệnh đầy đủ: [Ngày 1 – Môi trường Linux và repo devops-labs](../../labs/week-01/session-02.md). Cài đặt chi tiết: [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md).
 
 ::: details Ghi chú cho mentor
 - Cài WSL2 lần đầu kèm khởi động lại mất khoảng 30 phút, nên cài trước giờ học nếu có thể.
-- Lệnh kiểm tra ở lớp: `bash resources/check-env.sh 2`. Số `2` nghĩa là kiểm tra tới Buổi 02.
-- L2 tùy chọn: tự viết script kiểm tra mở rộng (node, npm, make, quyền key 600, mã thoát khác 0) và thư mục dotfiles có `install.sh` chạy hai lần không lỗi.
+- `bash resources/check-env.sh 2`: số `2` là tham số của script, cứ gõ đúng.
+- Cuối ngày mỗi bạn mở trang GitHub của `devops-labs` và cho mentor xem `notes/day-01.md`.
 :::
 
 ---
 
-## Slide 12: Kết quả đúng trông như thế nào
+## Slide 8: Kết quả đúng trông như thế nào
 
 ```text
 PS> wsl --list --verbose
@@ -164,13 +114,13 @@ Hi TEN_GITHUB! You've successfully authenticated, ...
 VS Code: góc dưới trái ghi "WSL: Ubuntu-24.04".
 
 ::: details Ghi chú cho mentor
-- Checklist L1: `wsl --list --verbose` thấy VERSION 2; `lab-02` nằm trong `~`, `code .` hiện "WSL: Ubuntu"; `ssh -T git@github.com` xác thực thành công; `evidence/command-output.txt` chứa output các lệnh và log `check-env.sh`.
 - Log `check-env.sh`: git, curl là `[ OK ]`, docker, kubectl chỉ hiện `[ DE SAU ]`, cuối cùng `exit code: 0`.
+- `notes/day-01.md` phải có output thật do máy sinh ra, cộng 2 đến 3 câu của bạn.
 :::
 
 ---
 
-## Slide 13: Lỗi thường gặp
+## Slide 9: Lỗi thường gặp
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
@@ -182,34 +132,20 @@ VS Code: góc dưới trái ghi "WSL: Ubuntu-24.04".
 ::: details Ghi chú cho mentor
 - `UNPROTECTED PRIVATE KEY FILE`: quyền file key quá rộng, chạy `chmod 600` lên key và `chmod 700 ~/.ssh`.
 - Port 22 timeout: mạng chặn, thử SSH qua cổng 443 theo GitHub Docs.
-- SSH từ chối key mà người khác đọc được; tự phá trên một khóa thử `~/.ssh/test_key`, đừng đụng khóa thật.
 - Bảng đầy đủ nằm trong mục "Gặp lỗi?" của bài lab.
 :::
 
 ---
 
-## Slide 14: Thử thách
-
-Clone repo vào `/mnt/c/Users/An/code`: `npm install` mất 10 phút, `./run.sh` báo `\r: command not found`. Bạn xử lý thế nào?
-
-`ssh -T git@github.com` báo `Permission denied (publickey)`: liệt kê ba điểm kiểm tra đầu tiên.
-
-::: details Ghi chú cho mentor
-- Đáp án 1: clone lại vào `~`, chuyển script sang LF và đặt `core.autocrlf input`.
-- Đáp án 2: public key đã dán lên GitHub chưa; `ssh-add -l`; `ssh -vT git@github.com` và quyền file 600.
-:::
-
----
-
-## Slide 15: Recap
+## Slide 10: Recap
 
 ![Ba điều cần nhớ: WSL2 + Ubuntu, shell và apt, SSH key](/slides/img/s02-recap.svg)
 
-Buổi tiếp theo: Linux CLI ([Slide buổi 03](session-03.md)).
+Ngày tiếp theo: [Slide Ngày 02](session-03.md).
 
 ---
 
-## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+## Slide 11: Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [WSL documentation](https://learn.microsoft.com/en-us/windows/wsl/): cài và dùng Linux trên Windows.
 - **Tài liệu chính thức:** [VS Code Remote với WSL](https://code.visualstudio.com/docs/remote/wsl): viết code trong WSL bằng VS Code.

@@ -1,6 +1,6 @@
 # Buổi 15 – CI/CD Fundamentals
 
-Tuần 8/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 15/32
+Lộ trình Nâng cao · Phần 3 · Buổi 15
 
 [Slide buổi 15](../../slides/04-cicd/session-15.md) · [Bài tập tuần 8](../../assignments/weekly/week-08.md) · [Hub Tuần 8](README.md)
 

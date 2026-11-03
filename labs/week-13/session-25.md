@@ -1,6 +1,6 @@
 # Buổi 25 – Configuration Management
 
-Tuần 13/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 25/32
+Lộ trình Nâng cao · Phần 4 · Buổi 25
 
 [Slide](../../slides/06-kubectl/session-25.md) · [Bài tập tuần](../../assignments/weekly/week-13.md) · [Hub tuần](README.md)
 

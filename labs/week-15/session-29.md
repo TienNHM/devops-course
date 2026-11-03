@@ -1,6 +1,6 @@
 # Buổi 29 – Architecture & Planning
 
-Tuần 15/16 · Giai đoạn 5 – Capstone Project · Buổi 29/32
+Lộ trình Nâng cao · Phần 5 · Buổi 29
 
 [Slide](../../slides/08-capstone/session-29.md) · [Bài tập tuần](../../assignments/weekly/week-15.md) · [Hub tuần](README.md)
 

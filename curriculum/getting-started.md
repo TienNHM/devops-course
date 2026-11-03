@@ -1,22 +1,21 @@
 # Bắt đầu từ đây
 
-Khóa này dạy bạn đưa một ứng dụng web từ máy tính của mình lên chạy ổn định, theo cách các đội kỹ thuật làm thật: dùng Linux, Git, Docker, tự động hóa bằng GitHub Actions và chạy trên Kubernetes. Bạn không cần biết DevOps trước, chỉ cần dùng máy tính thoải mái và sẵn sàng gõ lệnh. Cuối khóa, bạn tự dựng được một hệ thống gồm giao diện web, API và cơ sở dữ liệu, có quy trình tự kiểm tra và đóng gói, rồi giải thích được vì sao nó chạy.
+Khóa này dạy bạn đưa một ứng dụng web từ máy tính của mình lên chạy ổn định, theo cách các đội kỹ thuật làm thật: dùng Linux, Git, Docker và tự động hóa bằng GitHub Actions. Bạn không cần biết DevOps trước, chỉ cần dùng máy tính thoải mái và sẵn sàng gõ lệnh. Bạn học bằng cách **làm một dự án thật**, không phải đọc lý thuyết.
 
-> **Tóm tắt:** Học 16 tuần, mỗi tuần 2 buổi 120 phút cộng 2–3 giờ ở nhà. Việc cần làm trước buổi 01 mất khoảng 30 phút, gồm 5 việc bên dưới. Mỗi buổi đi theo thứ tự đọc, làm lab, gặp lỗi, tự kiểm tra, nộp bài.
+> **Tóm tắt:** Lộ trình Cơ bản kéo dài 14 ngày, mỗi ngày khoảng 2 giờ. Việc cần làm trước Ngày 1 mất khoảng 20 phút, gồm 4 việc bên dưới. Mỗi ngày đi theo thứ tự xem slide, làm lab, nộp bài.
 
-## Trước buổi 01: 5 việc, khoảng 30 phút
+## Trước Ngày 1: 4 việc, khoảng 20 phút
 
-::: tip Làm đủ 5 việc, theo thứ tự
+::: tip Làm đủ 4 việc, theo thứ tự
 - [ ] **Tài khoản GitHub và 2FA** (khoảng 5 phút). Tạo tài khoản và bật xác thực hai lớp, xem mục 1 của [Tài khoản GitHub và repo devops-labs](../resources/setup-github.md).
-- [ ] **Repo `devops-labs`** (khoảng 3 phút). Tạo repo cá nhân tên `devops-labs`, chọn chế độ **Public** (cần để dùng GitHub Pages và GHCR miễn phí về sau), xem mục 2 của trang trên.
-- [ ] **Cài Git** (khoảng 7 phút). Windows: tải Git for Windows từ git-scm.com, giữ lựa chọn mặc định (bản này kèm Git Bash). macOS và Linux thường đã có sẵn. Xem [Hướng dẫn cài đặt môi trường](../resources/setup-guide.md#can-ngay-tuan-1). Mở Git Bash, chạy `git config --global user.name "Ten Ban"` và `git config --global user.email "email-github@example.com"` (một lần duy nhất). Buổi 01 nộp bằng web thì chưa cần, nhưng làm sớm đỡ gặp lỗi `Author identity unknown` sau này.
+- [ ] **Repo `devops-labs`** (khoảng 3 phút). Tạo repo cá nhân tên `devops-labs`, chọn chế độ **Public** (cần để dùng GitHub Actions và GHCR miễn phí về sau), xem mục 2 của trang trên.
 - [ ] **Cài Visual Studio Code** (khoảng 5 phút), chọn "Add to PATH" khi cài.
-- [ ] **Đọc [Terminal 101](../resources/terminal-101.md)** (khoảng 10 phút, phần mở Git Bash và 10 lệnh đầu). Buổi 01 gõ lệnh trong Git Bash: bấm Start, gõ `Git Bash`.
+- [ ] **Đọc [Terminal 101](../resources/terminal-101.md)** (khoảng 10 phút, tùy chọn nhưng nên làm nếu bạn chưa quen dòng lệnh).
 
-Đừng cài trước: WSL2 để dành cho Buổi 02, Docker để dành cho Buổi 07 (Container Fundamentals), kind để dành cho Buổi 21. Buổi 08 là Docker CLI. Mỗi công cụ được cài đúng lúc, kèm hướng dẫn từng bước trong [Hướng dẫn cài đặt môi trường](../resources/setup-guide.md).
+Đừng cài trước: WSL2 và Git để dành cho Ngày 1, Docker để dành cho Ngày 4. Mỗi công cụ được cài đúng lúc, kèm hướng dẫn từng bước trong [Hướng dẫn cài đặt môi trường](../resources/setup-guide.md).
 :::
 
-Từ nào lạ thì tra [Thuật ngữ](../resources/glossary.md). Cần dùng Git ngay ở Buổi 01 để nộp bài? Xem [Git trong 10 phút](how-to-learn.md#git-10-phut), hoặc nộp bằng upload trên web GitHub.
+Từ nào lạ thì tra [Thuật ngữ](../resources/glossary.md).
 
 ## Chọn đường học của bạn
 
@@ -25,29 +24,27 @@ flowchart TD
     A["Bạn là ai?"] --> B["Người mới, chưa biết DevOps"]
     A --> C["Đã dùng được Docker, Compose, CI"]
     A --> D["Chỉ muốn đưa web lên mạng nhanh"]
-    B --> E["Lộ trình Cơ bản (tuần 1-10)"]
-    C --> F["Lộ trình Nâng cao (tuần 11-16)"]
+    B --> E["Lộ trình Cơ bản: 14 ngày"]
+    C --> F["Lộ trình Nâng cao"]
     D --> G["Vibe Deploy: lộ trình riêng, không cần Kubernetes"]
 ```
 
-- **Người mới:** bắt đầu từ [Lộ trình Cơ bản](basic.md) (tuần 1–10). Làm mức L1 là đủ.
-- **Đã dùng được Docker, Compose và CI:** vào [Lộ trình Nâng cao](advanced.md) (tuần 11–16), nhớ tự kiểm tra điều kiện ở đầu trang đó.
+- **Người mới:** bắt đầu từ [Lộ trình Cơ bản](basic.md): 14 ngày, mỗi ngày khoảng 2 giờ, làm một dự án xuyên suốt.
+- **Đã dùng được Docker, Compose và CI:** vào [Lộ trình Nâng cao](advanced.md), nhớ tự kiểm tra điều kiện ở đầu trang đó.
 - **Đã biết lập trình:** vẫn học theo lộ trình, làm thêm các thử thách L2 ở cuối mỗi bài.
 - **Chỉ muốn lên mạng nhanh:** [Vibe Deploy](../vibe/index.md), một lộ trình riêng, ngắn hơn, không cần Kubernetes.
-- **Muốn xem toàn cảnh trước:** [Lộ trình đầy đủ 16 tuần](syllabus.md).
+- **Muốn xem toàn cảnh trước:** [Lộ trình đầy đủ](syllabus.md).
 
-## Xong 5 việc? Vào học
+## Xong 4 việc? Vào học
 
-Mở [Tuần 1](../labs/week-01/README.md) để xem kế hoạch tuần, hoặc vào thẳng buổi đầu tiên.
-
-**[Vào Buổi 01: xem slide trước](../slides/01-foundation/session-01.md)**, rồi làm [lab Buổi 01](../labs/week-01/session-01.md).
+**[Vào Ngày 1: xem slide trước](../slides/01-foundation/session-02.md)**, rồi làm [lab Ngày 1](../labs/week-01/session-02.md). Muốn xem cả 14 ngày trước: [Kế hoạch 14 ngày](basic.md).
 
 ## Cần tra cứu sau này
 
 Trang [Cách học khóa này](how-to-learn.md) gom những thứ bạn sẽ tra dần, không cần đọc trước:
 
 - Git trong 10 phút và cách nộp bài bằng branch, Pull Request.
-- Cách học một tuần, hai mức L1 và L2, tình huống lỗi.
+- Cách học một ngày, hai mức L1 và L2, tình huống lỗi.
 - Cấu trúc repo `devops-labs`, theo dõi tiến độ bằng Issues và Projects.
 - Mẫu câu hỏi khi cần giúp, mentor và kênh hỏi.
 - Quy tắc dùng AI và trung thực học thuật.

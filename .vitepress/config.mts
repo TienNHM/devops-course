@@ -2,8 +2,9 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
-import { courseTree } from './course'
+import { courseTracks, courseTree, type Lesson } from './course'
 import { slideLink } from './deck'
+import { ADVANCED_SESSIONS, BASIC_SESSIONS, trackOfSession, type TrackId } from './tracks'
 
 const repo = process.env.REPO_URL || 'https://github.com/TienNHM/devops-course'
 
@@ -32,12 +33,12 @@ const group = (text: string, items: (Item | null)[], extra: Partial<Item> = {}):
 
 const phases = courseTree()
 
-type TrackId = 'basic' | 'advanced'
 const trackName: Record<TrackId, string> = { basic: 'Cơ bản', advanced: 'Nâng cao' }
+const tracks = courseTracks()
 
-// Cây học cho /labs/, /curriculum/ và /assignments/.
-// Có `track`: chỉ hiện các giai đoạn của lộ trình đó (luôn mở, không gập) kèm lối sang lộ trình khác.
-// Không có `track`: hiện cả hai lộ trình (cho các trang chung như Bắt đầu, Đánh giá).
+// Cây học cho lab, slide và trang lộ trình. Thứ tự luôn là slide trước, lab sau.
+// Có `track`: chỉ hiện lộ trình đó (luôn mở, không gập) kèm lối sang lộ trình khác.
+// Không có `track`: hiện cả hai lộ trình (cho các trang chung như Bắt đầu, Đánh giá, tuần, bài tập).
 function learningSidebar(track?: TrackId): Item[] {
   const start = group(
     'Bắt đầu từ đây',
@@ -45,7 +46,7 @@ function learningSidebar(track?: TrackId): Item[] {
       page('Bắt đầu từ đây', '/curriculum/getting-started'),
       page('Cách học', '/curriculum/how-to-learn'),
       page('Cài đặt máy', '/resources/setup-guide'),
-      page('Lộ trình đầy đủ 16 tuần', '/curriculum/syllabus'),
+      page('Lộ trình đầy đủ', '/curriculum/syllabus'),
     ],
     track ? { collapsed: true } : {},
   )
@@ -60,33 +61,25 @@ function learningSidebar(track?: TrackId): Item[] {
     ],
     { collapsed: true },
   )
-  const shown = track ? phases.filter((p) => p.track === track) : phases
-  // Mỗi tuần là một nhóm gập; bấm tên tuần đi thẳng vào slide của buổi đầu. Thứ tự: slide trước, lab sau.
-  const weekItem = (w: (typeof phases)[number]['weeks'][number]): Item | null =>
-    group(
-      w.title,
-      [
-        ...w.sessions.flatMap((s, i) => [
-          page(`Buổi ${pad(s)} · Slide: ${w.sessionNames[i]}`, slideLink(s)),
-          page(`Buổi ${pad(s)} · Lab`, `/labs/week-${w.no}/session-${pad(s)}`),
-        ]),
-        page('Bài tập tuần', `/assignments/weekly/week-${w.no}`),
-        page('Tổng quan tuần', w.link),
-      ],
-      { collapsed: true, link: slideLink(w.sessions[0]) },
+  // Mỗi ngày/buổi là một nhóm gập; bấm tên đi thẳng vào slide, bên trong có Slide rồi Lab.
+  const lessonItem = (l: Lesson): Item | null =>
+    group(l.label, [page('Xem slide', l.slide), page('Làm lab', l.lab)], { collapsed: true, link: l.slide })
+  const stagesOf = (t: (typeof tracks)[number]) =>
+    t.stages.map((st, i) =>
+      group(track ? st.title : `${trackName[t.id]} · ${st.title}`, st.lessons.map(lessonItem), track ? {} : { collapsed: i > 0 }),
     )
-  const stages = shown.map((phase, i) =>
-    group(
-      track ? phase.title : `${trackName[phase.track]} · ${phase.title}`,
-      phase.weeks.map(weekItem),
-      track ? {} : { collapsed: i > 0 },
-    ),
-  )
-  if (!track) return present([start, ...stages, about])
+  const wrapup = group('Ngày 11–14 · Hoàn thiện và demo', [page('Kế hoạch 4 ngày cuối', '/curriculum/basic-wrapup')], track ? {} : { collapsed: true })
+
+  if (!track) {
+    const all = tracks.flatMap((t) => [...stagesOf(t), ...(t.id === 'basic' ? [wrapup] : [])])
+    return present([start, ...all, about])
+  }
+  const t = tracks.find((x) => x.id === track)!
   const other: TrackId = track === 'basic' ? 'advanced' : 'basic'
   return present([
     group(`Lộ trình ${trackName[track]}`, [page(`Tổng quan lộ trình ${trackName[track]}`, `/curriculum/${track}`)]),
-    ...stages,
+    ...stagesOf(t),
+    ...(track === 'basic' ? [wrapup] : []),
     group('Lộ trình khác', [page(`Lộ trình ${trackName[other]}`, `/curriculum/${other}`), page('Vibe Deploy (lên mạng nhanh)', '/vibe/')], {
       collapsed: true,
     }),
@@ -105,33 +98,20 @@ const slideDecks: { dir: string; name: string }[] = [
   { dir: '07-operations', name: 'Operations' },
   { dir: '08-capstone', name: 'Capstone' },
 ]
-// Deck nào thuộc giai đoạn nào (theo số thứ tự giai đoạn)
-const deckPhase: Record<string, number> = {
-  '01-foundation': 1, '02-docker': 2, '03-compose': 2, '04-cicd': 3,
-  '05-kubernetes': 4, '06-kubectl': 4, '07-operations': 4, '08-capstone': 5,
-}
-
-function slidesSidebar(track?: TrackId): Item[] {
+// Chỉ dùng cho trang tổng quan /slides/: liệt kê 8 bộ slide. Trang slide từng buổi dùng sidebar học (learningSidebar).
+function slidesSidebar(): Item[] {
   const deckItem = (d: { dir: string; name: string }): Item | null => {
     const dirPath = join(root, 'slides', d.dir)
     if (!existsSync(dirPath)) return null
     const sessions = Array.from({ length: 32 }, (_, i) => pad(i + 1))
       .filter((n) => existsSync(join(dirPath, `session-${n}.md`)))
       .map((n) => ({
-        text: h1(`slides/${d.dir}/session-${n}.md`).replace(/^Slide buổi /, 'Buổi '),
+        text: h1(`slides/${d.dir}/session-${n}.md`).replace(/^Slide (?:buổi|Ngày) /, 'Bài '),
         link: `/slides/${d.dir}/session-${n}`,
       }))
     return { text: `${d.dir.slice(0, 2)} · ${d.name}`, collapsed: true, link: `/slides/${d.dir}/`, items: sessions }
   }
-  const shown = track ? phases.filter((p) => p.track === track) : phases
-  const stages = shown.map((phase, i) =>
-    group(
-      track ? phase.title : `${trackName[phase.track]} · ${phase.title}`,
-      slideDecks.filter((d) => deckPhase[d.dir] === phase.no).map(deckItem),
-      track ? {} : { collapsed: i > 0 },
-    ),
-  )
-  return present([group('Slide', [page('Tổng quan 32 buổi', '/slides/')]), ...stages])
+  return present([group('Slide', [page('Tổng quan 32 bài', '/slides/')]), group('Các bộ slide', slideDecks.map(deckItem))])
 }
 
 // Sidebar chung cho các trang tra cứu
@@ -240,15 +220,14 @@ function vibeSidebar(): Item[] {
   ])
 }
 
-// Mỗi tuần và mỗi bộ slide dùng sidebar của lộ trình chứa nó
-const trackOfWeek = (n: number): TrackId => (n <= 10 ? 'basic' : 'advanced')
-const weekSidebars: Record<string, Item[]> = {}
-for (let n = 1; n <= 16; n++) {
-  weekSidebars[`/labs/week-${pad(n)}/`] = learningSidebar(trackOfWeek(n))
-  weekSidebars[`/assignments/weekly/week-${pad(n)}`] = learningSidebar(trackOfWeek(n))
+// Mỗi buổi (lab và slide) dùng sidebar của lộ trình chứa nó. Khóa theo buổi, nên trang tuần và bài tập tuần dùng sidebar chung.
+const sessionSidebars: Record<string, Item[]> = {}
+for (let n = 1; n <= 32; n++) {
+  const sb = learningSidebar(trackOfSession(n))
+  sessionSidebars[`/labs/week-${pad(Math.ceil(n / 2))}/session-${pad(n)}`] = sb
+  sessionSidebars[slideLink(n)] = sb
 }
-const deckSidebars: Record<string, Item[]> = {}
-for (const d of slideDecks) deckSidebars[`/slides/${d.dir}/`] = learningSidebar(deckPhase[d.dir] <= 3 ? 'basic' : 'advanced')
+const sessionAlt = (list: number[]) => list.map(pad).join('|')
 
 export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>({
   lang: 'vi-VN',
@@ -375,12 +354,12 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
       {
         text: 'Cơ bản',
         link: '/curriculum/basic',
-        activeMatch: '^/(curriculum/basic|labs/week-(0[1-9]|10)/|assignments/weekly/week-(0[1-9]|10)|slides/0[1-4]-)',
+        activeMatch: `^/(curriculum/basic|(labs/week-\\d\\d|slides/\\d\\d-[a-z]+)/session-(${sessionAlt(BASIC_SESSIONS)}))`,
       },
       {
         text: 'Nâng cao',
         link: '/curriculum/advanced',
-        activeMatch: '^/(curriculum/advanced|labs/week-1[1-6]/|assignments/(weekly/week-1[1-6]|capstone/)|slides/0[5-8]-)',
+        activeMatch: `^/(curriculum/advanced|assignments/capstone|(labs/week-\\d\\d|slides/\\d\\d-[a-z]+)/session-(${sessionAlt(ADVANCED_SESSIONS)}))`,
       },
       { text: 'Vibe Deploy', link: '/vibe/' },
       {
@@ -396,8 +375,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config & { repoUrl
     ],
     sidebar: {
       // Khóa dài hơn được kiểm tra trước ('/curriculum/basic' trước '/curriculum/'): VitePress chọn theo độ sâu, bằng nhau thì theo thứ tự khai báo
-      ...weekSidebars,
-      ...deckSidebars,
+      ...sessionSidebars,
       '/assignments/capstone/': learningSidebar('advanced'),
       '/curriculum/basic': learningSidebar('basic'),
       '/curriculum/advanced': learningSidebar('advanced'),

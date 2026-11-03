@@ -1,6 +1,6 @@
 # Buổi 14 – Production-minded Compose
 
-Tuần 7/16 · Giai đoạn 2 – Containerization · Buổi 14/32
+Lộ trình Nâng cao · Phần 2 · Buổi 14
 
 [Slide buổi 14](../../slides/03-compose/session-14.md) · [Bài tập tuần 7](../../assignments/weekly/week-07.md) · [Hub tuần 7](README.md)
 

@@ -1,6 +1,6 @@
 # Buổi 23 – kubectl Fundamentals
 
-Tuần 12/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 23/32
+Lộ trình Nâng cao · Phần 4 · Buổi 23
 
 [Slide](../../slides/06-kubectl/session-23.md) · [Bài tập tuần](../../assignments/weekly/week-12.md) · [Hub tuần](README.md)
 

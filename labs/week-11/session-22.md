@@ -1,6 +1,6 @@
 # Buổi 22 – Pods & Deployments
 
-Tuần 11/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 22/32
+Lộ trình Nâng cao · Phần 4 · Buổi 22
 
 [Slide Buổi 22 – Pods & Deployments](../../slides/05-kubernetes/session-22.md) · [Bài tập Tuần 11](../../assignments/weekly/week-11.md) · [Hub Tuần 11](README.md)
 

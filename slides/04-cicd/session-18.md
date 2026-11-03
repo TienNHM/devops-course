@@ -1,15 +1,14 @@
-# Slide buổi 18 – Docker CI Pipeline
+# Slide Ngày 10 – Publish Club API lên GHCR
 
-> **Tóm tắt:** Dùng GitHub Actions với Buildx để tự động build image club-api, gắn tag theo SHA và git tag, bật cache và publish lên GHCR bằng GITHUB_TOKEN.
+> **Tóm tắt:** Khi merge vào `main`, GitHub Actions tự build image club-api, gắn tag theo SHA và đẩy lên GHCR bằng GITHUB_TOKEN; bạn pull và chạy image đã publish.
 
 ## Slide 1: Hôm nay bạn làm được gì
 
 ![Ba mục tiêu: build trong CI, gắn tag, publish lên GHCR](/slides/img/s18-goals.svg)
 
 ::: details Ghi chú cho mentor
-- Chi tiết mục tiêu: phân biệt image tag, digest, registry; viết workflow dùng `login-action`, `metadata-action`, `build-push-action`.
-- Hiểu `GITHUB_TOKEN` và quyền `packages: write` theo least privilege.
-- Bật cache `type=gha` và đo thời gian build (tùy chọn); pull image vừa publish và kiểm tra `/health`.
+- Đây là mốc "ship it" của Lộ trình Cơ bản: từ code đến image công khai.
+- Ba việc: workflow publish, tag `sha-` khớp commit, pull và chạy lại image.
 :::
 
 ---
@@ -26,78 +25,48 @@
 
 ---
 
-## Slide 3: Image, tag, digest, registry
+## Slide 3: Tag trỏ tới digest
 
 ![Một repository trên ghcr.io: tag trỏ tới digest, latest có thể đổi sang digest khác](/slides/img/s18-tag-digest.svg)
 
-| Khái niệm | Ví dụ |
-| --- | --- |
-| Registry, repository | `ghcr.io`, `ghcr.io/ten-ban/club-api` |
-| Tag (con trỏ), digest (mã băm) | `sha-3f2a1bc`, `sha256:...` |
+Tag `sha-3f2a1bc` truy vết về commit. Digest `sha256:...` là mã băm nội dung, không đổi.
+
+::: details Ghi chú cho mentor
+- Chỉ cần: registry `ghcr.io`, tag là nhãn, digest là mã băm. Không bàn chiến lược tag (học ở Lộ trình Nâng cao).
+- Luôn có tag SHA; không dùng `latest` để deploy.
+:::
 
 ---
 
-## Slide 4: Chiến lược tag
-
-| Tag | Khi nào tạo | Mục đích |
-| --- | --- | --- |
-| `sha-xxxxxxx` | Mọi push vào nhánh chính | Truy vết về commit |
-| `v1.2.0` | Khi đẩy git tag `v1.2.0` | Bản phát hành cho con người |
-| `latest` hoặc tên nhánh | Tùy chọn | Thử nghiệm, không deploy |
-
-Luôn có tag SHA, kể cả khi đã có tag phiên bản.
-
----
-
-## Slide 5: GITHUB_TOKEN và quyền tối thiểu
+## Slide 4: GITHUB_TOKEN và quyền tối thiểu
 
 ![Token tạm của mỗi lần chạy; workflow chỉ contents read, job publish thêm packages write](/slides/img/s18-token.svg)
 
 ::: details Ghi chú cho mentor
-- GHCR (`ghcr.io`): registry tích hợp GitHub, miễn phí cho package public. Tên image phải viết thường; package mới tạo thường mặc định private.
+- GHCR miễn phí cho package public. Tên image phải viết thường; package mới tạo thường mặc định private.
 - `GITHUB_TOKEN` cấp cho mỗi lần chạy, hết hạn khi job kết thúc. Quyền điều khiển bằng khóa `permissions`.
 - Least privilege: `contents: read` ở cấp workflow, nâng quyền chỉ ở job cần.
 :::
 
 ---
 
-## Slide 6: Buildx và cache layer
-
-![Lần một build mọi layer, lần hai lấy layer npm ci từ cache](/slides/img/s18-cache.svg)
-
-::: details Ghi chú cho mentor
-- Buildx là CLI của BuildKit; `docker/setup-buildx-action` cài builder trên runner.
-- Runner là máy mới mỗi lần chạy nên cache layer cục bộ mất; lưu cache ở dịch vụ của Actions.
-- `mode=max` lưu cả layer trung gian, như stage `dependencies` (chạy `npm ci`) của club-api.
-:::
-
----
-
-## Slide 7: Ba action Docker chính thức
-
-![login-action, metadata-action, build-push-action và quy tắc tag](/slides/img/s18-actions-chain.svg)
-
-::: details Ghi chú cho mentor
-- `docker/login-action@v3`, `docker/metadata-action@v5`, `docker/build-push-action@v6`.
-- `metadata-action` nhận quy tắc (`type=sha`, `type=ref,event=tag`) rồi tự tính tag, và sinh label OCI để GHCR liên kết package với repo.
-:::
-
----
-
-## Slide 8: Pipeline từ push đến image
+## Slide 5: Pipeline từ merge đến image
 
 ![Push hoặc tag kích hoạt chuỗi checkout, buildx, login, metadata, build-push rồi tới GHCR và docker pull](/slides/img/s18-pipeline.svg)
 
 ::: details Ghi chú cho mentor
+- Hôm nay dùng phiên bản rút gọn: checkout, login, metadata, build-push (bỏ buildx và cache).
 - Login bằng `github.actor` và `GITHUB_TOKEN`; quyền ghi package đến từ khối `permissions`.
-- Build đọc cache, push các tag, ghi cache mới. Học viên pull về, chạy thử, so sánh digest.
 :::
 
 ---
 
-## Slide 9: Phần lõi của workflow publish
+## Slide 6: Phần lõi của workflow publish
 
 ```yaml
+on:
+  push:
+    branches: [main]
 permissions:
   contents: read
 jobs:
@@ -107,43 +76,46 @@ jobs:
       packages: write
 ```
 
-Đăng nhập: `username: ${{ github.actor }}`, `password: ${{ secrets.GITHUB_TOKEN }}`.
+Đăng nhập: `username: ${{ github.actor }}`, `password: ${{ secrets.GITHUB_TOKEN }}`. Tag: `type=sha`.
 
 ::: details Ghi chú cho mentor
-- Hỏi lớp: xóa `packages: write` thì bước nào fail? (bước Build and push, không phải login)
+- Hỏi lớp: xóa `packages: write` thì bước nào fail? (bước build-push, không phải login)
 - YAML đầy đủ nằm ở lab, không chép lại ở slide.
 :::
 
 ---
 
-## Slide 10: Demo: tag trên Packages khớp commit
+## Slide 7: Lab: các bước trong 85 phút
+
+| Bước | Việc làm | Mốc xong |
+| --- | --- | --- |
+| 1 | Build tay `club/backend` | Có image `club-api:local` |
+| 2, 3 | Viết `club-publish.yml`, PR, merge | Run Club Publish xanh |
+| 4 | So tag `sha-`, đổi package sang Public | Tag khớp commit |
+| 5 | Pull, chạy, `curl /health` | `healthy` và digest |
+| 6 | Ghi `notes/day-10.md` | Note đã merge |
+
+Lệnh và YAML đầy đủ: [Ngày 10 – Publish Club API lên GHCR](../../labs/week-09/session-18.md).
+
+::: details Ghi chú cho mentor
+- Workflow chỉ chạy khi code vào `main`, nên học viên phải merge PR mới thấy run.
+- Chuẩn bị: build tay trước để chắc Dockerfile đúng.
+:::
+
+---
+
+## Slide 8: Demo: tag trên Packages khớp commit
 
 ![Trang package club-api với tag sha-3f2a1bc khớp git rev-parse --short=7 HEAD](/slides/img/s18-ghcr-package.svg)
 
 ::: details Ghi chú cho mentor
-- Push một commit nhỏ, mở tab Actions: run xanh, log `pushing manifest for ghcr.io/owner/club-api:sha-xxxxxxx`.
-- Push lần hai: nhanh hơn vì layer `npm ci` lấy từ cache.
+- Merge một PR nhỏ, mở tab Actions: run xanh, log `pushing manifest for ghcr.io/owner/club-api:sha-xxxxxxx`.
+- So tag với `git rev-parse --short=7 HEAD`.
 :::
 
 ---
 
-## Slide 11: Lab L1: bốn phần
-
-| Phần | Việc làm | Mốc xong |
-| --- | --- | --- |
-| 1 | Viết workflow publish club-api | `packages: write` ở cấp job |
-| 2, 3 | Chạy pipeline, so tag `sha-`, đổi Public | Tag khớp commit |
-| 4 | Pull, chạy, kiểm tra `/health` | Ghi digest vào evidence |
-
-Lệnh và YAML đầy đủ: [Buổi 18 – Docker CI Pipeline](../../labs/week-09/session-18.md).
-
-::: details Ghi chú cho mentor
-- Chuẩn bị: chép source, build tay hai image để chắc Dockerfile đúng trước khi lên CI.
-:::
-
----
-
-## Slide 12: Lỗi 1: thiếu packages: write
+## Slide 9: Lỗi 1: thiếu packages: write
 
 ![Login xanh nhưng Build and push đỏ với denied hoặc 403](/slides/img/s18-denied-push.svg)
 
@@ -154,7 +126,7 @@ Lệnh và YAML đầy đủ: [Buổi 18 – Docker CI Pipeline](../../labs/week
 
 ---
 
-## Slide 13: Pull và chạy image đã publish
+## Slide 10: Pull và chạy image đã publish
 
 ```text
 $ docker pull ghcr.io/OWNER/club-api:sha-3f2a1bc
@@ -163,34 +135,33 @@ $ curl -s http://localhost:3100/health
 {"status":"healthy","service":"club-api"}
 ```
 
-Cổng 3100 để không đụng cổng 3000 của stack khác.
+Cổng 3100 để không đụng cổng của stack khác.
 
 ---
 
-## Slide 14: Lỗi 2: pull bị từ chối
+## Slide 11: Lỗi 2: pull bị từ chối
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
 | `denied` hoặc `unauthorized` | Đổi package sang Public |
 | Giống lỗi gõ sai tên image | Kiểm tra tên chữ thường và đúng tag |
-| Cần giữ private | Đăng nhập bằng PAT `read:packages` qua stdin |
 
 ::: details Ghi chú cho mentor
 - Package private làm `docker pull` bị `denied`, trông giống gõ sai tên.
-- Không dán PAT vào lệnh; nhập qua stdin hoặc khi được hỏi.
+- Không dán PAT vào lệnh; nếu cần giữ private thì đăng nhập bằng PAT `read:packages` qua stdin.
 :::
 
 ---
 
-## Slide 15: Recap
+## Slide 12: Recap
 
 ![Ba điều cần nhớ: truy vết, quyền tối thiểu, đọc đúng lỗi](/slides/img/s18-recap.svg)
 
-Buổi sau: [Buổi 19 – CD & Deployment Strategies](session-19.md).
+Tiếp theo: [Lộ trình Cơ bản, Ngày 11–14: hoàn thiện và demo](../../curriculum/basic.md).
 
 ---
 
-## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+## Slide 13: Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Docker Build with GitHub Actions](https://docs.docker.com/build/ci/github-actions/): build và push image trong pipeline.
 - **Tài liệu chính thức:** [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry): đẩy image lên GHCR.

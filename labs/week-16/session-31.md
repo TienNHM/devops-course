@@ -1,6 +1,6 @@
 # Buổi 31 – Testing & Troubleshooting
 
-Tuần 16/16 · Giai đoạn 5 – Capstone Project · Buổi 31/32
+Lộ trình Nâng cao · Phần 5 · Buổi 31
 
 [Slide](../../slides/08-capstone/session-31.md) · [Bài tập tuần](../../assignments/weekly/week-16.md) · [Hub tuần](README.md)
 

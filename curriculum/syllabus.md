@@ -8,12 +8,16 @@ Triết lý: **Learn, Build, Break, Debug, Deploy, Explain.** Học trên máy c
 
 ## Hai lộ trình
 
-Khóa chia thành hai lộ trình nối tiếp nhau. Bạn có thể học xong Cơ bản rồi dừng, hoặc học tiếp Nâng cao.
+::: warning Cấu trúc hiện tại
+Khóa chia thành hai lộ trình. **Cơ bản** học trong 14 ngày (mỗi ngày khoảng 2 giờ, 10 ngày học và 4 ngày hoàn thiện), **Nâng cao** gồm các phần đào sâu, Kubernetes và dự án cuối khóa. Thứ tự học thật nằm ở hai trang: [Lộ trình Cơ bản](basic.md) và [Lộ trình Nâng cao](advanced.md).
 
-| Lộ trình | Giai đoạn | Tuần | Buổi | Trang riêng |
-| --- | --- | --- | --- | --- |
-| Cơ bản | 1 Nền tảng, 2 Container, 3 CI/CD | 01–10 | 01–20 | [Lộ trình Cơ bản](basic.md) |
-| Nâng cao | 4 Kubernetes, 5 Capstone | 11–16 | 21–32 | [Lộ trình Nâng cao](advanced.md) |
+Các bảng "tuần" và "giai đoạn" bên dưới là cách đánh số 32 buổi gốc. Giữ lại để tra cứu: số buổi và đường dẫn bài không đổi, chỉ cách gom nhóm thay đổi.
+:::
+
+| Lộ trình | Nội dung | Số bài |
+| --- | --- | --- |
+| Cơ bản | Môi trường, Linux, Git, Docker, Compose, GitHub Actions trên một dự án | 10 ngày học + 4 ngày hoàn thiện |
+| Nâng cao | Đào sâu Linux, mạng, tối ưu image, kiểm thử, bảo mật pipeline; Kubernetes; Capstone | 22 buổi |
 
 Ngoài ra có [Vibe Deploy](../vibe/index.md): một lộ trình riêng, độc lập, để đưa web lên mạng nhanh mà không cần học các phần trên.
 

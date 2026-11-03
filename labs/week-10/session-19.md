@@ -1,6 +1,6 @@
 # Buổi 19 – CD & Deployment Strategies
 
-Tuần 10/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 19/32
+Lộ trình Nâng cao · Phần 3 · Buổi 19
 
 [Slide buổi 19](../../slides/04-cicd/session-19.md) · [Bài tập tuần 10](../../assignments/weekly/week-10.md) · [Hub tuần 10](README.md)
 

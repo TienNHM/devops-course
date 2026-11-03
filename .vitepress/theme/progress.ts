@@ -98,9 +98,9 @@ export function weekDone(week: number): boolean {
   return isDone(2 * week - 1) && isDone(2 * week)
 }
 
-export function nextSession(): number | null {
-  for (let n = 1; n <= TOTAL_SESSIONS; n++) if (!isDone(n)) return n
-  return null
+export function nextSession(track?: TrackId): number | null {
+  const order = track ? TRACKS[track].sessions : [...BASIC_SESSIONS, ...ADVANCED_SESSIONS]
+  return order.find((n) => !isDone(n)) ?? null
 }
 
 export function sessionLink(n: number): string {
@@ -122,26 +122,20 @@ export function checkKey(path: string, index: number): string {
   return `${CHECK_PREFIX}${path.replace(/\.html$/, '').replace(/\/$/, '')}#${index}`
 }
 
-// Hai lộ trình: Cơ bản (giai đoạn 1–3, tuần 1–10) và Nâng cao (giai đoạn 4–5, tuần 11–16)
-export type TrackId = 'basic' | 'advanced'
+// Hai lộ trình: Cơ bản (10 ngày) và Nâng cao (22 buổi). Danh sách buổi nằm ở ../tracks.ts
+import { ADVANCED_SESSIONS, BASIC_SESSIONS, basicDay, trackOfSession, type TrackId } from '../tracks'
+export { ADVANCED_SESSIONS, BASIC_SESSIONS, basicDay, trackOfSession }
+export type { TrackId }
 
-export const TRACKS: Record<
-  TrackId,
-  { id: TrackId; name: string; weekRange: string; link: string; firstSession: number; lastSession: number }
-> = {
-  basic: { id: 'basic', name: 'Cơ bản', weekRange: 'Tuần 1–10', link: '/curriculum/basic', firstSession: 1, lastSession: 20 },
-  advanced: { id: 'advanced', name: 'Nâng cao', weekRange: 'Tuần 11–16', link: '/curriculum/advanced', firstSession: 21, lastSession: 32 },
+export const TRACKS: Record<TrackId, { id: TrackId; name: string; sub: string; link: string; sessions: number[]; unit: string }> = {
+  basic: { id: 'basic', name: 'Cơ bản', sub: '14 ngày, 2 giờ mỗi ngày', link: '/curriculum/basic', sessions: BASIC_SESSIONS, unit: 'ngày' },
+  advanced: { id: 'advanced', name: 'Nâng cao', sub: 'Đào sâu, Kubernetes, Capstone', link: '/curriculum/advanced', sessions: ADVANCED_SESSIONS, unit: 'buổi' },
 }
 
-export const trackTotal = (id: TrackId) => TRACKS[id].lastSession - TRACKS[id].firstSession + 1
-
-export function trackOfWeek(week: number): TrackId {
-  return week <= 10 ? 'basic' : 'advanced'
-}
+export const trackTotal = (id: TrackId) => TRACKS[id].sessions.length
 
 export function trackDone(id: TrackId): number {
-  const t = TRACKS[id]
-  return doneSessions.value.filter((n) => n >= t.firstSession && n <= t.lastSession).length
+  return doneSessions.value.filter((n) => TRACKS[id].sessions.includes(n)).length
 }
 
 // Trang nào thuộc lộ trình nào (để hiện bộ chuyển lộ trình ở sidebar); null nếu không thuộc lộ trình nào.
@@ -149,11 +143,9 @@ export function trackDone(id: TrackId): number {
 export type PathTrack = TrackId | 'vibe'
 
 export function trackOfPath(path: string): PathTrack | null {
-  let m = path.match(/\/(?:labs|assignments\/weekly)\/week-(\d{2})(?:\/|\.html|$)/)
-  if (m) return trackOfWeek(Number(m[1]))
-  m = path.match(/\/slides\/(\d{2})-/)
-  if (m) return Number(m[1]) <= 4 ? 'basic' : 'advanced'
-  if (/\/curriculum\/basic(?:\.html|\/|$)/.test(path)) return 'basic'
+  const m = path.match(/\/(?:labs\/week-\d{2}|slides\/\d{2}-[a-z]+)\/session-(\d{2})/)
+  if (m) return trackOfSession(Number(m[1]))
+  if (/\/curriculum\/basic(?:-wrapup)?(?:\.html|\/|$)/.test(path)) return 'basic'
   if (/\/curriculum\/advanced(?:\.html|\/|$)/.test(path)) return 'advanced'
   if (/\/assignments\/capstone\//.test(path)) return 'advanced'
   if (/\/vibe(?:\/|$)/.test(path)) return 'vibe'

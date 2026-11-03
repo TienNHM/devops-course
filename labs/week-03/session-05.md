@@ -1,6 +1,6 @@
 # Buổi 05 – Networking Fundamentals
 
-Tuần 3/16 · Giai đoạn 1 – Engineering Foundation · Buổi 05/32
+Lộ trình Nâng cao · Phần 1 · Buổi 05
 
 [Slide buổi 05](../../slides/01-foundation/session-05.md) · [Bài tập tuần 3](../../assignments/weekly/week-03.md) · [Hub Tuần 3](README.md)
 

@@ -3,28 +3,36 @@ import { computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, withBase, onContentUpdated } from 'vitepress'
 import {
   TRACKS,
+  basicDay,
   doneSessions,
   loadProgress,
   parseLesson,
-  phaseNames,
-  phaseOfWeek,
   pad,
   checkKey,
   storageGet,
   storageSet,
   trackDone,
-  trackOfWeek,
+  trackOfSession,
   trackTotal,
 } from './progress'
+import { data as tracks } from './course.data'
 
 const route = useRoute()
 const lesson = computed(() => parseLesson(route.path))
 const done = computed(() => !!lesson.value && doneSessions.value.includes(lesson.value.session))
-const track = computed(() => (lesson.value ? trackOfWeek(lesson.value.week) : 'basic'))
+const track = computed(() => (lesson.value ? trackOfSession(lesson.value.session) : 'basic'))
 const count = computed(() => (doneSessions.value.length >= 0 ? trackDone(track.value) : 0))
 const total = computed(() => trackTotal(track.value))
 const percent = computed(() => Math.round((count.value / total.value) * 100))
-const phase = computed(() => (lesson.value ? phaseOfWeek(lesson.value.week) : 1))
+const stage = computed(() =>
+  tracks.find((t) => t.id === track.value)?.stages.find((st) => st.lessons.some((l) => l.n === lesson.value?.session)),
+)
+// "Ngày 6/10" với Cơ bản, "Buổi 17" với Nâng cao
+const unit = computed(() => {
+  const n = lesson.value?.session ?? 0
+  const day = basicDay(n)
+  return day ? `Ngày ${day}/${total.value}` : `Buổi ${pad(n)}`
+})
 
 // Gắn nhãn cho các khối đặc biệt và lưu trạng thái checkbox theo trang
 function enhanceDoc() {
@@ -46,7 +54,7 @@ function enhanceDoc() {
   }
 
   // Ô đánh dấu chỉ bật ở bài học và ở hai trang lộ trình (danh sách tự kiểm tra)
-  if (!lesson.value && !/\/curriculum\/(basic|advanced)(?:\.html|\/)?$/.test(route.path)) return
+  if (!lesson.value && !/\/curriculum\/(basic|basic-wrapup|advanced)(?:\.html|\/)?$/.test(route.path)) return
   const path = route.path
   const boxes = root.querySelectorAll<HTMLInputElement>('li input[type="checkbox"]')
   boxes.forEach((box, i) => {
@@ -75,17 +83,17 @@ onContentUpdated(() => nextTick(enhanceDoc))
     <nav class="crumbs" aria-label="Vị trí bài học">
       <a :href="withBase(TRACKS[track].link)">Lộ trình {{ TRACKS[track].name }}</a>
       <span class="sep">&rsaquo;</span>
-      <span>Giai đoạn {{ phase }} · {{ phaseNames[phase - 1] }}</span>
+      <span v-if="stage">{{ stage.title }}</span>
       <span class="sep">&rsaquo;</span>
-      <a :href="withBase(`/labs/week-${pad(lesson.week)}/`)">Tuần {{ lesson.week }}</a>
+      <span>{{ unit }}</span>
     </nav>
     <div class="badge-row">
       <span class="lp-badge" :class="{ done }">
         <span v-if="done" class="tick" aria-hidden="true">&#10003;</span>
-        Tuần {{ lesson.week }}/16 · Buổi {{ pad(lesson.session) }}/32
+        {{ unit }}
         <span v-if="done" class="sr-only">(đã xong)</span>
       </span>
-      <span class="lp-count">Lộ trình {{ TRACKS[track].name }}: đã xong {{ count }}/{{ total }} buổi</span>
+      <span class="lp-count">Lộ trình {{ TRACKS[track].name }}: đã xong {{ count }}/{{ total }} {{ TRACKS[track].unit }}</span>
     </div>
     <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="total" :aria-valuenow="count">
       <span class="fill" :style="{ width: percent + '%' }" />

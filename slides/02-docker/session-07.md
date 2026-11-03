@@ -1,13 +1,14 @@
-# Slide buổi 07 – Container Fundamentals
+# Slide Ngày 04 – Chạy trang Club bằng container
 
-> **Tóm tắt:** Phân biệt VM và container, đọc kiến trúc Docker (client, daemon, registry), cài Docker Desktop và chạy, kiểm tra, dọn một container Nginx. Bài lab đầy đủ: [Buổi 07](../../labs/week-04/session-07.md).
+> **Tóm tắt:** Cài Docker Desktop, chạy container Nginx và phục vụ trang web của dự án Club từ container ở `localhost:8080`; hiểu cổng bằng cách tự gây lỗi `port is already allocated`. Bài lab đầy đủ: [Ngày 4](../../labs/week-04/session-07.md).
 
 ## Slide 1: Hôm nay bạn làm được gì
 
-![Ba mục tiêu: so sánh VM và container, đọc luồng docker run, chạy Nginx](/slides/img/s07-goals.svg)
+![Ba mục tiêu: cài Docker, chạy Nginx, phục vụ trang Club](/slides/img/s07-goals.svg)
 
 ::: details Ghi chú cho mentor
-- Mục tiêu đầy đủ: giải thích khác biệt VM và container; vẽ lại luồng `docker run`; chạy Nginx với port mapping và bind mount; chẩn đoán lỗi `port is already allocated`.
+- Sản phẩm cuối ngày: trang `club/frontend` chạy trong container, mở ở `http://localhost:8080`.
+- Hình có thể còn chữ về VM; bỏ qua, hôm nay không dạy so sánh VM và container.
 - Hỏi: ai từng nghe câu "máy tôi chạy được mà"?
 :::
 
@@ -18,176 +19,126 @@
 ![Cùng mã nguồn: máy A chạy tốt, máy B và máy chung bị lỗi](/slides/img/s07-works-on-my-machine.svg)
 
 ::: details Ghi chú cho mentor
-- API Node.js 22 chạy ở máy A, lỗi ở máy B: sai phiên bản Node, thiếu thư viện, cổng bị chiếm.
-- Mentor deploy lên máy chung lại lỗi theo kiểu khác.
-- Cần một đơn vị đóng gói chạy giống nhau ở mọi nơi.
+- Trang web CLB chạy ở máy A, lỗi ở máy B: sai phiên bản, thiếu thư viện, cổng bị chiếm.
+- Cần một đơn vị đóng gói chạy giống nhau ở mọi nơi: container.
 :::
 
 ---
 
-## Slide 3: Container giải quyết thế nào
-
-Đóng gói app cùng runtime, thư viện, cấu hình tối thiểu thành một **image**.
-
-Ví von: hộp cơm đóng sẵn, mang đi đâu mở ra cũng ăn được như nhau.
-
-::: details Ghi chú cho mentor
-- Máy ảo cũng làm được nhưng nặng: mỗi VM mang cả một hệ điều hành.
-- Ứng dụng xuyên suốt khóa: Club Management (backend, frontend, database).
-:::
-
----
-
-## Slide 4: VM nặng, container nhẹ
-
-![VM mỗi cái một kernel; container dùng chung kernel của host](/slides/img/s07-vm-vs-container.svg)
-
-::: details Ghi chú cho mentor
-- Cô lập: VM mạnh hơn; container yếu hơn nhưng đủ cho đa số ứng dụng.
-- Trên Windows, "kernel của host" là kernel Linux của WSL2.
-:::
-
----
-
-## Slide 5: Container thực chất là gì
-
-![Namespaces, cgroups và union filesystem tạo nên container](/slides/img/s07-container-anatomy.svg)
-
-::: details Ghi chú cho mentor
-- Nhấn mạnh: container là một process Linux bình thường, không phải máy ảo nhỏ.
-- Namespaces: PID, network, mount, hostname riêng. cgroups: giới hạn và đo CPU, RAM. Union filesystem: layer chỉ đọc cộng một lớp ghi mỏng.
-:::
-
----
-
-## Slide 6: Image, container, registry
+## Slide 3: Image, container, registry
 
 ![Registry lưu image, image chạy thành nhiều container](/slides/img/s07-image-container-registry.svg)
 
 ::: details Ghi chú cho mentor
-- Image: gói chỉ đọc (filesystem và metadata). Container: một lần chạy của image, có lớp ghi. Registry: Docker Hub, GHCR.
-- Tag là nhãn phiên bản, ví dụ `1.27-alpine`; luôn ghim tag cụ thể, không dùng `latest` trong ví dụ cần tái lập.
+- Image: gói chỉ đọc. Container: một lần chạy của image. Registry: Docker Hub, GHCR.
+- Tag là nhãn phiên bản, ví dụ `1.27-alpine`; luôn ghim tag cụ thể, không dùng `latest`.
 :::
 
 ---
 
-## Slide 7: Kiến trúc Docker
+## Slide 4: Client gõ lệnh, daemon làm việc
 
 ![docker CLI gửi API tới dockerd; dockerd điều khiển containerd, image store, registry](/slides/img/s07-docker-architecture.svg)
 
 ::: details Ghi chú cho mentor
-- CLI chỉ gửi yêu cầu, daemon mới làm việc.
+- CLI chỉ gửi yêu cầu, daemon mới làm việc. Tắt Docker Desktop thì lệnh báo không kết nối được daemon.
 - Docker Desktop gói sẵn daemon trong một VM WSL2.
 :::
 
 ---
 
-## Slide 8: Luồng khi gõ docker run
-
-![Năm bước từ docker run đến container, qua CLI, dockerd và registry](/slides/img/s07-docker-run-flow.svg)
-
-::: details Ghi chú cho mentor
-- Yêu cầu học viên tự kể lại 5 bước không nhìn hình.
-- Lần chạy thứ hai image đã có trong local store nên không có bước pull.
-:::
-
----
-
-## Slide 9: Demo 1: kernel dùng chung
-
-![Hai dòng uname -r giống nhau trên host và trong container Alpine](/slides/img/s07-shared-kernel.svg)
+## Slide 5: Demo 1: kiểm tra và chạy Nginx
 
 ```bash
 docker version
 docker run --rm hello-world
-uname -r
-docker run --rm alpine:3.20 uname -r
+docker pull nginx:1.27-alpine
+docker run -d --name club-web -p 8080:80 nginx:1.27-alpine
+curl -s http://localhost:8080 | head -5
 ```
 
 ::: details Ghi chú cho mentor
-- `docker version` có hai khối Client và Server; lần chạy đầu có dòng `Unable to find image ... locally`, lần hai không pull lại.
-- Hai dòng `uname -r` giống nhau: image chỉ chứa user space, không chứa kernel.
+- `docker version` phải có cả Client và Server. Lần đầu có dòng `Unable to find image ... locally`.
+- `-d` chạy nền, `--name` đặt tên, `--rm` tự xóa khi thoát.
 :::
 
 ---
 
-## Slide 10: Demo 2: Nginx, port mapping, bind mount
+## Slide 6: Cổng: `-p HOST:CONTAINER`
 
 ![curl vào cổng 8081 của host, đi tới nginx cổng 80; file index.html được mount chỉ đọc](/slides/img/s07-nginx-port-mount.svg)
 
+::: details Ghi chú cho mentor
+- Hình dùng cổng 8081; bài lab dùng 8080 cho trang Club. Số trái là của máy bạn, số phải là của container.
+- Chỉ một process giữ một cổng của máy. Cho học viên chạy container thứ hai trên cùng cổng để thấy lỗi.
+:::
+
+---
+
+## Slide 7: Demo 2: phục vụ trang Club
+
 ```bash
-docker run -d --name nginx-demo -p 8081:80 \
-  -v "$PWD/index.html:/usr/share/nginx/html/index.html:ro" \
+docker rm -f club-web
+cd ~/devops-labs
+docker run -d --name club-web -p 8080:80 \
+  -v "$PWD/club/frontend:/usr/share/nginx/html:ro" \
   nginx:1.27-alpine
-curl -s http://localhost:8081
+curl -s http://localhost:8080 | grep "<title>"
 ```
 
+Trang hiện "Club Members"; dòng `Cannot load members: HTTP 404` là đúng vì chưa có backend (Ngày 8).
+
 ::: details Ghi chú cho mentor
-- `-p 8081:80` là `HOST:CONTAINER`; `:ro` là mount chỉ đọc.
-- `docker exec nginx-demo ps`: `nginx: master process` là PID 1.
+- `-v` là bind mount: gắn thư mục của máy vào container; `:ro` là chỉ đọc. Dùng đường dẫn tuyệt đối.
+- Sửa `club/frontend/index.html` rồi tải lại trình duyệt: trang đổi ngay, không cần `docker run` lại.
 :::
 
 ---
 
-## Slide 11: Hands-on lab
+## Slide 8: Lab Ngày 4
 
-| Phần | Việc làm | Mốc xong |
+| Bước | Việc làm | Mốc xong |
 | --- | --- | --- |
-| 1 | Kiểm tra cài đặt | `uname -r` hai dòng trùng |
-| 2 | Chạy Nginx với trang của bạn | `curl` ra HTML của bạn |
-| 3 | Quan sát: `logs`, `exec`, `inspect` | Thấy `Mounts` |
-| 4 | Dừng, xóa, dọn | `docker ps -a` sạch |
+| 1 | Kiểm tra Docker | `Hello from Docker!` |
+| 2 | Nginx ở cổng 8080 | `curl` ra "Welcome to nginx!" |
+| 3 | Gây lỗi cổng, đổi sang 8081 | `8080 -> 200`, `8081 -> 200` |
+| 4-5 | Mount `club/frontend`, sửa tiêu đề | `<title>Club Management</title>` |
+| 6-7 | Dọn, ghi `notes/day-04.md` | `docker ps -a` sạch |
 
-Lệnh và kết quả mong đợi: [Buổi 07 – Hands-on lab](../../labs/week-04/session-07.md#hands-on-lab).
-
-::: details Ghi chú cho mentor
-- Lab 60 phút, mức L1: kiểm tra cài đặt, chạy Nginx, quan sát, chứng minh dữ liệu tạm, dừng và dọn.
-- Nộp: `evidence/command-output.txt`, `source/index.html`, `report.md`.
-:::
+Lệnh và kết quả mong đợi: [Ngày 4 – Chạy trang Club bằng container](../../labs/week-04/session-07.md).
 
 ---
 
-## Slide 12: Lỗi hay gặp: port is already allocated
+## Slide 9: Lỗi hay gặp: port is already allocated
 
 ```text
-docker: Error response from daemon: ... Bind for 0.0.0.0:8081
+docker: Error response from daemon: ... Bind for 0.0.0.0:8080
 failed: port is already allocated.
 ```
 
-Một cổng của host chỉ một process lắng nghe. Tìm thủ phạm bằng `docker ps`.
+Một cổng của máy chỉ một process lắng nghe. Tìm thủ phạm bằng `docker ps`.
 
 ::: details Ghi chú cho mentor
-- Container ở trạng thái `Created` vẫn bị tạo ra khi lỗi này xảy ra.
-- Không phải container thì kiểm tra process của host.
+- Container ở trạng thái `Created` vẫn bị tạo ra khi lỗi này xảy ra; xóa bằng `docker rm`.
+- Không phải container thì kiểm tra process của máy.
 - Các lỗi khác (`command not found`, không kết nối daemon, trùng tên): xem bảng Gặp lỗi? trong bài lab.
 :::
 
 ---
 
-## Slide 13: Thử thách
-
-Chứng minh kernel dùng chung với `alpine:3.20` và `ubuntu:24.04`.
-
-Chỉ ra client, daemon, registry bằng ít nhất 3 dòng output.
-
-::: details Ghi chú cho mentor
-- Thử thách thêm: giới hạn RAM và CPU rồi đo; so sánh với VM bằng số liệu thật.
-:::
-
----
-
-## Slide 14: Recap
+## Slide 10: Recap
 
 ![Ba điều cần nhớ: process cô lập, CLI gửi lệnh daemon làm việc, image khác container](/slides/img/s07-recap.svg)
 
+Ngày tiếp theo: [Ngày 5 – Vận hành và gỡ lỗi container](session-08.md).
+
 ::: details Ghi chú cho mentor
-- Cờ cần nhớ: `-p HOST:CONTAINER`, `-v`, `-d`, `--rm`.
-- Dữ liệu trong container là tạm thời, cần volume (buổi 12).
+- Cờ cần nhớ: `-p HOST:CONTAINER`, `-v`, `-d`, `--rm`, `--name`.
 :::
 
 ---
 
-## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+## Slide 11: Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Docker overview](https://docs.docker.com/get-started/docker-overview/): Docker là gì và dùng để làm gì.
 - **Tài liệu chính thức:** [Containers (Kubernetes docs)](https://kubernetes.io/docs/concepts/containers/): container và image nhìn từ góc độ chuẩn chung.

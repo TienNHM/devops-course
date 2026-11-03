@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useRoute, withBase } from 'vitepress'
 import {
   assignmentLink,
+  basicDay,
   doneSessions,
   loadProgress,
   parseLesson,
@@ -13,7 +14,7 @@ import {
   slideLink,
   weekOfSession,
 } from './progress'
-import { data as phases } from './course.data'
+import { data as tracks } from './course.data'
 
 // Hiển thị đường học của một buổi: 1 Slide -> 2 Lab -> 3 Bài tập tuần.
 // - Trang slide và trang lab của buổi: thanh 3 bước, bước hiện tại sáng lên.
@@ -27,13 +28,23 @@ const lab = computed(() => parseLesson(route.path)?.session ?? null)
 const session = computed(() => slide.value ?? lab.value)
 const kind = computed(() => (slide.value ? 'slide' : lab.value ? 'lab' : null))
 const hubWeek = computed(() => parseWeekHub(route.path))
+const lessons = tracks.flatMap((t) => t.stages.flatMap((st) => st.lessons))
+// Trang hub tuần (bản cũ): 2 buổi của tuần, tên lấy theo ngày học (Cơ bản) hoặc số buổi (Nâng cao)
 const hub = computed(() => {
   const w = hubWeek.value
   if (!w) return null
-  const week = phases.flatMap((p) => p.weeks).find((x) => x.n === w)
-  return week ?? null
+  const sessions = [2 * w - 1, 2 * w]
+  return {
+    n: w,
+    no: pad(w),
+    sessions,
+    names: sessions.map((s) => lessons.find((l) => l.n === s)?.label ?? `Buổi ${pad(s)}`),
+  }
 })
 const done = (n: number) => doneSessions.value.includes(n)
+// Cơ bản: nộp bài ngay cuối trang lab. Nâng cao: nộp theo bài tập tuần.
+const isBasic = computed(() => (session.value ? basicDay(session.value) !== null : false))
+const unitName = (n: number) => (basicDay(n) ? `Ngày ${basicDay(n)}` : `Buổi ${pad(n)}`)
 
 onMounted(loadProgress)
 </script>
@@ -49,7 +60,10 @@ onMounted(loadProgress)
       <b>2</b><span>Làm lab</span>
     </a>
     <span class="arrow" aria-hidden="true">&rarr;</span>
-    <a class="step" :href="withBase(assignmentLink(weekOfSession(session)))">
+    <a v-if="isBasic" class="step" :href="withBase(sessionLink(session) + '#nop-bai')">
+      <b>3</b><span>Nộp bài</span>
+    </a>
+    <a v-else class="step" :href="withBase(assignmentLink(weekOfSession(session)))">
       <b>3</b><span>Nộp bài tập tuần</span>
     </a>
   </nav>
@@ -60,8 +74,7 @@ onMounted(loadProgress)
     <p class="hint">Mỗi buổi: xem slide để hiểu khái niệm, rồi làm lab để tự tay thực hành.</p>
     <div v-for="(s, i) in hub.sessions" :key="s" class="row">
       <div class="title">
-        <span class="no">Buổi {{ pad(s) }}</span>
-        <span class="name">{{ hub.sessionNames[i] }}</span>
+        <span class="name">{{ hub.names[i] }}</span>
         <span v-if="done(s)" class="tick" title="Đã xong buổi này">&#10003; đã xong</span>
       </div>
       <div class="btns">
@@ -76,8 +89,8 @@ onMounted(loadProgress)
 
   <!-- Cuối trang slide: sang lab -->
   <section v-else-if="props.mode === 'next' && slide" class="next">
-    <strong>Xong slide Buổi {{ pad(slide) }}?</strong>
-    <a class="btn primary" :href="withBase(sessionLink(slide))">Làm lab Buổi {{ pad(slide) }} &rarr;</a>
+    <strong>Xong slide {{ unitName(slide) }}?</strong>
+    <a class="btn primary" :href="withBase(sessionLink(slide))">Làm lab {{ unitName(slide) }} &rarr;</a>
   </section>
 </template>
 

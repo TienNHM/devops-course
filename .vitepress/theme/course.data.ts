@@ -1,9 +1,9 @@
-import { courseTree, type Phase } from '../course'
+import { courseTracks, type Track } from '../course'
 
-declare const data: Phase[]
+declare const data: Track[]
 export { data }
 
 export default {
   watch: ['../../labs/**/*.md'],
-  load: courseTree,
+  load: courseTracks,
 }

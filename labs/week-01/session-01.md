@@ -1,6 +1,6 @@
 # Buổi 01 – DevOps Introduction
 
-Tuần 1/16 · Giai đoạn 1 – Engineering Foundation · Buổi 01/32
+Lộ trình Nâng cao · Phần 1 · Buổi 01
 
 [Slide Buổi 01 – DevOps Introduction](../../slides/01-foundation/session-01.md) · [Bài tập Tuần 1](../../assignments/weekly/week-01.md) · [Hub Tuần 1](README.md)
 

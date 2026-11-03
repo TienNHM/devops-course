@@ -1,6 +1,6 @@
 # Buổi 32 – Final Demo & Review
 
-Tuần 16/16 · Giai đoạn 5 – Capstone Project · Buổi 32/32
+Lộ trình Nâng cao · Phần 5 · Buổi 32
 
 [Slide](../../slides/08-capstone/session-32.md) · [Bài tập tuần](../../assignments/weekly/week-16.md) · [Hub tuần](README.md)
 

@@ -1,140 +1,61 @@
-# Buổi 18 – Docker CI Pipeline
+# Ngày 10 – Publish Club API lên GHCR
 
-Tuần 9/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 18/32
+Lộ trình Cơ bản · Ngày 10/10 · khoảng 2 giờ
 
-[Slide buổi 18](../../slides/04-cicd/session-18.md) · [Bài tập tuần 9](../../assignments/weekly/week-09.md) · [Hub tuần 9](README.md)
+[Slide Ngày 10](../../slides/04-cicd/session-18.md) · [Thử thách thêm](session-18-challenge.md)
 
-> **Tóm tắt:** Dùng GitHub Actions với Buildx để tự động build image club-api, gắn tag theo SHA và đẩy lên GHCR bằng GITHUB_TOKEN. Matrix hai image, git tag và cache là thử thách tùy chọn.
+> **Tóm tắt:** Khi merge vào `main`, GitHub Actions tự build image Club API, gắn tag `sha-<short>` và đẩy lên GHCR bằng `GITHUB_TOKEN`; bạn `docker pull` và `docker run` chính image đã publish.
 
-::: tip Buổi này bạn làm gì
-**Bạn sẽ tạo ra:** một workflow tự build image `club-api` mỗi lần push, đẩy lên GHCR với tag `sha-xxxxxxx`, rồi bạn pull image đó về máy và chạy thử.
-**Thời gian thật:** đọc 15 phút, lab bắt buộc 60 phút, thử thách tùy chọn làm ở nhà.
+::: tip Hôm nay bạn làm gì
+**Sản phẩm cuối ngày:** workflow `.github/workflows/club-publish.yml`, một image `ghcr.io/<tên-bạn>/club-api:sha-xxxxxxx` công khai, và `notes/day-10.md`. Đây là mốc "ship it" của Lộ trình Cơ bản.
 
-**Cần chuẩn bị:**
+**Thời gian:** 15 phút xem slide, 85 phút làm, 20 phút ghi note và commit.
 
-- [ ] Đã xong [Buổi 17 – Automated Testing](session-17.md) và biết đọc một workflow YAML (`on`, `jobs`, `steps`).
-- [ ] Docker Desktop đang chạy; môi trường theo [Hướng dẫn cài môi trường](../../resources/setup-guide.md); repo giáo trình ở `~/devops-course`.
-- [ ] Repo cá nhân `devops-labs` để **PUBLIC** (xem [Tài khoản GitHub và repo devops-labs](../../resources/setup-github.md)); GHCR miễn phí cho package public.
+**Cần có:**
 
-**Sản phẩm phải nộp:**
-
-- `lab-18/` có `README.md`, `source/` (backend, frontend), `evidence/command-output.txt`, `report.md`.
-- File `.github/workflows/publish.yml` ở gốc repo, và một run xanh trên tab Actions.
-- Trong evidence: dòng push manifest, tag `sha-` khớp commit, kết quả `docker pull`, `curl /health`, digest.
-
-**Báo trước hai điều hay làm kẹt:** workflow cần quyền `packages: write` ở cấp job, và package mới tạo thường mặc định private nên bạn phải đổi sang Public (Phần 3) trước khi pull.
-
-**Lộ trình:** [Đọc](#doc) > [Làm lab](#hands-on-lab) > [Gặp lỗi?](#gap-loi) > [Tự kiểm tra](#tu-kiem-tra) > [Nộp bài](#nop-bai). Kẹt giữa chừng? Nhảy tới [Gặp lỗi?](#gap-loi).
-
-**Từ mới trong buổi** (xem [Thuật ngữ](../../resources/glossary.md)):
-
-- Registry: kho lưu image, ví dụ `ghcr.io`.
-- Tag: nhãn gắn vào image, có thể bị đổi sang image khác.
-- Digest: mã băm nội dung image, không bao giờ đổi.
-- GHCR: kho image của GitHub (GitHub Container Registry).
-- `GITHUB_TOKEN`: chìa khóa tạm GitHub cấp cho mỗi lần chạy workflow.
-- Buildx: công cụ build image hiện đại của Docker, hỗ trợ cache.
+- [ ] Đã xong [Ngày 9 – GitHub Actions CI cho Club API](../week-08/session-16.md): `club-ci.yml` nằm trên `main` của `devops-labs`.
+- [ ] Repo `devops-labs` để **public** (GHCR miễn phí cho package public). Xem [Tài khoản GitHub và repo](../../resources/setup-github.md).
+- [ ] Docker Desktop đang chạy trong WSL.
 :::
 
-## Vấn đề thực tế {#doc}
+## Bài toán thật
 
-Một thành viên CLB build image `club-api` trên laptop, gõ `docker push` rồi báo "mình đã đẩy bản mới". Tuần sau ban chủ nhiệm hỏi: bản đang chạy được build từ commit nào, ai build, test có chạy chưa? Không ai trả lời được, vì image build tay không để lại dấu vết. Thêm nữa, laptop của từng người dùng Node, cache và biến môi trường khác nhau nên cùng một commit có thể cho ra hai image khác nhau.
+Một bạn trong CLB build image `club-api` trên laptop, gõ `docker push` rồi báo "mình đã đẩy bản mới". Tuần sau không ai biết image đó build từ commit nào, và test đã chạy chưa. Hôm nay bạn đổi cách làm: mỗi lần code vào `main`, một runner sạch build image từ đúng commit đó, gắn tag theo commit (SHA) rồi đẩy lên **registry** (kho chứa image) của GitHub gọi là **GHCR** (`ghcr.io`).
 
-Pipeline Docker CI giải quyết việc này: mỗi lần merge vào nhánh chính, một runner sạch trên GitHub build image từ đúng commit đó, gắn tag truy vết được về commit (SHA), rồi đẩy lên registry. Từ đó, bước deploy (buổi 19) chỉ cần nói "chạy image có tag này" thay vì "chạy bản mới nhất trên máy bạn Nam".
+## Làm
 
-## Khái niệm cốt lõi
+Mọi lệnh chạy trong WSL, thư mục `~/devops-labs`. Thay `OWNER` bằng tên tài khoản GitHub của bạn, viết thường.
 
-**Registry, tag và digest.** Registry là kho chứa image (`ghcr.io`). Tag là nhãn như `v1.0.0` hay `sha-3f2a1bc`, nhưng tag có thể bị trỏ sang image khác; digest (`sha256:...`) là mã băm nội dung nên không đổi. Ví von: tag như tên gọi ở nhà, digest như số căn cước. Vì vậy mọi build đều có tag `sha-` để truy vết về commit, và không dùng `latest` để deploy.
+### Bước 1: Kiểm tra build tay trước khi lên CI
 
-**GHCR.** Registry tích hợp với GitHub, xác thực bằng chính `GITHUB_TOKEN` nên không cần tạo secret thủ công. Tên image phải viết thường. Package mới tạo thường là private nên người khác pull sẽ bị từ chối cho tới khi bạn đổi sang Public.
-
-**`GITHUB_TOKEN` và `permissions`.** Token tạm do GitHub cấp cho mỗi lần chạy, hết hạn khi job xong. Quyền của nó điều khiển bằng khóa `permissions`: `contents: read` để checkout, `packages: write` để push image. Ví von: thẻ ra vào khách chỉ mở đúng cửa cần dùng, hết ngày là vô hiệu. Nguyên tắc least privilege: quyền chặt ở cấp workflow, chỉ nâng ở job cần.
-
-**Buildx và cache.** Runner là máy mới mỗi lần nên cache layer cục bộ mất; `cache-from: type=gha` và `cache-to: type=gha,mode=max` lưu cache ở dịch vụ của GitHub Actions để lần build sau bỏ qua `npm ci` nếu `package-lock.json` không đổi.
-
-```mermaid
-flowchart LR
-    Dev["Push hoặc git tag"] --> GH["GitHub Actions runner"]
-    GH --> Bx["checkout, buildx, login ghcr.io"]
-    Bx --> Md["metadata: tag và label"]
-    Md --> Bp["build-push"]
-    Bp --> Reg[("GHCR")]
-    Reg --> Pull["docker pull trên máy bạn"]
-```
-
-Trên lớp, mentor demo trước; tự học thì làm thẳng phần Làm lab.
-
-::: details Tìm hiểu thêm (đọc sau)
-**Chiến lược tag:**
-
-| Loại tag | Khi nào tạo | Mục đích |
-| --- | --- | --- |
-| `sha-xxxxxxx` | Mọi lần push vào nhánh chính | Truy vết image về đúng commit |
-| `v1.2.0` | Khi đẩy git tag `v1.2.0` | Bản phát hành có tên cho con người |
-| `latest` hoặc tên nhánh | Tùy chọn | Tiện cho thử nghiệm, không dùng để deploy |
-
-**Ba action Docker chính thức:** `docker/login-action@v3` đăng nhập registry; `docker/metadata-action@v5` sinh danh sách tag và label OCI từ ngữ cảnh Git (quy tắc `type=sha`, `type=ref,event=tag`); `docker/build-push-action@v6` build và push bằng Buildx. `mode=max` lưu cả layer trung gian của multi-stage build, như stage `dependencies` trong Dockerfile của club-api.
-
-Workflow mẫu của giáo trình: `.github/workflows/publish.yml` (matrix 2 image) và bản có chú thích `examples/github-actions/docker-publish.yml`. Mở cả hai để đối chiếu.
-:::
-
-## Hands-on lab (60 phút, bắt buộc) {#hands-on-lab}
-
-Đề bài: tự động build và publish image `club-api` lên GHCR rồi pull về chạy thử. Tài khoản GitHub của bạn là `OWNER` (viết thường khi dùng trong tên image).
-
-### Chuẩn bị (10 phút)
-
-Kiểm tra môi trường:
+Nếu build tay lỗi thì CI chắc chắn lỗi.
 
 ```bash
-docker version --format '{{.Server.Version}}'
-docker buildx version
-git --version
+cd ~/devops-labs
+git checkout main
+git pull
+docker build -t club-api:local club/backend
+docker images | grep club-api
 ```
 
-Kết quả mong đợi: Docker Engine 27 trở lên, `buildx` và `git` hiển thị phiên bản. Nếu `docker buildx version` báo lỗi, cập nhật Docker Desktop.
-
-Chép source vào repo cá nhân (giả định repo giáo trình ở `~/devops-course` trong WSL):
-
-::: danger Cẩn thận với rm -rf
-Lệnh `rm -rf` xóa vĩnh viễn. Ở đây chỉ xóa bản copy `lab-18/source/backend/node_modules` bạn vừa chép. Chạy `pwd` để chắc bạn đang ở `~/devops-labs` trước khi chạy.
-:::
-
-```bash
-cd ~
-git clone https://github.com/OWNER/devops-labs.git   # bỏ qua nếu đã clone
-cd devops-labs
-mkdir -p lab-18/source lab-18/evidence lab-18/screenshots
-cp -r ~/devops-course/starter-project/backend  lab-18/source/backend
-cp -r ~/devops-course/starter-project/frontend lab-18/source/frontend
-rm -rf lab-18/source/backend/node_modules
-ls lab-18/source
-```
-
-Kết quả mong đợi: `backend  frontend`. Vì sao xóa `node_modules`: image tự cài dependency bằng `npm ci` trong Dockerfile. Kiểm tra build tay trước khi lên CI (nếu build tay đã lỗi thì CI chắc chắn lỗi):
-
-```bash
-docker build -t club-api:1.0.0 lab-18/source/backend
-docker build -t club-web:1.0.0 lab-18/source/frontend
-docker images | grep club-
-```
-
-Kết quả mong đợi: hai dòng `club-api` và `club-web` với tag `1.0.0`.
+Kết quả mong đợi: một dòng `club-api` với tag `local`.
 
 ::: tip Kiểm tra: bạn đúng khi
-Hai image `club-api:1.0.0` và `club-web:1.0.0` xuất hiện trong `docker images`. Build lỗi `failed to read dockerfile`: xem [Gặp lỗi?](#gap-loi).
+`docker images` có `club-api  local`. Lỗi `failed to read dockerfile`: bạn đang đứng sai thư mục (xem [Gặp lỗi?](#gap-loi)).
 :::
 
-### Phần 1 – Viết workflow publish club-api (12 phút)
+### Bước 2: Viết workflow publish
 
-Workflow phải nằm ở gốc repo, không nằm trong `lab-18/`. Tạo file `.github/workflows/publish.yml`:
+Làm trên nhánh riêng, workflow nằm ở gốc repo cạnh `club-ci.yml`.
 
 ```bash
-mkdir -p .github/workflows
+git checkout -b day-10-publish
 ```
 
+Tạo `.github/workflows/club-publish.yml`:
+
 ```yaml
-name: Publish club-api
+name: Club Publish
 
 on:
   push:
@@ -151,165 +72,142 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
+
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository_owner }}/club-api
           tags: |
             type=sha
+
       - uses: docker/build-push-action@v6
         with:
-          context: lab-18/source/backend
+          context: club/backend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 ```
 
-Vì sao như vậy: `permissions` cấp workflow chỉ cho đọc; riêng job `publish` được nâng lên `packages: write`. Không dùng secret tự tạo vì `GITHUB_TOKEN` đã đủ. Nếu nhánh chính của bạn tên `master`, đổi `main` thành `master`.
+Vì sao như vậy: `GITHUB_TOKEN` là chìa khóa tạm GitHub cấp cho mỗi lần chạy, hết hạn khi job xong, nên bạn không tạo secret nào. Quyền của nó điều khiển bằng `permissions`: cả workflow chỉ đọc, riêng job `publish` được thêm `packages: write` để đẩy image. `type=sha` tạo tag `sha-` cộng 7 ký tự đầu của commit. Nếu nhánh chính tên `master`, đổi `[main]` thành `[master]`.
 
 ::: tip Kiểm tra: bạn đúng khi
-File nằm ở `.github/workflows/publish.yml` (gốc repo), `packages: write` chỉ xuất hiện trong job `publish`, và không có token hay mật khẩu nào viết thẳng trong file.
+File ở `.github/workflows/club-publish.yml` (gốc repo), `packages: write` chỉ xuất hiện trong job `publish`, và không có token hay mật khẩu viết thẳng trong file.
 :::
 
-### Phần 2 – Chạy pipeline và đọc log (10 phút)
+### Bước 3: Đẩy lên, mở PR, merge
+
+Workflow này chạy khi code vào `main`, nên bạn cần merge PR.
 
 ```bash
-git add .github lab-18
-git commit -m "lab-18: workflow publish club-api len GHCR"
-git push origin main
+git add .github/workflows/club-publish.yml
+git commit -m "ci: publish club-api image to GHCR on main"
+git push -u origin day-10-publish
 ```
 
-Mở tab Actions của repo, chọn run mới nhất, mở job `publish`. Kết quả mong đợi: tất cả bước có dấu tích xanh, và bước `Build and push` có log kiểu `pushing manifest for ghcr.io/owner/club-api:sha-xxxxxxx`. Chép các dòng quan trọng (tên workflow, bước push, tag) vào `lab-18/evidence/command-output.txt`.
+Trên GitHub mở PR vào `main`. Check `Club CI` của Ngày 9 chạy và phải xanh. Sau đó bấm **Merge pull request**, rồi vào tab **Actions**: run mới của workflow **Club Publish** xuất hiện.
 
-Nếu run đỏ, đọc log bước đỏ đầu tiên (không phải bước cuối) rồi tra bảng [Gặp lỗi?](#gap-loi).
+Kết quả mong đợi: các step xanh, và step `build-push-action` có log dạng `pushing manifest for ghcr.io/owner/club-api:sha-xxxxxxx`.
 
 ::: tip Kiểm tra: bạn đúng khi
-Run xanh và log có dòng push manifest với tên image chữ thường. Run đỏ với `denied` hoặc `403`: xem [Gặp lỗi?](#gap-loi).
+Run **Club Publish** xanh và log có dòng `pushing manifest` với tên image chữ thường.
 :::
 
-### Phần 3 – Kiểm tra package và đổi sang Public (8 phút)
+### Bước 4: Kiểm tra package và đổi sang Public
 
-Mở trang repo, cột bên phải mục Packages, chọn `club-api`. So tag `sha-xxxxxxx` với 7 ký tự đầu của commit:
+Cập nhật `main` ở máy bạn và lấy 7 ký tự đầu của commit:
 
 ```bash
+git checkout main
+git pull
 git rev-parse --short=7 HEAD
 ```
 
-Kết quả mong đợi: chuỗi 7 ký tự trùng phần sau `sha-`. Tiếp theo, mở **Package settings** (cột bên phải trang package), kéo xuống Danger Zone, đổi visibility sang **Public** (chỉ làm khi image không chứa bí mật; image của lab này không có). Package private sẽ khiến `docker pull` bị `denied`.
+Trên trang repo, cột bên phải, mục **Packages**, mở `club-api`. Tag `sha-xxxxxxx` phải khớp 7 ký tự trên (nếu bạn merge bằng nút Merge, commit mới nhất trên `main` chính là commit đã build). Tiếp theo vào **Package settings**, kéo xuống Danger Zone, đổi visibility sang **Public**. Image của bạn không chứa bí mật nên làm được. Package mới tạo thường là private và `docker pull` sẽ bị `denied` nếu bạn bỏ bước này.
 
 ::: tip Kiểm tra: bạn đúng khi
-Tag `sha-` khớp 7 ký tự của `git rev-parse --short=7 HEAD`, và trang package hiện nhãn Public.
+Tag `sha-` khớp `git rev-parse --short=7 HEAD`, và trang package hiện nhãn Public.
 :::
 
-### Phần 4 – Pull và chạy image đã publish (20 phút)
+### Bước 5: Pull và chạy image đã publish
 
-Xóa image local để chắc bạn pull từ registry (thay `OWNER` và tag bằng giá trị thật, chữ thường):
+Xóa image local để chắc bạn lấy từ registry, rồi pull (thay `OWNER` và tag bằng giá trị thật):
 
 ```bash
-docker rmi club-api:1.0.0
+docker rmi club-api:local
 docker pull ghcr.io/OWNER/club-api:sha-3f2a1bc
 ```
 
-Kết quả mong đợi: Docker tải các layer rồi in `Status: Downloaded newer image for ghcr.io/owner/club-api:sha-3f2a1bc`. Nếu báo `denied` hoặc `unauthorized`, xem [Gặp lỗi?](#gap-loi). Chạy và kiểm tra:
+Kết quả mong đợi: Docker tải các layer rồi in `Status: Downloaded newer image for ghcr.io/owner/club-api:sha-3f2a1bc`. Chạy và kiểm tra:
 
 ```bash
-docker run --rm -d --name lab18-api -p 3100:3000 ghcr.io/OWNER/club-api:sha-3f2a1bc
+docker run --rm -d --name club-api-ghcr -p 3100:3000 ghcr.io/OWNER/club-api:sha-3f2a1bc
 sleep 2
 curl -s http://localhost:3100/health
 docker inspect --format '{{index .RepoDigests 0}}' ghcr.io/OWNER/club-api:sha-3f2a1bc
-docker rm -f lab18-api
+docker rm -f club-api-ghcr
 ```
 
-Kết quả mong đợi: `curl` trả về `{"status":"healthy","service":"club-api"}`; `docker inspect` in tên image kèm `@sha256:` và chuỗi digest (chỉ có khi image lấy bằng `docker pull`). Ghi digest vào evidence. Cổng 3100 để không đụng cổng 3000 của stack khác. `/health` chạy được mà không cần database vì endpoint chỉ trả JSON, không truy vấn DB (khác với `/ready`).
+Kết quả mong đợi: `curl` trả `{"status":"healthy","service":"club-api"}`; `docker inspect` in tên image kèm `@sha256:` và chuỗi digest. Tag có thể bị trỏ sang image khác, còn digest (mã băm nội dung) thì không đổi. Cổng 3100 để không đụng cổng của stack khác. `/health` chạy được dù không có Postgres vì endpoint này không truy vấn database.
 
 ::: tip Kiểm tra: bạn đúng khi
-`curl` trả `"status":"healthy"` và `docker inspect` in một dòng có `@sha256:`. Container tạm đã bị xóa bởi `docker rm -f lab18-api`.
+`curl` in `"status":"healthy"` và `docker inspect` in một dòng có `@sha256:`.
 :::
 
-### Hoàn thành L1
+### Bước 6: Ghi note và commit
 
-- [ ] Workflow `.github/workflows/publish.yml` có `packages: write` ở cấp job.
-- [ ] Run trên tab Actions thành công, có tag `sha-xxxxxxx` trên GHCR và khớp 7 ký tự đầu của commit.
-- [ ] Pull được image từ `ghcr.io`, `curl /health` trả về `healthy`.
-- [ ] Ghi được digest của image vào `evidence/command-output.txt`.
+Tạo `notes/day-10.md` (ở gốc `devops-labs`). Ghi: tag `sha-` của image, digest, link run xanh của Club Publish, và 2-3 câu trả lời "vì sao deploy nên nói 'chạy image tag này' thay vì 'chạy bản trên máy bạn Nam'?".
 
-Tự kiểm tra một dòng (mong đợi in `healthy` khi container đang chạy): `curl -s http://localhost:3100/health | grep -o healthy`.
+```bash
+git checkout -b day-10-notes
+git add notes/day-10.md
+git commit -m "docs: add day 10 note"
+git push -u origin day-10-notes
+```
+
+Mở PR và merge như thường. Workflow publish sẽ chạy thêm một lần với tag mới; đó là bình thường.
 
 ## Gặp lỗi? {#gap-loi}
 
-Đọc dòng lỗi cuối cùng của bước đỏ đầu tiên, rồi tìm triệu chứng giống nhất.
-
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `denied`, `permission_denied: write_package` hoặc `403` ở bước `Build and push` (bước login vẫn xanh) | Thiếu `permissions: packages: write` ở job, hoặc package đã tồn tại và thuộc repo khác | Thêm quyền ở cấp job, chạy lại; mở Set up job, mục `GITHUB_TOKEN Permissions` để xem token có quyền gì |
-| `docker pull` báo `denied` hoặc `unauthorized` | Package đang private, hoặc gõ sai tên/tag (thông báo giống hệt nhau) | Kiểm tra tên chữ thường và tag; đổi package sang Public (Phần 3) |
-| `invalid reference format` | Tên image có chữ hoa (ví dụ tên tài khoản có chữ hoa) khi tự ghép tag | Dùng `metadata-action` hoặc chuyển tên về chữ thường |
-| `failed to read dockerfile` / `no such file` | `context` sai đường dẫn | Kiểm tra `context` trỏ tới thư mục chứa Dockerfile |
-| Workflow không chạy khi push | File không nằm ở `.github/workflows/` ở gốc repo, hoặc nhánh khác `on.push.branches` | Đưa file về đúng chỗ, sửa tên nhánh |
-| `docker buildx version` báo lỗi | Docker Desktop quá cũ | Cập nhật Docker Desktop |
-| `docker inspect` báo lỗi hoặc rỗng ở `RepoDigests` | Đang dùng image build local, chưa `docker pull` từ registry | `docker rmi club-api:1.0.0` rồi pull lại |
-| Cổng 3100 đã bị chiếm | Container `lab18-api` cũ còn chạy | `docker rm -f lab18-api` rồi chạy lại |
-| Lỗi liên quan matrix, tag `v1.0.0` hoặc cache (thử thách) | Thiếu `tags: ["v*"]`, `type=ref,event=tag`, `setup-buildx-action` hoặc `scope` cache | Xem bảng cuối [Buổi 18 – Thử thách thêm](session-18-challenge.md) |
+| `denied`, `permission_denied: write_package` hoặc `403` ở step build-push (login vẫn xanh) | Thiếu `packages: write` ở cấp job | Thêm quyền vào job `publish`, chạy lại; xem mục `GITHUB_TOKEN Permissions` ở step Set up job |
+| `docker pull` báo `denied` hoặc `unauthorized` | Package đang private, hoặc gõ sai tên hay tag | Đổi package sang Public (Bước 4); kiểm tra tên chữ thường và tag |
+| `invalid reference format` | Tên image có chữ hoa | Dùng `github.repository_owner` trong `metadata-action` hoặc viết thường tên |
+| `failed to read dockerfile` hoặc `no such file` | `context` hay thư mục sai | Chắc rằng `club/backend/Dockerfile` tồn tại; chạy lệnh từ `~/devops-labs` |
+| Workflow không chạy sau khi merge | File không ở `.github/workflows/` ở gốc repo, hoặc tên nhánh khác `[main]` | Đưa file về đúng chỗ, sửa tên nhánh |
+| Cổng 3100 đã bị chiếm | Container cũ còn chạy | `docker rm -f club-api-ghcr` rồi chạy lại |
 
-## Tự kiểm tra {#tu-kiem-tra}
+## Nộp bài
 
-1. Khác nhau giữa tag và digest là gì? Khi deploy production nên tham chiếu cái nào để tái lập chính xác?
-   ::: details Đáp án gợi ý
-   Tag là nhãn có thể trỏ sang image khác; digest là mã băm nội dung, bất biến. Để tái lập chính xác nên dùng digest (hoặc tag SHA không bao giờ bị ghi đè). Tag `latest` không phù hợp.
-   :::
-2. `GITHUB_TOKEN` khác Personal Access Token ở điểm nào? Vì sao ưu tiên dùng nó trong CI?
-   ::: details Đáp án gợi ý
-   Token tự cấp theo từng lần chạy, hết hạn khi job xong, quyền giới hạn qua `permissions`, không cần lưu secret dài hạn. PAT gắn với người dùng, sống lâu, nếu lộ thì hậu quả lớn.
-   :::
-3. Tình huống: workflow xanh ở bước login nhưng đỏ ở bước push với lỗi `denied`. Bạn kiểm tra gì đầu tiên?
-   ::: details Đáp án gợi ý
-   Quyền của token: xem khối `permissions` (cấp job và cấp workflow) và mục `GITHUB_TOKEN Permissions` trong log Set up job. Login thành công không đảm bảo có quyền ghi.
-   :::
-4. Tình huống: đồng đội pull image bị `unauthorized` dù image tồn tại. Hai nguyên nhân có thể và cách xác minh?
-   ::: details Đáp án gợi ý
-   Package đang private (kiểm tra visibility trên trang package) hoặc tên image/tag sai (kiểm tra danh sách tag, chữ thường). Xử lý: đổi Public hoặc đăng nhập bằng PAT `read:packages`.
-   :::
-5. Vì sao nên có tag theo SHA ngay cả khi đã có tag `v1.0.0`?
-   ::: details Đáp án gợi ý
-   Tag SHA cho phép truy vết image về đúng commit, kể cả các build không phải bản phát hành; tag phiên bản chỉ có khi ta chủ động phát hành.
-   :::
+- [ ] `.github/workflows/club-publish.yml` đã merge vào `main` của `devops-labs`.
+- [ ] Trên GHCR có image `club-api` với tag `sha-` khớp commit và package là Public.
+- [ ] `notes/day-10.md` có tag, digest, link run xanh và câu trả lời.
+- [ ] Không có token, PAT, mật khẩu hay file `.env` trong commit.
 
-## Nộp bài {#nop-bai}
+## Tự kiểm tra
 
-Nộp vào `lab-18/` trong repo cá nhân theo [mẫu lab](../../templates/lab-template.md) và đối chiếu [Bài tập tuần 9](../../assignments/weekly/week-09.md):
+1. Vì sao image build trong CI tốt hơn image build trên laptop?
+2. Login xanh nhưng bước push báo `denied`. Bạn kiểm tra gì đầu tiên?
+3. Người khác `docker pull` bị `unauthorized` dù image tồn tại. Hai nguyên nhân có thể?
 
-- [ ] `README.md` trả lời đủ 7 câu của mẫu (vấn đề, kiến thức, các bước, kết quả mong đợi, lỗi đã gặp, cách khắc phục, cải thiện) và đánh dấu level đã làm (L1, L2).
-- [ ] `source/` chứa `backend/` và `frontend/` (không có `node_modules`); có thể chép thêm `source/publish.yml` để chấm, bản thật nằm ở `.github/workflows/`.
-- [ ] `evidence/command-output.txt` gồm: log bước push, tag trên GHCR, kết quả `docker pull`, `curl /health`, digest.
-- [ ] `screenshots/` có ảnh tab Actions xanh và trang package (ảnh chỉ minh họa, không thay thế log).
-- [ ] `report.md` mô tả một lỗi bạn đã gặp hoặc cố tình phá và cách tìm ra nguyên nhân (thêm thời gian build trước/sau cache nếu làm L2).
-- [ ] Không commit token, PAT, mật khẩu hay file `.env`. Kiểm tra bằng `git diff --cached` trước khi commit.
-
-## Recap
-
-- Image build trong CI từ commit sạch thì truy vết và tái lập được; luôn có tag `sha-` cho mọi build, vì tag đổi được còn digest thì không.
-- Pipeline chuẩn: checkout, setup-buildx, login, metadata, build-push, với `contents: read` toàn cục và `packages: write` chỉ ở job publish.
-- Lỗi `denied` khi push: kiểm tra quyền token; `unauthorized` khi pull: kiểm tra visibility Public và tên image.
-
-Buổi tiếp theo: [Buổi 19 – CD & Deployment Strategies](../week-10/session-19.md).
-
-::: details Thử thách thêm (L2, tùy chọn, làm ở nhà)
-Trang riêng: [Buổi 18 – Thử thách thêm](session-18-challenge.md). Gồm publish thêm `club-web` bằng matrix, tag theo git tag `v*`, cache `type=gha` và PR chỉ build; có gợi ý từng bậc (tự thử 15 phút trước khi mở). Đối chiếu đáp án sau khi nộp bài: [trang tuần 9](README.md).
+::: details Đáp án gợi ý
+1. CI build từ một commit sạch trên runner mới, nên truy vết được về commit và ai cũng cho cùng kết quả. Laptop có Node, cache và biến môi trường khác nhau.
+2. Quyền của token: khối `permissions` ở cấp job và cấp workflow. Login thành công không có nghĩa là có quyền ghi.
+3. Package đang private, hoặc tên image hay tag sai. Xác minh trên trang package: visibility và danh sách tag.
 :::
 
-::: details Phá lỗi nâng cao
-Hai tình huống luyện đọc lỗi (thiếu `packages: write`, pull bị từ chối do package private, kèm cách đăng nhập GHCR an toàn bằng PAT qua stdin): [Buổi 18 – Thử thách thêm](session-18-challenge.md#pha-loi-nang-cao).
-:::
+## Tiếp theo
+
+Bạn đã đi hết đường từ code đến image công khai. Xem phần cuối của [Lộ trình Cơ bản](../../curriculum/basic.md) ("Ngày 11–14: hoàn thiện và demo").
 
 ::: details Tài liệu tham khảo
 - [Working with the Container registry (GitHub Docs)](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 - [Docker Build GitHub Actions](https://docs.docker.com/build/ci/github-actions/)
 - [docker/metadata-action](https://github.com/docker/metadata-action)
-- Thêm tài liệu về cache và token: [Buổi 18 – Thử thách thêm](session-18-challenge.md#tai-lieu)
 :::

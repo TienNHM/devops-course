@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { withBase } from 'vitepress'
-import { data as phases } from './course.data'
+import { data as tracks } from './course.data'
 import {
   TRACKS,
   TOTAL_SESSIONS,
@@ -19,12 +19,12 @@ const count = computed(() => doneSessions.value.length)
 const basic = computed(() => ({ done: trackDone('basic'), total: trackTotal('basic') }))
 const advanced = computed(() => ({ done: trackDone('advanced'), total: trackTotal('advanced') }))
 const pct = (d: number, t: number) => Math.round((d / t) * 100)
+const lessons = tracks.flatMap((t) => t.stages.flatMap((st) => st.lessons))
 const next = computed(() => {
   const n = doneSessions.value.length >= 0 ? nextSession() : null
   if (!n) return null
-  const week = Math.ceil(n / 2)
-  const w = phases.flatMap((p) => p.weeks).find((x) => x.n === week)
-  return { n, label: `Buổi ${pad(n)}${w ? ' – ' + w.name : ''}`, link: slideLink(n) }
+  const l = lessons.find((x) => x.n === n)
+  return { n, label: l ? l.label : `Buổi ${pad(n)}`, link: slideLink(n) }
 })
 
 onMounted(loadProgress)
@@ -44,15 +44,15 @@ function reset() {
         <a class="track basic" :href="withBase(TRACKS.basic.link)">
           <span class="tag start">Bắt đầu ở đây</span>
           <strong>Cơ bản</strong>
-          <span class="range">Tuần 1–10 · 20 buổi</span>
-          <span class="desc">Linux, Git, Docker, Compose và GitHub Actions. Cuối lộ trình, ứng dụng của bạn tự được kiểm thử, đóng gói và đưa lên kho image.</span>
+          <span class="range">14 ngày · 2 giờ mỗi ngày</span>
+          <span class="desc">Một dự án làm xuyên suốt: Linux, Git, Docker, Compose và GitHub Actions. Ngày 10, ứng dụng của bạn tự được kiểm thử, đóng gói và đưa lên kho image.</span>
           <span class="who">Dành cho: người mới, chưa cần biết DevOps.</span>
         </a>
         <a class="track" :href="withBase(TRACKS.advanced.link)">
           <span class="tag">Sau khi xong Cơ bản</span>
           <strong>Nâng cao</strong>
-          <span class="range">Tuần 11–16 · 12 buổi</span>
-          <span class="desc">Kubernetes trên máy bạn (kind), rồi dự án cuối khóa theo nhóm: dựng, cố tình làm hỏng, tự sửa và bảo vệ.</span>
+          <span class="range">22 buổi · tự học theo phần</span>
+          <span class="desc">Đào sâu Linux, mạng, tối ưu image, kiểm thử và bảo mật pipeline, rồi Kubernetes trên máy bạn (kind) và dự án cuối khóa theo nhóm.</span>
           <span class="who">Dành cho: người đã dùng được Docker, Compose và CI.</span>
         </a>
         <a class="track vibe" :href="withBase('/vibe/')">
@@ -76,7 +76,7 @@ function reset() {
           <span class="n">1</span>
           <div>
             <strong>Cài môi trường</strong>
-            <p>Làm <a :href="withBase('/curriculum/getting-started')">5 việc trước Buổi 01</a>, một lần, khoảng 30 phút.</p>
+            <p>Làm <a :href="withBase('/curriculum/getting-started')">4 việc trước Ngày 1</a>, một lần, khoảng 20 phút.</p>
           </div>
         </li>
         <li>
@@ -94,20 +94,20 @@ function reset() {
           </div>
         </li>
       </ol>
-      <a class="button" :href="withBase(slideLink(1))">Bắt đầu Buổi 01: xem slide</a>
+      <a class="button" :href="withBase(slideLink(2))">Bắt đầu Ngày 1: xem slide</a>
     </section>
 
     <section class="block progress">
       <div class="progress-text">
-        <strong>Tiến độ của bạn: {{ count }}/{{ TOTAL_SESSIONS }} buổi</strong>
+        <strong>Tiến độ của bạn: đã xong {{ count }} bài</strong>
         <div class="row">
-          <span>Cơ bản {{ basic.done }}/{{ basic.total }}</span>
+          <span>Cơ bản {{ basic.done }}/{{ basic.total }} ngày</span>
           <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="basic.total" :aria-valuenow="basic.done">
             <span class="fill" :style="{ width: pct(basic.done, basic.total) + '%' }" />
           </div>
         </div>
         <div class="row">
-          <span>Nâng cao {{ advanced.done }}/{{ advanced.total }}</span>
+          <span>Nâng cao {{ advanced.done }}/{{ advanced.total }} buổi</span>
           <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="advanced.total" :aria-valuenow="advanced.done">
             <span class="fill" :style="{ width: pct(advanced.done, advanced.total) + '%' }" />
           </div>

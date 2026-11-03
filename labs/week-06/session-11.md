@@ -1,6 +1,6 @@
 # Buổi 11 – Container Networking
 
-Tuần 6/16 · Giai đoạn 2 – Containerization · Buổi 11/32
+Lộ trình Nâng cao · Phần 2 · Buổi 11
 
 [Slide buổi 11](../../slides/02-docker/session-11.md) · [Bài tập tuần 6](../../assignments/weekly/week-06.md) · [Hub tuần 6](README.md)
 

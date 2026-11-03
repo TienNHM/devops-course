@@ -4,7 +4,7 @@ Khóa DevOps 16 tuần, 32 buổi bằng tiếng Việt cho thành viên CLB HCM
 
 Website khóa học: https://devops-course.tiennhm.io.vn/
 
-Có ba lộ trình: **Cơ bản** (tuần 1–10, Linux, Git, Docker, CI/CD), **Nâng cao** (tuần 11–16, Kubernetes và dự án cuối khóa) và **Vibe Deploy** (đưa web lên mạng nhanh, học riêng).
+Có ba lộ trình: **Cơ bản** (14 ngày, mỗi ngày khoảng 2 giờ, một dự án xuyên suốt qua Linux, Git, Docker, Compose, CI/CD), **Nâng cao** (đào sâu, Kubernetes và dự án cuối khóa) và **Vibe Deploy** (đưa web lên mạng nhanh, học riêng).
 
 ## Bắt đầu
 

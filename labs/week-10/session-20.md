@@ -1,6 +1,6 @@
 # Buổi 20 – Pipeline Security
 
-Tuần 10/16 · Giai đoạn 3 – CI/CD & Automation · Buổi 20/32
+Lộ trình Nâng cao · Phần 3 · Buổi 20
 
 [Slide buổi 20](../../slides/04-cicd/session-20.md) · [Bài tập tuần 10](../../assignments/weekly/week-10.md) · [Hub tuần 10](README.md)
 

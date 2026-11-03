@@ -7,9 +7,9 @@ const route = useRoute()
 const current = computed<PathTrack | null>(() => trackOfPath(route.path))
 
 const items = computed(() => [
-  { id: 'basic' as const, name: 'Cơ bản', sub: 'Tuần 1–10', link: TRACKS.basic.link, done: trackDone('basic'), total: trackTotal('basic') },
-  { id: 'advanced' as const, name: 'Nâng cao', sub: 'Tuần 11–16', link: TRACKS.advanced.link, done: trackDone('advanced'), total: trackTotal('advanced') },
-  { id: 'vibe' as const, name: 'Vibe Deploy', sub: 'Lên mạng nhanh', link: '/vibe/', done: 0, total: 0 },
+  { id: 'basic' as const, name: 'Cơ bản', sub: TRACKS.basic.sub, link: TRACKS.basic.link, done: trackDone('basic'), total: trackTotal('basic'), unit: TRACKS.basic.unit },
+  { id: 'advanced' as const, name: 'Nâng cao', sub: TRACKS.advanced.sub, link: TRACKS.advanced.link, done: trackDone('advanced'), total: trackTotal('advanced'), unit: TRACKS.advanced.unit },
+  { id: 'vibe' as const, name: 'Vibe Deploy', sub: 'Lên mạng nhanh', link: '/vibe/', done: 0, total: 0, unit: '' },
 ])
 
 onMounted(loadProgress)
@@ -27,7 +27,8 @@ onMounted(loadProgress)
       :aria-current="t.id === current ? 'page' : undefined"
     >
       <span class="name">{{ t.name }}</span>
-      <span class="sub">{{ t.sub }}<template v-if="t.total"> · {{ t.done }}/{{ t.total }} buổi</template></span>
+      <span class="sub">{{ t.sub }}</span>
+      <span v-if="t.total" class="sub">Đã xong {{ t.done }}/{{ t.total }} {{ t.unit }}</span>
     </a>
   </nav>
 </template>

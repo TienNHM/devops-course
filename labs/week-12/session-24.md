@@ -1,6 +1,6 @@
 # Buổi 24 – Kubernetes Services
 
-Tuần 12/16 · Giai đoạn 4 – Kubernetes Engineering · Buổi 24/32
+Lộ trình Nâng cao · Phần 4 · Buổi 24
 
 [Slide](../../slides/06-kubectl/session-24.md) · [Bài tập tuần](../../assignments/weekly/week-12.md) · [Hub tuần](README.md)
 

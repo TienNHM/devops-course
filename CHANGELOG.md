@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Lộ trình Cơ bản rút gọn thành 14 ngày (2 giờ mỗi ngày): 10 ngày học theo một dự án xuyên suốt (Club app) và 4 ngày sửa lỗi, hoàn thiện, demo. Viết lại 10 bài lab và 10 bộ slide theo hướng project-based, bỏ lý thuyết dài; thêm trang `curriculum/basic-wrapup`.
+- Các buổi bị cắt khỏi Cơ bản (01, 04, 05, 10, 11, 14, 15, 17, 19, 20) chuyển sang Lộ trình Nâng cao; đường dẫn bài giữ nguyên. Sidebar, trang chủ, tiến độ và điều hướng theo hai lộ trình mới.
 - Sidebar học theo thứ tự slide trước, lab sau: bấm tên tuần đi thẳng vào slide của buổi đầu; mỗi tuần liệt kê Slide và Lab của từng buổi, rồi Bài tập tuần. Trang slide dùng chung sidebar này.
 - Tài liệu tham khảo: mỗi bộ slide có slide cuối "Đọc thêm" (4–6 link tài liệu chính thức và best practices, đã kiểm tra trả mã 200); thêm mục "Best practices và hướng dẫn chuẩn" vào `resources/documentation.md`.
 - Học theo thứ tự slide trước, lab sau: trang tuần có thẻ "Học theo thứ tự", trang slide và lab có thanh 3 bước (Slide, Lab, Bài tập), cuối slide có nút "Làm lab", "Bắt đầu" và "Học tiếp" dẫn vào slide của buổi.

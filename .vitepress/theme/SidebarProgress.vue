@@ -16,13 +16,12 @@ function mark() {
     } catch {
       return
     }
-    // Mục buổi (slide hoặc lab) đánh dấu theo buổi; tiêu đề tuần (nhóm gập có link) chỉ đánh dấu khi xong cả tuần
+    // Mỗi ngày/buổi là một nhóm gập (link vào slide) chứa Slide và Lab: tất cả đánh dấu theo buổi đó
     const lab = path.match(/\/labs\/week-(\d{2})(?:\/(?:session-(\d{2})(?:\.html)?)?|\/README(?:\.html)?)?$/)
     const slide = path.match(/\/slides\/\d{2}-[a-z]+\/session-(\d{2})(?:\.html)?$/)
     const session = slide ? Number(slide[1]) : lab?.[2] ? Number(lab[2]) : null
-    const isHeader = !!a.closest('.item')?.parentElement?.classList.contains('collapsible')
     let done = false
-    if (session !== null) done = isHeader ? weekDone(Math.ceil(session / 2)) : isDone(session)
+    if (session !== null) done = isDone(session)
     else if (lab) done = weekDone(Number(lab[1]))
     a.classList.toggle('is-done', done)
   })

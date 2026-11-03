@@ -1,17 +1,29 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute, withBase } from 'vitepress'
-import { doneSessions, loadProgress, parseLesson, setDone, slideLink, TOTAL_SESSIONS } from './progress'
+import {
+  ADVANCED_SESSIONS,
+  BASIC_SESSIONS,
+  doneSessions,
+  loadProgress,
+  parseLesson,
+  setDone,
+  slideLink,
+  trackOfSession,
+} from './progress'
 
 const route = useRoute()
 const lesson = computed(() => parseLesson(route.path))
 const done = computed(() => !!lesson.value && doneSessions.value.includes(lesson.value.session))
-// Buổi 20 là buổi cuối của lộ trình Cơ bản: dẫn sang trang Nâng cao thay vì thẳng vào buổi 21
-const endOfBasic = computed(() => lesson.value?.session === 20)
+// Buổi tiếp theo trong cùng lộ trình. Hết Ngày 10 của Cơ bản thì dẫn sang kế hoạch Ngày 11–14.
+const order = computed(() => (lesson.value && trackOfSession(lesson.value.session) === 'basic' ? BASIC_SESSIONS : ADVANCED_SESSIONS))
+const endOfBasic = computed(() => lesson.value?.session === BASIC_SESSIONS[BASIC_SESSIONS.length - 1])
 const nextLink = computed(() => {
   if (!lesson.value) return null
-  if (endOfBasic.value) return withBase('/curriculum/advanced')
-  return lesson.value.session < TOTAL_SESSIONS ? withBase(slideLink(lesson.value.session + 1)) : null
+  if (endOfBasic.value) return withBase('/curriculum/basic-wrapup')
+  const i = order.value.indexOf(lesson.value.session)
+  const next = i >= 0 ? order.value[i + 1] : undefined
+  return next ? withBase(slideLink(next)) : null
 })
 
 onMounted(loadProgress)
@@ -26,9 +38,9 @@ function toggle() {
     <button type="button" class="done-btn" :class="{ on: done }" :aria-pressed="done" @click="toggle">
       <span v-if="done" aria-hidden="true">&#10003; </span>{{ done ? 'Đã xong buổi này (bấm để bỏ)' : 'Đánh dấu đã xong' }}
     </button>
-    <p v-if="done && endOfBasic" class="finish">Bạn đã xong Lộ trình Cơ bản.</p>
+    <p v-if="done && endOfBasic" class="finish">Bạn đã xong 10 ngày học của Lộ trình Cơ bản.</p>
     <a v-if="done && nextLink" class="next-link" :href="nextLink">
-      {{ endOfBasic ? 'Xem Lộ trình Nâng cao' : 'Sang buổi tiếp theo' }} &rarr;
+      {{ endOfBasic ? 'Sang Ngày 11–14: hoàn thiện và demo' : 'Sang bài tiếp theo' }} &rarr;
     </a>
     <p class="note">Tiến độ chỉ lưu trên trình duyệt này.</p>
   </div>

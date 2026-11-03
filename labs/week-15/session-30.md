@@ -1,6 +1,6 @@
 # Buổi 30 – Implementation
 
-Tuần 15/16 · Giai đoạn 5 – Capstone Project · Buổi 30/32
+Lộ trình Nâng cao · Phần 5 · Buổi 30
 
 [Slide](../../slides/08-capstone/session-30.md) · [Bài tập tuần](../../assignments/weekly/week-15.md) · [Hub tuần](README.md)
 
