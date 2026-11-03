@@ -7,6 +7,7 @@ import HomeStart from './HomeStart.vue'
 import LessonProgress from './LessonProgress.vue'
 import LessonDone from './LessonDone.vue'
 import SidebarProgress from './SidebarProgress.vue'
+import SlidePresenter from './SlidePresenter.vue'
 import './custom.css'
 
 export default {
@@ -15,7 +16,7 @@ export default {
     h(DefaultTheme.Layout, null, {
       'home-hero-image': () => h(HeroCode),
       'home-hero-after': () => h(HomeStart),
-      'doc-before': () => h(LessonProgress),
+      'doc-before': () => [h(LessonProgress), h(SlidePresenter)],
       'doc-after': () => h(LessonDone),
       'layout-bottom': () => h(SidebarProgress),
     }),
