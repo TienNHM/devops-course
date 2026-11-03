@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Image chỉ lên registry khi scan đạt ngưỡng</text>
+<rect x="40" y="90" width="190" height="70" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="135" y="133" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Push / PR</text>
+<rect x="270" y="90" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="119" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Dependency</text>
+<text x="365" y="151" font-size="20" text-anchor="middle" fill="#475569">review</text>
+<rect x="500" y="90" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="595" y="133" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">CI test</text>
+<rect x="730" y="90" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="825" y="133" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Build image</text>
+<path d="M232 125L266 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M462 125L496 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M692 125L726 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="500" y="172" width="190" height="34" rx="17" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+<text x="595" y="196" font-size="18" text-anchor="middle" fill="#0f172a">contents: read</text>
+<rect x="750" y="230" width="170" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="835" y="273" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Scan + SBOM</text>
+<path d="M825 162L835 226" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="480" y="230" width="190" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="575" y="273" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Push GHCR</text>
+<path d="M746 265L674 265" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="710" y="252" font-size="18" text-anchor="middle" fill="#16a34a" font-weight="700">pass</text>
+<rect x="480" y="312" width="190" height="34" rx="17" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="575" y="336" font-size="18" text-anchor="middle" fill="#0f172a">packages: write</text>
+<rect x="230" y="230" width="190" height="70" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="325" y="273" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Deploy</text>
+<path d="M476 265L424 265" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="750" y="340" width="170" height="60" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="835" y="378" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Dừng</text>
+<path d="M835 302L835 336" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<text x="850" y="326" font-size="18" text-anchor="start" fill="#dc2626" font-weight="700">fail</text>
+
+</svg>

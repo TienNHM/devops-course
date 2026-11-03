@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Layer bất biến: xóa ở lớp sau không giảm size</text>
+<rect x="40" y="95" width="510" height="56" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="60" y="131" font-size="20" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">Writable layer</text>
+<text x="530" y="131" font-size="20" text-anchor="end" fill="#16a34a" font-weight="700">mất khi rm</text>
+<rect x="40" y="159" width="510" height="56" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="60" y="195" font-size="20" text-anchor="start" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">RUN rm -rf cache</text>
+<text x="530" y="195" font-size="20" text-anchor="end" fill="#dc2626" font-weight="700">+0 MB</text>
+<rect x="40" y="223" width="510" height="56" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="60" y="259" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">RUN npm install</text>
+<text x="530" y="259" font-size="20" text-anchor="end" fill="#0f172a" font-weight="700">+200 MB</text>
+<rect x="40" y="287" width="510" height="56" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="323" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">COPY package*.json</text>
+<text x="530" y="323" font-size="20" text-anchor="end" fill="#0f172a" font-weight="700">nhỏ</text>
+<rect x="40" y="351" width="510" height="56" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="387" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">FROM node:22</text>
+<text x="530" y="387" font-size="20" text-anchor="end" fill="#0f172a" font-weight="700">~1 GB</text>
+<rect x="580" y="95" width="340" height="312" rx="14" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<text x="750" y="160" font-size="44" text-anchor="middle" fill="#d97706" font-weight="700">200 MB</text>
+<text x="750" y="196" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">vẫn nằm trong image</text>
+<text x="750" y="245" font-size="20" text-anchor="middle" fill="#475569">rm chỉ che file ở lớp trên,</text>
+<text x="750" y="273" font-size="20" text-anchor="middle" fill="#475569">layer cũ không biến mất.</text>
+<text x="750" y="335" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Muốn bỏ thứ gì: đừng đưa</text>
+<text x="750" y="363" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">nó vào ngay từ đầu.</text>
+
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Chẩn đoán từ ngoài vào trong</text>
+<circle cx="60" cy="120" r="20" fill="#1d63ed"/>
+<text x="60" y="128" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">1</text>
+<rect x="100" y="90" width="240" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="128" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Trạng thái</text>
+<text x="350" y="128" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700" font-family="Consolas, monospace">kubectl get pods -n club</text>
+<circle cx="60" cy="190" r="20" fill="#1d63ed"/>
+<text x="60" y="198" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">2</text>
+<rect x="100" y="160" width="240" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="198" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Sự kiện</text>
+<text x="350" y="198" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700" font-family="Consolas, monospace">kubectl describe pod TEN_POD</text>
+<circle cx="60" cy="260" r="20" fill="#1d63ed"/>
+<text x="60" y="268" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">3</text>
+<rect x="100" y="230" width="240" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="268" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Log</text>
+<text x="350" y="268" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700" font-family="Consolas, monospace">kubectl logs TEN_POD (--previous)</text>
+<circle cx="60" cy="330" r="20" fill="#1d63ed"/>
+<text x="60" y="338" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">4</text>
+<rect x="100" y="300" width="240" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="338" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Cấu hình</text>
+<text x="350" y="338" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700" font-family="Consolas, monospace">kubectl get deployment -o yaml</text>
+<circle cx="60" cy="400" r="20" fill="#1d63ed"/>
+<text x="60" y="408" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">5</text>
+<rect x="100" y="370" width="240" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="408" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Kết nối</text>
+<text x="350" y="408" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700" font-family="Consolas, monospace">exec / port-forward rồi curl</text>
+
+</svg>

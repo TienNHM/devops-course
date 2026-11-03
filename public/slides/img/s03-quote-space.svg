@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="520" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Khoảng trắng chưa quote: shell tách thành hai đối số</text>
+<rect x="40" y="90" width="430" height="320" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="255" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">✗ Không quote</text>
+<rect x="60" y="150" width="390" height="50" rx="12" fill="#0f172a"/>
+<text x="75" y="183" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"><tspan fill="#4ade80">$</tspan> rm -r docs/meeting notes</text>
+<path d="M200 202L150 246" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<path d="M310 202L350 246" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="60" y="250" width="180" height="44" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="150" y="280" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">docs/meeting</text>
+<rect x="290" y="250" width="120" height="44" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="350" y="280" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">notes</text>
+<text x="255" y="335" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">2 đối số, 2 lỗi No such file</text>
+<text x="255" y="370" font-size="20" text-anchor="middle" fill="#475569">thư mục vẫn còn</text>
+<rect x="490" y="90" width="430" height="320" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">✓ Có quote</text>
+<rect x="510" y="150" width="390" height="50" rx="12" fill="#0f172a"/>
+<text x="525" y="183" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"><tspan fill="#4ade80">$</tspan> rm -r "docs/meeting notes"</text>
+<path d="M705 202L705 246" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="580" y="250" width="250" height="44" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="280" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">docs/meeting notes</text>
+<text x="705" y="335" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">1 đối số, đúng thư mục</text>
+<rect x="40" y="430" width="880" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="459" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Thói quen trước khi xóa</text>
+<text x="480" y="491" font-size="20" text-anchor="middle" fill="#475569">pwd, rồi ls hoặc echo với cùng đối số</text>
+
+</svg>

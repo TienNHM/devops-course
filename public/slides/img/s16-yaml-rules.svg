@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">YAML: thụt lề bằng dấu cách, sai một cấp là lỗi</text>
+<rect x="40" y="85" width="420" height="40" rx="20" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="250" y="112" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">✓ Đúng: 2 dấu cách mỗi cấp</text>
+<rect x="40" y="135" width="420" height="130" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="1"/>
+<text x="60" y="171" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">jobs:</text>
+<text x="60" y="201" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">  test:</text>
+<text x="60" y="231" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">    runs-on: ubuntu-latest</text>
+<rect x="500" y="85" width="420" height="40" rx="20" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+<text x="710" y="112" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">✗ Sai: lệch cấp hoặc dùng tab</text>
+<rect x="500" y="135" width="420" height="130" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="1"/>
+<text x="520" y="171" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">jobs:</text>
+<text x="520" y="201" font-size="20" text-anchor="start" fill="#f87171" font-family="Consolas, 'Courier New', monospace">test:</text>
+<text x="520" y="231" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">  runs-on: ubuntu-latest</text>
+<rect x="40" y="305" width="270" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="175" y="334" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Map</text>
+<text x="175" y="366" font-size="20" text-anchor="middle" fill="#475569">khóa: giá trị</text>
+<rect x="345" y="305" width="270" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="334" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">List</text>
+<text x="480" y="366" font-size="20" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">- phần tử</text>
+<rect x="650" y="305" width="270" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="785" y="334" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Nhiều lệnh</text>
+<text x="785" y="366" font-size="20" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">run: |</text>
+
+</svg>

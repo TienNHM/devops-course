@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba lớp kiểm tra trước khi merge</text>
+<rect x="40" y="110" width="240" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="160" y="164" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">1 Logic</text>
+<text x="160" y="196" font-size="20" text-anchor="middle" fill="#475569">npm test</text>
+<rect x="360" y="110" width="240" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="164" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">2 Cấu hình</text>
+<text x="480" y="196" font-size="20" text-anchor="middle" fill="#475569">compose config</text>
+<rect x="680" y="110" width="240" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="800" y="164" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">3 Đóng gói</text>
+<text x="800" y="196" font-size="20" text-anchor="middle" fill="#475569">docker build</text>
+<path d="M282 170L356 170" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M602 170L676 170" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M160 232L400 300" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M480 232L480 296" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M800 232L560 300" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="280" y="300" width="400" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="334" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Branch protection</text>
+<text x="480" y="366" font-size="20" text-anchor="middle" fill="#475569">CI đỏ → khóa Merge</text>
+
+</svg>

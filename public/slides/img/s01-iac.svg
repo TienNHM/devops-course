@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">IaC: hạ tầng là file trong Git, ai cũng chạy giống nhau</text>
+<rect x="40" y="90" width="360" height="230" rx="12" fill="#0f172a"/>
+<text x="60" y="128" font-size="20" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace"># compose.yaml</text>
+<text x="60" y="162" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">services:</text>
+<text x="60" y="196" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">&#160;&#160;frontend:</text>
+<text x="60" y="230" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">&#160;&#160;backend:</text>
+<text x="60" y="264" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">&#160;&#160;&#160;&#160;image: club-api:1.0.0</text>
+<text x="60" y="298" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">&#160;&#160;postgres:</text>
+<path d="M404 205L556 130" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M404 205L556 220" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M404 205L556 310" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="560" y="95" width="360" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="740" y="138" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Laptop của Nam</text>
+<rect x="560" y="185" width="360" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="740" y="228" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Laptop của Lan</text>
+<rect x="560" y="275" width="360" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="740" y="318" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Server của CLB</text>
+<text x="480" y="385" font-size="22" text-anchor="middle" fill="#475569">Tái lập được · review như code · khôi phục nhanh</text>
+
+</svg>

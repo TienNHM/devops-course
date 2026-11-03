@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Xóa PVC thì dữ liệu đi đâu? Tùy reclaimPolicy</text>
+<rect x="40" y="95" width="430" height="300" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="255" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">reclaimPolicy: Delete</text>
+<rect x="60" y="170" width="140" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="130" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Xóa PVC</text>
+<path d="M202 210L246 210" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="250" y="170" width="200" height="80" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="350" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">PV bị xóa</text>
+<text x="255" y="305" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">✗ Dữ liệu mất theo</text>
+<text x="255" y="345" font-size="20" text-anchor="middle" fill="#475569">mặc định của StorageClass kind</text>
+<rect x="490" y="95" width="430" height="300" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">reclaimPolicy: Retain</text>
+<rect x="510" y="170" width="140" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="580" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Xóa PVC</text>
+<path d="M652 210L696 210" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="700" y="170" width="200" height="80" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">PV: Released</text>
+<text x="705" y="305" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">✓ Dữ liệu còn nguyên</text>
+<text x="705" y="345" font-size="20" text-anchor="middle" fill="#475569">admin quyết định phục hồi</text>
+
+</svg>

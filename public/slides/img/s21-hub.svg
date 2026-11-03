@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Mọi thứ đi qua API Server</text>
+<rect x="40" y="100" width="200" height="70" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="140" y="143" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kubectl</text>
+<rect x="720" y="100" width="200" height="70" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="820" y="143" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">scheduler</text>
+<rect x="40" y="320" width="200" height="70" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="140" y="363" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet</text>
+<rect x="700" y="320" width="220" height="70" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="810" y="363" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">controller-manager</text>
+<rect x="380" y="200" width="200" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="239" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kube-apiserver</text>
+<text x="480" y="271" font-size="20" text-anchor="middle" fill="#475569">cổng duy nhất</text>
+<path d="M242 140L378 220" stroke="#475569" stroke-width="3" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M718 140L582 220" stroke="#475569" stroke-width="3" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M242 350L378 272" stroke="#475569" stroke-width="3" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M698 350L582 272" stroke="#475569" stroke-width="3" marker-start="url(#a)" marker-end="url(#a)"/>
+<path d="M480 292L480 366" stroke="#16a34a" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+<rect x="390" y="368" width="180" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="411" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">etcd</text>
+<text x="590" y="408" font-size="18" font-weight="700" fill="#16a34a">chỉ API Server đọc/ghi</text>
+
+</svg>

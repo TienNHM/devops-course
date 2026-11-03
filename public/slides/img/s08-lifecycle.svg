@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Vòng đời container: sống chừng nào PID 1 còn sống</text>
+<rect x="40" y="130" width="190" height="80" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="135" y="164" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Created</text>
+<text x="135" y="196" font-size="20" text-anchor="middle" fill="#475569">docker create</text>
+<rect x="375" y="130" width="200" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="475" y="164" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Running</text>
+<text x="475" y="196" font-size="20" text-anchor="middle" fill="#475569">PID 1 đang sống</text>
+<rect x="710" y="130" width="200" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="810" y="164" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Exited</text>
+<text x="810" y="196" font-size="20" text-anchor="middle" fill="#475569">ExitCode được lưu</text>
+<rect x="710" y="320" width="200" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="810" y="349" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Removed</text>
+<text x="810" y="381" font-size="20" text-anchor="middle" fill="#475569">biến mất</text>
+<path d="M232 170L371 170" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="301" y="122" font-size="18" text-anchor="middle" fill="#0f172a">docker start</text>
+<path d="M577 155L706 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="641" y="122" font-size="18" text-anchor="middle" fill="#0f172a">stop / thoát</text>
+<path d="M706 188L577 188" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="641" y="232" font-size="18" text-anchor="middle" fill="#16a34a">start lại</text>
+<path d="M810 212L810 316" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="826" y="272" font-size="18" text-anchor="start" fill="#0f172a">docker rm</text>
+<path d="M475 212L706 352" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<text x="430" y="345" font-size="18" text-anchor="start" fill="#dc2626">docker rm -f</text>
+
+</svg>

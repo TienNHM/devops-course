@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Environment, secrets, approval</text>
+<rect x="40" y="95" width="230" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="155" y="139" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Chạy workflow</text>
+<text x="155" y="171" font-size="20" text-anchor="middle" fill="#475569">input: tag</text>
+<rect x="320" y="95" width="250" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="445" y="139" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">environment: local</text>
+<text x="445" y="171" font-size="20" text-anchor="middle" fill="#475569">reviewer duyệt?</text>
+<rect x="620" y="95" width="300" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="770" y="139" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Job deploy</text>
+<text x="770" y="171" font-size="20" text-anchor="middle" fill="#475569">chạy deploy-local.sh</text>
+<path d="M272 145L316 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M572 145L616 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="240" width="480" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="280" y="282" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">🔐 Secrets</text>
+<text x="280" y="318" font-size="20" text-anchor="middle" fill="#0f172a">GitHub Secrets hoặc .env trên máy đích</text>
+<rect x="550" y="240" width="370" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="735" y="282" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="700">✗ Không để trong</text>
+<text x="735" y="318" font-size="20" text-anchor="middle" fill="#0f172a">repo, script hay log</text>
+<text x="480" y="385" font-size="18" text-anchor="middle" fill="#475569">Required reviewers: repo public có sẵn, repo private có thể cần gói trả phí</text>
+
+</svg>

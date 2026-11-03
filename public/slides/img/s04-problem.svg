@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Một tài khoản chung và chmod 777</text>
+<rect x="30" y="120" width="260" height="120" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="160" y="174" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">1 tài khoản chung</text>
+<text x="160" y="206" font-size="20" text-anchor="middle" fill="#475569">cả nhóm cùng dùng</text>
+<rect x="350" y="120" width="260" height="120" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="174" font-size="22" text-anchor="middle" fill="#d97706" font-weight="700">Ai cũng ghi được</text>
+<text x="480" y="206" font-size="20" text-anchor="middle" fill="#475569">chmod 777 cho nhanh</text>
+<rect x="670" y="120" width="260" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="800" y="174" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Mất file .env</text>
+<text x="800" y="206" font-size="20" text-anchor="middle" fill="#475569">không biết ai xóa</text>
+<path d="M292 180L346 180" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M612 180L666 180" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="290" width="880" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="329" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Mỗi người một user, nhóm một group, quyền vừa đủ</text>
+<text x="480" y="361" font-size="20" text-anchor="middle" fill="#475569">truy vết được, service không cần chạy bằng root</text>
+
+</svg>

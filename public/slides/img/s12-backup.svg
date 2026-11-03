@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Backup bằng pg_dump, restore bằng psql</text>
+<rect x="40" y="110" width="200" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="149" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">🐘 pg-lab</text>
+<text x="140" y="181" font-size="20" text-anchor="middle" fill="#475569">có dữ liệu</text>
+<path d="M242 155L346 155" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="294" y="140" font-size="18" text-anchor="middle" fill="#1d63ed" font-weight="700" font-family="Consolas, 'Courier New', monospace">pg_dump</text>
+<rect x="350" y="110" width="220" height="90" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="460" y="149" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">📄 backup.sql</text>
+<text x="460" y="181" font-size="20" text-anchor="middle" fill="#475569">file SQL</text>
+<path d="M572 155L686 155" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="629" y="140" font-size="18" text-anchor="middle" fill="#16a34a" font-weight="700" font-family="Consolas, 'Courier New', monospace">psql</text>
+<rect x="690" y="110" width="230" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="805" y="149" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">🐘 DB mới</text>
+<text x="805" y="181" font-size="20" text-anchor="middle" fill="#475569">rỗng → đủ dữ liệu</text>
+<rect x="40" y="235" width="880" height="60" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="273" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">💥 Thảm họa: docker rm -f pg-lab; docker volume rm pg-data</text>
+<rect x="40" y="320" width="880" height="90" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="355" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Restore dùng docker exec -i (có -i, không có -t)</text>
+<text x="480" y="390" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">Thiếu -i: lệnh vẫn thoát 0 nhưng bảng trống</text>
+
+</svg>

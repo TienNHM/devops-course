@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Reconciliation loop: so sánh rồi sửa, lặp mãi</text>
+<rect x="40" y="100" width="250" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="165" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Mong muốn</text>
+<text x="165" y="176" font-size="20" text-anchor="middle" fill="#475569">replicas: 2</text>
+<rect x="355" y="100" width="250" height="100" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="480" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Controller</text>
+<text x="480" y="176" font-size="20" text-anchor="middle" fill="#475569">so sánh hai bên</text>
+<rect x="670" y="100" width="250" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="795" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Thực tế</text>
+<text x="795" y="176" font-size="20" text-anchor="middle" fill="#475569">chỉ còn 1 Pod</text>
+<path d="M292 150L351 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M668 150L609 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M480 202L480 268" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="355" y="270" width="250" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="309" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Tạo thêm 1 Pod</text>
+<text x="480" y="341" font-size="20" text-anchor="middle" fill="#475569">đủ 2 bản</text>
+<path d="M607 315L780 204" stroke="#16a34a" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#g)"/>
+<text x="740" y="300" font-size="20" font-weight="700" fill="#475569">lặp lại mãi</text>
+<text x="480" y="405" font-size="20" text-anchor="middle" fill="#475569">Giống điều hòa: đo nhiệt độ, so với 25°C, bật tắt máy nén.</text>
+
+</svg>

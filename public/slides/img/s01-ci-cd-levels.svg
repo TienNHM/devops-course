@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba mức tự động hóa: ai bấm nút cuối?</text>
+<rect x="40" y="90" width="170" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="124" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">CI</text>
+<text x="125" y="156" font-size="20" text-anchor="middle" fill="#475569">tích hợp liên tục</text>
+<rect x="230" y="90" width="100" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="280" y="138" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">push</text>
+<path d="M332 130L366 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="370" y="90" width="170" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="455" y="138" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">build + test</text>
+<path d="M542 130L576 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="580" y="90" width="180" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="670" y="124" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">✓ xanh / đỏ</text>
+<text x="670" y="156" font-size="20" text-anchor="middle" fill="#475569">báo cho dev</text>
+<rect x="40" y="200" width="170" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="234" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Continuous</text>
+<text x="125" y="266" font-size="20" text-anchor="middle" fill="#475569">Delivery</text>
+<rect x="230" y="200" width="100" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="280" y="248" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">push</text>
+<path d="M332 240L366 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="370" y="200" width="170" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="455" y="248" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">build + test</text>
+<path d="M542 240L576 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="580" y="200" width="180" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="670" y="234" font-size="22" font-weight="700" text-anchor="middle" fill="#d97706">👤 duyệt</text>
+<text x="670" y="266" font-size="20" text-anchor="middle" fill="#475569">người bấm nút</text>
+<path d="M762 240L796 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="800" y="200" width="120" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="860" y="248" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">deploy</text>
+<rect x="40" y="310" width="170" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="344" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Continuous</text>
+<text x="125" y="376" font-size="20" text-anchor="middle" fill="#475569">Deployment</text>
+<rect x="230" y="310" width="100" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="280" y="358" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">push</text>
+<path d="M332 350L366 350" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="370" y="310" width="170" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="455" y="358" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">build + test</text>
+<path d="M542 350L576 350" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="580" y="310" width="180" height="80" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="670" y="344" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">🤖 tự động</text>
+<text x="670" y="376" font-size="20" text-anchor="middle" fill="#475569">không ai bấm</text>
+<path d="M762 350L796 350" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="800" y="310" width="120" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="860" y="358" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">deploy</text>
+<text x="480" y="428" font-size="20" text-anchor="middle" fill="#475569">Khóa này: GitHub Actions làm CI, image lên GHCR, deploy bằng script</text>
+
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba cách đưa cấu hình vào container</text>
+<rect x="40" y="90" width="280" height="275" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="180" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">env</text>
+<text x="180" y="172" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">chọn từng key</text>
+<text x="180" y="202" font-size="20" text-anchor="middle" fill="#475569">đổi tên biến</text>
+<rect x="60" y="225" width="240" height="40" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="180" y="252" font-size="18" text-anchor="middle" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">configMapKeyRef</text>
+<rect x="60" y="285" width="240" height="64" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="180" y="325" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">đổi → restart Pod</text>
+<rect x="340" y="90" width="280" height="275" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">envFrom</text>
+<text x="480" y="172" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">cả bộ key</text>
+<text x="480" y="202" font-size="20" text-anchor="middle" fill="#475569">ví dụ DB_*</text>
+<rect x="360" y="225" width="240" height="40" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="480" y="252" font-size="18" text-anchor="middle" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">configMapRef</text>
+<rect x="360" y="285" width="240" height="64" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="325" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">đổi → restart Pod</text>
+<rect x="640" y="90" width="280" height="275" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="780" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">volume</text>
+<text x="780" y="172" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">cấu hình là file</text>
+<text x="780" y="202" font-size="20" text-anchor="middle" fill="#475569">app tự đọc lại</text>
+<rect x="660" y="225" width="240" height="40" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="780" y="252" font-size="18" text-anchor="middle" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">volumeMounts</text>
+<rect x="660" y="285" width="240" height="64" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="780" y="325" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet đồng bộ (trễ)</text>
+<rect x="40" y="385" width="880" height="50" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="418" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Ngoại lệ: mount bằng subPath không bao giờ tự cập nhật.</text>
+
+</svg>

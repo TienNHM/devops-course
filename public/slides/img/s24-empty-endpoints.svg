@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Endpoints rỗng: selector không khớp label</text>
+<rect x="40" y="90" width="390" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="60" y="128" font-size="20" font-weight="700" text-anchor="start" fill="#dc2626">Service backend: selector</text>
+<text x="60" y="164" font-size="24" font-weight="700" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">app=club-apii</text>
+<text x="480" y="150" font-size="52" font-weight="700" text-anchor="middle" fill="#dc2626">≠</text>
+<rect x="530" y="90" width="390" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="550" y="128" font-size="20" font-weight="700" text-anchor="start" fill="#16a34a">Pod club-api: labels</text>
+<text x="550" y="164" font-size="24" font-weight="700" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">app=club-api</text>
+<rect x="40" y="215" width="880" height="140" rx="12" fill="#0f172a"/>
+<text x="60" y="249" font-size="19" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">$ kubectl get endpoints backend</text>
+<text x="60" y="280" font-size="19" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">NAME      ENDPOINTS   AGE</text>
+<text x="60" y="311" font-size="19" fill="#f87171" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">backend   &lt;none&gt;      3m</text>
+<text x="60" y="342" font-size="19" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">$ kubectl get pods        # vẫn 1/1 Running, trông khỏe</text>
+<text x="480" y="395" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Nginx trả 502, còn Pod vẫn Running: get pods không thấy gì lạ.</text>
+
+</svg>

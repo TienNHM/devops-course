@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="960" height="480" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="480" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Điều tra từ ngoài vào trong: năm bước</text>
+<rect x="40" y="85" width="880" height="56" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<circle cx="72" cy="113" r="17" fill="#1d63ed"/>
+<text x="72" y="121" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">1</text>
+<text x="104" y="121" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">kubectl get pods</text>
+<text x="530" y="121" font-size="22" font-weight="700" text-anchor="start" fill="#475569">→</text>
+<text x="565" y="121" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Pod mới 0/1, Pod cũ 1/1</text>
+<rect x="40" y="151" width="880" height="56" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<circle cx="72" cy="179" r="17" fill="#1d63ed"/>
+<text x="72" y="187" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">2</text>
+<text x="104" y="187" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">kubectl describe pod POD</text>
+<text x="530" y="187" font-size="22" font-weight="700" text-anchor="start" fill="#475569">→</text>
+<text x="565" y="187" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Readiness probe failed 503</text>
+<rect x="40" y="217" width="880" height="56" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<circle cx="72" cy="245" r="17" fill="#1d63ed"/>
+<text x="72" y="253" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">3</text>
+<text x="104" y="253" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">kubectl logs POD / exec wget</text>
+<text x="530" y="253" font-size="22" font-weight="700" text-anchor="start" fill="#475569">→</text>
+<text x="565" y="253" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">ENOTFOUND postgres-db</text>
+<rect x="40" y="283" width="880" height="56" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<circle cx="72" cy="311" r="17" fill="#1d63ed"/>
+<text x="72" y="319" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">4</text>
+<text x="104" y="319" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">exec POD -- printenv DB_HOST</text>
+<text x="530" y="319" font-size="22" font-weight="700" text-anchor="start" fill="#475569">→</text>
+<text x="565" y="319" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">postgres-db (sai)</text>
+<rect x="40" y="349" width="880" height="56" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<circle cx="72" cy="377" r="17" fill="#1d63ed"/>
+<text x="72" y="385" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">5</text>
+<text x="104" y="385" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">kubectl get cm club-config -o yaml</text>
+<text x="530" y="385" font-size="22" font-weight="700" text-anchor="start" fill="#475569">→</text>
+<text x="565" y="385" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">sai ngay ở nguồn</text>
+<text x="480" y="452" font-size="20" text-anchor="middle" fill="#475569">Log sạch chưa chắc app khỏe: lỗi chỉ hiện khi có request chạm DB.</text>
+
+</svg>

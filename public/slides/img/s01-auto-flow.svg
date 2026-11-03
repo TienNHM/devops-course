@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Quy trình tự động: cổng test chặn lỗi trước khi phát hành</text>
+<rect x="40" y="100" width="170" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Dev</text>
+<text x="125" y="166" font-size="20" text-anchor="middle" fill="#475569">push lên Git</text>
+<path d="M212 140L248 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="250" y="100" width="170" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="335" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">CI</text>
+<text x="335" y="166" font-size="20" text-anchor="middle" fill="#475569">build + test</text>
+<path d="M422 140L466 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M540 90L610 140L540 190L470 140Z" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="540" y="148" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">Test đạt?</text>
+<path d="M612 140L676 140" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<text x="644" y="124" font-size="18" text-anchor="middle" fill="#dc2626">Không</text>
+<rect x="680" y="100" width="220" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="790" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Báo lỗi cho dev</text>
+<text x="790" y="166" font-size="20" text-anchor="middle" fill="#475569">sửa, push lại</text>
+<path d="M790 98L790 78L125 78L125 96" fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<path d="M540 192L540 250L115 250L115 296" fill="none" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="556" y="238" font-size="20" font-weight="700" text-anchor="start" fill="#16a34a">Có</text>
+<rect x="40" y="300" width="150" height="90" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="115" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Đóng gói</text>
+<text x="115" y="371" font-size="20" text-anchor="middle" fill="#475569">image</text>
+<path d="M192 345L219 345" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="222" y="300" width="150" height="90" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="297" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Registry</text>
+<text x="297" y="371" font-size="20" text-anchor="middle" fill="#475569">lưu phiên bản</text>
+<path d="M374 345L402 345" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="405" y="300" width="150" height="90" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="480" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Deploy</text>
+<text x="480" y="371" font-size="20" text-anchor="middle" fill="#475569">từ file IaC</text>
+<path d="M557 345L584 345" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="587" y="300" width="150" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="662" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Kiểm tra</text>
+<text x="662" y="371" font-size="20" text-anchor="middle" fill="#475569">/health</text>
+<path d="M739 345L767 345" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="770" y="300" width="150" height="90" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="845" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Monitor</text>
+<text x="845" y="371" font-size="20" text-anchor="middle" fill="#475569">phản hồi</text>
+<text x="480" y="430" font-size="20" text-anchor="middle" fill="#475569">Monitor và phản hồi quay về lần push tiếp theo</text>
+
+</svg>

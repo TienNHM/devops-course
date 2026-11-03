@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="540" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Quên sort thì uniq đếm sai</text>
+<rect x="40" y="90" width="430" height="350" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="255" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">✗ Không có sort</text>
+<rect x="60" y="150" width="390" height="270" rx="12" fill="#0f172a"/>
+<text x="75" y="185" font-size="18" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"><tspan fill="#4ade80">$</tspan> awk ... | uniq -c</text>
+<text x="75" y="225" font-size="20" fill="#f87171" font-family="Consolas, 'Courier New', monospace">3 200</text>
+<text x="75" y="255" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">1 404</text>
+<text x="75" y="285" font-size="20" fill="#f87171" font-family="Consolas, 'Courier New', monospace">1 200</text>
+<text x="75" y="315" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">1 405</text>
+<text x="75" y="345" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">1 500</text>
+<text x="75" y="375" font-size="20" fill="#f87171" font-family="Consolas, 'Courier New', monospace">2 200</text>
+<text x="75" y="405" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">1 404</text>
+<rect x="490" y="90" width="430" height="350" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">✓ sort trước uniq</text>
+<rect x="510" y="150" width="390" height="270" rx="12" fill="#0f172a"/>
+<text x="525" y="185" font-size="18" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"><tspan fill="#4ade80">$</tspan> awk ... | sort | uniq -c</text>
+<text x="525" y="225" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">6 200</text>
+<text x="525" y="255" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">2 404</text>
+<text x="525" y="285" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">1 405</text>
+<text x="525" y="315" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">1 500</text>
+<text x="525" y="365" font-size="20" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace"># 6+2+1+1 = 10 = wc -l</text>
+<rect x="40" y="460" width="880" height="56" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="496" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">uniq chỉ gộp dòng liền kề: luôn sort trước</text>
+
+</svg>

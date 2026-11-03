@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Nhớ 3 điều</text>
+<rect x="40" y="100" width="266" height="270" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="173" y="162" font-size="52" text-anchor="middle">1️⃣</text>
+<text x="173" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Cổng duyệt</text>
+<text x="173" y="256" font-size="20" text-anchor="middle" fill="#475569">Delivery có người,</text>
+<text x="173" y="286" font-size="20" text-anchor="middle" fill="#475569">Deployment tự động</text>
+<rect x="347" y="100" width="266" height="270" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="162" font-size="52" text-anchor="middle">2️⃣</text>
+<text x="480" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Pipeline có gate</text>
+<text x="480" y="256" font-size="20" text-anchor="middle" fill="#475569">fail fast, build once,</text>
+<text x="480" y="286" font-size="20" text-anchor="middle" fill="#475569">tag theo commit</text>
+<rect x="654" y="100" width="266" height="270" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="787" y="162" font-size="52" text-anchor="middle">3️⃣</text>
+<text x="787" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Đừng tắt gate</text>
+<text x="787" y="256" font-size="20" text-anchor="middle" fill="#475569">gate giả nguy hiểm</text>
+<text x="787" y="286" font-size="20" text-anchor="middle" fill="#475569">hơn không có gate</text>
+
+</svg>

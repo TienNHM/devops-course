@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Health check là cổng trước khi ghi trạng thái</text>
+<rect x="40" y="100" width="200" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="153" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">compose up -d</text>
+<rect x="290" y="100" width="300" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="440" y="139" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">curl /ready</text>
+<text x="440" y="171" font-size="20" text-anchor="middle" fill="#475569">tối đa 20 lần, cách 3 giây</text>
+<path d="M242 145L286 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M520 192C520 240 360 240 360 194" fill="none" stroke="#475569" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<text x="440" y="252" font-size="20" text-anchor="middle" fill="#475569">thử lại</text>
+<rect x="700" y="85" width="220" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="119" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">health OK</text>
+<text x="810" y="151" font-size="20" text-anchor="middle" fill="#475569">ghi current-tag</text>
+<rect x="700" y="215" width="220" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="810" y="249" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">health FAIL</text>
+<text x="810" y="281" font-size="20" text-anchor="middle" fill="#475569">log + rollback</text>
+<path d="M592 130L696 125" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M592 170L696 255" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="300" width="880" height="110" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="338" font-size="20" text-anchor="start" fill="#0f172a">/ready chạy SELECT 1 nên bắt được lỗi DB.</text>
+<text x="60" y="370" font-size="20" text-anchor="start" fill="#0f172a">/health chỉ trả JSON tĩnh, không dùng cho cổng này.</text>
+<text x="60" y="398" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">current-tag luôn là bản đã xác nhận chạy được.</text>
+
+</svg>

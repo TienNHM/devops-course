@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Multi-stage: chỉ mang kết quả sang stage cuối</text>
+<rect x="40" y="90" width="340" height="240" rx="14" fill="#eff6ff" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="60" y="125" font-size="20" text-anchor="start" fill="#1d63ed" font-weight="700">Stage deps · node:22-alpine</text>
+<rect x="60" y="150" width="300" height="56" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="210" y="186" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">COPY package*.json</text>
+<rect x="60" y="225" width="300" height="56" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="210" y="261" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">RUN npm ci --omit=dev</text>
+<path d="M382 215L556 215" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="469" y="196" font-size="20" text-anchor="middle" fill="#1d63ed" font-weight="700">node_modules</text>
+<text x="469" y="244" font-size="18" text-anchor="middle" fill="#475569">(chỉ cái này)</text>
+<rect x="560" y="90" width="360" height="240" rx="14" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/>
+<text x="580" y="125" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">Stage runtime · node:22-alpine</text>
+<rect x="580" y="145" width="320" height="52" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="740" y="179" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">COPY --from=deps ...</text>
+<rect x="580" y="207" width="320" height="52" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="740" y="241" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">COPY server.js</text>
+<rect x="580" y="269" width="320" height="52" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="740" y="303" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">USER node</text>
+<path d="M740 332L740 366" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="560" y="370" width="360" height="60" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="740" y="408" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">🐳 hello-node:1.0.0</text>
+<text x="40" y="405" font-size="20" text-anchor="start" fill="#475569">Stage deps bị bỏ lại: không vào image cuối.</text>
+
+</svg>

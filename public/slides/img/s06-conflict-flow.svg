@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Người merge sau là người gỡ conflict</text>
+<rect x="30" y="150" width="150" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="105" y="184" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">main</text>
+<text x="105" y="216" font-size="20" text-anchor="middle" fill="#475569">dòng 1 cũ</text>
+<path d="M182 175L246 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M182 205L246 255" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="250" y="85" width="230" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="119" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Branch P</text>
+<text x="365" y="151" font-size="20" text-anchor="middle" fill="#475569">sửa dòng 1</text>
+<rect x="250" y="215" width="230" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="249" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Branch Q</text>
+<text x="365" y="281" font-size="20" text-anchor="middle" fill="#475569">sửa dòng 1</text>
+<path d="M482 125L546 125" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<path d="M482 255L546 255" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="550" y="85" width="250" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="675" y="119" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">PR P merge trước ✓</text>
+<text x="675" y="151" font-size="20" text-anchor="middle" fill="#475569">main đã đổi</text>
+<rect x="550" y="215" width="250" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="675" y="249" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">PR Q: CONFLICT ✗</text>
+<text x="675" y="281" font-size="20" text-anchor="middle" fill="#475569">cùng sửa dòng 1</text>
+<path d="M675 167L675 211" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#r)"/>
+<path d="M675 297L675 340" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="550" y="342" width="250" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="675" y="381" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Q gỡ ở local</text>
+<text x="675" y="413" font-size="20" text-anchor="middle" fill="#475569">merge main, sửa, push</text>
+<path d="M802 387L826 387" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="830" y="357" width="110" height="60" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="885" y="395" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">Merge ✓</text>
+
+</svg>

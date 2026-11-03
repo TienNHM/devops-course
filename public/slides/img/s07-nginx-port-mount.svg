@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Nginx: port mapping và bind mount</text>
+<rect x="40" y="85" width="880" height="315" rx="14" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="60" y="113" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Máy của bạn (host)</text>
+<rect x="430" y="125" width="470" height="255" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="450" y="152" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">Container nginx-demo</text>
+<rect x="60" y="165" width="170" height="90" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="145" y="204" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">curl</text>
+<text x="145" y="236" font-size="20" text-anchor="middle" fill="#475569">localhost:8081</text>
+<rect x="590" y="170" width="290" height="90" rx="12" fill="#fff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="735" y="209" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">nginx lắng nghe :80</text>
+<text x="735" y="241" font-size="20" text-anchor="middle" fill="#475569">PID 1: master process</text>
+<path d="M232 210L586 215" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="330" y="192" font-size="20" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">-p 8081:80</text>
+<rect x="60" y="295" width="230" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="175" y="329" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">index.html</text>
+<text x="175" y="361" font-size="20" text-anchor="middle" fill="#475569">file của bạn</text>
+<rect x="450" y="305" width="430" height="60" rx="12" fill="#fff" stroke="#d97706" stroke-width="2.5"/>
+<text x="665" y="343" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">/usr/share/nginx/html</text>
+<path d="M292 335L446 335" stroke="#d97706" stroke-width="3" marker-end="url(#y)"/>
+<text x="369" y="320" font-size="18" text-anchor="middle" fill="#0f172a">bind :ro</text>
+<path d="M735 303L735 263" stroke="#d97706" stroke-width="3" marker-end="url(#y)"/>
+<text x="750" y="288" font-size="18" text-anchor="start" fill="#475569">đọc</text>
+
+</svg>

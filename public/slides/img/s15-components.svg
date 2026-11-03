@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Năm thành phần của một pipeline</text>
+<rect x="30" y="120" width="150" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="105" y="159" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Trigger</text>
+<text x="105" y="191" font-size="20" text-anchor="middle" fill="#475569">push, PR, tag</text>
+<rect x="215" y="100" width="470" height="130" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="235" y="130" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Runner: máy sạch ubuntu-latest</text>
+<rect x="235" y="145" width="200" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="335" y="188" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Job: test</text>
+<rect x="455" y="145" width="210" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="560" y="188" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Step: npm ci</text>
+<path d="M182 165L213 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="720" y="120" width="200" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="820" y="159" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Artifact</text>
+<text x="820" y="191" font-size="20" text-anchor="middle" fill="#475569">image club-api</text>
+<path d="M687 165L718 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="215" y="270" width="470" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="450" y="312" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="700">Gate: điều kiện để đi tiếp</text>
+<text x="450" y="346" font-size="20" text-anchor="middle" fill="#475569">test pass, hoặc người duyệt</text>
+<path d="M450 232L450 266" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">.gitignore phải có trước git add</text>
+<text x="255" y="100" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="700">✗ Chưa có .gitignore</text>
+<text x="705" y="100" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">✓ Có .gitignore trước</text>
+<rect x="40" y="118" width="430" height="170" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="60" y="156" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">$ git add .</text>
+<text x="60" y="186" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">$ git status --short</text>
+<text x="60" y="216" font-size="20" text-anchor="start" fill="#f87171" font-family="Consolas, 'Courier New', monospace">A  .env</text>
+<text x="60" y="246" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"># .env sẽ vào commit kế tiếp</text>
+<rect x="490" y="118" width="430" height="170" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="510" y="156" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">$ git restore --staged .env</text>
+<text x="510" y="186" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">$ echo .env &gt;&gt; .gitignore</text>
+<text x="510" y="216" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">$ git status --short</text>
+<text x="510" y="246" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">?? .gitignore</text>
+<rect x="40" y="312" width="880" height="108" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="352" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Đã commit .env rồi mới thêm .gitignore: file vẫn bị theo dõi</text>
+<text x="480" y="390" font-size="21" text-anchor="middle" fill="#475569">Gỡ bằng git rm --cached .env; secret đã lên GitHub phải đổi</text>
+
+</svg>

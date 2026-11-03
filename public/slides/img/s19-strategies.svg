@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Bốn chiến lược deploy</text>
+<rect x="40" y="75" width="430" height="160" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="111" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Recreate</text>
+<rect x="310" y="87" width="140" height="34" rx="17" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<text x="380" y="111" font-size="18" text-anchor="middle" fill="#0f172a" font-weight="700">Compose</text>
+<text x="60" y="219" font-size="18" text-anchor="start" fill="#475569">Dừng cũ rồi chạy mới: có downtime</text>
+<rect x="60" y="137" width="80" height="44" rx="8" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="100" y="166" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v1</text>
+<path d="M142 159L164 159" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="168" y="137" width="100" height="44" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="218" y="166" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">trống</text>
+<path d="M270 159L292 159" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="296" y="137" width="80" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="336" y="166" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v2</text>
+<rect x="490" y="75" width="430" height="160" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="510" y="111" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Rolling</text>
+<rect x="760" y="87" width="140" height="34" rx="17" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="830" y="111" font-size="18" text-anchor="middle" fill="#0f172a" font-weight="700">K8s mặc định</text>
+<text x="510" y="219" font-size="18" text-anchor="start" fill="#475569">Thay dần từng instance</text>
+<rect x="510" y="137" width="76" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="548" y="166" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v2</text>
+<rect x="600" y="137" width="76" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="638" y="166" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v2</text>
+<rect x="690" y="137" width="76" height="44" rx="8" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="728" y="166" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v1</text>
+<rect x="780" y="137" width="76" height="44" rx="8" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="818" y="166" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v1</text>
+<rect x="40" y="250" width="430" height="160" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="286" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Blue/Green</text>
+<text x="60" y="394" font-size="18" text-anchor="start" fill="#475569">Dựng song song, chuyển traffic</text>
+<rect x="60" y="312" width="100" height="44" rx="8" fill="#ffffff" stroke="#475569" stroke-width="2"/>
+<text x="110" y="341" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Router</text>
+<rect x="260" y="298" width="130" height="36" rx="8" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="325" y="323" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Blue v1</text>
+<rect x="260" y="342" width="130" height="36" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="325" y="367" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Green v2</text>
+<path d="M162 326L256 316" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<path d="M162 342L256 360" stroke="#16a34a" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="490" y="250" width="430" height="160" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="510" y="286" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Canary</text>
+<text x="510" y="394" font-size="18" text-anchor="start" fill="#475569">Một phần nhỏ traffic dùng bản mới</text>
+<rect x="510" y="312" width="100" height="44" rx="8" fill="#ffffff" stroke="#475569" stroke-width="2"/>
+<text x="560" y="341" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Router</text>
+<rect x="710" y="298" width="130" height="36" rx="8" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="775" y="323" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v1</text>
+<rect x="710" y="342" width="130" height="36" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="775" y="367" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">v2 mới</text>
+<path d="M612 326L706 316" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+<path d="M612 342L706 360" stroke="#16a34a" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="852" y="322" font-size="20" text-anchor="start" fill="#475569" font-weight="700">90%</text>
+<text x="852" y="368" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">10%</text>
+
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Từ chuỗi lệnh dài đến một file</text>
+<rect x="30" y="85" width="440" height="320" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="50" y="120" font-size="22" font-weight="700" fill="#dc2626">Trước: nhiều docker run</text>
+<rect x="50" y="140" width="400" height="190" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="68" y="176" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">$ docker network create club</text>
+<text x="68" y="206" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">$ docker volume create pgdata</text>
+<text x="68" y="236" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">$ docker run -d -e ... postgres</text>
+<text x="68" y="266" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">$ docker run -d -e ... backend</text>
+<text x="68" y="296" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">$ docker run -d -p 8080:80 ...</text>
+<text x="250" y="370" font-size="20" text-anchor="middle" fill="#475569">Quên một cờ -e là hệ thống không lên</text>
+<rect x="490" y="85" width="440" height="320" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="510" y="120" font-size="22" font-weight="700" fill="#16a34a">Sau: Compose</text>
+<rect x="540" y="145" width="340" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="710" y="179" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">compose.yaml</text>
+<text x="710" y="211" font-size="20" text-anchor="middle" fill="#475569">commit cùng mã nguồn</text>
+<path d="M710 227L710 262" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="510" y="268" width="400" height="60" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="528" y="304" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#4ade80" xml:space="preserve">$ docker compose up -d --build</text>
+<text x="710" y="370" font-size="20" text-anchor="middle" fill="#475569">Người mới: clone, tạo .env, chạy 1 lệnh</text>
+
+</svg>

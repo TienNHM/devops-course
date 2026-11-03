@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Không có quy trình: đoán mò cho tới khi ổn</text>
+<rect x="40" y="120" width="230" height="120" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="155" y="174" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Đẩy club-api mới</text>
+<text x="155" y="206" font-size="20" text-anchor="middle" fill="#475569">lên cluster</text>
+<rect x="365" y="120" width="230" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="174" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">get pods</text>
+<text x="480" y="206" font-size="20" text-anchor="middle" fill="#475569">đầy chữ đỏ</text>
+<rect x="690" y="120" width="230" height="120" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="805" y="174" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Xóa Pod, đổi bừa</text>
+<text x="805" y="206" font-size="20" text-anchor="middle" fill="#475569">nhóm chat: sập rồi</text>
+<path d="M272 180L361 180" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M597 180L686 180" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="295" width="880" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="343" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Lần sau lỗi quay lại: chưa biết nguyên nhân gốc</text>
+
+</svg>

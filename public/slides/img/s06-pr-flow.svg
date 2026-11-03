@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="520" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Từ feature branch đến main</text>
+<rect x="70" y="78" width="160" height="48" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="150" y="110" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Dev A</text>
+<line x1="150" y1="128" x2="150" y2="505" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="400" y="78" width="160" height="48" rx="12" fill="#f1f5f9" stroke="#475569" stroke-width="2.5"/>
+<text x="480" y="110" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">GitHub</text>
+<line x1="480" y1="128" x2="480" y2="505" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="730" y="78" width="160" height="48" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="110" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Reviewer B</text>
+<line x1="810" y1="128" x2="810" y2="505" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="170" y="150" width="260" height="40" rx="10" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="300" y="177" font-size="19" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">switch -c, add, commit</text>
+<path d="M152 240L478 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="315" y="230" font-size="19" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">① git push -u origin feature/x</text>
+<path d="M152 292L478 292" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="315" y="282" font-size="19" text-anchor="middle" fill="#0f172a">② mở Pull Request vào main</text>
+<path d="M482 344L808 344" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="645" y="334" font-size="19" text-anchor="middle" fill="#0f172a">③ báo cần review</text>
+<path d="M808 396L482 396" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="645" y="386" font-size="19" text-anchor="middle" fill="#0f172a">④ Comment + Approve</text>
+<rect x="500" y="420" width="260" height="40" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="630" y="447" font-size="19" text-anchor="middle" fill="#16a34a" font-weight="700">⑤ Merge vào main</text>
+<path d="M478 494L152 494" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="315" y="484" font-size="19" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">⑥ git pull (cập nhật main)</text>
+
+</svg>

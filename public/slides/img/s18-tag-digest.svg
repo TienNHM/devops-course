@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Tag là con trỏ, digest là định danh bất biến</text>
+<rect x="40" y="85" width="880" height="310" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="60" y="118" font-size="20" text-anchor="start" fill="#475569" font-weight="700" font-family="Consolas, 'Courier New', monospace">ghcr.io/ten-ban/club-api</text>
+<rect x="100" y="135" width="220" height="44" rx="22" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="210" y="164" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">sha-3f2a1bc</text>
+<rect x="620" y="135" width="160" height="44" rx="22" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<text x="700" y="164" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">latest</text>
+<rect x="100" y="280" width="250" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="225" y="319" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">sha256:a1b2c3…</text>
+<text x="225" y="351" font-size="20" text-anchor="middle" fill="#475569">nội dung bất biến</text>
+<rect x="570" y="280" width="250" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="695" y="319" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">sha256:d4e5f6…</text>
+<text x="695" y="351" font-size="20" text-anchor="middle" fill="#475569">bản mới hơn</text>
+<path d="M210 182L215 276" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M700 182L695 276" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<path d="M618 170L352 300" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<text x="470" y="222" font-size="20" text-anchor="middle" fill="#475569">hôm qua</text>
+<text x="480" y="435" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Tag có thể bị trỏ sang image khác. Digest đổi nội dung thì đổi mã băm.</text>
+
+</svg>

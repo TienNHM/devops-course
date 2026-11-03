@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">localhost trong container là chính container</text>
+<rect x="20" y="135" width="170" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="105" y="179" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Trình duyệt</text>
+<text x="105" y="211" font-size="20" text-anchor="middle" fill="#475569">localhost:8080</text>
+<path d="M192 185L222 185" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="205" y="90" width="730" height="295" rx="16" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="225" y="120" font-size="19" text-anchor="start" fill="#475569" font-weight="700">Docker network (gọi nhau bằng tên service)</text>
+<rect x="225" y="140" width="140" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="295" y="179" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Nginx</text>
+<text x="295" y="211" font-size="20" text-anchor="middle" fill="#475569">:8080</text>
+<path d="M369 185L471 185" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="420" y="172" font-size="20" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">/api/</text>
+<rect x="475" y="140" width="140" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="545" y="179" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">API</text>
+<text x="545" y="211" font-size="20" text-anchor="middle" fill="#475569">:3000</text>
+<path d="M619 185L721 185" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="670" y="172" font-size="19" text-anchor="middle" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">postgres</text>
+<rect x="725" y="140" width="190" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="820" y="179" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">PostgreSQL</text>
+<text x="820" y="211" font-size="20" text-anchor="middle" fill="#475569">:5432</text>
+<path d="M545 232L545 272" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#r)"/>
+<rect x="405" y="275" width="280" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="545" y="312" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">✗ DB_HOST=localhost</text>
+<text x="545" y="344" font-size="20" text-anchor="middle" fill="#475569">là chính container API</text>
+<text x="480" y="420" font-size="21" text-anchor="middle" fill="#0f172a">Compose dùng DB_HOST: postgres (tên service), không dùng localhost</text>
+
+</svg>

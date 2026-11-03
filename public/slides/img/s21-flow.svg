@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 490" width="960" height="490" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="490" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Một yêu cầu đi từ kubectl tới container</text>
+<circle cx="62" cy="118" r="22" fill="#1d63ed"/>
+<text x="62" y="126" font-size="24" font-weight="700" text-anchor="middle" fill="#ffffff">1</text>
+<rect x="100" y="88" width="200" height="60" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="200" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kubectl</text>
+<path d="M302 118L330 118" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="344" y="126" font-size="22" fill="#0f172a">gửi manifest, API Server ghi vào etcd</text>
+<circle cx="62" cy="194" r="22" fill="#1d63ed"/>
+<text x="62" y="202" font-size="24" font-weight="700" text-anchor="middle" fill="#ffffff">2</text>
+<rect x="100" y="164" width="200" height="60" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="200" y="202" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Controller</text>
+<path d="M302 194L330 194" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="344" y="202" font-size="22" fill="#0f172a">tạo ReplicaSet rồi các Pod (chưa có node)</text>
+<circle cx="62" cy="270" r="22" fill="#1d63ed"/>
+<text x="62" y="278" font-size="24" font-weight="700" text-anchor="middle" fill="#ffffff">3</text>
+<rect x="100" y="240" width="200" height="60" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="200" y="278" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Scheduler</text>
+<path d="M302 270L330 270" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="344" y="278" font-size="22" fill="#0f172a">chọn node cho Pod</text>
+<circle cx="62" cy="346" r="22" fill="#1d63ed"/>
+<text x="62" y="354" font-size="24" font-weight="700" text-anchor="middle" fill="#ffffff">4</text>
+<rect x="100" y="316" width="200" height="60" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="200" y="354" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet</text>
+<path d="M302 346L330 346" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="344" y="354" font-size="22" fill="#0f172a">bảo containerd kéo image, chạy container</text>
+<circle cx="62" cy="422" r="22" fill="#1d63ed"/>
+<text x="62" y="430" font-size="24" font-weight="700" text-anchor="middle" fill="#ffffff">5</text>
+<rect x="100" y="392" width="200" height="60" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="200" y="430" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet</text>
+<path d="M302 422L330 422" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="344" y="430" font-size="22" fill="#0f172a">báo Running, Ready về API Server</text>
+
+</svg>

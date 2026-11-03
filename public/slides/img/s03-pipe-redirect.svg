@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Pipe nối lệnh với lệnh, redirect đưa kết quả ra file</text>
+<rect x="40" y="100" width="230" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="155" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">cat sample.txt</text>
+<path d="M272 140L363 140" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="317" y="126" font-size="36" font-weight="700" text-anchor="middle" fill="#d97706">|</text>
+<rect x="365" y="100" width="230" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">grep ERROR</text>
+<path d="M597 140L688 140" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="642" y="126" font-size="36" font-weight="700" text-anchor="middle" fill="#d97706">|</text>
+<rect x="690" y="100" width="230" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="805" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">wc -l</text>
+<text x="480" y="222" font-size="22" text-anchor="middle" fill="#475569">stdout của lệnh trước thành stdin của lệnh sau</text>
+<rect x="40" y="260" width="280" height="110" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="180" y="309" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">></text>
+<text x="180" y="341" font-size="20" text-anchor="middle" fill="#475569">ghi đè file</text>
+<rect x="340" y="260" width="280" height="110" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="309" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">>></text>
+<text x="480" y="341" font-size="20" text-anchor="middle" fill="#475569">ghi nối thêm</text>
+<rect x="640" y="260" width="280" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="780" y="309" font-size="22" font-weight="700" text-anchor="middle" fill="#d97706">2></text>
+<text x="780" y="341" font-size="20" text-anchor="middle" fill="#475569">ghi riêng lỗi</text>
+
+</svg>

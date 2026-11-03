@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Định nghĩa &quot;xong&quot; và ghi lại quyết định</text>
+<rect x="40" y="95" width="430" height="310" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="255" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">Definition of Done</text>
+<text x="90" y="200" font-size="24" font-weight="700" text-anchor="start" fill="#0f172a">✓ Review chéo</text>
+<text x="90" y="250" font-size="24" font-weight="700" text-anchor="start" fill="#0f172a">✓ Test xanh</text>
+<text x="90" y="300" font-size="24" font-weight="700" text-anchor="start" fill="#0f172a">✓ Tài liệu cập nhật</text>
+<text x="90" y="350" font-size="24" font-weight="700" text-anchor="start" fill="#0f172a">✓ Không có secret</text>
+<rect x="490" y="95" width="430" height="310" rx="14" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="510" y="136" font-size="18" text-anchor="start" fill="#475569" font-family="Consolas, monospace">docs/adr/0001-image-tag-strategy.md</text>
+<rect x="510" y="160" width="390" height="42" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="705" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bối cảnh</text>
+<rect x="510" y="210" width="390" height="42" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="705" y="239" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Các lựa chọn đã cân nhắc</text>
+<rect x="510" y="260" width="390" height="42" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="289" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Quyết định</text>
+<rect x="510" y="310" width="390" height="42" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="705" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Hệ quả: điều gì khó hơn?</text>
+<text x="705" y="385" font-size="18" text-anchor="middle" fill="#475569">một quyết định một file, tối đa một trang</text>
+
+</svg>

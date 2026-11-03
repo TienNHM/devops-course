@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Một request POST đi qua những đâu</text>
+<rect x="30" y="110" width="170" height="90" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="115" y="163" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Browser</text>
+<rect x="250" y="110" width="170" height="90" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="335" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-web</text>
+<text x="335" y="181" font-size="20" text-anchor="middle" fill="#475569">proxy /api</text>
+<rect x="470" y="110" width="170" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="555" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api</text>
+<text x="555" y="181" font-size="20" text-anchor="middle" fill="#475569">validate</text>
+<rect x="700" y="110" width="220" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">postgres</text>
+<text x="810" y="181" font-size="20" text-anchor="middle" fill="#475569">INSERT $1,$2</text>
+<path d="M202 155L246 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M422 155L466 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M642 155L696 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M555 205 L555 270 L115 270 L115 205" fill="none" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="335" y="255" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">201 + JSON</text>
+<rect x="40" y="305" width="880" height="75" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="350" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Giá trị người dùng đi qua $1, $2 — không nối chuỗi SQL</text>
+
+</svg>

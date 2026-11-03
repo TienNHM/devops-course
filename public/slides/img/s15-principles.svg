@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Năm nguyên tắc thiết kế pipeline</text>
+<rect x="40" y="80" width="880" height="56" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="80" y="118" font-size="30" text-anchor="middle" fill="#0f172a">⚡</text>
+<text x="125" y="117" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Fail fast</text>
+<text x="400" y="117" font-size="20" text-anchor="start" fill="#475569">stage rẻ, nhanh đứng trước stage đắt</text>
+<rect x="40" y="146" width="880" height="56" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="80" y="184" font-size="30" text-anchor="middle" fill="#0f172a">📦</text>
+<text x="125" y="183" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Build once</text>
+<text x="400" y="183" font-size="20" text-anchor="start" fill="#475569">một image đi qua mọi môi trường</text>
+<rect x="40" y="212" width="880" height="56" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="80" y="250" font-size="30" text-anchor="middle" fill="#0f172a">🏷️</text>
+<text x="125" y="249" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Tag theo SHA</text>
+<text x="400" y="249" font-size="20" text-anchor="start" fill="#475569">truy vết image về đúng commit</text>
+<rect x="40" y="278" width="880" height="56" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="80" y="316" font-size="30" text-anchor="middle" fill="#0f172a">🔑</text>
+<text x="125" y="315" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Secret</text>
+<text x="400" y="315" font-size="20" text-anchor="start" fill="#475569">không nằm trong code hay log</text>
+<rect x="40" y="344" width="880" height="56" rx="12" fill="#e2e8f0" stroke="#475569" stroke-width="2.5"/>
+<text x="80" y="382" font-size="30" text-anchor="middle" fill="#0f172a">📄</text>
+<text x="125" y="381" font-size="24" text-anchor="start" fill="#0f172a" font-weight="700">Pipeline là code</text>
+<text x="400" y="381" font-size="20" text-anchor="start" fill="#475569">nằm trong repo, được review</text>
+
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Readiness: nhận traffic. Liveness: restart</text>
+<rect x="40" y="90" width="430" height="290" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="255" y="130" font-size="24" text-anchor="middle" fill="#1d63ed" font-weight="700">Readiness: /ready</text>
+<text x="255" y="180" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, monospace">chạy SELECT 1</text>
+<text x="255" y="225" font-size="22" text-anchor="middle" fill="#0f172a">mất DB → 503</text>
+<text x="255" y="270" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Pod thành 0/1</text>
+<text x="255" y="325" font-size="22" text-anchor="middle" fill="#0f172a">Service ngừng gửi traffic</text>
+<rect x="490" y="90" width="430" height="290" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="130" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">Liveness: /health</text>
+<text x="705" y="180" font-size="22" text-anchor="middle" fill="#0f172a">chỉ báo tiến trình sống</text>
+<text x="705" y="225" font-size="22" text-anchor="middle" fill="#0f172a">không kiểm tra DB</text>
+<text x="705" y="270" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">mất DB: không restart</text>
+<text x="705" y="325" font-size="22" text-anchor="middle" fill="#0f172a">restart khi tiến trình chết</text>
+
+</svg>

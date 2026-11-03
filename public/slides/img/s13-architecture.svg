@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Kiến trúc starter-project trong Compose</text>
+<rect x="30" y="170" width="120" height="90" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="90" y="209" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Trình</text>
+<text x="90" y="241" font-size="20" text-anchor="middle" fill="#475569">duyệt</text>
+<rect x="236" y="105" width="630" height="230" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="256" y="132" font-size="20" font-weight="700" fill="#475569">club-network</text>
+<rect x="254" y="170" width="140" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="324" y="209" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">frontend</text>
+<text x="324" y="241" font-size="20" text-anchor="middle" fill="#475569">nginx :80</text>
+<rect x="480" y="170" width="140" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="550" y="209" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">backend</text>
+<text x="550" y="241" font-size="20" text-anchor="middle" fill="#475569">Node :3000</text>
+<rect x="706" y="170" width="140" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="776" y="209" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">postgres</text>
+<text x="776" y="241" font-size="20" text-anchor="middle" fill="#475569">:5432</text>
+<path d="M152 215L250 215" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M396 215L476 215" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M622 215L702 215" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="201" y="195" font-size="18" font-weight="700" text-anchor="middle" fill="#1d63ed">8080</text>
+<text x="436" y="195" font-size="18" font-weight="700" text-anchor="middle" fill="#1d63ed">/api/</text>
+<text x="662" y="195" font-size="18" font-weight="700" text-anchor="middle" fill="#1d63ed">DNS</text>
+<text x="324" y="295" font-size="18" text-anchor="middle" fill="#475569">publish 8080</text>
+<text x="550" y="295" font-size="18" text-anchor="middle" fill="#475569">127.0.0.1:3000</text>
+<text x="776" y="295" font-size="18" font-weight="700" text-anchor="middle" fill="#16a34a">không publish</text>
+<rect x="676" y="360" width="200" height="56" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="776" y="396" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">💾 postgres-data</text>
+<path d="M776 336L776 358" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="40" y="395" font-size="22" fill="#475569">Vào web: localhost:8080</text>
+
+</svg>

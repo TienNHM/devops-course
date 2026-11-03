@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Cùng một lệnh, ba máy, ba kết quả</text>
+<rect x="40" y="100" width="266" height="170" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="173" y="142" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">Windows 10</text>
+<text x="173" y="182" font-size="19" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">$ docker compose up</text>
+<text x="173" y="232" font-size="19" font-weight="700" text-anchor="middle" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">✓ chạy được</text>
+<rect x="347" y="100" width="266" height="170" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="142" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">Windows 11</text>
+<text x="480" y="182" font-size="19" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">$ docker compose up</text>
+<text x="480" y="232" font-size="19" font-weight="700" text-anchor="middle" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">command not found</text>
+<rect x="654" y="100" width="266" height="170" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="787" y="142" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">Script có CRLF</text>
+<text x="787" y="182" font-size="19" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">$ docker compose up</text>
+<text x="787" y="232" font-size="19" font-weight="700" text-anchor="middle" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">\r: command not found</text>
+<rect x="40" y="310" width="880" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="358" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Mất 40 phút đầu mỗi buổi chỉ để làm cho máy giống nhau</text>
+
+</svg>

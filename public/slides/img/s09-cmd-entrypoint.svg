@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">CMD bị thay thế, ENTRYPOINT được nối thêm</text>
+<rect x="40" y="90" width="430" height="270" rx="14" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="255" y="126" font-size="24" text-anchor="middle" fill="#1d63ed" font-weight="700">CMD: lệnh mặc định</text>
+<rect x="60" y="145" width="390" height="50" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="255" y="178" font-size="22" text-anchor="middle" fill="#e2e8f0" font-weight="700" font-family="Consolas, 'Courier New', monospace">CMD [&quot;node&quot;, &quot;server.js&quot;]</text>
+<rect x="60" y="220" width="390" height="50" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="255" y="253" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker run club-api sh</text>
+<rect x="60" y="295" width="390" height="50" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="255" y="328" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">chạy: sh (thay thế hết)</text>
+<path d="M255 197L255 216" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M255 272L255 291" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="490" y="90" width="430" height="270" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="126" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">ENTRYPOINT: cố định</text>
+<rect x="510" y="145" width="390" height="50" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="705" y="178" font-size="22" text-anchor="middle" fill="#e2e8f0" font-weight="700" font-family="Consolas, 'Courier New', monospace">ENTRYPOINT [&quot;node&quot;]</text>
+<rect x="510" y="220" width="390" height="50" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="705" y="253" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker run club-api server.js</text>
+<rect x="510" y="295" width="390" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="328" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">chạy: node server.js (nối thêm)</text>
+<path d="M705 197L705 216" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M705 272L705 291" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="378" width="880" height="60" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="416" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Dùng exec form [&quot;node&quot;, &quot;server.js&quot;]: node là PID 1, nhận tín hiệu</text>
+
+</svg>

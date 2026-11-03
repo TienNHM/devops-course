@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Compose: mô tả một lần, cả hệ thống tự dựng</text>
+<rect x="40" y="140" width="190" height="110" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="135" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">compose.yaml</text>
+<text x="135" y="221" font-size="20" text-anchor="middle" fill="#475569">mô tả mong muốn</text>
+<path d="M232 195L288 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="290" y="140" width="200" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="390" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">docker compose</text>
+<text x="390" y="221" font-size="20" text-anchor="middle" fill="#475569">tạo / cập nhật</text>
+<path d="M492 195L548 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="550" y="90" width="370" height="250" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="570" y="122" font-size="20" font-weight="700" fill="#475569">Compose dựng cho khớp</text>
+<rect x="570" y="140" width="160" height="44" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="650" y="170" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">🌐 network</text>
+<rect x="750" y="140" width="150" height="44" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="825" y="170" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">💾 volume</text>
+<rect x="570" y="200" width="160" height="44" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="650" y="230" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">frontend</text>
+<rect x="750" y="200" width="150" height="44" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="825" y="230" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">backend</text>
+<rect x="570" y="260" width="160" height="44" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="650" y="290" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">postgres</text>
+<text x="480" y="395" font-size="22" text-anchor="middle" fill="#475569">Khai báo xong, cả nhóm cùng chạy đúng một hệ thống.</text>
+
+</svg>

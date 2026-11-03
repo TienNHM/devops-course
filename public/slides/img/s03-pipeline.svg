@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Pipeline: access.log chảy qua 4 công đoạn</text>
+<rect x="40" y="95" width="190" height="55" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="135" y="130" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">awk '{print $1}'</text>
+<path d="M232 122L267 122" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="175" width="190" height="185" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="215" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.5</text>
+<text x="60" y="246" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.5</text>
+<text x="60" y="277" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.7</text>
+<text x="60" y="308" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.9</text>
+<text x="60" y="339" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">...</text>
+<text x="135" y="392" font-size="18" text-anchor="middle" fill="#475569">cắt cột 1:</text>
+<text x="135" y="416" font-size="18" text-anchor="middle" fill="#475569">chỉ còn IP</text>
+<rect x="270" y="95" width="190" height="55" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="130" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">sort</text>
+<path d="M462 122L497 122" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="270" y="175" width="190" height="185" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="290" y="215" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.5</text>
+<text x="290" y="246" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.5</text>
+<text x="290" y="277" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.5</text>
+<text x="290" y="308" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.5</text>
+<text x="290" y="339" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">10.0.0.7</text>
+<text x="365" y="392" font-size="18" text-anchor="middle" fill="#475569">IP giống nhau</text>
+<text x="365" y="416" font-size="18" text-anchor="middle" fill="#475569">nằm cạnh nhau</text>
+<rect x="500" y="95" width="190" height="55" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="595" y="130" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">uniq -c</text>
+<path d="M692 122L727 122" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="500" y="175" width="190" height="185" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="520" y="215" font-size="19" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">4 10.0.0.5</text>
+<text x="520" y="246" font-size="19" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">3 10.0.0.7</text>
+<text x="520" y="277" font-size="19" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">3 10.0.0.9</text>
+<text x="595" y="392" font-size="18" text-anchor="middle" fill="#475569">gộp dòng liền kề</text>
+<text x="595" y="416" font-size="18" text-anchor="middle" fill="#475569">và đếm</text>
+<rect x="730" y="95" width="190" height="55" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="825" y="130" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">sort -nr</text>
+<rect x="730" y="175" width="190" height="185" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="750" y="215" font-size="19" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">4 10.0.0.5</text>
+<text x="750" y="246" font-size="19" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">3 10.0.0.9</text>
+<text x="750" y="277" font-size="19" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">3 10.0.0.7</text>
+<text x="825" y="392" font-size="18" text-anchor="middle" fill="#475569">xếp giảm dần</text>
+<text x="825" y="416" font-size="18" text-anchor="middle" fill="#475569">theo số đếm</text>
+
+</svg>

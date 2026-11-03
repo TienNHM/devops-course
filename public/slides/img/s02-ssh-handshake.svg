@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">SSH tới GitHub: private key không bao giờ rời máy</text>
+<path d="M150 128L150 440" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6 6"/>
+<path d="M480 128L480 440" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6 6"/>
+<path d="M810 128L810 440" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6 6"/>
+<rect x="50" y="78" width="200" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="150" y="111" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bạn (Ubuntu)</text>
+<rect x="380" y="78" width="200" height="50" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="111" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">ssh-agent</text>
+<rect x="710" y="78" width="200" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="111" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">GitHub</text>
+<path d="M150 175L810 175" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="371" y="143" width="219" height="26" rx="6" fill="#f8fafc"/>
+<text x="480" y="163" font-size="20" text-anchor="middle" fill="#0f172a">1. git push qua SSH</text>
+<path d="M810 225L150 225" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="260" y="193" width="440" height="26" rx="6" fill="#f8fafc"/>
+<text x="480" y="213" font-size="20" text-anchor="middle" fill="#0f172a">2. thử thách, dựa trên public key đã lưu</text>
+<path d="M150 275L480 275" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="169" y="243" width="293" height="26" rx="6" fill="#f8fafc"/>
+<text x="315" y="263" font-size="20" text-anchor="middle" fill="#0f172a">3. xin ký bằng private key</text>
+<path d="M480 325L150 325" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="237" y="293" width="156" height="26" rx="6" fill="#f8fafc"/>
+<text x="315" y="313" font-size="20" text-anchor="middle" fill="#0f172a">4. trả chữ ký</text>
+<path d="M150 375L810 375" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="402" y="343" width="156" height="26" rx="6" fill="#f8fafc"/>
+<text x="480" y="363" font-size="20" text-anchor="middle" fill="#0f172a">5. gửi chữ ký</text>
+<path d="M810 425L150 425" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="355" y="393" width="251" height="26" rx="6" fill="#f8fafc"/>
+<text x="480" y="413" font-size="20" text-anchor="middle" fill="#16a34a">6. xác thực thành công</text>
+
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Trang Packages: tag sha khớp 7 ký tự commit</text>
+<rect x="40" y="90" width="540" height="290" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="65" y="135" font-size="26" text-anchor="start" fill="#0f172a" font-weight="700">📦 club-api</text>
+<rect x="220" y="108" width="100" height="40" rx="20" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="270" y="135" font-size="18" text-anchor="middle" fill="#16a34a" font-weight="700">Public</text>
+<rect x="65" y="175" width="490" height="56" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="85" y="211" font-size="22" text-anchor="start" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">sha-3f2a1bc</text>
+<text x="540" y="211" font-size="18" text-anchor="end" fill="#475569">vừa xong</text>
+<rect x="65" y="245" width="490" height="56" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+<text x="85" y="281" font-size="22" text-anchor="start" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace">sha-9d41e07</text>
+<text x="540" y="281" font-size="18" text-anchor="end" fill="#94a3b8">hôm qua</text>
+<text x="65" y="345" font-size="18" text-anchor="start" fill="#475569">Tag latest là tùy chọn, không dùng để deploy</text>
+<rect x="610" y="90" width="310" height="150" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="1"/>
+<text x="630" y="126" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">$ git rev-parse</text>
+<text x="630" y="156" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">  --short=7 HEAD</text>
+<text x="630" y="186" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">3f2a1bc</text>
+<path d="M715 244L655 207" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="765" y="290" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">Khớp ✓</text>
+
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Dev và Ops: hai mục tiêu mâu thuẫn khi tách rời</text>
+<text x="480" y="104" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">ném code qua tường</text>
+<rect x="40" y="130" width="260" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="170" y="184" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Dev</text>
+<text x="170" y="216" font-size="20" text-anchor="middle" fill="#475569">ra tính năng nhanh</text>
+<rect x="440" y="115" width="80" height="170" rx="12" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="480" y="210" font-size="44" text-anchor="middle" fill="#0f172a">🧱</text>
+<rect x="660" y="130" width="260" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="790" y="184" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Ops</text>
+<text x="790" y="216" font-size="20" text-anchor="middle" fill="#475569">giữ hệ thống ổn định</text>
+<path d="M302 190L436 190" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<text x="790" y="280" font-size="20" text-anchor="middle" fill="#475569">sợ thay đổi làm sập</text>
+<text x="170" y="280" font-size="20" text-anchor="middle" fill="#475569">sợ bị chặn phát hành</text>
+<rect x="40" y="320" width="880" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="359" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">DevOps: một đội, một mục tiêu</text>
+<text x="480" y="391" font-size="20" text-anchor="middle" fill="#475569">giao giá trị nhanh và an toàn</text>
+
+</svg>

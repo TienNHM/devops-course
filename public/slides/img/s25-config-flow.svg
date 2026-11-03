@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 465" width="960" height="465" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="465" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Cấu hình chảy vào Pod như thế nào</text>
+<rect x="40" y="100" width="220" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="150" y="139" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">ConfigMap</text>
+<text x="150" y="167" font-size="20" text-anchor="middle" fill="#475569">club-config</text>
+<path d="M262 145L376 145" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="318" y="128" font-size="18" font-weight="700" text-anchor="middle" fill="#1d63ed">envFrom</text>
+<rect x="380" y="90" width="280" height="190" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="520" y="124" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">Pod club-api</text>
+<text x="400" y="162" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">DB_HOST  DB_PORT</text>
+<text x="400" y="192" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">DB_NAME  DB_USER</text>
+<text x="400" y="232" font-size="19" font-weight="700" text-anchor="start" fill="#d97706" font-family="Consolas, 'Courier New', monospace">DB_PASSWORD 🔑</text>
+<rect x="40" y="330" width="220" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="150" y="369" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Secret</text>
+<text x="150" y="397" font-size="20" text-anchor="middle" fill="#475569">club-secrets</text>
+<path d="M262 345L396 285" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="292" y="358" font-size="18" font-weight="700" text-anchor="start" fill="#d97706">secretKeyRef</text>
+<path d="M662 130L756 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="709" y="112" font-size="18" font-weight="700" text-anchor="middle" fill="#475569">DB_HOST</text>
+<rect x="760" y="90" width="160" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="840" y="124" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Service</text>
+<text x="840" y="152" font-size="19" text-anchor="middle" fill="#475569">postgres</text>
+<path d="M840 172L840 276" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="740" y="280" width="180" height="140" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="830" y="344" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod postgres</text>
+<text x="830" y="372" font-size="19" text-anchor="middle" fill="#475569">StatefulSet</text>
+<path d="M262 385L736 385" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="500" y="372" font-size="18" font-weight="700" text-anchor="middle" fill="#d97706">secretKeyRef</text>
+<text x="480" y="448" font-size="20" text-anchor="middle" fill="#475569">Cùng một Secret phục vụ cả API và Postgres.</text>
+
+</svg>

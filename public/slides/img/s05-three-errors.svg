@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba loại lỗi kết nối của curl</text>
+<rect x="40" y="90" width="266" height="290" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="173" y="148" font-size="40" text-anchor="middle" fill="#d97706" font-weight="700" font-family="Consolas, 'Courier New', monospace">(7)</text>
+<text x="173" y="192" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Connection refused</text>
+<text x="173" y="240" font-size="20" text-anchor="middle" fill="#475569">Máy sống, nhưng</text>
+<text x="173" y="268" font-size="20" text-anchor="middle" fill="#475569">không ai lắng nghe</text>
+<text x="173" y="320" font-size="18" text-anchor="middle" fill="#475569">lệnh tiếp theo</text>
+<text x="173" y="354" font-size="24" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">ss -ltnp</text>
+<rect x="347" y="90" width="266" height="290" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="148" font-size="40" text-anchor="middle" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">(28)</text>
+<text x="480" y="192" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Connection timed out</text>
+<text x="480" y="240" font-size="20" text-anchor="middle" fill="#475569">Bị chặn hoặc</text>
+<text x="480" y="268" font-size="20" text-anchor="middle" fill="#475569">không có đường đi</text>
+<text x="480" y="320" font-size="18" text-anchor="middle" fill="#475569">lệnh tiếp theo</text>
+<text x="480" y="354" font-size="24" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">ip route</text>
+<rect x="654" y="90" width="266" height="290" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="787" y="148" font-size="40" text-anchor="middle" fill="#1d63ed" font-weight="700" font-family="Consolas, 'Courier New', monospace">(6)</text>
+<text x="787" y="192" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Could not resolve host</text>
+<text x="787" y="240" font-size="20" text-anchor="middle" fill="#475569">Tên không ra IP,</text>
+<text x="787" y="268" font-size="20" text-anchor="middle" fill="#475569">chưa gói tin nào đi</text>
+<text x="787" y="320" font-size="18" text-anchor="middle" fill="#475569">lệnh tiếp theo</text>
+<text x="787" y="354" font-size="24" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">nslookup</text>
+
+</svg>

@@ -4,29 +4,28 @@
 
 Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md)
 
-## Slide 1: Mục tiêu buổi học
+## Slide 1: Hôm nay bạn làm được gì
 
-- Giải thích vì sao Compose không đủ khi chạy nhiều bản sao trên nhiều máy.
-- Phân biệt control plane và worker node, nêu vai trò từng thành phần.
-- Mô tả đường đi của một yêu cầu từ `kubectl` tới container.
-- Dựng cluster kind `club` và đọc được bên trong nó.
-- Chẩn đoán lỗi kubectl không kết nối được cluster.
+![Ba mục tiêu: gọi tên thành phần, dựng cluster, chẩn đoán kubectl](/slides/img/s21-goals.svg)
+
+::: details Ghi chú cho mentor
+- Mục tiêu đầy đủ: giải thích vì sao Compose không đủ; phân biệt control plane và worker node; mô tả đường đi của một yêu cầu từ `kubectl` tới container; dựng cluster kind `club`; chẩn đoán lỗi kubectl không kết nối được.
+:::
 
 ---
 
-## Slide 2: Vấn đề thực tế
+## Slide 2: Compose chạy tốt trên một máy, rồi sao nữa?
 
-- Club Management chạy bằng `compose.yaml` trên một máy.
-- Muốn 3 bản sao backend, tự khởi động lại bản chết, cập nhật không gián đoạn.
+![Một máy chạy Compose, nhưng bạn muốn nhiều bản sao, tự phục hồi, nhiều máy](/slides/img/s21-compose-limit.svg)
+
+::: details Ghi chú cho mentor
+- Club Management chạy bằng `compose.yaml` trên một máy. Muốn 3 bản sao backend, tự khởi động lại bản chết, cập nhật không gián đoạn.
 - Compose mô tả một stack trên một host, không tự dàn container sang máy khác.
-- Máy hỏng là cả stack ngừng.
+:::
 
 ---
 
-## Slide 3: Orchestration và Compose
-
-- Orchestration: tự động hóa vòng đời container ở quy mô nhiều bản sao, nhiều máy (lên lịch, tự phục hồi, scale, cập nhật, cấu hình, mạng).
-- Kubernetes (K8s) là hệ thống orchestration phổ biến nhất; stack nhỏ trên một máy vẫn nên dùng Compose.
+## Slide 3: Compose và Kubernetes
 
 | Nhu cầu | Compose (1 host) | Kubernetes |
 | --- | --- | --- |
@@ -35,124 +34,134 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 | Cập nhật | Tự làm | Rolling update, rollback |
 | Nhiều máy | Không | Mục đích thiết kế |
 
----
-
-## Slide 4: Declarative và reconciliation loop
-
-- Declarative: bạn mô tả "cái gì" (YAML), không mô tả "làm thế nào".
-- Ví dụ trạng thái mong muốn: "luôn có 2 bản `club-api`".
-- Reconciliation loop: controller đọc mong muốn, đọc thực tế, sửa chênh lệch, rồi lặp lại.
-- Đây là ý tưởng xuyên suốt toàn bộ khóa Kubernetes.
+::: details Ghi chú cho mentor
+- Orchestration: tự động hóa vòng đời container ở quy mô nhiều bản sao, nhiều máy (lên lịch, tự phục hồi, scale, cập nhật, cấu hình, mạng).
+- Kubernetes (K8s) là hệ thống orchestration phổ biến nhất; stack nhỏ trên một máy vẫn nên dùng Compose.
+- Ví von: Compose là người quản lý quán nhỏ tự làm hết; Kubernetes là bộ máy điều hành cả chuỗi quán.
+:::
 
 ---
 
-## Slide 5: Thành phần control plane
+## Slide 4: Reconciliation loop: so sánh rồi sửa
 
-| Thành phần | Vai trò |
-| --- | --- |
-| kube-apiserver | Cổng duy nhất của cluster |
-| etcd | Kho key-value lưu trạng thái cluster |
-| kube-scheduler | Chọn node cho Pod chưa có node |
-| kube-controller-manager | Chạy các controller đưa thực tế về mong muốn |
+![Controller so sánh mong muốn với thực tế rồi tạo thêm Pod, lặp mãi](/slides/img/s21-reconcile.svg)
 
-- Chỉ API Server được nói chuyện với etcd.
+::: details Ghi chú cho mentor
+- Declarative: bạn mô tả "cái gì" (YAML), không mô tả "làm thế nào". Ví dụ: "luôn có 2 bản `club-api`".
+- Controller đọc mong muốn, đọc thực tế, sửa chênh lệch, rồi lặp lại. Đây là ý tưởng xuyên suốt khóa Kubernetes.
+:::
 
 ---
 
-## Slide 6: Thành phần trên mỗi node
+## Slide 5: Control plane quyết định, node chạy Pod
 
-| Thành phần | Vai trò |
-| --- | --- |
-| kubelet | Agent trên node: chạy Pod được giao, báo trạng thái |
-| kube-proxy | Cài luật mạng để traffic tới Service đến đúng Pod |
-| Container runtime | Thực sự chạy container (kind dùng containerd) |
+![Control plane gồm apiserver, etcd, scheduler, controller-manager; node gồm kubelet, kube-proxy, containerd](/slides/img/s21-components.svg)
 
+::: details Ghi chú cho mentor
+- kube-apiserver: cổng duy nhất. etcd: kho key-value lưu trạng thái. kube-scheduler: chọn node cho Pod chưa có node. kube-controller-manager: chạy các controller đưa thực tế về mong muốn.
+- kubelet: agent trên node, chạy Pod được giao. kube-proxy: cài luật mạng cho Service. containerd: thực sự chạy container (kind dùng containerd).
 - Phân biệt: kubelet lo Pod, kube-proxy lo đường mạng.
+:::
 
 ---
 
-## Slide 7: Kiến trúc cluster
+## Slide 6: Mọi thứ đi qua API Server
 
-```mermaid
-flowchart LR
-  U["kubectl"] --> API
-  subgraph D["Docker Desktop trong WSL2"]
-    subgraph N1["container club-control-plane (node)"]
-      API["kube-apiserver"] --> ETCD["etcd"]
-      API --> SCH["scheduler"]
-      API --> CM["controller-manager"]
-      API --> K1["kubelet"]
-      K1 --> R1["containerd + Pods"]
-    end
-  end
-  API -.-> W["worker node (nếu có)"]
+![API Server ở giữa; kubectl, scheduler, controller-manager, kubelet đều nói chuyện qua nó; chỉ nó nói với etcd](/slides/img/s21-hub.svg)
+
+::: details Ghi chú cho mentor
+- Các thành phần không gọi trực tiếp nhau; API Server là nơi tập trung xác thực, phân quyền và kiểm tra hợp lệ.
+- Hỏi: vì sao `kubectl` không nói chuyện thẳng với etcd?
+:::
+
+---
+
+## Slide 7: Một yêu cầu đi từ kubectl tới container
+
+![Năm bước từ kubectl apply tới kubelet báo Running](/slides/img/s21-flow.svg)
+
+::: details Ghi chú cho mentor
+- Đây là luồng khi tạo một Deployment (làm ở buổi 22): manifest được ghi vào etcd, controller tạo ReplicaSet rồi Pod, scheduler chọn node, kubelet chạy container và báo `Running`, `Ready`.
+- `kubectl get pods` đọc lại trạng thái từ API Server.
+:::
+
+---
+
+## Slide 8: kubectl chỉ nói chuyện với context hiện tại
+
+![kubectl đọc kubeconfig, context kind-club trỏ tới cluster club](/slides/img/s21-context.svg)
+
+::: details Ghi chú cho mentor
+- `kubectl` chỉ là client gọi API Server. Thông tin cluster nằm ở kubeconfig, mặc định `~/.kube/config`.
+- Context = cluster + user + namespace. Thói quen: `kubectl config current-context` trước khi apply.
+- Không commit kubeconfig.
+:::
+
+---
+
+## Slide 9: kind: mỗi node là một container Docker
+
+![Container club-control-plane chứa Kubernetes; docker ps và kubectl get nodes thấy cùng một thứ](/slides/img/s21-kind.svg)
+
+::: details Ghi chú cho mentor
+- kind = Kubernetes IN Docker. Tên node: `<tên-cluster>-control-plane`, `<tên-cluster>-worker`; context là `kind-<tên-cluster>`.
+- Chạy hoàn toàn trên máy bạn, không expose ra Internet; phù hợp học tập và CI, không phải production.
+- Môi trường cả khóa: cluster `club`, context `kind-club`. Máy 8 GB tắt Compose trước khi dựng kind.
+:::
+
+---
+
+## Slide 10: Demo: dựng và nhìn vào cluster
+
+```text
+$ kind create cluster --name club --config starter-project/k8s/kind-config.yaml
+$ kubectl get nodes
+NAME                 STATUS   ROLES           AGE   VERSION
+club-control-plane   Ready    control-plane   1m    v1.30.x
+$ kubectl get --raw /readyz
+ok
 ```
 
-- Các thành phần không gọi trực tiếp nhau, tất cả đi qua API Server.
+Node trong `kubectl get nodes` cũng là container trong `docker ps`.
+
+::: details Ghi chú cho mentor
+- Cho thấy Pod trong `kube-system`: etcd, apiserver, scheduler, controller-manager, kube-proxy (`kubectl get pods -n kube-system`).
+- Không có Pod `kubelet`: kubelet chạy như tiến trình trên node.
+:::
 
 ---
 
-## Slide 8: Luồng một yêu cầu
+## Slide 11: Lab: ba phần
 
-1. `kubectl apply` gửi manifest tới API Server; trạng thái mong muốn được ghi vào etcd.
-2. Controller thấy Deployment mới, tạo ReplicaSet rồi các Pod (chưa có node).
-3. Scheduler chọn node cho Pod.
-4. kubelet trên node đó bảo containerd kéo image và chạy container.
-5. kubelet báo `Running`, `Ready` ngược về API Server.
+| Phần | Việc làm | Mốc xong |
+| --- | --- | --- |
+| 1 | Tạo cluster `club` từ `kind-config.yaml` | Node `Ready`, context `kind-club` |
+| 2 | Xem bên trong, lập bảng thành phần | Chỉ ra Pod `etcd-` và `kube-apiserver-` |
+| 3 | Tự dừng control plane rồi khôi phục | Node `Ready` trở lại |
 
----
-
-## Slide 9: kubectl, kubeconfig và context
-
-- `kubectl` chỉ là client gọi API Server.
-- Thông tin cluster nằm ở kubeconfig, mặc định `~/.kube/config`.
-- Context = cluster + user + namespace; kubectl chỉ làm việc với context hiện tại.
-- Thói quen: kiểm tra `kubectl config current-context` trước khi apply.
+Lệnh, kết quả mong đợi và bảng lỗi: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md).
 
 ---
 
-## Slide 10: kind là gì
+## Slide 12: Break: dừng control plane
 
-- kind = Kubernetes IN Docker: mỗi node là một container Docker.
-- Tên node: `<tên-cluster>-control-plane`, `<tên-cluster>-worker`; context là `kind-<tên-cluster>`.
-- Chạy hoàn toàn trên máy bạn, không expose ra Internet.
-- Phù hợp học tập và CI, không phải production.
-- Môi trường cả khóa: cluster `club`, context `kind-club`; máy 8 GB tắt Compose trước khi dựng kind.
+![docker stop club-control-plane làm kubectl bị từ chối kết nối; điều tra theo 3 bước rồi docker start](/slides/img/s21-break.svg)
 
----
-
-## Slide 11: Demo
-
-- Tạo cluster bằng `kind create cluster`.
-- Cho thấy node trong `kubectl get nodes` và container trong `docker ps` là cùng một thứ.
-- Liệt kê Pod trong `kube-system`: etcd, apiserver, scheduler, controller-manager, kube-proxy.
-- Gọi thẳng API: `kubectl get --raw /readyz`.
-
----
-
-## Slide 12: Lab
-
-- Chuẩn bị: kiểm tra Docker, kubectl, kind.
-- Phần 1: tạo cluster `club` từ `starter-project/k8s/kind-config.yaml`.
-- Phần 2: xem bên trong cluster, lập bảng thành phần.
-- Phần 3: tự dừng control plane rồi khôi phục.
-- Lệnh chi tiết, kết quả mong đợi và bảng lỗi: xem bài học.
-
----
-
-## Slide 13: Phá lỗi - dừng control plane
-
+::: details Ghi chú cho mentor
 - Triệu chứng: `connection refused` hoặc timeout khi chạy `kubectl get nodes`.
 - Điều tra theo thứ tự: Docker, rồi container node, rồi context.
-- Nguyên nhân gốc: node kind là container, dừng container tương đương tắt máy chủ control plane.
 - Khôi phục: `docker start` container node, đợi 30-60 giây; nếu cổng đổi thì `kind export kubeconfig --name club`.
+:::
 
 ---
 
-## Slide 14: Recap và nộp bài
+## Slide 13: Recap và nộp bài
 
-- Kubernetes là orchestration khai báo, controller liên tục đưa thực tế về mong muốn.
-- Control plane: apiserver, etcd, scheduler, controller-manager; node: kubelet, kube-proxy, runtime.
+![Ba điều cần nhớ: khai báo, qua API Server, kind và context](/slides/img/s21-recap.svg)
+
+Nộp `lab-21/`: `README.md`, `evidence/command-output.txt`, `report.md`. Giữ cluster `club` cho [Buổi 22 – Pods & Deployments](session-22.md).
+
+::: details Ghi chú cho mentor
+- Không commit kubeconfig.
 - Mọi thứ đi qua API Server; chỉ API Server nói chuyện với etcd.
-- kind chạy node như container; luôn kiểm tra context; giữ cluster `club` cho buổi 22.
-- Nộp `lab-21/` gồm `README.md`, `evidence/command-output.txt`, `report.md`; không commit kubeconfig.
+:::

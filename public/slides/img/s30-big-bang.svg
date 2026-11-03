@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ghép vào phút cuối: lỗi dồn thành một cục</text>
+<rect x="40" y="100" width="200" height="80" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Backend</text>
+<text x="140" y="166" font-size="20" text-anchor="middle" fill="#475569">đổi tên trường</text>
+<rect x="40" y="200" width="200" height="80" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="234" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Frontend</text>
+<text x="140" y="266" font-size="20" text-anchor="middle" fill="#475569">không biết</text>
+<rect x="40" y="300" width="200" height="80" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="334" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Compose</text>
+<text x="140" y="366" font-size="20" text-anchor="middle" fill="#475569">thiếu biến env</text>
+<path d="M242 140L396 220" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M242 240L396 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M242 340L396 260" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="400" y="180" width="220" height="120" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="510" y="234" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Ghép 30 phút</text>
+<text x="510" y="266" font-size="20" text-anchor="middle" fill="#475569">cuối buổi</text>
+<path d="M622 240L696 240" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="700" y="150" width="220" height="180" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="810" y="234" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Mọi thứ đỏ</text>
+<text x="810" y="266" font-size="20" text-anchor="middle" fill="#475569">CI chưa từng chạy</text>
+
+</svg>

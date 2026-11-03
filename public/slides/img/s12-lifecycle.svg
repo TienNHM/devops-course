@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Xóa container, volume vẫn giữ dữ liệu</text>
+<rect x="40" y="100" width="200" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="139" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">pg-lab</text>
+<text x="140" y="171" font-size="20" text-anchor="middle" fill="#475569">INSERT 3 dòng</text>
+<path d="M242 145L376 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="309" y="130" font-size="18" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker rm</text>
+<rect x="380" y="100" width="200" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="480" y="139" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">pg-lab 💥</text>
+<text x="480" y="171" font-size="20" text-anchor="middle" fill="#475569">đã bị xóa</text>
+<path d="M582 145L716 145" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="649" y="130" font-size="18" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker run</text>
+<rect x="720" y="100" width="200" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="820" y="139" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">pg-lab2</text>
+<text x="820" y="171" font-size="20" text-anchor="middle" fill="#475569">SELECT: 3 dòng ✓</text>
+<path d="M140 192L140 276" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<path d="M820 192L820 276" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="40" y="280" width="880" height="80" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="315" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">🗄️ volume pg-data</text>
+<text x="480" y="345" font-size="20" text-anchor="middle" fill="#475569">Alice, Bob, Carol vẫn nằm ở đây</text>
+<text x="480" y="400" font-size="20" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">log pg-lab2: "Skipping initialization"</text>
+
+</svg>

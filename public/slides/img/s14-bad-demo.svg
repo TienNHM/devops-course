@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba sự cố đều không nằm ở code</text>
+<rect x="40" y="90" width="266" height="220" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="173" y="152" font-size="52" text-anchor="middle">🔥</text>
+<text x="173" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Demo hỏng</text>
+<text x="173" y="246" font-size="20" text-anchor="middle" fill="#475569">mở web ngay: lỗi 500</text>
+<text x="173" y="276" font-size="20" text-anchor="middle" fill="#475569">Postgres chưa sẵn sàng</text>
+<rect x="347" y="90" width="266" height="220" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="152" font-size="52" text-anchor="middle">💤</text>
+<text x="480" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Máy khởi động lại</text>
+<text x="480" y="246" font-size="20" text-anchor="middle" fill="#475569">container API chết</text>
+<text x="480" y="276" font-size="20" text-anchor="middle" fill="#475569">không tự dậy</text>
+<rect x="654" y="90" width="266" height="220" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="787" y="152" font-size="52" text-anchor="middle">💾</text>
+<text x="787" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Vài tuần sau</text>
+<text x="787" y="246" font-size="20" text-anchor="middle" fill="#475569">log của Docker</text>
+<text x="787" y="276" font-size="20" text-anchor="middle" fill="#475569">chiếm hàng GB</text>
+<path d="M308 200L343 200" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M615 200L650 200" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="340" width="880" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="383" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Lỗi nằm ở cách vận hành: kiểm tra, hồi phục, giới hạn</text>
+
+</svg>

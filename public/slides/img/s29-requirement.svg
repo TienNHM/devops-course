@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Requirement tốt đi kèm cách kiểm chứng</text>
+<rect x="40" y="95" width="430" height="300" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="255" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">✗ Mơ hồ</text>
+<text x="255" y="225" font-size="30" font-weight="700" text-anchor="middle" fill="#0f172a">&quot;API chạy tốt&quot;</text>
+<text x="255" y="280" font-size="22" text-anchor="middle" fill="#475569">kiểm chứng bằng gì?</text>
+<text x="255" y="325" font-size="20" text-anchor="middle" fill="#475569">mỗi người hiểu một kiểu</text>
+<rect x="490" y="95" width="430" height="300" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">✓ Kiểm chứng được</text>
+<rect x="510" y="160" width="390" height="140" rx="12" fill="#0f172a"/>
+<text x="532" y="198" font-size="20" font-family="Consolas, monospace" fill="#4ade80">$ curl -i /api/members/999</text>
+<text x="532" y="230" font-size="20" font-family="Consolas, monospace" fill="#e2e8f0">HTTP/1.1 404</text>
+<text x="532" y="262" font-size="20" font-family="Consolas, monospace" fill="#e2e8f0">{"error": "..."}</text>
+<text x="705" y="345" font-size="20" text-anchor="middle" fill="#475569">một lệnh, một kết quả rõ ràng</text>
+
+</svg>

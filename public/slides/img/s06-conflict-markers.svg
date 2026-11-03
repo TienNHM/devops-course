@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Đọc dấu conflict trong file</text>
+<rect x="30" y="80" width="430" height="250" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="50" y="128" font-size="20" text-anchor="start" fill="#f87171" font-family="Consolas, 'Courier New', monospace">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</text>
+<path d="M462 121L510 121" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="514" y="98" width="416" height="40" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="530" y="126" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700">dấu mở: xóa</text>
+<text x="50" y="174" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace"># Club Team Lab - Phien ban cua Q</text>
+<path d="M462 167L510 167" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="514" y="144" width="416" height="40" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="530" y="172" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700">của bạn (nhánh Q)</text>
+<text x="50" y="220" font-size="20" text-anchor="start" fill="#f87171" font-family="Consolas, 'Courier New', monospace">=======</text>
+<path d="M462 213L510 213" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="514" y="190" width="416" height="40" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="530" y="218" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700">dấu giữa: xóa</text>
+<text x="50" y="266" font-size="20" text-anchor="start" fill="#60a5fa" font-family="Consolas, 'Courier New', monospace"># Club Team Lab - Phien ban cua P</text>
+<path d="M462 259L510 259" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<rect x="514" y="236" width="416" height="40" rx="10" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="530" y="264" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700">của main (bản của P)</text>
+<text x="50" y="312" font-size="20" text-anchor="start" fill="#f87171" font-family="Consolas, 'Courier New', monospace">&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</text>
+<path d="M462 305L510 305" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="514" y="282" width="416" height="40" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="530" y="310" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700">dấu đóng: xóa</text>
+<rect x="40" y="358" width="880" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="400" font-size="21" text-anchor="middle" fill="#16a34a" font-weight="700">Bàn với tác giả kia, chọn kết quả, xóa 3 dòng dấu, rồi add, commit, push</text>
+
+</svg>

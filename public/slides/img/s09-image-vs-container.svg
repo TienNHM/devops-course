@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Image là chồng layer chỉ đọc; container thêm lớp ghi</text>
+<text x="220" y="98" font-size="24" text-anchor="middle" fill="#1d63ed" font-weight="700">Image</text>
+<rect x="40" y="110" width="360" height="52" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="144" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">COPY mã nguồn</text>
+<rect x="40" y="168" width="360" height="52" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="202" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">RUN npm ci</text>
+<rect x="40" y="226" width="360" height="52" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="260" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">COPY package</text>
+<rect x="40" y="284" width="360" height="52" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="220" y="318" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">FROM node:22-alpine</text>
+<rect x="40" y="352" width="360" height="56" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="220" y="388" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">metadata: ENV, EXPOSE, CMD</text>
+<path d="M404 240L556 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="222" font-size="20" text-anchor="middle" fill="#0f172a">docker run</text>
+<text x="740" y="98" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">Container</text>
+<rect x="560" y="110" width="360" height="76" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="740" y="142" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Lớp ghi mỏng</text>
+<text x="740" y="174" font-size="20" text-anchor="middle" fill="#475569">mất khi xóa container</text>
+<rect x="560" y="192" width="360" height="144" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="740" y="258" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">4 layer của image</text>
+<text x="740" y="290" font-size="20" text-anchor="middle" fill="#475569">chỉ đọc, dùng chung</text>
+<text x="740" y="380" font-size="18" text-anchor="middle" fill="#475569">ENV, EXPOSE, CMD không tạo dữ liệu mới</text>
+
+</svg>

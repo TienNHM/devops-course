@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Tên image đầy đủ: registry / repository : tag</text>
+<rect x="40" y="90" width="880" height="80" rx="12" fill="#0f172a"/>
+<text x="75" y="143" font-size="34" font-family="Consolas, 'Courier New', monospace" fill="#7dd3fc" textLength="280" lengthAdjust="spacingAndGlyphs">localhost:5001</text>
+<text x="355" y="143" font-size="34" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" textLength="20" lengthAdjust="spacingAndGlyphs">/</text>
+<text x="375" y="143" font-size="34" font-family="Consolas, 'Courier New', monospace" fill="#4ade80" textLength="200" lengthAdjust="spacingAndGlyphs">club/nginx</text>
+<text x="575" y="143" font-size="34" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" textLength="20" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="595" y="143" font-size="34" font-family="Consolas, 'Courier New', monospace" fill="#fbbf24" textLength="220" lengthAdjust="spacingAndGlyphs">1.27-alpine</text>
+<path d="M75 190L75 202L355 202L355 190" fill="none" stroke="#1d63ed" stroke-width="3"/>
+<text x="215" y="235" font-size="24" text-anchor="middle" fill="#1d63ed" font-weight="700">registry</text>
+<text x="215" y="262" font-size="18" text-anchor="middle" fill="#475569">địa chỉ kho chứa</text>
+<path d="M375 190L375 202L575 202L575 190" fill="none" stroke="#16a34a" stroke-width="3"/>
+<text x="475" y="235" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">repository</text>
+<text x="475" y="262" font-size="18" text-anchor="middle" fill="#475569">tên image</text>
+<path d="M595 190L595 202L815 202L815 190" fill="none" stroke="#d97706" stroke-width="3"/>
+<text x="705" y="235" font-size="24" text-anchor="middle" fill="#d97706" font-weight="700">tag</text>
+<text x="705" y="262" font-size="18" text-anchor="middle" fill="#475569">phiên bản</text>
+<rect x="40" y="300" width="430" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="255" y="339" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Thiếu phần registry</text>
+<text x="255" y="371" font-size="20" text-anchor="middle" fill="#475569">→ Docker hiểu là Docker Hub</text>
+<rect x="490" y="300" width="430" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="705" y="339" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">docker tag</text>
+<text x="705" y="371" font-size="20" text-anchor="middle" fill="#475569">chỉ thêm tên, không chép dữ liệu</text>
+
+</svg>

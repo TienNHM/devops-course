@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 490" width="960" height="490" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="490" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Rolling update với 2 replicas</text>
+<text x="40" y="129" font-size="20" font-weight="700" fill="#0f172a">1  Ban đầu: 2 Pod 1.0.0</text>
+<rect x="400" y="99" width="125" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="462" y="131" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.0</text>
+<rect x="540" y="99" width="125" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="602" y="131" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.0</text>
+<text x="920" y="131" font-size="18" font-weight="700" text-anchor="end" fill="#16a34a">Ready: 2</text>
+<text x="40" y="219" font-size="20" font-weight="700" fill="#0f172a">2  Tạo thêm 1 Pod mới</text>
+<rect x="400" y="189" width="125" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="462" y="221" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.0</text>
+<rect x="540" y="189" width="125" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="602" y="221" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.0</text>
+<rect x="680" y="189" width="125" height="50" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="742" y="221" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.1 …</text>
+<text x="920" y="221" font-size="18" font-weight="700" text-anchor="end" fill="#16a34a">Ready: 2</text>
+<text x="40" y="309" font-size="20" font-weight="700" fill="#0f172a">3  Mới Ready: bớt 1 cũ</text>
+<rect x="400" y="279" width="125" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="462" y="311" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.0</text>
+<rect x="540" y="279" width="125" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="602" y="311" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.1 ✓</text>
+<rect x="680" y="279" width="125" height="50" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="742" y="311" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.1 …</text>
+<text x="920" y="311" font-size="18" font-weight="700" text-anchor="end" fill="#16a34a">Ready: 2</text>
+<text x="40" y="399" font-size="20" font-weight="700" fill="#0f172a">4  Xong: 2 Pod 1.0.1</text>
+<rect x="400" y="369" width="125" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="462" y="401" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.1 ✓</text>
+<rect x="540" y="369" width="125" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="602" y="401" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">1.0.1 ✓</text>
+<text x="920" y="401" font-size="18" font-weight="700" text-anchor="end" fill="#16a34a">Ready: 2</text>
+<text x="480" y="455" font-size="20" text-anchor="middle" fill="#475569">Luôn có ít nhất 2 Pod Ready: maxUnavailable làm tròn xuống 0.</text>
+
+</svg>

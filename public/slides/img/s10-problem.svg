@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Một Dockerfile ẩu gây ba vấn đề</text>
+<rect x="40" y="100" width="330" height="260" rx="12" fill="#0f172a"/>
+<text x="62" y="138" font-size="20" text-anchor="start" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace"># Dockerfile đầu tiên</text>
+<text x="62" y="170" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">FROM node:22</text>
+<text x="62" y="202" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">COPY . .</text>
+<text x="62" y="234" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">RUN npm install</text>
+<text x="62" y="266" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">CMD ["node", "server.js"]</text>
+<rect x="470" y="100" width="450" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="695" y="134" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">🐘 Nặng: hơn 1 GB</text>
+<text x="695" y="166" font-size="20" text-anchor="middle" fill="#475569">base node:22 + mọi thứ</text>
+<rect x="470" y="200" width="450" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="695" y="234" font-size="22" text-anchor="middle" fill="#d97706" font-weight="700">🐢 Chậm: sửa 1 dòng</text>
+<text x="695" y="266" font-size="20" text-anchor="middle" fill="#475569">CI cài lại toàn bộ dependency</text>
+<rect x="470" y="300" width="450" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="695" y="334" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">🔓 Lộ bí mật</text>
+<text x="695" y="366" font-size="20" text-anchor="middle" fill="#475569">COPY . . chép luôn file .env</text>
+<path d="M372 200L466 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M372 230L466 240" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M372 260L466 340" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+
+</svg>

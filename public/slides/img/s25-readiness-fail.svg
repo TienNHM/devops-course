@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">DB_HOST sai: Pod mới chạy nhưng không Ready</text>
+<rect x="40" y="100" width="250" height="140" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="165" y="140" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">ConfigMap</text>
+<text x="165" y="180" font-size="18" font-weight="700" text-anchor="middle" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">DB_HOST=postgres-db</text>
+<text x="165" y="215" font-size="19" text-anchor="middle" fill="#475569">(đúng là postgres)</text>
+<path d="M292 190L346 190" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="350" y="95" width="260" height="64" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="121" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod cũ</text>
+<text x="480" y="149" font-size="20" text-anchor="middle" fill="#475569">1/1 Running</text>
+<rect x="350" y="171" width="260" height="64" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="197" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod cũ</text>
+<text x="480" y="225" font-size="20" text-anchor="middle" fill="#475569">1/1 Running</text>
+<rect x="350" y="255" width="260" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="294" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Pod mới</text>
+<text x="480" y="322" font-size="20" text-anchor="middle" fill="#475569">0/1 Running</text>
+<rect x="710" y="150" width="210" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="815" y="195" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">Service</text>
+<text x="815" y="232" font-size="19" text-anchor="middle" fill="#475569">chỉ tới Pod Ready</text>
+<path d="M612 130L706 190" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M612 203L706 215" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M612 300L706 250" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<text x="660" y="322" font-size="28" font-weight="700" text-anchor="middle" fill="#dc2626">✗</text>
+<rect x="40" y="370" width="880" height="56" rx="12" fill="#0f172a"/>
+<text x="60" y="404" font-size="19" fill="#f87171" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Readiness probe failed: HTTP probe failed with statuscode: 503</text>
+
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">-p chỉ cần cho truy cập từ máy bạn</text>
+<rect x="40" y="165" width="150" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="115" y="199" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">💻 curl</text>
+<text x="115" y="231" font-size="20" text-anchor="middle" fill="#475569">máy bạn</text>
+<rect x="370" y="105" width="550" height="255" rx="14" fill="#f8fafc" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="390" y="140" font-size="20" text-anchor="start" fill="#1d63ed" font-weight="700">network club-net</text>
+<path d="M192 205L396 205" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="294" y="190" font-size="19" text-anchor="middle" fill="#d97706" font-weight="700" font-family="Consolas, 'Courier New', monospace">localhost:13000</text>
+<rect x="400" y="165" width="150" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="475" y="199" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">club-api</text>
+<text x="475" y="231" font-size="20" text-anchor="middle" fill="#475569">:3000</text>
+<path d="M552 205L726 205" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="640" y="190" font-size="18" text-anchor="middle" fill="#16a34a" font-weight="700" font-family="Consolas, 'Courier New', monospace">postgres:5432</text>
+<rect x="730" y="165" width="170" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="815" y="199" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">postgres</text>
+<text x="815" y="231" font-size="20" text-anchor="middle" fill="#475569">không có -p</text>
+<text x="645" y="300" font-size="20" text-anchor="middle" fill="#0f172a">Cùng network: không cần -p.</text>
+<text x="645" y="332" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">Postgres không mở ra ngoài.</text>
+<rect x="40" y="290" width="300" height="70" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="190" y="320" font-size="18" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">-p 127.0.0.1:13000:3000</text>
+<text x="190" y="346" font-size="18" text-anchor="middle" fill="#475569">chỉ máy bạn truy cập được</text>
+<text x="480" y="400" font-size="20" text-anchor="middle" fill="#475569">-p MÁY:CONTAINER = cửa trước của tòa nhà</text>
+
+</svg>

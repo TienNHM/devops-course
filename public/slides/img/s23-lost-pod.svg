@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Pod không mất: bạn đang nhìn nhầm namespace</text>
+<rect x="40" y="90" width="400" height="175" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="240" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">namespace: default</text>
+<text x="240" y="195" font-size="44" text-anchor="middle">👀</text>
+<text x="240" y="240" font-size="20" text-anchor="middle" fill="#475569">bạn nhìn ở đây: trống</text>
+<text x="480" y="195" font-size="48" font-weight="700" text-anchor="middle" fill="#475569">≠</text>
+<rect x="520" y="90" width="400" height="175" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="720" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">namespace: club</text>
+<rect x="545" y="150" width="170" height="64" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="630" y="190" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api</text>
+<rect x="725" y="150" width="170" height="64" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="190" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-web</text>
+<text x="720" y="245" font-size="20" text-anchor="middle" fill="#475569">ứng dụng nằm ở đây</text>
+<rect x="40" y="295" width="880" height="120" rx="12" fill="#0f172a"/>
+<text x="60" y="329" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">$ kubectl get pods</text>
+<text x="60" y="359" font-size="20" fill="#f87171" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">No resources found in default namespace.</text>
+<text x="60" y="389" font-size="20" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">$ kubectl get pods -n club     # thấy Pod</text>
+
+</svg>

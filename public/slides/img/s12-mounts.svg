@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba cách gắn dữ liệu ra ngoài container</text>
+<rect x="40" y="90" width="280" height="330" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="180" y="150" font-size="52" text-anchor="middle" fill="#475569">🗄️</text>
+<text x="180" y="206" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">Named volume</text>
+<text x="180" y="244" font-size="20" text-anchor="middle" fill="#475569">Docker quản lý</text>
+<text x="180" y="274" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">→ database</text>
+<rect x="60" y="320" width="240" height="66" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="180" y="361" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">✓ còn sau docker rm</text>
+<rect x="340" y="90" width="280" height="330" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="150" font-size="52" text-anchor="middle" fill="#475569">📁</text>
+<text x="480" y="206" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">Bind mount</text>
+<text x="480" y="244" font-size="20" text-anchor="middle" fill="#475569">thư mục trên máy bạn</text>
+<text x="480" y="274" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">→ code, config khi dev</text>
+<rect x="360" y="320" width="240" height="66" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="361" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">✓ còn sau docker rm</text>
+<rect x="640" y="90" width="280" height="330" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="780" y="150" font-size="52" text-anchor="middle" fill="#475569">⚡</text>
+<text x="780" y="206" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">tmpfs</text>
+<text x="780" y="244" font-size="20" text-anchor="middle" fill="#475569">nằm trong RAM</text>
+<text x="780" y="274" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">→ dữ liệu tạm</text>
+<rect x="660" y="320" width="240" height="66" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="780" y="361" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">✗ mất khi dừng</text>
+
+</svg>

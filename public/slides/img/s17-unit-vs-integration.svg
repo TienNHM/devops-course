@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Unit test dùng bản giả, integration test dùng DB thật</text>
+<rect x="40" y="95" width="430" height="290" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="255" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">Unit test</text>
+<rect x="60" y="165" width="110" height="60" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="115" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Test</text>
+<rect x="200" y="165" width="110" height="60" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="255" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">API</text>
+<rect x="340" y="165" width="110" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="395" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Mock</text>
+<path d="M172 195L196 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M312 195L336 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="255" y="285" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">⚡ mili giây</text>
+<text x="255" y="326" font-size="20" text-anchor="middle" fill="#475569">bắt lỗi logic, nhánh lỗi</text>
+<text x="255" y="356" font-size="20" text-anchor="middle" fill="#475569">không thấy SQL sai</text>
+<rect x="490" y="95" width="430" height="290" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="705" y="138" font-size="24" font-weight="700" text-anchor="middle" fill="#1d63ed">Integration test</text>
+<rect x="510" y="165" width="110" height="60" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="565" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Test</text>
+<rect x="650" y="165" width="110" height="60" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="705" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">API</text>
+<rect x="790" y="165" width="110" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="845" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">🐘 DB</text>
+<path d="M622 195L646 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M762 195L786 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="705" y="285" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">🐢 vài giây</text>
+<text x="705" y="326" font-size="20" text-anchor="middle" fill="#475569">bắt SQL sai, schema lệch,</text>
+<text x="705" y="356" font-size="20" text-anchor="middle" fill="#475569">kết nối sai</text>
+
+</svg>

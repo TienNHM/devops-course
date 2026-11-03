@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Cập nhật image xong, bảng members trống</text>
+<rect x="40" y="130" width="230" height="120" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="155" y="184" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">🐘 Postgres v1</text>
+<text x="155" y="216" font-size="20" text-anchor="middle" fill="#475569">30 thành viên</text>
+<rect x="365" y="130" width="230" height="120" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="184" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Xóa container cũ</text>
+<text x="480" y="216" font-size="20" text-anchor="middle" fill="#475569">chạy container mới</text>
+<rect x="690" y="130" width="230" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="805" y="184" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">Bảng members trống</text>
+<text x="805" y="216" font-size="20" text-anchor="middle" fill="#475569">không có lỗi nào</text>
+<path d="M272 190L361 190" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M597 190L686 190" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="300" width="880" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="348" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Container dùng một lần, dữ liệu database thì không</text>
+
+</svg>

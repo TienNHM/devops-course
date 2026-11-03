@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Chạy trên máy tôi, hỏng trên máy bạn</text>
+<rect x="40" y="90" width="400" height="290" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="240" y="130" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">Máy người viết code</text>
+<text x="240" y="190" font-size="22" text-anchor="middle" fill="#0f172a">✓ image cũ còn sẵn</text>
+<text x="240" y="240" font-size="22" text-anchor="middle" fill="#0f172a">✓ file .env có sẵn</text>
+<text x="240" y="290" font-size="22" text-anchor="middle" fill="#0f172a">✓ volume cũ</text>
+<text x="240" y="345" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Mọi thứ chạy</text>
+<path d="M442 235L516 235" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="520" y="90" width="400" height="290" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="720" y="130" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="700">Máy bạn cùng nhóm</text>
+<text x="720" y="190" font-size="22" text-anchor="middle" fill="#0f172a">compose up →</text>
+<text x="720" y="225" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">thiếu DB_PASSWORD</text>
+<text x="720" y="280" font-size="22" text-anchor="middle" fill="#0f172a">kind →</text>
+<text x="720" y="315" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">ImagePullBackOff</text>
+<text x="720" y="358" font-size="20" text-anchor="middle" fill="#475569">Code không sai</text>
+
+</svg>

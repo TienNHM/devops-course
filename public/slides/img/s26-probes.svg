@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba loại probe: ba câu hỏi, ba hậu quả</text>
+<rect x="40" y="90" width="270" height="255" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<rect x="40" y="90" width="270" height="52" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="175" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">startupProbe</text>
+<text x="175" y="182" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Đã khởi động</text>
+<text x="175" y="212" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">xong chưa?</text>
+<rect x="55" y="245" width="240" height="82" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="175" y="280" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">restart</text>
+<text x="175" y="308" font-size="19" text-anchor="middle" fill="#475569">khi hết ngưỡng</text>
+<rect x="345" y="90" width="270" height="255" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<rect x="345" y="90" width="270" height="52" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">readinessProbe</text>
+<text x="480" y="182" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Có nên gửi</text>
+<text x="480" y="212" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">traffic không?</text>
+<rect x="360" y="245" width="240" height="82" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="280" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">gỡ khỏi Endpoints</text>
+<text x="480" y="308" font-size="19" text-anchor="middle" fill="#475569">không restart</text>
+<rect x="650" y="90" width="270" height="255" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<rect x="650" y="90" width="270" height="52" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="785" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">livenessProbe</text>
+<text x="785" y="182" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Process có</text>
+<text x="785" y="212" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">bị kẹt không?</text>
+<rect x="665" y="245" width="240" height="82" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="785" y="280" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet restart</text>
+<text x="785" y="308" font-size="19" text-anchor="middle" fill="#475569">container</text>
+<rect x="40" y="372" width="880" height="52" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="406" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Startup chạy trước; xong mới bật readiness và liveness</text>
+
+</svg>

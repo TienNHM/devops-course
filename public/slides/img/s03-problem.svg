@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Web chậm trước giờ demo, server chỉ có terminal</text>
+<rect x="40" y="150" width="230" height="120" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="155" y="204" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">access.log</text>
+<text x="155" y="236" font-size="20" text-anchor="middle" fill="#475569">hàng chục nghìn dòng</text>
+<rect x="400" y="95" width="250" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="525" y="129" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">✗ Notepad</text>
+<text x="525" y="161" font-size="20" text-anchor="middle" fill="#475569">đọc bằng mắt</text>
+<rect x="400" y="245" width="250" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="525" y="279" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">✓ Pipeline</text>
+<text x="525" y="311" font-size="20" text-anchor="middle" fill="#475569">vài chục giây</text>
+<path d="M272 190L396 140" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<path d="M272 235L396 285" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M652 285L726 240" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="730" y="180" width="190" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="825" y="229" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Câu trả lời</text>
+<text x="825" y="261" font-size="20" text-anchor="middle" fill="#475569">IP, 5xx, endpoint</text>
+<rect x="40" y="355" width="280" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="180" y="393" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">IP nào gọi nhiều nhất?</text>
+<rect x="340" y="355" width="280" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="393" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bao nhiêu lỗi 5xx?</text>
+<rect x="640" y="355" width="280" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="780" y="393" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Endpoint nào hot?</text>
+
+</svg>

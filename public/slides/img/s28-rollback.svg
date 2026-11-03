@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 455" width="960" height="455" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="455" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Rollback chỉ cứu được khi có bản tốt phía trước</text>
+<rect x="40" y="95" width="430" height="300" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="255" y="135" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">web: có bản tốt</text>
+<rect x="65" y="160" width="170" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="150" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">rev 2</text>
+<text x="150" y="221" font-size="20" text-anchor="middle" fill="#475569">nginx:1.27</text>
+<rect x="275" y="160" width="170" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="360" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">rev 3</text>
+<text x="360" y="221" font-size="20" text-anchor="middle" fill="#475569">tag sai</text>
+<path d="M360 232L360 262" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="65" y="266" width="380" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="255" y="295" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">rollout undo</text>
+<text x="255" y="327" font-size="20" text-anchor="middle" fill="#475569">quay về nginx:1.27</text>
+<text x="255" y="372" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Dịch vụ được cứu</text>
+<rect x="490" y="95" width="430" height="300" rx="14" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="705" y="135" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">crashy: rev 1 cũng hỏng</text>
+<rect x="515" y="160" width="380" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="705" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">rev 1</text>
+<text x="705" y="221" font-size="20" text-anchor="middle" fill="#475569">thoát mã 1: thiếu DB_HOST</text>
+<path d="M705 232L705 262" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="515" y="266" width="380" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="705" y="295" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">undo không giúp</text>
+<text x="705" y="327" font-size="20" text-anchor="middle" fill="#475569">không có bản tốt để về</text>
+<text x="705" y="372" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Sửa gốc: thêm biến DB_HOST</text>
+<text x="480" y="430" font-size="22" text-anchor="middle" fill="#475569">Rollback cứu dịch vụ, không thay việc tìm nguyên nhân gốc.</text>
+
+</svg>

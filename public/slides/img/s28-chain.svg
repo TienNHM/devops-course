@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="520" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Lỗi ở bước nào thì ra trạng thái đó</text>
+<rect x="40" y="84" width="400" height="50" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="240" y="117" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">① Sửa image trong Deployment</text>
+<path d="M240 136L240 154" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="156" width="400" height="50" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="240" y="189" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">② Tạo ReplicaSet mới</text>
+<path d="M240 208L240 226" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="228" width="400" height="50" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="240" y="261" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">③ Scheduler gán Pod vào Node</text>
+<path d="M240 280L240 298" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="300" width="400" height="50" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="240" y="333" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">④ Kubelet kéo image, chạy</text>
+<path d="M240 352L240 370" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="372" width="400" height="50" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="240" y="405" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">⑤ Readiness probe đạt?</text>
+<path d="M240 424L240 442" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="444" width="400" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="240" y="477" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">⑥ Pod Ready, xóa Pod cũ</text>
+<path d="M442 253L556 253" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<rect x="560" y="228" width="360" height="50" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="740" y="261" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626">Pending</text>
+<path d="M442 325L556 325" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<rect x="560" y="300" width="360" height="50" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="740" y="333" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626">ImagePull/CrashLoopBackOff</text>
+<path d="M442 397L556 397" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<rect x="560" y="372" width="360" height="50" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="740" y="405" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626">Running nhưng READY 0/1</text>
+
+</svg>

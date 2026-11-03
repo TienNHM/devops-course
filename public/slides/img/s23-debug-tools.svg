@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba công cụ gỡ lỗi, cùng đi qua API Server</text>
+<rect x="40" y="90" width="280" height="215" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="180" y="132" font-size="26" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">logs</text>
+<text x="180" y="172" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">lời ứng dụng nói</text>
+<text x="180" y="210" font-size="19" text-anchor="middle" fill="#475569">--previous: lần chạy</text>
+<text x="180" y="245" font-size="19" text-anchor="middle" fill="#475569">trước khi restart</text>
+<text x="180" y="283" font-size="18" text-anchor="start" fill="#0f172a"></text>
+<rect x="340" y="90" width="280" height="215" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="132" font-size="26" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">exec</text>
+<text x="480" y="172" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">chui vào container</text>
+<text x="480" y="210" font-size="19" text-anchor="middle" fill="#475569">dấu -- tách cờ kubectl</text>
+<text x="480" y="245" font-size="19" text-anchor="middle" fill="#475569">alpine chỉ có sh</text>
+<text x="480" y="283" font-size="18" text-anchor="start" fill="#0f172a"></text>
+<rect x="640" y="90" width="280" height="215" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="780" y="132" font-size="26" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">port-forward</text>
+<text x="780" y="172" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">đường hầm tạm tới Pod</text>
+<text x="780" y="210" font-size="19" text-anchor="middle" fill="#475569">chỉ bind 127.0.0.1</text>
+<text x="780" y="245" font-size="19" text-anchor="middle" fill="#475569">không thay Service</text>
+<text x="780" y="283" font-size="18" text-anchor="start" fill="#0f172a"></text>
+<rect x="40" y="335" width="170" height="56" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="371" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">kubectl</text>
+<path d="M212 363L266 363" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="270" y="335" width="190" height="56" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="371" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">API Server</text>
+<path d="M462 363L516 363" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="520" y="335" width="190" height="56" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="615" y="371" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet</text>
+<path d="M712 363L766 363" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="770" y="335" width="150" height="56" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="845" y="371" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">container</text>
+<text x="480" y="428" font-size="20" text-anchor="middle" fill="#475569">Sửa trong container sẽ mất khi Pod bị tạo lại.</text>
+
+</svg>

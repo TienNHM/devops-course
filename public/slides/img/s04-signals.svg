@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Hai cách dừng một process</text>
+<rect x="40" y="90" width="280" height="100" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="180" y="134" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">kill 4321</text>
+<text x="180" y="166" font-size="20" text-anchor="middle" fill="#475569">SIGTERM (15)</text>
+<path d="M322 140L376 140" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="380" y="90" width="260" height="100" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="510" y="134" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Process tự dọn</text>
+<text x="510" y="166" font-size="20" text-anchor="middle" fill="#475569">đóng file, xóa tạm</text>
+<path d="M642 140L696 140" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="700" y="90" width="220" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="148" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Thoát êm ✓</text>
+<rect x="40" y="220" width="280" height="100" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="180" y="264" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">kill -9 4321</text>
+<text x="180" y="296" font-size="20" text-anchor="middle" fill="#475569">SIGKILL (9)</text>
+<path d="M322 270L376 270" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="380" y="220" width="260" height="100" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="510" y="264" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Kernel giết ngay</text>
+<text x="510" y="296" font-size="20" text-anchor="middle" fill="#475569">không hỏi process</text>
+<path d="M642 270L696 270" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="700" y="220" width="220" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="810" y="278" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">File tạm sót ✗</text>
+<rect x="40" y="355" width="880" height="62" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="394" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Quy tắc: SIGTERM trước, SIGKILL là phương án cuối</text>
+
+</svg>

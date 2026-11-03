@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Debug theo lớp: từ trong ra ngoài</text>
+<rect x="40" y="90" width="160" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="120" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">PVC</text>
+<text x="120" y="166" font-size="20" text-anchor="middle" fill="#475569">Pending mãi</text>
+<rect x="220" y="90" width="160" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="300" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod</text>
+<text x="300" y="166" font-size="20" text-anchor="middle" fill="#475569">chưa Ready</text>
+<rect x="400" y="90" width="160" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Service</text>
+<text x="480" y="166" font-size="20" text-anchor="middle" fill="#475569">endpoints rỗng</text>
+<rect x="580" y="90" width="160" height="100" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<text x="660" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Ingress</text>
+<text x="660" y="166" font-size="20" text-anchor="middle" fill="#475569">404 hoặc 503</text>
+<rect x="760" y="90" width="160" height="100" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<text x="840" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Controller</text>
+<text x="840" y="166" font-size="20" text-anchor="middle" fill="#475569">đọc log</text>
+<path d="M202 140L216 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M382 140L396 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M562 140L576 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M742 140L756 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="235" width="880" height="190" rx="12" fill="#0f172a"/>
+<text x="62" y="273" font-size="18" font-family="Consolas, monospace" fill="#4ade80">$ kubectl describe pvc postgres-pvc -n club</text>
+<text x="62" y="306" font-size="18" font-family="Consolas, monospace" fill="#4ade80">$ kubectl get pods -n club</text>
+<text x="62" y="339" font-size="18" font-family="Consolas, monospace" fill="#4ade80">$ kubectl get svc,endpoints -n club</text>
+<text x="62" y="372" font-size="18" font-family="Consolas, monospace" fill="#4ade80">$ kubectl describe ingress club -n club</text>
+<text x="62" y="405" font-size="18" font-family="Consolas, monospace" fill="#4ade80">$ kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller</text>
+
+</svg>

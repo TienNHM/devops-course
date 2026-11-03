@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Hai endpoint, hai câu hỏi khác nhau</text>
+<rect x="40" y="150" width="170" height="120" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="204" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet</text>
+<text x="125" y="232" font-size="20" text-anchor="middle" fill="#475569">người hỏi thăm</text>
+<rect x="300" y="85" width="340" height="290" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="320" y="112" font-size="18" font-weight="700" text-anchor="start" fill="#475569">container club-api</text>
+<rect x="320" y="125" width="300" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="470" y="158" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">/health</text>
+<text x="470" y="188" font-size="19" text-anchor="middle" fill="#475569">startup + liveness</text>
+<text x="470" y="212" font-size="18" text-anchor="middle" fill="#16a34a">luôn 200, không chạm DB</text>
+<rect x="320" y="255" width="300" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="470" y="288" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">/ready</text>
+<text x="470" y="318" font-size="19" text-anchor="middle" fill="#475569">readiness</text>
+<text x="470" y="342" font-size="18" text-anchor="middle" fill="#d97706">SELECT 1, lỗi thì 503</text>
+<path d="M212 190L316 175" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M212 235L316 300" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<rect x="740" y="255" width="180" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="830" y="313" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">🐘 postgres</text>
+<path d="M622 305L736 305" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="420" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Liveness không phụ thuộc DB: restart không sửa được DB.</text>
+
+</svg>

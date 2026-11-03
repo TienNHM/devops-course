@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Trả lời hỏi đáp theo 3 bước</text>
+<rect x="40" y="110" width="250" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="165" y="164" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">1 Kết luận</text>
+<text x="165" y="196" font-size="20" text-anchor="middle" fill="#475569">một câu</text>
+<rect x="355" y="110" width="250" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="164" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">2 Lý do</text>
+<text x="480" y="196" font-size="20" text-anchor="middle" fill="#475569">vì sao</text>
+<rect x="670" y="110" width="250" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="795" y="164" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">3 Bằng chứng</text>
+<text x="795" y="196" font-size="20" text-anchor="middle" fill="#475569">lệnh hoặc file</text>
+<path d="M292 170L351 170" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M607 170L666 170" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="270" width="880" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="312" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Ví dụ: Pod tự phục hồi, vì ReplicaSet tạo Pod mới</text>
+<text x="480" y="352" font-size="20" text-anchor="middle" fill="#0f172a" font-family="Consolas, monospace">kubectl delete pod rồi kubectl get pods -w</text>
+
+</svg>

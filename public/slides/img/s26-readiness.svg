@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Probe sai path: rollout treo, người dùng chưa thấy</text>
+<rect x="40" y="90" width="880" height="190" rx="12" fill="#0f172a"/>
+<text x="60" y="124" font-size="19" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">NAME                   READY   STATUS    RESTARTS</text>
+<text x="60" y="158" font-size="19" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">club-api-5c9d7-4xk2p   1/1     Running   0</text>
+<text x="60" y="192" font-size="19" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">club-api-5c9d7-m8wq6   1/1     Running   0</text>
+<text x="60" y="226" font-size="19" fill="#f87171" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">club-api-7f4b8-z9t5r   0/1     Running   0</text>
+<text x="60" y="260" font-size="19" fill="#fbbf24" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Readiness probe failed: HTTP probe failed with statuscode: 404</text>
+<rect x="40" y="305" width="280" height="76" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="180" y="337" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod cũ 1/1</text>
+<text x="180" y="365" font-size="19" text-anchor="middle" fill="#475569">vẫn phục vụ</text>
+<rect x="340" y="305" width="280" height="76" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="337" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod mới 0/1</text>
+<text x="480" y="365" font-size="19" text-anchor="middle" fill="#475569">RESTARTS vẫn 0</text>
+<rect x="640" y="305" width="280" height="76" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="780" y="337" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Rollout treo</text>
+<text x="780" y="365" font-size="18" text-anchor="middle" fill="#475569">1 out of 2 new replicas</text>
+<text x="480" y="420" font-size="20" text-anchor="middle" fill="#475569">Phá bằng path /readyy; sửa bằng apply lại manifest.</text>
+
+</svg>

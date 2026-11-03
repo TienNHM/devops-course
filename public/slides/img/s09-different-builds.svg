@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Mỗi người cài một kiểu, image ra khác nhau</text>
+<rect x="40" y="100" width="270" height="140" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="175" y="164" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Máy Hùng</text>
+<text x="175" y="196" font-size="20" text-anchor="middle" fill="#475569">Node 22 · npm install</text>
+<rect x="345" y="100" width="270" height="140" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="164" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Máy Lan</text>
+<text x="480" y="196" font-size="20" text-anchor="middle" fill="#475569">Node 18 · bộ thư viện khác</text>
+<rect x="650" y="100" width="270" height="140" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="785" y="164" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Máy chung</text>
+<text x="785" y="196" font-size="20" text-anchor="middle" fill="#475569">mỗi lần cài một kiểu</text>
+<text x="480" y="285" font-size="22" text-anchor="middle" fill="#0f172a">Thiếu một công thức build chung, ghi lại trong Git</text>
+<rect x="40" y="315" width="880" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="358" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Dockerfile = công thức tái lập, nằm cùng mã nguồn</text>
+
+</svg>

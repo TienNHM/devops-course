@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Đổi tên trường: test xanh, giao diện trống</text>
+<rect x="40" y="100" width="270" height="110" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="175" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">API trả full_name</text>
+<text x="175" y="181" font-size="20" text-anchor="middle" fill="#475569">trước đây là name</text>
+<path d="M312 155L396 155" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="400" y="100" width="230" height="110" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="515" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Frontend</text>
+<text x="515" y="181" font-size="20" text-anchor="middle" fill="#475569">đọc m.name</text>
+<path d="M632 155L706 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="710" y="100" width="210" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="815" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bảng trống</text>
+<text x="815" y="181" font-size="20" text-anchor="middle" fill="#475569">API vẫn 200</text>
+<rect x="40" y="250" width="880" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="292" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Phòng tránh</text>
+<text x="480" y="328" font-size="20" text-anchor="middle" fill="#0f172a">Ghi contract trong README, test khẳng định tên trường,</text>
+<text x="480" y="356" font-size="20" text-anchor="middle" fill="#0f172a">smoke test với PostgreSQL thật</text>
+
+</svg>

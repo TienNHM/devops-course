@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Mock: thay pool.query thật bằng bản giả khi test</text>
+<rect x="40" y="165" width="200" height="100" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="209" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">GET /api/members</text>
+<text x="140" y="241" font-size="20" text-anchor="middle" fill="#475569">request từ test</text>
+<rect x="330" y="165" width="200" height="100" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="430" y="209" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">app.js</text>
+<text x="430" y="241" font-size="20" text-anchor="middle" fill="#475569">gọi pool.query()</text>
+<rect x="640" y="95" width="280" height="100" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="780" y="139" font-size="22" font-weight="700" text-anchor="middle" fill="#475569">PostgreSQL thật</text>
+<text x="780" y="171" font-size="20" text-anchor="middle" fill="#475569">không cần chạy</text>
+<rect x="640" y="235" width="280" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="780" y="279" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">t.mock.method</text>
+<text x="780" y="311" font-size="20" text-anchor="middle" fill="#475569">trả rows có sẵn</text>
+<path d="M242 215L326 215" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M532 200L636 150" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<path d="M532 232L636 280" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="385" font-size="22" text-anchor="middle" fill="#475569">Test xong, mock tự khôi phục: test sau không bị ảnh hưởng.</text>
+
+</svg>

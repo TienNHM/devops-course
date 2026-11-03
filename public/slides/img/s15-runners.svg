@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Mỗi job một runner riêng: không chung ổ đĩa</text>
+<rect x="40" y="100" width="300" height="190" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="60" y="134" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Runner 1</text>
+<rect x="65" y="160" width="250" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="190" y="204" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Job test</text>
+<text x="190" y="236" font-size="20" text-anchor="middle" fill="#475569">có source, node_modules</text>
+<rect x="620" y="100" width="300" height="190" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="640" y="134" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Runner 2</text>
+<rect x="645" y="160" width="250" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="770" y="204" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Job build</text>
+<text x="770" y="236" font-size="20" text-anchor="middle" fill="#475569">máy trống, chưa có gì</text>
+<rect x="385" y="150" width="190" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="189" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Artifact</text>
+<text x="480" y="221" font-size="20" text-anchor="middle" fill="#475569">registry, cache</text>
+<path d="M342 195L381 195" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M577 195L616 195" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="320" width="880" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="358" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Chuyển dữ liệu giữa hai job: qua artifact, cache hoặc registry</text>
+
+</svg>

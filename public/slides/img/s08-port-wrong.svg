@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Cổng bên phải phải là cổng app thật sự nghe</text>
+<rect x="40" y="90" width="430" height="310" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="60" y="128" font-size="24" text-anchor="start" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">✗ -p 8088:8088</text>
+<rect x="60" y="200" width="130" height="70" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="229" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Host</text>
+<text x="125" y="261" font-size="20" text-anchor="middle" fill="#475569">:8088</text>
+<rect x="240" y="150" width="210" height="235" rx="14" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="345" y="178" font-size="20" text-anchor="middle" fill="#475569" font-weight="700">Container</text>
+<rect x="255" y="195" width="180" height="70" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="345" y="224" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">cổng 8088</text>
+<text x="345" y="256" font-size="20" text-anchor="middle" fill="#475569">không ai nghe</text>
+<rect x="255" y="285" width="180" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="345" y="314" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">nginx</text>
+<text x="345" y="346" font-size="20" text-anchor="middle" fill="#475569">nghe cổng 80</text>
+<path d="M192 235L251 230" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<text x="60" y="325" font-size="20" text-anchor="start" fill="#dc2626">curl: Connection</text>
+<text x="60" y="352" font-size="20" text-anchor="start" fill="#dc2626">reset ✗</text>
+<rect x="490" y="90" width="430" height="310" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="510" y="128" font-size="24" text-anchor="start" fill="#16a34a" font-weight="700" font-family="Consolas, 'Courier New', monospace">✓ -p 8088:80</text>
+<rect x="510" y="200" width="130" height="70" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="575" y="229" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Host</text>
+<text x="575" y="261" font-size="20" text-anchor="middle" fill="#475569">:8088</text>
+<rect x="690" y="150" width="210" height="235" rx="14" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="795" y="178" font-size="20" text-anchor="middle" fill="#475569" font-weight="700">Container</text>
+<rect x="705" y="195" width="180" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="795" y="224" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">nginx</text>
+<text x="795" y="256" font-size="20" text-anchor="middle" fill="#475569">nghe cổng 80</text>
+<path d="M642 235L701 230" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="795" y="320" font-size="19" text-anchor="middle" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">HTTP/1.1 200 OK</text>
+<text x="510" y="325" font-size="20" text-anchor="start" fill="#16a34a">curl: thành công ✓</text>
+
+</svg>

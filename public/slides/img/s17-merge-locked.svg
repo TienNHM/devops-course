@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Nút Merge: đỏ thì khóa, xanh thì mở</text>
+<rect x="40" y="95" width="430" height="290" rx="14" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="66" y="142" font-size="24" font-weight="700" fill="#dc2626">✗ unit-tests — Failing</text>
+<text x="66" y="187" font-size="20" fill="#475569">Required statuses must pass</text>
+<text x="66" y="214" font-size="20" fill="#475569">before merging</text>
+<rect x="66" y="262" width="378" height="64" rx="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+<text x="255" y="303" font-size="22" font-weight="700" text-anchor="middle" fill="#94a3b8">🔒 Merge pull request</text>
+<rect x="490" y="95" width="430" height="290" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="516" y="142" font-size="24" font-weight="700" fill="#16a34a">✓ unit-tests — Passed</text>
+<text x="516" y="187" font-size="20" fill="#475569">All required checks</text>
+<text x="516" y="214" font-size="20" fill="#475569">have passed</text>
+<rect x="516" y="262" width="378" height="64" rx="10" fill="#16a34a"/>
+<text x="705" y="303" font-size="22" font-weight="700" text-anchor="middle" fill="#ffffff">Merge pull request</text>
+
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Giới hạn tài nguyên và xoay vòng log</text>
+<rect x="40" y="90" width="430" height="300" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="60" y="126" font-size="24" font-weight="700" fill="#1d63ed">Giới hạn memory</text>
+<rect x="70" y="170" width="370" height="40" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<rect x="70" y="170" width="260" height="40" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<path d="M340 155L340 225" stroke="#dc2626" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="340" y="148" font-size="18" font-weight="700" text-anchor="middle" fill="#dc2626">limit</text>
+<text x="70" y="260" font-size="20" fill="#475569">Vượt CPU: bị làm chậm</text>
+<text x="70" y="300" font-size="20" font-weight="700" fill="#dc2626">Vượt memory: OOM kill</text>
+<text x="70" y="340" font-size="22" font-weight="700" font-family="Consolas, 'Courier New', monospace" fill="#dc2626">exit code 137</text>
+<rect x="490" y="90" width="430" height="300" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="510" y="126" font-size="24" font-weight="700" fill="#16a34a">Log rotation</text>
+<rect x="520" y="160" width="110" height="56" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="575" y="196" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">10 MB</text>
+<rect x="650" y="160" width="110" height="56" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="196" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">10 MB</text>
+<rect x="780" y="160" width="110" height="56" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="835" y="196" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">10 MB</text>
+<text x="710" y="262" font-size="20" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#0f172a">max-size: 10m   max-file: 3</text>
+<text x="710" y="306" font-size="20" text-anchor="middle" fill="#475569">mỗi container tối đa khoảng 30 MB</text>
+<text x="710" y="346" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626">Mặc định: log không giới hạn</text>
+
+</svg>

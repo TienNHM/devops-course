@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Phase của Pod</text>
+<rect x="40" y="115" width="200" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="140" y="154" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pending</text>
+<text x="140" y="186" font-size="20" text-anchor="middle" fill="#475569">chưa chạy</text>
+<rect x="330" y="115" width="200" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="430" y="154" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Running</text>
+<text x="430" y="186" font-size="20" text-anchor="middle" fill="#475569">đang chạy</text>
+<rect x="650" y="85" width="270" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="785" y="119" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Succeeded</text>
+<text x="785" y="151" font-size="20" text-anchor="middle" fill="#475569">mọi container exit 0</text>
+<rect x="650" y="190" width="270" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="785" y="224" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Failed</text>
+<text x="785" y="256" font-size="20" text-anchor="middle" fill="#475569">có container thất bại</text>
+<path d="M242 160L326 160" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M532 140L646 126" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<path d="M532 182L646 228" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<rect x="330" y="245" width="200" height="70" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="430" y="274" font-size="22" font-weight="700" text-anchor="middle" fill="#475569">Unknown</text>
+<text x="430" y="306" font-size="20" text-anchor="middle" fill="#475569">mất liên lạc node</text>
+<path d="M430 207L430 242" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<rect x="40" y="345" width="880" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="379" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">ImagePullBackOff, CrashLoopBackOff</text>
+<text x="480" y="411" font-size="20" text-anchor="middle" fill="#475569">là trạng thái container, không phải phase</text>
+
+</svg>

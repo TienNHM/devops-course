@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">down giữ volume, down -v xóa volume</text>
+<rect x="40" y="90" width="430" height="310" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="255" y="128" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker compose down</text>
+<rect x="60" y="150" width="390" height="50" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="76" y="183" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">container</text>
+<text x="434" y="183" font-size="20" text-anchor="end" fill="#475569" font-weight="700">🗑 xóa</text>
+<rect x="60" y="212" width="390" height="50" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="76" y="245" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">network</text>
+<text x="434" y="245" font-size="20" text-anchor="end" fill="#475569" font-weight="700">🗑 xóa</text>
+<rect x="60" y="274" width="390" height="50" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="76" y="307" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">volume pg-data</text>
+<text x="434" y="307" font-size="20" text-anchor="end" fill="#16a34a" font-weight="700">✓ giữ</text>
+<text x="255" y="365" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="700">up -d --wait: dữ liệu còn</text>
+<rect x="490" y="90" width="430" height="310" rx="14" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="705" y="128" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker compose down -v</text>
+<rect x="510" y="150" width="390" height="50" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="526" y="183" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">container</text>
+<text x="884" y="183" font-size="20" text-anchor="end" fill="#475569" font-weight="700">🗑 xóa</text>
+<rect x="510" y="212" width="390" height="50" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="526" y="245" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">network</text>
+<text x="884" y="245" font-size="20" text-anchor="end" fill="#475569" font-weight="700">🗑 xóa</text>
+<rect x="510" y="274" width="390" height="50" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="526" y="307" font-size="20" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">volume pg-data</text>
+<text x="884" y="307" font-size="20" text-anchor="end" fill="#dc2626" font-weight="700">✗ xóa</text>
+<text x="705" y="365" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">up: bảng trống, dữ liệu mất</text>
+
+</svg>

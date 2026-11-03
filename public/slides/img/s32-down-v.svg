@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">down giữ dữ liệu, down -v xóa volume</text>
+<rect x="40" y="90" width="430" height="290" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="255" y="130" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700" font-family="Consolas, monospace">docker compose down</text>
+<rect x="80" y="160" width="140" height="80" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="150" y="194" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Container</text>
+<text x="150" y="226" font-size="20" text-anchor="middle" fill="#475569">bị xóa</text>
+<rect x="270" y="160" width="160" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="350" y="194" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Volume</text>
+<text x="350" y="226" font-size="20" text-anchor="middle" fill="#475569">còn nguyên</text>
+<text x="255" y="300" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">up lại: dữ liệu còn</text>
+<text x="255" y="345" font-size="20" text-anchor="middle" fill="#475569">Alice, Bob vẫn ở đó</text>
+<rect x="490" y="90" width="430" height="290" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="705" y="130" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="700" font-family="Consolas, monospace">down -v</text>
+<rect x="530" y="160" width="140" height="80" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="600" y="194" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Container</text>
+<text x="600" y="226" font-size="20" text-anchor="middle" fill="#475569">bị xóa</text>
+<rect x="720" y="160" width="160" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="800" y="194" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Volume</text>
+<text x="800" y="226" font-size="20" text-anchor="middle" fill="#475569">bị xóa</text>
+<text x="705" y="300" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">up lại: chỉ còn init.sql</text>
+<text x="705" y="345" font-size="20" text-anchor="middle" fill="#475569">Không dọn dẹp sát giờ demo</text>
+
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Kiến trúc Docker: CLI chỉ gửi lệnh, daemon làm việc</text>
+<rect x="40" y="160" width="190" height="90" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="135" y="199" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">docker CLI</text>
+<text x="135" y="231" font-size="20" text-anchor="middle" fill="#475569">client</text>
+<path d="M232 205L326 205" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="279" y="192" font-size="18" text-anchor="middle" fill="#475569">REST API</text>
+<rect x="330" y="160" width="220" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="440" y="199" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">dockerd</text>
+<text x="440" y="231" font-size="20" text-anchor="middle" fill="#475569">daemon</text>
+<rect x="330" y="310" width="220" height="80" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="440" y="344" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Local image store</text>
+<text x="440" y="376" font-size="20" text-anchor="middle" fill="#475569">image đã tải</text>
+<path d="M440 252L440 306" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="660" y="90" width="260" height="80" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="790" y="124" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">containerd + runc</text>
+<text x="790" y="156" font-size="20" text-anchor="middle" fill="#475569">chạy container</text>
+<path d="M552 190L656 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="660" y="215" width="120" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="720" y="258" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Cont. 1</text>
+<rect x="800" y="215" width="120" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="860" y="258" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Cont. 2</text>
+<path d="M740 172L720 211" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M840 172L860 211" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="660" y="320" width="260" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="790" y="349" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Registry</text>
+<text x="790" y="381" font-size="20" text-anchor="middle" fill="#475569">pull / push</text>
+<path d="M520 252L656 340" stroke="#d97706" stroke-width="3" marker-end="url(#y)"/>
+
+</svg>

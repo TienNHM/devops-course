@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">kind không thấy image của Docker Desktop</text>
+<rect x="40" y="95" width="300" height="150" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="60" y="128" font-size="20" font-weight="700" fill="#475569">Docker Desktop</text>
+<rect x="60" y="148" width="260" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="190" y="191" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api:1.0.0</text>
+<text x="450" y="140" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1d63ed">kind load</text>
+<text x="450" y="162" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1d63ed">docker-image</text>
+<path d="M344 180L556 180" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="450" y="212" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1d63ed">--name club</text>
+<rect x="560" y="95" width="370" height="250" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="580" y="128" font-size="20" font-weight="700" fill="#16a34a">Node club-control-plane</text>
+<rect x="580" y="148" width="330" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="745" y="191" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Trước: chưa có image</text>
+<rect x="580" y="240" width="330" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="745" y="288" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Sau: club-api:1.0.0 ✓</text>
+<rect x="40" y="370" width="880" height="56" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="406" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Tag cố định + IfNotPresent. Tránh latest: mặc định Always.</text>
+
+</svg>

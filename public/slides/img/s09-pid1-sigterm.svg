@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 415" width="960" height="415" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="415" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">PID 1 không xử lý SIGTERM thì docker stop phải chờ</text>
+<rect x="40" y="105" width="170" height="80" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="125" y="139" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">docker stop</text>
+<text x="125" y="171" font-size="20" text-anchor="middle" fill="#475569">mặc định</text>
+<rect x="300" y="105" width="280" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="440" y="139" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">PID 1 = node</text>
+<text x="440" y="171" font-size="20" text-anchor="middle" fill="#475569">không có handler: bỏ qua</text>
+<rect x="680" y="105" width="240" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="800" y="139" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">SIGKILL</text>
+<text x="800" y="171" font-size="20" text-anchor="middle" fill="#475569">bị giết ép buộc</text>
+<path d="M212 145L296 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="254" y="130" font-size="18" text-anchor="middle" fill="#0f172a">SIGTERM</text>
+<path d="M582 145L676 145" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<text x="629" y="130" font-size="18" text-anchor="middle" fill="#dc2626">10 giây</text>
+<rect x="40" y="255" width="170" height="80" rx="12" fill="#fff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="125" y="289" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">--init</text>
+<text x="125" y="321" font-size="20" text-anchor="middle" fill="#475569">docker run</text>
+<rect x="300" y="255" width="280" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="440" y="289" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">tini = PID 1</text>
+<text x="440" y="321" font-size="20" text-anchor="middle" fill="#475569">chuyển SIGTERM cho node</text>
+<rect x="680" y="255" width="240" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="289" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">node thoát êm</text>
+<text x="800" y="321" font-size="20" text-anchor="middle" fill="#475569">docker stop nhanh</text>
+<path d="M212 295L296 295" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="254" y="280" font-size="18" text-anchor="middle" fill="#0f172a">SIGTERM</text>
+<path d="M582 295L676 295" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="629" y="280" font-size="18" text-anchor="middle" fill="#16a34a">ngay</text>
+<text x="480" y="385" font-size="22" text-anchor="middle" fill="#0f172a">Cách khác: bắt SIGTERM trong server.js.</text>
+
+</svg>

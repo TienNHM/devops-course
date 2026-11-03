@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Từ làm tay trên laptop sang quy trình tự động</text>
+<rect x="40" y="90" width="410" height="290" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="245" y="132" font-size="26" text-anchor="middle" fill="#dc2626" font-weight="700">Làm tay</text>
+<text x="245" y="195" font-size="22" text-anchor="middle" fill="#0f172a">💻 Mỗi laptop một khác</text>
+<text x="245" y="250" font-size="22" text-anchor="middle" fill="#0f172a">🤞 Nhớ chạy test hay không</text>
+<text x="245" y="305" font-size="22" text-anchor="middle" fill="#0f172a">❓ Không log, không truy vết</text>
+<rect x="510" y="90" width="410" height="290" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="715" y="132" font-size="26" text-anchor="middle" fill="#16a34a" font-weight="700">Pipeline tự động</text>
+<text x="715" y="195" font-size="22" text-anchor="middle" fill="#0f172a">🧼 Runner sạch mỗi lần</text>
+<text x="715" y="250" font-size="22" text-anchor="middle" fill="#0f172a">🔁 Lặp lại được</text>
+<text x="715" y="305" font-size="22" text-anchor="middle" fill="#0f172a">📦 Để lại log và artifact</text>
+<path d="M455 235L505 235" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+
+</svg>

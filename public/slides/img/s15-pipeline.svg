@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Pipeline mục tiêu của Club API</text>
+<rect x="30" y="130" width="120" height="70" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="90" y="173" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Trigger</text>
+<rect x="185" y="130" width="130" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="250" y="159" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Test</text>
+<text x="250" y="191" font-size="20" text-anchor="middle" fill="#475569">npm test</text>
+<rect x="350" y="130" width="130" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="415" y="159" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Build</text>
+<text x="415" y="191" font-size="20" text-anchor="middle" fill="#475569">docker build</text>
+<rect x="515" y="130" width="130" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="580" y="159" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Publish</text>
+<text x="580" y="191" font-size="20" text-anchor="middle" fill="#475569">registry</text>
+<rect x="680" y="130" width="120" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="740" y="159" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Deploy</text>
+<text x="740" y="191" font-size="20" text-anchor="middle" fill="#475569">dev</text>
+<path d="M870 130L900 165L870 200L840 165Z" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="870" y="116" font-size="20" text-anchor="middle" fill="#d97706" font-weight="700">Approval</text>
+<rect x="800" y="290" width="130" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="865" y="333" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Production</text>
+<rect x="185" y="290" width="210" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="290" y="333" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Dừng, báo lỗi</text>
+<path d="M152 165L181 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M317 165L346 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M482 165L511 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M647 165L676 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M802 165L836 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M870 202L866 286" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="884" y="265" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">duyệt</text>
+<path d="M250 202L250 286" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<text x="262" y="250" font-size="20" text-anchor="start" fill="#dc2626" font-weight="700">fail</text>
+
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">IP chọn đúng máy, port chọn đúng chương trình</text>
+<rect x="30" y="145" width="230" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="145" y="184" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Gói tin</text>
+<text x="145" y="216" font-size="20" text-anchor="middle" fill="#475569">tới cổng :3000</text>
+<path d="M262 190L316 190" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="290" y="90" width="440" height="290" rx="16" fill="#f1f5f9" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="510" y="124" font-size="20" text-anchor="middle" fill="#475569" font-weight="700">Máy 192.168.1.25  (số nhà)</text>
+<rect x="310" y="150" width="195" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="407" y="184" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">:3000</text>
+<text x="407" y="216" font-size="20" text-anchor="middle" fill="#475569">API</text>
+<rect x="515" y="150" width="195" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="612" y="184" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">:5432</text>
+<text x="612" y="216" font-size="20" text-anchor="middle" fill="#475569">PostgreSQL</text>
+<rect x="310" y="260" width="195" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="407" y="294" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">:22</text>
+<text x="407" y="326" font-size="20" text-anchor="middle" fill="#475569">SSH</text>
+<rect x="515" y="260" width="195" height="80" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="612" y="294" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">:8080</text>
+<text x="612" y="326" font-size="20" text-anchor="middle" fill="#475569">Nginx</text>
+<rect x="750" y="150" width="190" height="190" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="845" y="195" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">IP = số nhà</text>
+<text x="845" y="235" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">port = số phòng</text>
+<text x="845" y="285" font-size="20" text-anchor="middle" fill="#475569">1 port chỉ có</text>
+<text x="845" y="312" font-size="20" text-anchor="middle" fill="#475569">1 process nghe</text>
+<text x="480" y="418" font-size="20" text-anchor="middle" fill="#475569">192.168.1.25/24: 24 bit đầu là mạng, cùng mạng thì nói chuyện trực tiếp</text>
+
+</svg>

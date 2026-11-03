@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 465" width="960" height="465" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="465" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">QoS class: ai bị đuổi trước khi Node thiếu RAM</text>
+<rect x="40" y="90" width="270" height="210" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="175" y="152" font-size="52" text-anchor="middle">🎈</text>
+<text x="175" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">BestEffort</text>
+<text x="175" y="246" font-size="20" text-anchor="middle" fill="#475569">không khai báo gì</text>
+<text x="175" y="276" font-size="20" text-anchor="middle" fill="#475569">bị đuổi đầu tiên</text>
+<rect x="345" y="90" width="270" height="210" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="152" font-size="52" text-anchor="middle">📦</text>
+<text x="480" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Burstable</text>
+<text x="480" y="246" font-size="20" text-anchor="middle" fill="#475569">có khai báo nhưng</text>
+<text x="480" y="276" font-size="20" text-anchor="middle" fill="#475569">requests ≠ limits</text>
+<rect x="650" y="90" width="270" height="210" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="785" y="152" font-size="52" text-anchor="middle">🛡️</text>
+<text x="785" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Guaranteed</text>
+<text x="785" y="246" font-size="20" text-anchor="middle" fill="#475569">requests = limits</text>
+<text x="785" y="276" font-size="20" text-anchor="middle" fill="#475569">bị đuổi cuối cùng</text>
+<path d="M60 322L900 322" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="358" font-size="20" font-weight="700" text-anchor="middle" fill="#475569">Node thiếu memory: đuổi từ trái sang phải</text>
+<rect x="330" y="378" width="300" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="407" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api: Burstable</text>
+<text x="480" y="435" font-size="18" text-anchor="middle" fill="#475569">100m/128Mi → 500m/256Mi</text>
+
+</svg>

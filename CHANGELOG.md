@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Slide: viết lại toàn bộ 32 bộ slide thành slide trực quan (467 slide, 314 hình SVG trong `public/slides/img/`), mỗi slide một ý; phần giải thích chuyển vào "Ghi chú cho mentor" (ẩn khi trình chiếu).
 - Slide: thêm chế độ trình chiếu (nút "Trình chiếu" trên mỗi trang slide; mũi tên chuyển slide, F toàn màn hình, Esc thoát).
 - Thêm `.gitattributes` để file `.sh`, YAML, Dockerfile luôn dùng LF trên Windows.
 - Sửa tên cluster mặc định `club` trong scenario 07 và 10.

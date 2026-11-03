@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Tách tầng dữ liệu: handler chỉ gọi repo</text>
+<rect x="40" y="150" width="200" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="199" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Handler</text>
+<text x="140" y="231" font-size="20" text-anchor="middle" fill="#475569">createApp(repo)</text>
+<rect x="330" y="150" width="180" height="110" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="420" y="199" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">repo</text>
+<text x="420" y="231" font-size="20" text-anchor="middle" fill="#475569">list, get, create…</text>
+<path d="M242 205L326 205" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="640" y="90" width="280" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="780" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Production</text>
+<text x="780" y="166" font-size="20" text-anchor="middle" fill="#475569">repo thật → SQL</text>
+<rect x="640" y="230" width="280" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="780" y="274" font-size="22" font-weight="700" text-anchor="middle" fill="#d97706">Test</text>
+<text x="780" y="306" font-size="20" text-anchor="middle" fill="#475569">repo giả trong RAM</text>
+<path d="M512 190L636 145" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M512 225L636 270" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="385" font-size="22" text-anchor="middle" fill="#475569">Truyền phụ thuộc qua tham số hàm: test không cần DB.</text>
+
+</svg>

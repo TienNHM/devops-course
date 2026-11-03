@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Từ git push đến check xanh trên PR</text>
+<rect x="40" y="90" width="200" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="138" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Developer</text>
+<rect x="380" y="90" width="200" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="138" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">GitHub repo</text>
+<rect x="720" y="90" width="200" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="820" y="138" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Actions</text>
+<path d="M242 130L376 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="309" y="118" font-size="20" text-anchor="middle" fill="#475569">git push</text>
+<path d="M582 130L716 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="649" y="118" font-size="20" text-anchor="middle" fill="#475569">event</text>
+<rect x="40" y="230" width="690" height="140" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="60" y="262" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Runner ubuntu-latest (máy mới, sạch)</text>
+<rect x="55" y="285" width="145" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="127" y="328" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">checkout</text>
+<rect x="225" y="285" width="145" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="297" y="314" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">setup-node</text>
+<text x="297" y="346" font-size="20" text-anchor="middle" fill="#475569">+ cache</text>
+<rect x="395" y="285" width="145" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="467" y="328" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">npm ci</text>
+<rect x="565" y="285" width="145" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="637" y="328" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">npm test</text>
+<path d="M202 320L221 320" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M372 320L391 320" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M542 320L561 320" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M820 172L700 228" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="770" y="285" width="150" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="845" y="328" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Check ✓ / ✗</text>
+<path d="M732 320L766 320" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+
+</svg>

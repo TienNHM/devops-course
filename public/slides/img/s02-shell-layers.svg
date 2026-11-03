@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Terminal, shell, lệnh: ba lớp khác nhau</text>
+<rect x="40" y="90" width="880" height="300" rx="16" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="70" y="128" font-size="22" font-weight="700" text-anchor="start" fill="#1d63ed">Terminal = cửa sổ nhập và xem chữ (Windows Terminal)</text>
+<rect x="70" y="150" width="820" height="220" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="100" y="186" font-size="22" font-weight="700" text-anchor="start" fill="#1d63ed">Shell = chương trình đọc và chạy lệnh (bash)</text>
+<rect x="100" y="205" width="760" height="145" rx="12" fill="#0f172a"/>
+<text x="125" y="245" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"><tspan fill="#4ade80">ten-ban@pc:~$</tspan> git status</text>
+<text x="125" y="285" font-size="20" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace"># git, ls, cd = lệnh (chương trình được gọi)</text>
+<text x="125" y="325" font-size="20" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace"><tspan fill="#4ade80">ten-ban@pc:~$</tspan> ls -la</text>
+
+</svg>

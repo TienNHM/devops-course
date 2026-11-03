@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">OOMKilled: bị kernel giết khi vượt limit memory</text>
+<rect x="40" y="90" width="540" height="275" rx="12" fill="#0f172a"/>
+<text x="60" y="124" font-size="18" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">$ kubectl -n club logs oom-demo</text>
+<text x="60" y="158" font-size="18" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">allocated 10 MiB</text>
+<text x="60" y="192" font-size="18" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">allocated 20 MiB</text>
+<text x="60" y="226" font-size="18" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">(dừng đột ngột, không stack trace)</text>
+<text x="60" y="260" font-size="18" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">$ kubectl -n club describe pod oom-demo</text>
+<text x="60" y="294" font-size="18" fill="#f87171" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">  Reason:     OOMKilled</text>
+<text x="60" y="328" font-size="18" fill="#f87171" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">  Exit Code:  137</text>
+<rect x="620" y="90" width="300" height="72" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="770" y="120" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Vượt limit 64Mi</text>
+<text x="770" y="148" font-size="19" text-anchor="middle" fill="#475569">memory</text>
+<path d="M770 164L770 200" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="620" y="204" width="300" height="72" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="770" y="234" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Kernel gửi SIGKILL</text>
+<text x="770" y="262" font-size="19" text-anchor="middle" fill="#475569">tín hiệu số 9</text>
+<path d="M770 278L770 314" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="620" y="318" width="300" height="56" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<text x="770" y="354" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">128 + 9 = 137</text>
+<text x="480" y="420" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">App bị giết từ bên ngoài nên không kịp ghi log.</text>
+
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Mỗi COPY, RUN thêm một layer; CMD chỉ ghi metadata</text>
+<rect x="40" y="90" width="540" height="340" rx="14" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="60" y="122" font-size="20" text-anchor="start" fill="#94a3b8" font-weight="700">Dockerfile</text>
+<text x="60" y="165" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0"><tspan fill="#7dd3fc" font-weight="700">FROM</tspan> node:22-alpine</text>
+<rect x="610" y="138" width="310" height="38" rx="10" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="765" y="165" font-size="19" text-anchor="middle" fill="#0f172a">layer gốc: Node 22</text>
+<path d="M582 157L606 157" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="60" y="211" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0"><tspan fill="#7dd3fc" font-weight="700">WORKDIR</tspan> /app</text>
+<rect x="610" y="184" width="310" height="38" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="765" y="211" font-size="19" text-anchor="middle" fill="#0f172a">thư mục làm việc</text>
+<path d="M582 203L606 203" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="60" y="257" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0"><tspan fill="#7dd3fc" font-weight="700">COPY</tspan> package.json package-lock.json ./</text>
+<rect x="610" y="230" width="310" height="38" rx="10" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="765" y="257" font-size="19" text-anchor="middle" fill="#0f172a">layer: package files</text>
+<path d="M582 249L606 249" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="60" y="303" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0"><tspan fill="#7dd3fc" font-weight="700">RUN</tspan> npm ci --omit=dev</text>
+<rect x="610" y="276" width="310" height="38" rx="10" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="765" y="303" font-size="19" text-anchor="middle" fill="#0f172a">layer: node_modules</text>
+<path d="M582 295L606 295" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="60" y="349" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0"><tspan fill="#7dd3fc" font-weight="700">COPY</tspan> . .</text>
+<rect x="610" y="322" width="310" height="38" rx="10" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="765" y="349" font-size="19" text-anchor="middle" fill="#0f172a">layer: mã nguồn</text>
+<path d="M582 341L606 341" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="60" y="395" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0"><tspan fill="#7dd3fc" font-weight="700">CMD</tspan> [&quot;node&quot;, &quot;server.js&quot;]</text>
+<rect x="610" y="368" width="310" height="38" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="765" y="395" font-size="19" text-anchor="middle" fill="#0f172a">metadata: lệnh mặc định</text>
+<path d="M582 387L606 387" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+
+</svg>

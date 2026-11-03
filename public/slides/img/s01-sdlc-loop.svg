@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">SDLC: vòng đời phần mềm là một vòng lặp</text>
+<rect x="40" y="95" width="205" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="142" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Plan</text>
+<text x="142" y="166" font-size="20" text-anchor="middle" fill="#475569">cần danh sách</text>
+<path d="M247 140L262 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="265" y="95" width="205" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="367" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Code</text>
+<text x="367" y="166" font-size="20" text-anchor="middle" fill="#475569">viết /api/members</text>
+<path d="M472 140L487 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="490" y="95" width="205" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="592" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Build</text>
+<text x="592" y="166" font-size="20" text-anchor="middle" fill="#475569">đóng gói image</text>
+<path d="M697 140L712 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="715" y="95" width="205" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="817" y="134" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Test</text>
+<text x="817" y="166" font-size="20" text-anchor="middle" fill="#475569">test /health</text>
+<path d="M817 187L817 235L142 235L142 281" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="285" width="205" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="142" y="324" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Release</text>
+<text x="142" y="356" font-size="20" text-anchor="middle" fill="#475569">gắn tag 1.0.0</text>
+<path d="M247 330L262 330" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="265" y="285" width="205" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="367" y="324" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Deploy</text>
+<text x="367" y="356" font-size="20" text-anchor="middle" fill="#475569">chạy trên server</text>
+<path d="M472 330L487 330" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="490" y="285" width="205" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="592" y="324" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Operate</text>
+<text x="592" y="356" font-size="20" text-anchor="middle" fill="#475569">xem log, /ready</text>
+<rect x="740" y="285" width="180" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="830" y="324" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Phản hồi</text>
+<text x="830" y="356" font-size="20" text-anchor="middle" fill="#475569">quay lại Plan</text>
+<path d="M697 330L736 330" stroke="#d97706" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+
+</svg>

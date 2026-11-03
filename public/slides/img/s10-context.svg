@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">.dockerignore lọc context trước khi build</text>
+<rect x="40" y="95" width="260" height="300" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="60" y="130" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Thư mục dự án</text>
+<text x="60" y="170" font-size="20" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">server.js</text>
+<text x="60" y="204" font-size="20" text-anchor="start" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">package.json</text>
+<text x="60" y="238" font-size="20" text-anchor="start" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">node_modules</text>
+<text x="60" y="272" font-size="20" text-anchor="start" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">.env  (mật khẩu)</text>
+<text x="60" y="306" font-size="20" text-anchor="start" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">big.bin  30 MB</text>
+<text x="60" y="340" font-size="20" text-anchor="start" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">.git</text>
+<path d="M302 200L346 200" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="350" y="140" width="220" height="120" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="460" y="188" font-size="40" text-anchor="middle" fill="#475569">🛡️</text>
+<text x="460" y="232" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">.dockerignore</text>
+<path d="M572 200L616 200" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<rect x="620" y="140" width="300" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="770" y="194" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Build context</text>
+<text x="770" y="226" font-size="20" text-anchor="middle" fill="#475569">31 MB → vài KB</text>
+<path d="M460 262L460 296" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#r)"/>
+<rect x="350" y="300" width="570" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="635" y="339" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">Bị loại: .env, big.bin, .git,</text>
+<text x="635" y="371" font-size="20" text-anchor="middle" fill="#475569">node_modules. COPY . . không chép nhầm</text>
+
+</svg>

@@ -2,165 +2,183 @@
 
 > **Tóm tắt:** Tách cấu hình khỏi image bằng ConfigMap và Secret, nạp qua biến môi trường hoặc file mount, và hiểu khi nào Pod thấy giá trị mới. Bài lab đầy đủ: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.md).
 
-## Slide 1: Mục tiêu buổi học
+## Slide 1: Hôm nay bạn làm được gì
 
-- Giải thích vì sao cấu hình phải nằm ngoài image; chọn ConfigMap hay Secret.
-- Nạp cấu hình bằng `env`, `envFrom` và volume mount để `club-api` kết nối PostgreSQL.
-- Chứng minh base64 trong Secret chỉ là encoding, không phải encryption.
-- Dự đoán hành vi cập nhật: biến môi trường cần restart, file mount được đồng bộ, `subPath` thì không.
-- Chẩn đoán lỗi cấu hình từ `describe`, `logs` và readiness.
+![Ba mục tiêu: tách cấu hình, nạp vào Pod, hiểu giới hạn](/slides/img/s25-goals.svg)
+
+::: details Ghi chú cho mentor
+- Đọc nhanh 3 thẻ, không đọc từng dòng.
+- Mục tiêu đầy đủ: chọn ConfigMap hay Secret; nạp bằng `env`, `envFrom`, volume mount để `club-api` kết nối PostgreSQL; chứng minh base64 chỉ là encoding; dự đoán hành vi cập nhật; chẩn đoán lỗi cấu hình từ `describe`, `logs` và readiness.
+:::
 
 ---
 
-## Slide 2: Vấn đề – mật khẩu nằm trong image
+## Slide 2: Mật khẩu nằm trong image?
 
-- CLB có nhiều môi trường: máy thành viên, máy demo của mentor, cụm dùng chung sau này.
-- Mỗi nơi cần `DB_HOST` và mật khẩu database khác nhau.
+![So sánh viết cứng vào image với một image dùng nhiều cấu hình](/slides/img/s25-in-image.svg)
+
+::: details Ghi chú cho mentor
+- CLB có nhiều môi trường: máy thành viên, máy demo của mentor, cụm dùng chung sau này. Mỗi nơi cần `DB_HOST` và mật khẩu database khác nhau.
 - Viết cứng vào image: phải build lại cho mỗi môi trường, và ai pull được image đều đọc được mật khẩu trong layer.
 - Nguyên tắc Twelve-Factor: cùng một image, nhiều cấu hình.
+:::
 
 ---
 
 ## Slide 3: ConfigMap và Secret
 
-| Tiêu chí | ConfigMap | Secret |
-| --- | --- | --- |
-| Dùng cho | Cấu hình thường | Mật khẩu, token |
-| Lưu | Chuỗi trong `data` | base64 trong `data`; `stringData` cho chuỗi thường |
-| `describe` | Hiện giá trị | Chỉ hiện tên key và số byte |
-| Trong etcd | Không mã hoá | Mặc định không mã hoá |
-| Mount volume | Đĩa của node | tmpfs (RAM) |
+![So sánh ConfigMap và Secret theo mục đích, describe, etcd, mount](/slides/img/s25-cm-vs-secret.svg)
 
+::: details Ghi chú cho mentor
+- ConfigMap lưu chuỗi trong `data`. Secret lưu base64 trong `data`; `stringData` cho chuỗi thường.
 - Giới hạn kích thước của cả hai là 1 MiB.
+- Hỏi: Secret có an toàn hơn ConfigMap bao nhiêu? (xem slide tiếp theo)
+:::
 
 ---
 
 ## Slide 4: Base64 không phải bảo mật
 
+![describe ẩn giá trị Secret nhưng get cộng base64 -d lộ mật khẩu](/slides/img/s25-base64.svg)
+
+::: details Ghi chú cho mentor
 - Ai có quyền `get secret` đều giải mã được bằng một lệnh `base64 -d`.
-- `describe` ẩn giá trị, nhưng `get -o yaml` cộng giải mã thì lộ hết.
 - Không bao giờ commit manifest Secret chứa giá trị thật; chỉ commit `secret.example.yaml` với giá trị giả.
 - Tạo Secret bằng `echo` mà thiếu `-n` sẽ dính dấu xuống dòng thừa vào mật khẩu.
 - Dán YAML Secret lên kênh chat là lộ mật khẩu cho mọi người trong kênh.
+:::
 
 ---
 
 ## Slide 5: Ba cách đưa cấu hình vào container
 
-| Cách | Khi nào dùng | Khi ConfigMap đổi |
-| --- | --- | --- |
-| `env` với `configMapKeyRef` hoặc `secretKeyRef` | Chọn từng key, đổi tên biến | Cần restart Pod |
-| `envFrom` với `configMapRef` | Cả bộ key như `DB_*` | Cần restart Pod |
-| Volume mount | File cấu hình | Kubelet đồng bộ, có độ trễ |
+![env, envFrom, volume và hành vi khi ConfigMap đổi](/slides/img/s25-inject-ways.svg)
 
-- Ngoại lệ: mount bằng `subPath` không bao giờ tự cập nhật.
+::: details Ghi chú cho mentor
+- `env` với `configMapKeyRef` hoặc `secretKeyRef`: chọn từng key, đổi tên biến.
+- `envFrom` với `configMapRef`: cả bộ key như `DB_*`.
+- Volume mount: file cấu hình, kubelet đồng bộ có độ trễ. Ngoại lệ: `subPath` không bao giờ tự cập nhật.
 - ConfigMap hoặc Secret `immutable: true` không thể sửa.
+:::
 
 ---
 
 ## Slide 6: Cấu hình của club-api
 
-| Biến | Nguồn | Giá trị |
-| --- | --- | --- |
-| `DB_HOST` | ConfigMap `club-config` | `postgres` |
-| `DB_PORT` | ConfigMap `club-config` | `5432` |
-| `DB_NAME` | ConfigMap `club-config` | `clubdb` |
-| `DB_USER` | ConfigMap `club-config` | `club` |
-| `DB_PASSWORD` | Secret `club-secrets`, key `db-password` | Bạn tự tạo |
+![ConfigMap club-config và Secret club-secrets đi vào Pod club-api và postgres](/slides/img/s25-config-flow.svg)
 
-- Giá trị ConfigMap luôn là chuỗi: viết `DB_PORT: "5432"` có nháy.
-- Nếu thiếu nháy, `kubectl apply` báo lỗi unmarshal number.
-
----
-
-## Slide 7: Kiến trúc – cấu hình chảy vào Pod
-
-```mermaid
-flowchart LR
-  CM["ConfigMap club-config"] -->|envFrom| API["Pod club-api"]
-  SEC["Secret club-secrets"] -->|secretKeyRef| API
-  SEC -->|secretKeyRef| PG["Pod postgres"]
-  API -->|"DB_HOST postgres"| SVC["Service postgres"]
-  SVC --> PG
-  CM2["ConfigMap app-settings"] -->|volume mount| DEMO["Pod config-demo"]
-```
-
+::: details Ghi chú cho mentor
+- Bốn biến từ ConfigMap `club-config`: `DB_HOST=postgres`, `DB_PORT=5432`, `DB_NAME=clubdb`, `DB_USER=club`. `DB_PASSWORD` từ Secret `club-secrets`, key `db-password` (bạn tự tạo).
+- Giá trị ConfigMap luôn là chuỗi: viết `DB_PORT: "5432"` có nháy. Thiếu nháy, `kubectl apply` báo lỗi unmarshal number.
 - Cùng một Secret phục vụ cả API và Postgres.
+:::
 
 ---
 
-## Slide 8: Kubelet nạp cấu hình thế nào
+## Slide 7: Khi nào Pod thấy giá trị mới
 
-```mermaid
-flowchart TD
-  A["apply ConfigMap và Secret"] --> B["etcd"]
-  B --> C["kubelet đọc spec Pod"]
-  C --> D["envFrom và secretKeyRef"]
-  C --> E["volume mount"]
-  D --> F["Biến môi trường chốt lúc container start"]
-  E --> G["Kubelet đồng bộ định kỳ"]
-```
+![Biến env không đổi, file mount đổi có trễ, subPath không đổi cho tới khi restart](/slides/img/s25-update-timeline.svg)
 
+::: details Ghi chú cho mentor
+- Biến môi trường chốt lúc container start; file mount được kubelet đồng bộ định kỳ.
 - Thiếu ConfigMap hoặc Secret: Pod dừng ở `CreateContainerConfigError`.
 - Ứng dụng Node.js đọc `process.env` một lần khi tạo `pg.Pool`, nên vẫn phải khởi động lại tiến trình.
+- Hàng subPath là nội dung thử thách nâng cao, không nằm trong lab chính.
+:::
 
 ---
 
-## Slide 9: Demo
+## Slide 8: Demo: tạo, đọc, giải mã
 
-- Tạo ConfigMap bằng lệnh, xem lại bằng `-o yaml`.
-- Tạo Secret rồi giải mã: so sánh `describe` với `get -o yaml` cộng `base64 -d`.
+```bash
+kubectl apply -f source/k8s/configmap.yaml
+kubectl get configmap club-config -n club -o yaml
+kubectl describe secret club-secrets -n club
+kubectl get secret club-secrets -n club -o jsonpath='{.data.db-password}' | base64 -d; echo
+```
+
+Dự đoán trước khi chạy: dòng cuối in ra gì?
+
+::: details Ghi chú cho mentor
 - Câu hỏi cho lớp: dán YAML này lên chat thì ai thấy mật khẩu? Đổi ConfigMap xong thì biến và file có đổi không?
-- Lệnh chi tiết do người hướng dẫn chạy trực tiếp trên cluster; bạn quan sát và ghi lại dự đoán của mình.
+- Lệnh tạo Secret trong lab: `kubectl create secret generic club-secrets -n club --from-literal=db-password="$DB_PASS"`.
+- Người hướng dẫn chạy trực tiếp trên cluster; học viên quan sát và ghi lại dự đoán.
+:::
 
 ---
 
-## Slide 10: Lab – năm phần trong 60 phút
+## Slide 9: Lab: năm phần trong 60 phút
 
-- Phần 1: ConfigMap `club-config` bằng manifest.
-- Phần 2: Secret `club-secrets` bằng lệnh, tự giải mã để thấy base64 không an toàn.
-- Phần 3: chạy Postgres và `club-api` bằng cấu hình đã tách, chứng minh `/ready` trả `ready`.
-- Phần 4: file mount ở namespace `lab25`, quan sát file đổi còn biến thì không.
-- Phần 5: làm sai `DB_HOST` và chẩn đoán.
-- Lệnh và kết quả mong đợi nằm trong bài lab: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.md#hands-on-lab).
+| Phần | Việc làm | Mốc xong |
+| --- | --- | --- |
+| 1 và 2 | ConfigMap bằng manifest, Secret bằng lệnh | Tự giải mã được |
+| 3 | Chạy Postgres và `club-api` | `/ready` trả `ready` |
+| 4 | File mount ở namespace `lab25` | File đổi, biến không đổi |
+| 5 | Làm sai `DB_HOST` | Chẩn đoán đúng |
+
+Lệnh và kết quả: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.md#hands-on-lab).
 
 ---
 
-## Slide 11: Phá lỗi – DB_HOST sai
+## Slide 10: Phá lỗi: DB_HOST sai
 
-- Triệu chứng: Pod mới `Running` nhưng `0/1`, hai Pod cũ vẫn `1/1`.
-- Container sống, readiness probe đang fail: không phải lỗi image.
-- Điều tra năm bước: `get pods`, `describe` (Events `Readiness probe failed ... 503`), `logs` hoặc `exec` gọi API (`ENOTFOUND` kèm tên sai), `printenv DB_HOST`, đọc ConfigMap.
-- Log "sạch" không có nghĩa app khỏe: lỗi chỉ hiện khi có request chạm database.
+![ConfigMap sai DB_HOST làm Pod mới 0/1 còn Pod cũ vẫn phục vụ](/slides/img/s25-readiness-fail.svg)
+
+::: details Ghi chú cho mentor
+- Triệu chứng: Pod mới `Running` nhưng `0/1`, hai Pod cũ vẫn `1/1`. Container sống, readiness probe đang fail: không phải lỗi image.
+- Cách phá trong lab: `kubectl patch configmap club-config ... DB_HOST=postgres-db` rồi `rollout restart`.
 - Hai Pod cũ vẫn phục vụ nhờ rolling update chặn Pod chưa Ready.
+:::
+
+---
+
+## Slide 11: Điều tra từ ngoài vào trong
+
+![Năm bước: get pods, describe, logs hoặc exec, printenv, đọc ConfigMap](/slides/img/s25-investigate.svg)
+
+::: details Ghi chú cho mentor
+- Events: `Readiness probe failed: HTTP probe failed with statuscode: 503`.
+- `logs` có `getaddrinfo ENOTFOUND postgres-db` chỉ sau khi gọi `/api/members`; trước đó log chỉ có `API listening on port 3000` vì handler `/ready` nuốt lỗi.
+- Log "sạch" không có nghĩa app khỏe: lỗi chỉ hiện khi có request chạm database.
+- Khôi phục: patch `DB_HOST` về `postgres`, `rollout restart`, `rollout status`, rồi `curl /ready`.
+:::
 
 ---
 
 ## Slide 12: Lỗi thường gặp
 
-| Triệu chứng | Cách xử lý |
-| --- | --- |
-| `CreateContainerConfigError`, `secret "club-secrets" not found` | Tạo lại Secret đúng namespace |
-| `couldn't find key db-password` | Tạo lại với `--from-literal=db-password=...` |
-| Đổi ConfigMap mà app dùng giá trị cũ | `kubectl rollout restart deployment/ten` |
-| File mount không bao giờ đổi | Có `subPath` hoặc `immutable`: mount cả thư mục |
-| Đăng nhập lỗi dù mật khẩu đúng | Secret có xuống dòng thừa: dùng `echo -n` hoặc `--from-literal` |
-| Mật khẩu lỡ commit lên Git | Đổi mật khẩu ngay, rồi mới dọn lịch sử |
+| Triệu chứng | Nguyên nhân | Xử lý |
+| --- | --- | --- |
+| `CreateContainerConfigError` | Secret hoặc key không có | Tạo lại đúng namespace, đúng key |
+| App dùng giá trị cũ | Env chốt lúc start | `rollout restart deployment/ten` |
+| File mount không đổi | Có `subPath` hoặc `immutable` | Mount cả thư mục |
+| Đăng nhập lỗi, mật khẩu đúng | Secret có xuống dòng thừa | `echo -n` hoặc `--from-literal` |
+
+::: details Ghi chú cho mentor
+- `secret "club-secrets" not found`: tạo lại Secret đúng namespace. `couldn't find key db-password`: tạo lại với `--from-literal=db-password=...`.
+- Mật khẩu lỡ commit lên Git: đổi mật khẩu ngay, rồi mới dọn lịch sử.
+:::
 
 ---
 
 ## Slide 13: Thử thách nâng cao
 
-- Thử thách A: mount một file bằng `subPath` mà không che các file khác; giải thích vì sao `subPath` thì file không tự cập nhật.
-- Thử thách B: mount Secret thành volume với quyền `0400`; nêu hai cách bảo vệ Secret tốt hơn base64 (RBAC chặt, encryption at rest, Sealed Secrets, External Secrets).
-- Chi tiết: [Buổi 25 – Thử thách nâng cao](../../labs/week-13/session-25-challenge.md).
+- A: mount một file bằng `subPath`, giải thích vì sao không tự cập nhật.
+- B: mount Secret thành volume quyền `0400`, nêu hai cách bảo vệ tốt hơn base64.
+
+Chi tiết: [Buổi 25 – Thử thách nâng cao](../../labs/week-13/session-25-challenge.md).
+
+::: details Ghi chú cho mentor
+- Gợi ý cho B: RBAC chặt, encryption at rest, Sealed Secrets, External Secrets.
+:::
 
 ---
 
 ## Slide 14: Recap
 
-- Cùng một image, nhiều cấu hình: ConfigMap cho dữ liệu thường, Secret cho dữ liệu nhạy cảm.
-- Base64 chỉ là encoding; kiểm soát RBAC và không commit Secret thật.
-- Biến môi trường chốt lúc container start; đổi cấu hình cần `rollout restart`.
+![Ba điều cần nhớ: cấu hình tách rời, base64 không bảo mật, đổi env cần restart](/slides/img/s25-recap.svg)
+
+::: details Ghi chú cho mentor
 - Volume mount được đồng bộ (có độ trễ), `subPath` thì không, và ứng dụng phải tự đọc lại file.
 - Thiếu ConfigMap hoặc Secret gây `CreateContainerConfigError`; giá trị sai lộ ra qua readiness và Events.
+:::

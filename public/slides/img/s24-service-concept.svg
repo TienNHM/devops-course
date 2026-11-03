@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 445" width="960" height="445" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="445" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Service: địa chỉ cố định, chọn Pod bằng label</text>
+<rect x="40" y="190" width="170" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="229" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Frontend</text>
+<text x="125" y="257" font-size="19" text-anchor="middle" fill="#475569">backend:3000</text>
+<path d="M212 235L276 235" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="280" y="130" width="280" height="210" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="420" y="172" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a">Service backend</text>
+<text x="420" y="208" font-size="19" text-anchor="middle" fill="#475569">ClusterIP ảo + tên DNS</text>
+<rect x="300" y="240" width="240" height="62" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="420" y="267" font-size="18" font-weight="700" text-anchor="middle" fill="#d97706" font-family="Consolas, 'Courier New', monospace">selector:</text>
+<text x="420" y="291" font-size="18" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">app=club-api</text>
+<rect x="680" y="90" width="240" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="124" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod club-api</text>
+<text x="800" y="152" font-size="18" text-anchor="middle" fill="#475569">app=club-api</text>
+<rect x="680" y="195" width="240" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="229" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod club-api</text>
+<text x="800" y="257" font-size="18" text-anchor="middle" fill="#475569">app=club-api</text>
+<rect x="680" y="300" width="240" height="80" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="800" y="334" font-size="22" font-weight="700" text-anchor="middle" fill="#475569">Pod club-web</text>
+<text x="800" y="362" font-size="18" text-anchor="middle" fill="#475569">app=club-web</text>
+<path d="M562 215L676 135" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M562 240L676 235" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M562 265L676 340" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<text x="480" y="425" font-size="20" text-anchor="middle" fill="#475569">Pod đến rồi đi, Service ở lại; kube-proxy chuyển tới Pod Ready.</text>
+
+</svg>

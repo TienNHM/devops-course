@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Ba loại Service và chuyện trong kind</text>
+<rect x="40" y="90" width="270" height="250" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="175" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">ClusterIP</text>
+<text x="175" y="182" font-size="44" text-anchor="middle">🔒</text>
+<text x="175" y="220" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Chỉ trong cluster</text>
+<text x="175" y="248" font-size="19" text-anchor="middle" fill="#475569">loại mặc định</text>
+<line x1="60" y1="268" x2="290" y2="268" stroke="#16a34a" stroke-width="2"/>
+<text x="175" y="298" font-size="18" font-weight="700" text-anchor="middle" fill="#475569">Trong kind:</text>
+<text x="175" y="324" font-size="18" font-weight="700" text-anchor="middle" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">port-forward</text>
+<rect x="345" y="90" width="270" height="250" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">NodePort</text>
+<text x="480" y="182" font-size="44" text-anchor="middle">🚪</text>
+<text x="480" y="220" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">IP node : 30000-32767</text>
+<text x="480" y="248" font-size="19" text-anchor="middle" fill="#475569">mở cổng trên mọi node</text>
+<line x1="365" y1="268" x2="595" y2="268" stroke="#d97706" stroke-width="2"/>
+<text x="480" y="298" font-size="18" font-weight="700" text-anchor="middle" fill="#475569">Trong kind:</text>
+<text x="480" y="324" font-size="18" font-weight="700" text-anchor="middle" fill="#d97706" font-family="Consolas, 'Courier New', monospace">cần extraPortMappings</text>
+<rect x="650" y="90" width="270" height="250" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="785" y="128" font-size="24" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">LoadBalancer</text>
+<text x="785" y="182" font-size="44" text-anchor="middle">☁️</text>
+<text x="785" y="220" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Cần load balancer cloud</text>
+<text x="785" y="248" font-size="19" text-anchor="middle" fill="#475569">cấp IP bên ngoài</text>
+<line x1="670" y1="268" x2="900" y2="268" stroke="#dc2626" stroke-width="2"/>
+<text x="785" y="298" font-size="18" font-weight="700" text-anchor="middle" fill="#475569">Trong kind:</text>
+<text x="785" y="324" font-size="18" font-weight="700" text-anchor="middle" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">EXTERNAL-IP: pending</text>
+<text x="480" y="385" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Khóa học: backend dùng ClusterIP, frontend xem qua port-forward.</text>
+<text x="480" y="418" font-size="20" text-anchor="middle" fill="#475569">Buổi 27 sẽ dùng Ingress.</text>
+
+</svg>

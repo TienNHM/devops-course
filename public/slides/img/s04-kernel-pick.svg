@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Kernel chỉ chọn một nhóm quyền</text>
+<rect x="20" y="110" width="150" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="95" y="144" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Process</text>
+<text x="95" y="176" font-size="20" text-anchor="middle" fill="#475569">mở file</text>
+<path d="M172 150L198 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M275 80L350 150L275 220L200 150Z" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="275" y="156" font-size="19" text-anchor="middle" fill="#0f172a" font-weight="700">UID = owner?</text>
+<path d="M352 150L468 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="410" y="138" font-size="20" text-anchor="middle" fill="#475569">không</text>
+<path d="M545 80L620 150L545 220L470 150Z" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="545" y="156" font-size="19" text-anchor="middle" fill="#0f172a" font-weight="700">GID = group?</text>
+<path d="M622 150L698 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="660" y="138" font-size="20" text-anchor="middle" fill="#475569">không</text>
+<path d="M275 222L275 268" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="300" y="252" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">có</text>
+<path d="M545 222L545 268" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="570" y="252" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">có</text>
+<rect x="185" y="270" width="180" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="275" y="318" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Quyền owner</text>
+<rect x="455" y="270" width="180" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="545" y="318" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Quyền group</text>
+<rect x="700" y="110" width="230" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="815" y="158" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Quyền other</text>
+<rect x="40" y="375" width="880" height="56" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="411" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Chỉ một nhóm được áp dụng, quyền không cộng dồn</text>
+
+</svg>

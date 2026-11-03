@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Bức tranh đầy đủ: club-net và network khác</text>
+<rect x="40" y="135" width="150" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="115" y="169" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">💻 curl</text>
+<text x="115" y="201" font-size="18" text-anchor="middle" fill="#475569">localhost:13000</text>
+<rect x="260" y="90" width="660" height="190" rx="14" fill="#f8fafc" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="280" y="118" font-size="20" text-anchor="start" fill="#1d63ed" font-weight="700">network club-net</text>
+<path d="M192 175L286 175" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<rect x="290" y="135" width="190" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="385" y="174" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">club-api</text>
+<text x="385" y="206" font-size="20" text-anchor="middle" fill="#475569">:3000</text>
+<path d="M482 180L696 180" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="590" y="165" font-size="19" text-anchor="middle" fill="#16a34a" font-weight="700">DNS: postgres</text>
+<rect x="700" y="135" width="190" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="795" y="174" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">postgres</text>
+<text x="795" y="206" font-size="20" text-anchor="middle" fill="#475569">:5432</text>
+<rect x="260" y="330" width="660" height="85" rx="14" fill="#f8fafc" stroke="#d97706" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="280" y="358" font-size="20" text-anchor="start" fill="#d97706" font-weight="700">network other-net</text>
+<rect x="290" y="366" width="190" height="40" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<text x="385" y="394" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">container khác</text>
+<path d="M482 372L770 232" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#r)"/>
+<text x="790" y="311" font-size="19" text-anchor="middle" fill="#dc2626" font-weight="700">✗ không thấy nhau</text>
+
+</svg>

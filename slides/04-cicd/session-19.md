@@ -4,21 +4,26 @@
 
 Bài học viên: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/session-19.md). Lệnh lab nằm trong bài học, không chép lại ở slide.
 
-## Slide 1: Mục tiêu buổi học
+## Slide 1: Hôm nay bạn làm được gì
 
-- Phân biệt Continuous Delivery và Continuous Deployment; khóa này dừng ở "có người bấm nút".
+![Ba mục tiêu: chọn chiến lược, deploy theo tag, rollback](/slides/img/s19-goals.svg)
+
+::: details Ghi chú cho mentor
+- Chi tiết mục tiêu: phân biệt Continuous Delivery và Continuous Deployment (khóa này dừng ở "có người bấm nút").
 - Giải thích Recreate, Rolling, Blue/Green, Canary và đánh đổi của từng loại.
-- Viết và chạy `deploy-local.sh`: pull theo tag bất biến, chạy Compose, chờ health check.
-- Rollback về tag trước bằng một lệnh, chứng minh bằng log.
+- Viết và chạy `deploy-local.sh`: pull theo tag bất biến, chạy Compose, chờ health check; rollback về tag trước bằng một lệnh.
+:::
 
 ---
 
-## Slide 2: Vấn đề - "chạy được trên máy tôi"
+## Slide 2: Deploy kiểu "cầu nguyện"
 
+![SSH vào máy demo, build lại tại chỗ, API chết đúng lúc ban chủ nhiệm xem](/slides/img/s19-ssh-pray.svg)
+
+::: details Ghi chú cho mentor
 - SSH vào máy demo, `git pull`, `docker compose up --build`, rồi cầu nguyện.
-- Bản build trên máy bạn Nam dùng Node khác phiên bản, API chết đúng lúc ban chủ nhiệm xem.
-- Image build lại tại chỗ, không có tên cố định, không biết quay về commit nào.
-- Cần: build một lần ở CI, deploy đúng image đó, biết bản trước để rollback trong vài giây.
+- Bản build trên máy bạn Nam dùng Node khác phiên bản; image build lại tại chỗ không có tên cố định, không biết quay về commit nào.
+:::
 
 ---
 
@@ -30,12 +35,15 @@ Bài học viên: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/
 | Continuous Delivery | Mọi bản qua CI sẵn sàng deploy | Con người bấm nút |
 | Continuous Deployment | Bản qua CI tự lên môi trường | Pipeline |
 
-- Khóa này dùng Continuous Delivery.
-- Máy học viên không expose ra Internet nên GitHub không thể "đẩy" vào máy bạn.
+Khóa này dùng Continuous Delivery.
+
+::: details Ghi chú cho mentor
+- Máy học viên không expose ra Internet nên GitHub không thể "đẩy" vào máy bạn; vì vậy dùng mô hình kéo (pull).
+:::
 
 ---
 
-## Slide 4: Artifact bất biến và tag
+## Slide 4: Artifact bất biến: tag nào được deploy?
 
 | Cách đặt tag | Ví dụ | Dùng để deploy? |
 | --- | --- | --- |
@@ -43,113 +51,112 @@ Bài học viên: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/
 | Theo phiên bản | `v1.2.0` | Nên dùng |
 | Trôi nổi | `latest`, `main` | Không |
 
+::: details Ghi chú cho mentor
 - Cùng một artifact từ staging đến production: với container, artifact là image.
 - `latest` đổi nội dung theo thời gian nên không rollback chính xác được.
 - Digest chắc chắn hơn tag, nhưng tag theo commit đủ cho khóa này.
+:::
 
 ---
 
 ## Slide 5: Environment, secrets, approval
 
-- Environment: tên nơi deploy (ví dụ `local`); job khai báo `environment: local`.
-- Secrets: lưu ở GitHub Secrets hoặc `.env` trên máy đích, không bao giờ nằm trong repo, script hay log.
-- Approval: environment có thể yêu cầu reviewer duyệt trước khi job chạy.
+![Workflow chạy qua environment local, job deploy, secrets nằm ngoài repo](/slides/img/s19-environment.svg)
+
+::: details Ghi chú cho mentor
+- Environment là tên nơi deploy (ví dụ `local`); job khai báo `environment: local`. Environment có thể yêu cầu reviewer duyệt trước khi job chạy.
+- Secrets lưu ở GitHub Secrets hoặc `.env` trên máy đích, không bao giờ nằm trong repo, script hay log.
 - Required reviewers có sẵn cho repo public; repo private có thể cần gói trả phí, hãy kiểm tra tài liệu GitHub về environments.
 - Không có approval: `workflow_dispatch` đã là thao tác chủ động, thêm quy ước review của nhóm.
+:::
 
 ---
 
 ## Slide 6: Bốn chiến lược deploy
 
-| Chiến lược | Cách làm | Downtime | Chi phí |
-| --- | --- | --- | --- |
-| Recreate | Dừng cũ, chạy mới | Có, ngắn | Thấp nhất |
-| Rolling | Thay dần từng instance | Gần như không | Cần nhiều replica |
-| Blue/Green | Dựng song song, chuyển traffic | Không | Gấp đôi tài nguyên |
-| Canary | Một phần nhỏ traffic dùng bản mới | Không | Cần metrics và router |
+![Recreate, Rolling, Blue/Green, Canary với sơ đồ nhỏ cho từng loại](/slides/img/s19-strategies.svg)
 
-- Compose trên một máy là Recreate.
-- Kubernetes Deployment mặc định là Rolling.
+::: details Ghi chú cho mentor
+- Recreate: downtime ngắn, chi phí thấp nhất. Rolling: gần như không downtime, cần nhiều replica.
+- Blue/Green: không downtime nhưng gấp đôi tài nguyên. Canary: cần metrics và router.
+- Compose trên một máy là Recreate; Kubernetes Deployment mặc định là Rolling.
+:::
 
 ---
 
 ## Slide 7: Rollback tốt là hành động nhàm chán
 
-- Biết tag đang chạy và tag trước đó (ghi vào file trạng thái).
-- Image bản cũ còn trên registry: không xóa tag cũ.
-- Dữ liệu tương thích: rollback code không rollback database.
-- Migration làm kiểu thêm trước, xóa sau.
-- Rollback = deploy lại tag cũ bằng cùng một cơ chế.
+![Ba trạng thái của current-tag và previous-tag qua hai lần deploy và một lần rollback](/slides/img/s19-rollback-state.svg)
+
+::: details Ghi chú cho mentor
+- Cần: biết tag đang chạy và tag trước; image bản cũ còn trên registry (không xóa tag cũ).
+- Rollback code không rollback database; làm migration kiểu thêm trước, xóa sau.
+- Hỏi: rollback hai lần liên tiếp thì chuyện gì xảy ra? (hoán đổi hai bản)
+:::
 
 ---
 
 ## Slide 8: Kiến trúc deploy local
 
-```mermaid
-flowchart LR
-    Dev["Developer push"] --> CI["CI test"]
-    CI --> Pub["Publish image sha-abc1234"]
-    Pub --> GHCR["GHCR registry"]
-    Op["Chạy script hoặc workflow_dispatch"] --> Dep["deploy-local.sh"]
-    GHCR -->|docker pull| Dep
-    Dep --> Comp["docker compose up -d"]
-    Comp --> Hc["Health check ready"]
-    Hc -->|OK| State["ghi current-tag"]
-    Hc -->|Fail| RB["Rollback về tag trước"]
-```
-
-- Chiều "kéo" (pull): máy local chủ động lấy image, không cần mở cổng.
+![Push, CI, publish lên GHCR; deploy-local.sh pull image, compose up, health check, ghi tag hoặc rollback](/slides/img/s19-deploy-flow.svg)
 
 ---
 
 ## Slide 9: Self-hosted runner kết nối ra
 
-```mermaid
-sequenceDiagram
-    participant U as Bạn
-    participant GH as GitHub Actions
-    participant R as Self-hosted runner
-    participant D as Docker local
-    U->>GH: Run workflow, tag sha-abc1234
-    GH->>R: Giao job
-    R->>D: deploy-local.sh
-    D-->>R: Health OK
-    R-->>GH: Job thành công
-```
+![Runner trên máy bạn gọi ra GitHub qua HTTPS; không có kết nối đi vào](/slides/img/s19-runner-outbound.svg)
 
-- Runner chủ động gọi ra GitHub qua HTTPS; không có kết nối đi vào, không mở cổng nào.
-- Chỉ cho repo private, chạy bằng user thường (không root), bật khi cần deploy, tắt khi xong.
-- Không đặt secret cá nhân (SSH key, token) trên máy runner. Repo public thì tuyệt đối không dùng: người lạ mở pull request là chạy được code trên máy bạn.
+::: details Ghi chú cho mentor
+- Chuỗi: bạn chạy workflow với tag `sha-abc1234`, GitHub giao job cho runner, runner chạy `deploy-local.sh`, báo job thành công.
+- Chỉ cho repo private, chạy bằng user thường, bật khi cần deploy, tắt khi xong.
+- Không đặt secret cá nhân (SSH key, token) trên máy runner.
+:::
 
 ---
 
 ## Slide 10: Health check và file trạng thái
 
-- Sau `compose up`, script hỏi `/ready` (chạy `SELECT 1`), không dùng `/health` (chỉ trả JSON tĩnh).
-- Chỉ ghi `current-tag` sau khi health check đạt: file luôn chứa bản đã xác nhận chạy được.
+![Vòng hỏi /ready tối đa 20 lần; đạt thì ghi current-tag, fail thì in log và rollback](/slides/img/s19-health-state.svg)
+
+::: details Ghi chú cho mentor
 - Health fail: in log backend, rollback về `current` nếu có, thoát mã khác 0.
 - Rollback chỉ là gán lại `TAG` bằng `previous` rồi đi qua cùng luồng deploy.
-- Rollback hai lần liên tiếp hoán đổi hai bản, không lùi thêm một bước.
+:::
 
 ---
 
-## Slide 11: Demo - deploy tốt rồi deploy hỏng
+## Slide 11: Demo: deploy tốt rồi deploy hỏng
 
-- Hai tag chuẩn bị sẵn: bản khỏe và bản build được nhưng cố ý hỏng (container thoát ngay).
-- Deploy bản khỏe: log `health OK`, `current-tag` ghi tag mới.
-- Deploy bản hỏng: sau khoảng 60 giây báo `health FAIL`, tự rollback; `current-tag` vẫn là bản khỏe.
+```text
+$ OWNER=ten-ban TAG=sha-abc1234 ./deploy-local.sh
+[deploy] health OK
+$ OWNER=ten-ban TAG=sha-bad0000 ./deploy-local.sh
+[deploy] health FAIL, in log backend
+[deploy] rollback ve sha-abc1234
+```
+
+Sau khoảng 60 giây báo `health FAIL`; `current-tag` vẫn là bản khỏe.
+
+::: details Ghi chú cho mentor
+- Chuẩn bị hai tag: bản khỏe và bản build được nhưng cố ý hỏng (container thoát ngay). Tag `sha-bad0000` ở trên chỉ là ví dụ minh họa.
 - Xác nhận bản khỏe đã quay lại bằng `/ready`.
+:::
 
 ---
 
-## Slide 12: Lab - ba chặng
+## Slide 12: Lab: ba chặng
 
-- Chặng 1: file override `compose.deploy.yaml` chạy image từ GHCR thay vì `build`.
-- Chặng 2: viết `deploy-local.sh`, deploy một tag, kiểm tra `/health` và `/api/members`.
-- Chặng 3: deploy bản thứ hai, rồi `ROLLBACK=1`, chứng minh bằng log và `docker compose ps`.
+| Chặng | Việc làm | Mốc xong |
+| --- | --- | --- |
+| 1 | `compose.deploy.yaml` chạy image từ GHCR | `config` thấy tag đúng |
+| 2 | Viết `deploy-local.sh`, deploy một tag | `health OK` |
+| 3 | Deploy bản hai, rồi `ROLLBACK=1` | `compose ps` đúng tag cũ |
+
+Lệnh chi tiết: [Buổi 19](../../labs/week-10/session-19.md) và [Thử thách L2](../../labs/week-10/session-19-challenge.md).
+
+::: details Ghi chú cho mentor
 - Tùy chọn: chặn tag không tồn tại, nối vào `workflow_dispatch` (input `tag` đi qua `env`).
-
-Lệnh chi tiết: mục Hands-on lab của [Buổi 19](../../labs/week-10/session-19.md) và [Thử thách L2](../../labs/week-10/session-19-challenge.md).
+:::
 
 ---
 
@@ -157,20 +164,20 @@ Lệnh chi tiết: mục Hands-on lab của [Buổi 19](../../labs/week-10/sessi
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| `unauthorized` hoặc `denied` khi pull | Package Public hoặc `docker login ghcr.io` đúng scope |
-| `manifest unknown` | Kiểm tra tag, owner viết thường, chờ publish xong |
-| Thiếu `DB_PASSWORD` | Tạo `.env` cạnh `compose.yaml` |
-| `health FAIL` sau khi đổi mật khẩu | Mật khẩu cố định lúc tạo volume; trả lại mật khẩu cũ, không xóa volume |
+| `unauthorized` hoặc `denied` khi pull | Package Public hoặc `docker login ghcr.io` |
+| `manifest unknown` | Kiểm tra tag, owner viết thường |
+| `health FAIL` sau khi đổi mật khẩu | Trả lại mật khẩu cũ, không xóa volume |
 | Workflow Queued mãi | Không có runner online khớp label |
-| Mở cổng máy ra Internet | Hiểu nhầm mô hình; dùng runner kết nối ra |
+
+::: details Ghi chú cho mentor
+- Thiếu `DB_PASSWORD`: tạo `.env` cạnh `compose.yaml`. Mật khẩu DB cố định lúc tạo volume.
+- Mở cổng máy ra Internet là hiểu nhầm mô hình; dùng runner kết nối ra.
+:::
 
 ---
 
 ## Slide 14: Recap
 
-- Build một lần, deploy artifact bất biến theo tag commit; không dùng `latest`.
-- Mô hình pull và runner kết nối ra: không cần expose máy.
-- Health check là cổng chặn trước khi ghi `current-tag`.
-- Rollback là deploy lại tag trước, bằng cùng một cơ chế.
-- Rollback code không hoàn tác database.
-- Self-hosted runner chỉ cho repo private, user thường, bật khi cần.
+![Ba điều cần nhớ: build một lần, cổng sức khỏe, rollback dễ](/slides/img/s19-recap.svg)
+
+Buổi sau: [Buổi 20 – Pipeline Security](session-20.md).

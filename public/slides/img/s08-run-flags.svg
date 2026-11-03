@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="470" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">docker run = pull (nếu thiếu) + create + start</text>
+<rect x="40" y="90" width="270" height="48" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="175" y="122" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">-d</text>
+<path d="M314 114L366 114" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="380" y="122" font-size="22" text-anchor="start" fill="#0f172a">chạy nền, trả lại terminal</text>
+<rect x="40" y="148" width="270" height="48" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="175" y="180" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">--name web</text>
+<path d="M314 172L366 172" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="380" y="180" font-size="22" text-anchor="start" fill="#0f172a">đặt tên, phải duy nhất</text>
+<rect x="40" y="206" width="270" height="48" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="175" y="238" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">-p 8088:80</text>
+<path d="M314 230L366 230" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="380" y="238" font-size="22" text-anchor="start" fill="#0f172a">host 8088 → container 80</text>
+<rect x="40" y="264" width="270" height="48" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="175" y="296" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">-e KEY=value</text>
+<path d="M314 288L366 288" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="380" y="296" font-size="22" text-anchor="start" fill="#0f172a">đặt biến môi trường</text>
+<rect x="40" y="322" width="270" height="48" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="175" y="354" font-size="22" text-anchor="middle" fill="#4ade80" font-weight="700" font-family="Consolas, 'Courier New', monospace">--rm</text>
+<path d="M314 346L366 346" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="380" y="354" font-size="22" text-anchor="start" fill="#0f172a">tự xóa container khi thoát</text>
+<rect x="40" y="392" width="880" height="56" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="428" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker run [OPTIONS] IMAGE[:TAG] [COMMAND]</text>
+
+</svg>

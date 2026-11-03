@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Một request đi qua 4 bước</text>
+<rect x="40" y="90" width="200" height="290" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="138" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">1 · DNS</text>
+<text x="140" y="176" font-size="20" text-anchor="middle" fill="#475569">hỏi IP của tên</text>
+<text x="140" y="232" font-size="18" text-anchor="middle" fill="#475569">công cụ</text>
+<text x="140" y="262" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">nslookup</text>
+<line x1="60" y1="290" x2="220" y2="290" stroke="#94a3b8" stroke-width="2"/>
+<text x="140" y="322" font-size="18" text-anchor="middle" fill="#475569">lỗi hay gặp</text>
+<text x="140" y="352" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">curl: (6)</text>
+<path d="M243 235L264 235" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="267" y="90" width="200" height="290" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="367" y="138" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">2 · TCP</text>
+<text x="367" y="176" font-size="20" text-anchor="middle" fill="#475569">SYN, SYN-ACK, ACK</text>
+<text x="367" y="232" font-size="18" text-anchor="middle" fill="#475569">công cụ</text>
+<text x="367" y="262" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">ss -ltnp</text>
+<line x1="287" y1="290" x2="447" y2="290" stroke="#94a3b8" stroke-width="2"/>
+<text x="367" y="322" font-size="18" text-anchor="middle" fill="#475569">lỗi hay gặp</text>
+<text x="367" y="352" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">curl: (7) / (28)</text>
+<path d="M470 235L491 235" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="493" y="90" width="200" height="290" rx="14" fill="#f1f5f9" stroke="#475569" stroke-width="2.5"/>
+<text x="593" y="138" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">3 · TLS</text>
+<text x="593" y="176" font-size="20" text-anchor="middle" fill="#475569">chỉ có với HTTPS</text>
+<text x="593" y="232" font-size="18" text-anchor="middle" fill="#475569">công cụ</text>
+<text x="593" y="262" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">curl -v</text>
+<line x1="513" y1="290" x2="673" y2="290" stroke="#94a3b8" stroke-width="2"/>
+<text x="593" y="322" font-size="18" text-anchor="middle" fill="#475569">ghi chú</text>
+<text x="593" y="352" font-size="20" text-anchor="middle" fill="#475569" font-weight="700">xảy ra sau bước 2</text>
+<path d="M696 235L717 235" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="720" y="90" width="200" height="290" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="820" y="138" font-size="26" text-anchor="middle" fill="#0f172a" font-weight="700">4 · HTTP</text>
+<text x="820" y="176" font-size="20" text-anchor="middle" fill="#475569">GET, rồi status</text>
+<text x="820" y="232" font-size="18" text-anchor="middle" fill="#475569">công cụ</text>
+<text x="820" y="262" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700" font-family="Consolas, 'Courier New', monospace">curl -v</text>
+<line x1="740" y1="290" x2="900" y2="290" stroke="#94a3b8" stroke-width="2"/>
+<text x="820" y="322" font-size="18" text-anchor="middle" fill="#475569">lỗi hay gặp</text>
+<text x="820" y="352" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">4xx hoặc 5xx</text>
+<text x="480" y="418" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Lỗi ở tầng nào thì dùng công cụ của tầng đó</text>
+
+</svg>

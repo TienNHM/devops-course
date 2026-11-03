@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">SBOM: CVE mới, trả lời trong vài phút</text>
+<rect x="40" y="110" width="210" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="145" y="164" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">🚨 CVE mới</text>
+<text x="145" y="196" font-size="20" text-anchor="middle" fill="#475569">ảnh hưởng gói X</text>
+<rect x="300" y="95" width="300" height="150" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="450" y="128" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">SBOM của từng image</text>
+<text x="320" y="168" font-size="20" text-anchor="start" fill="#475569" font-family="Consolas, 'Courier New', monospace">club-api: express, pg, X</text>
+<text x="320" y="204" font-size="20" text-anchor="start" fill="#475569" font-family="Consolas, 'Courier New', monospace">club-web: nginx</text>
+<path d="M252 170L296 170" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="650" y="95" width="270" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="785" y="138" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">club-api: có gói X</text>
+<rect x="650" y="180" width="270" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="785" y="223" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">club-web: không có</text>
+<path d="M602 150L646 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M602 195L646 215" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="285" width="880" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="325" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">SBOM: danh sách thành phần, phiên bản, nguồn gốc</text>
+<text x="480" y="362" font-size="20" text-anchor="middle" fill="#475569">Định dạng CycloneDX hoặc SPDX; dependency review so trước và sau PR</text>
+
+</svg>

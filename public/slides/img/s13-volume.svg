@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">down giữ dữ liệu, down -v xóa dữ liệu</text>
+<rect x="40" y="95" width="210" height="120" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="145" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Đang chạy</text>
+<text x="145" y="181" font-size="20" text-anchor="middle" fill="#475569">Alice, Bob, Carol</text>
+<path d="M252 155L356 155" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="304" y="140" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#16a34a">down</text>
+<rect x="360" y="95" width="230" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="475" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Container xóa</text>
+<text x="475" y="181" font-size="20" text-anchor="middle" fill="#475569">💾 volume còn</text>
+<path d="M592 155L696 155" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+<text x="644" y="140" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#16a34a">up -d</text>
+<rect x="700" y="95" width="220" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="810" y="149" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Còn Carol ✓</text>
+<text x="810" y="181" font-size="20" text-anchor="middle" fill="#475569">init.sql không chạy</text>
+<rect x="40" y="250" width="210" height="120" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="145" y="304" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Đang chạy</text>
+<text x="145" y="336" font-size="20" text-anchor="middle" fill="#475569">Alice, Bob, Carol</text>
+<path d="M252 310L356 310" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<text x="304" y="295" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#dc2626">down -v</text>
+<rect x="360" y="250" width="230" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="475" y="304" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Container xóa</text>
+<text x="475" y="336" font-size="20" text-anchor="middle" fill="#475569">💾 volume mất</text>
+<path d="M592 310L696 310" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
+<text x="644" y="295" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#dc2626">up -d</text>
+<rect x="700" y="250" width="220" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="810" y="304" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Mất Carol ✗</text>
+<text x="810" y="336" font-size="20" text-anchor="middle" fill="#475569">init.sql chạy lại</text>
+<text x="480" y="420" font-size="20" text-anchor="middle" fill="#475569">Carol nằm trong volume postgres-data, không nằm trong container.</text>
+
+</svg>

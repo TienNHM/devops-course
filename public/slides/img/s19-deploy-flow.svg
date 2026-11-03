@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Máy local kéo image về, không cần mở cổng</text>
+<rect x="40" y="90" width="190" height="70" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="135" y="133" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Push</text>
+<rect x="270" y="90" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="133" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">CI test</text>
+<rect x="500" y="90" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="595" y="119" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Publish</text>
+<text x="595" y="151" font-size="20" text-anchor="middle" fill="#475569">sha-abc1234</text>
+<rect x="730" y="90" width="190" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="825" y="119" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">GHCR</text>
+<text x="825" y="151" font-size="20" text-anchor="middle" fill="#475569">registry</text>
+<path d="M232 125L266 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M462 125L496 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M692 125L726 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="730" y="220" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="825" y="263" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">deploy-local.sh</text>
+<path d="M825 162L825 216" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="838" y="195" font-size="18" text-anchor="start" fill="#16a34a" font-weight="700">docker pull</text>
+<rect x="500" y="220" width="190" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="595" y="263" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">compose up -d</text>
+<path d="M728 255L694 255" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="270" y="220" width="190" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="365" y="249" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Health check</text>
+<text x="365" y="281" font-size="20" text-anchor="middle" fill="#475569">/ready</text>
+<path d="M498 255L464 255" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="200" width="190" height="55" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="135" y="235" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">ghi current-tag</text>
+<rect x="40" y="285" width="190" height="55" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="135" y="320" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">rollback</text>
+<path d="M268 240L234 230" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M268 270L234 305" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="730" y="335" width="190" height="60" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="825" y="373" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Bạn chạy script</text>
+<path d="M825 333L825 294" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="40" y="420" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Chiều kéo (pull): máy local chủ động lấy image về</text>
+
+</svg>

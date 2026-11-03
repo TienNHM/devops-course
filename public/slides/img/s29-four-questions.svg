@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 390" width="960" height="390" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="390" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Kiến trúc trả lời bốn câu hỏi</text>
+<rect x="40" y="100" width="205" height="250" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="142" y="162" font-size="52" text-anchor="middle">🧱</text>
+<text x="142" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Thành phần</text>
+<text x="142" y="256" font-size="20" text-anchor="middle" fill="#475569">web, API, DB</text>
+<text x="142" y="286" font-size="20" text-anchor="middle" fill="#475569">cấu hình</text>
+<rect x="265" y="100" width="205" height="250" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="367" y="162" font-size="52" text-anchor="middle">🔌</text>
+<text x="367" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Kết nối</text>
+<text x="367" y="256" font-size="20" text-anchor="middle" fill="#475569">web gọi /api/</text>
+<text x="367" y="286" font-size="20" text-anchor="middle" fill="#475569">backend gọi DB</text>
+<rect x="490" y="100" width="205" height="250" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="592" y="162" font-size="52" text-anchor="middle">🗄️</text>
+<text x="592" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Dữ liệu</text>
+<text x="592" y="256" font-size="20" text-anchor="middle" fill="#475569">Postgres</text>
+<text x="592" y="286" font-size="20" text-anchor="middle" fill="#475569">volume hoặc PVC</text>
+<rect x="715" y="100" width="205" height="250" rx="14" fill="#f1f5f9" stroke="#475569" stroke-width="2.5"/>
+<text x="817" y="162" font-size="52" text-anchor="middle">🚚</text>
+<text x="817" y="218" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Đường đi</text>
+<text x="817" y="256" font-size="20" text-anchor="middle" fill="#475569">push, CI, image</text>
+<text x="817" y="286" font-size="20" text-anchor="middle" fill="#475569">rồi tới kind</text>
+
+</svg>

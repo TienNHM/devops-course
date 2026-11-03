@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 455" width="960" height="455" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="455" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">requests để xếp Pod, limits để cưỡng chế</text>
+<text x="40" y="102" font-size="22" font-weight="700" text-anchor="start" fill="#0f172a">Memory</text>
+<text x="300" y="134" font-size="19" font-weight="700" text-anchor="middle" fill="#1d63ed">requests 128Mi</text>
+<text x="560" y="134" font-size="19" font-weight="700" text-anchor="middle" fill="#dc2626">limits 256Mi</text>
+<rect x="40" y="146" width="260" height="52" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="170" y="180" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">được đảm bảo</text>
+<rect x="300" y="146" width="260" height="52" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="430" y="180" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">dùng thêm nếu rảnh</text>
+<rect x="560" y="146" width="360" height="52" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="740" y="180" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">OOMKilled 💥</text>
+<text x="40" y="252" font-size="22" font-weight="700" text-anchor="start" fill="#0f172a">CPU</text>
+<text x="300" y="284" font-size="19" font-weight="700" text-anchor="middle" fill="#1d63ed">requests 100m</text>
+<text x="560" y="284" font-size="19" font-weight="700" text-anchor="middle" fill="#dc2626">limits 500m</text>
+<rect x="40" y="296" width="260" height="52" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="170" y="330" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">được đảm bảo</text>
+<rect x="300" y="296" width="260" height="52" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="430" y="330" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">dùng thêm nếu rảnh</text>
+<rect x="560" y="296" width="360" height="52" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="740" y="330" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">bị throttle: chạy chậm</text>
+<text x="480" y="400" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Không đủ chỗ theo requests: Pod Pending.</text>
+<text x="480" y="432" font-size="20" text-anchor="middle" fill="#475569">Dùng Mi, Gi (128Mi khác 128M); 500m = 0,5 core.</text>
+
+</svg>

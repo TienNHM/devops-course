@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Văn hóa DevOps: 4 nguyên tắc</text>
+<rect x="40" y="90" width="205" height="220" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="142" y="152" font-size="52" text-anchor="middle" fill="#0f172a">🤝</text>
+<text x="142" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Cộng tác</text>
+<text x="142" y="246" font-size="20" text-anchor="middle" fill="#475569">dev và ops cùng</text>
+<text x="142" y="276" font-size="20" text-anchor="middle" fill="#475569">sở hữu sản phẩm</text>
+<rect x="265" y="90" width="205" height="220" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="367" y="152" font-size="52" text-anchor="middle" fill="#0f172a">⚙️</text>
+<text x="367" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Tự động hóa</text>
+<text x="367" y="246" font-size="20" text-anchor="middle" fill="#475569">việc lặp lại</text>
+<text x="367" y="276" font-size="20" text-anchor="middle" fill="#475569">giao cho máy</text>
+<rect x="490" y="90" width="205" height="220" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="592" y="152" font-size="52" text-anchor="middle" fill="#0f172a">📊</text>
+<text x="592" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Đo lường</text>
+<text x="592" y="246" font-size="20" text-anchor="middle" fill="#475569">quyết định dựa</text>
+<text x="592" y="276" font-size="20" text-anchor="middle" fill="#475569">trên số liệu</text>
+<rect x="715" y="90" width="205" height="220" rx="14" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="817" y="152" font-size="52" text-anchor="middle" fill="#0f172a">🔄</text>
+<text x="817" y="208" font-size="26" font-weight="700" text-anchor="middle" fill="#0f172a">Phản hồi nhanh</text>
+<text x="817" y="246" font-size="20" text-anchor="middle" fill="#475569">học từ lỗi,</text>
+<text x="817" y="276" font-size="20" text-anchor="middle" fill="#475569">không đổ lỗi</text>
+<rect x="40" y="335" width="880" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="378" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Hiểu nhầm: DevOps ≠ Docker/K8s và ≠ một người làm hết</text>
+
+</svg>

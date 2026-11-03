@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">VM mang cả hệ điều hành, container dùng chung kernel</text>
+<text x="250" y="100" font-size="24" text-anchor="middle" fill="#1d63ed" font-weight="700">Máy ảo (VM)</text>
+<text x="710" y="100" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="700">Container</text>
+<rect x="40" y="115" width="205" height="48" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="142" y="147" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">App A</text>
+<rect x="255" y="115" width="205" height="48" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="357" y="147" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">App B</text>
+<rect x="40" y="170" width="205" height="48" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="142" y="202" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Guest OS + kernel</text>
+<rect x="255" y="170" width="205" height="48" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="357" y="202" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Guest OS + kernel</text>
+<rect x="40" y="225" width="420" height="48" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="250" y="257" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Hypervisor</text>
+<rect x="40" y="280" width="420" height="48" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="250" y="312" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Phần cứng</text>
+<rect x="500" y="115" width="205" height="48" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="602" y="147" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">App A</text>
+<rect x="715" y="115" width="205" height="48" rx="12" fill="#fff" stroke="#475569" stroke-width="2.5"/>
+<text x="817" y="147" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">App B</text>
+<rect x="500" y="170" width="420" height="48" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="710" y="202" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Docker Engine</text>
+<rect x="500" y="225" width="420" height="48" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="710" y="257" font-size="22" text-anchor="middle" fill="#16a34a" font-weight="700">Kernel của host: dùng chung</text>
+<rect x="500" y="280" width="420" height="48" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="710" y="312" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Phần cứng</text>
+<text x="250" y="372" font-size="20" text-anchor="middle" fill="#475569">Hàng GB · khởi động chục giây</text>
+<text x="710" y="372" font-size="20" text-anchor="middle" fill="#475569">Vài MB · khởi động dưới vài giây</text>
+<text x="480" y="405" font-size="20" text-anchor="middle" fill="#475569">Trên Windows, &quot;kernel của host&quot; là kernel Linux của WSL2.</text>
+
+</svg>

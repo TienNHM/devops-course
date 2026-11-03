@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Workflow, event, job, runner, step trên một file</text>
+<rect x="40" y="90" width="500" height="290" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="1"/>
+<text x="60" y="126" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">name: CI</text>
+<text x="60" y="156" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">on: push</text>
+<text x="60" y="186" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">jobs:</text>
+<text x="60" y="216" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">  test:</text>
+<text x="60" y="246" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">    runs-on: ubuntu-latest</text>
+<text x="60" y="276" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">    steps:</text>
+<text x="60" y="306" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">      - uses: actions/checkout@v4</text>
+<text x="60" y="336" font-size="20" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">      - run: npm ci</text>
+<text x="560" y="126" font-size="20" text-anchor="start" fill="#1d63ed" font-weight="700">◀ Workflow: một file YAML</text>
+<text x="560" y="156" font-size="20" text-anchor="start" fill="#d97706" font-weight="700">◀ Event: khi nào chạy</text>
+<text x="560" y="216" font-size="20" text-anchor="start" fill="#16a34a" font-weight="700">◀ Job: nhóm step</text>
+<text x="560" y="246" font-size="20" text-anchor="start" fill="#dc2626" font-weight="700">◀ Runner: máy ảo mới</text>
+<text x="560" y="306" font-size="20" text-anchor="start" fill="#1d63ed" font-weight="700">◀ Step: uses (action)</text>
+<text x="560" y="336" font-size="20" text-anchor="start" fill="#1d63ed" font-weight="700">◀ Step: run (lệnh shell)</text>
+
+</svg>

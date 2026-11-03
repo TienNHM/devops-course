@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d97706"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Registry lưu image, image sinh ra nhiều container</text>
+<rect x="40" y="140" width="220" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="150" y="189" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Registry</text>
+<text x="150" y="221" font-size="20" text-anchor="middle" fill="#475569">Docker Hub, GHCR</text>
+<rect x="370" y="140" width="230" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="485" y="189" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Image</text>
+<text x="485" y="221" font-size="20" text-anchor="middle" fill="#475569">nginx:1.27-alpine</text>
+<rect x="710" y="100" width="210" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="815" y="148" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Container 1</text>
+<rect x="710" y="210" width="210" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="815" y="258" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Container 2</text>
+<path d="M262 195L366 195" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="314" y="178" font-size="20" text-anchor="middle" fill="#475569">pull</text>
+<path d="M602 180L706 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M602 210L706 250" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="640" y="215" font-size="20" text-anchor="start" fill="#475569">run</text>
+<text x="150" y="285" font-size="20" text-anchor="middle" fill="#475569">kho công thức</text>
+<text x="485" y="285" font-size="20" text-anchor="middle" fill="#475569">công thức (chỉ đọc)</text>
+<text x="815" y="325" font-size="20" text-anchor="middle" fill="#475569">các suất ăn</text>
+<rect x="40" y="345" width="880" height="55" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="480" y="380" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Xóa container không xóa image · luôn ghim tag cụ thể, tránh latest</text>
+
+</svg>

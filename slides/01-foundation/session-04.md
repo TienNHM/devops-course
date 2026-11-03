@@ -2,102 +2,87 @@
 
 > **Tóm tắt:** Tạo user và group, phân quyền thư mục dùng chung bằng chmod, chown, setgid, quản lý process và biến môi trường, chạy một systemd service trên WSL2 Ubuntu. Bài học: [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md).
 
-## Slide 1: Mục tiêu buổi học
+## Slide 1: Hôm nay bạn làm được gì
 
-- Giải thích mô hình quyền owner, group, other và ba bit r, w, x
-- Tạo user, group, thư mục chung bằng `useradd`, `groupadd`, `chown`, `chmod 2770`
-- Tìm và dừng process: `ps`, `pgrep`, `kill`, hiểu SIGTERM và SIGKILL
-- Phân biệt biến shell và biến môi trường (`export`)
-- Chạy service bằng `systemctl`, đọc log bằng `journalctl`
-- Chẩn đoán `Permission denied` mà không dùng `chmod 777`
+![Ba mục tiêu: phân quyền, quản lý process, biến môi trường](/slides/img/s04-goals.svg)
 
----
-
-## Slide 2: Vấn đề thực tế
-
-- Cả nhóm dùng chung một tài khoản và `chmod 777` cho nhanh
-- Một bạn xóa nhầm `.env` của bạn khác, không ai biết ai làm
-- Mọi thao tác mang cùng một tên người dùng, không truy vết được
-- Service chạy bằng root: nếu bị khai thác thì mất cả máy
-- Mục tiêu: mỗi người một user, nhóm một group, quyền vừa đủ
+::: details Ghi chú cho mentor
+- Đọc nhanh 3 thẻ. Mục tiêu đầy đủ: giải thích owner, group, other với r, w, x; tạo user, group, thư mục chung; tìm và dừng process; phân biệt biến shell và biến `export`.
+- Cuối buổi còn chạy service bằng `systemctl` và chẩn đoán `Permission denied` mà không dùng `chmod 777`.
+- Hỏi: ai từng chữa lỗi quyền bằng `chmod 777`?
+:::
 
 ---
 
-## Slide 3: User, group và UID/GID
+## Slide 2: Một tài khoản chung và chmod 777
 
-- Linux nhận diện bằng số UID, GID; tên chỉ là nhãn
-- Mỗi user có một group chính và nhiều group phụ
-- File chính: `/etc/passwd`, `/etc/group`, `/etc/shadow` (chỉ root đọc)
-- Xem nhanh: `id`, `getent group tên`
-- UID 0 là root; user thường từ 1000 trở lên
+![Cả nhóm dùng chung tài khoản, chmod 777, mất .env không truy vết được](/slides/img/s04-problem.svg)
 
----
-
-## Slide 4: Quyền file r, w, x
-
-- `ls -l` cho chuỗi 10 ký tự, ví dụ `drwxrws---`
-- Ký tự đầu: loại (d thư mục, - file); sau đó owner, group, other
-- r = 4, w = 2, x = 1: `chmod 750` nghĩa là rwx, r-x, ---
-- Thư mục: r là liệt kê, w là tạo hoặc xóa file, x là đi vào
-- Xóa file cần quyền w trên thư mục chứa, không phải trên file
+::: details Ghi chú cho mentor
+- Kể chuyện: một bạn xóa nhầm `.env` của bạn khác, mọi thao tác mang cùng một tên người dùng.
+- Service chạy bằng root: nếu bị khai thác thì mất cả máy.
+- Docker và Kubernetes chạy trên nền các khái niệm này: container là process Linux, nhiều lỗi `permission denied` đến từ UID/GID.
+:::
 
 ---
 
-## Slide 5: Kernel chọn đúng một nhóm quyền
+## Slide 3: Linux nhận diện bằng số UID và GID
 
-```mermaid
-flowchart TD
-    A["Process mở file"] --> B{"UID khớp owner?"}
-    B -->|"có"| O["Áp dụng quyền owner"]
-    B -->|"không"| C{"GID khớp group?"}
-    C -->|"có"| G["Áp dụng quyền group"]
-    C -->|"không"| T["Áp dụng quyền other"]
+```text
+$ id
+uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)
 ```
 
-- Chỉ áp dụng một nhóm, không cộng dồn quyền owner và group
-- Group phụ cũng được tính
-- Kernel còn kiểm tra bit x của mọi thư mục dọc đường dẫn
+Tên chỉ là nhãn, Linux so sánh số UID, GID.
+
+UID 0 là root, user thường từ 1000.
+
+::: details Ghi chú cho mentor
+- Mỗi user có một group chính và nhiều group phụ. Ví von: UID là số căn cước, group là tổ công tác.
+- File chính: `/etc/passwd`, `/etc/group`, `/etc/shadow` (chỉ root đọc). Xem bằng `getent group tên`.
+:::
 
 ---
 
-## Slide 6: setgid, sticky bit, umask
+## Slide 4: Đọc chuỗi quyền drwxrws---
 
-- setgid trên thư mục (`chmod 2770`): file mới thừa hưởng group của thư mục
-- sticky bit (`+t`): chỉ owner file được xóa trong thư mục, như `/tmp`
-- umask là quyền bị trừ khi tạo file: 022 cho file 644, 007 cho file 660
-- Thư mục chung của nhóm: group sở hữu + `2770` + umask 007 hoặc 002
+![Chuỗi quyền gồm loại, owner, group, other và giá trị r 4, w 2, x 1](/slides/img/s04-perm-string.svg)
 
----
-
-## Slide 7: Process và tín hiệu
-
-- Mỗi chương trình đang chạy là một process: PID, UID, PPID
-- `ps aux`, `pgrep -a tên` để tìm; `jobs` cho job của shell
-- `kill PID` gửi SIGTERM (15): xin process tự dọn dẹp rồi thoát
-- `kill -9 PID` gửi SIGKILL (9): kernel giết ngay, không dọn dẹp được
-- Quy tắc: thử SIGTERM trước, SIGKILL là phương án cuối
+::: details Ghi chú cho mentor
+- `chmod 750` nghĩa là rwx, r-x, ---.
+- Thư mục: r là liệt kê, w là tạo hoặc xóa file, x là đi vào.
+- Hay nhầm: xóa file cần quyền w trên thư mục chứa nó, không phải trên file.
+:::
 
 ---
 
-## Slide 8: Biến môi trường và systemd
+## Slide 5: Kernel chỉ chọn một nhóm quyền
 
-- Biến shell chỉ sống trong shell hiện tại
-- Biến `export` được sao chép sang mọi process con
-- Ứng dụng starter-project đọc `DB_PASSWORD`, `WEB_PORT` từ môi trường
-- systemd quản lý service bằng unit file trong `/etc/systemd/system/`
-- `systemctl start|stop|status`, log xem bằng `journalctl -u tên`
+![Kernel kiểm tra UID owner, rồi GID group, còn lại là other](/slides/img/s04-kernel-pick.svg)
 
-```mermaid
-flowchart LR
-    U["Unit file"] --> S["systemd"]
-    S -->|"start"| P["Process dịch vụ"]
-    P -->|"stdout và stderr"| J["journal"]
-    S -->|"Restart on-failure"| P
-```
+::: details Ghi chú cho mentor
+- Không cộng dồn quyền owner và group. Group phụ cũng được tính.
+- Kernel còn kiểm tra bit x của mọi thư mục dọc đường dẫn (`namei -l` cho thấy).
+- Hỏi: file `640`, owner alice, group dev. Bob thuộc dev ghi được không? (Không, chỉ đọc.)
+:::
 
 ---
 
-## Slide 9: Demo 1 – đọc quyền thực tế
+## Slide 6: setgid: file mới mang group của thư mục
+
+![Thư mục có setgid cho file mới group clbdev, không có thì group cá nhân](/slides/img/s04-setgid.svg)
+
+umask 007 cho file mới là `rw-rw----`.
+
+::: details Ghi chú cho mentor
+- Công thức thư mục chung: group sở hữu + `2770` + umask 007 hoặc 002.
+- umask là quyền bị trừ khi tạo file: 022 cho file 644, 007 cho file 660.
+- Sticky bit (`+t`): chỉ owner file được xóa trong thư mục, như `/tmp`.
+:::
+
+---
+
+## Slide 7: Demo 1: đọc quyền thực tế
 
 ```bash
 id
@@ -106,16 +91,63 @@ cat /etc/shadow
 ```
 
 ```text
-uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)
 -rw-r----- 1 root    shadow   1234 Oct 21 09:00 /etc/shadow
 drwxr-x--- 8 student student  4096 Oct 21 09:00 /home/student
 drwxrwxrwt 12 root   root     4096 Oct 21 09:00 /tmp
 cat: /etc/shadow: Permission denied
 ```
 
+::: details Ghi chú cho mentor
+- Hỏi: vì sao `/tmp` có chữ `t` ở cuối? Vì sao `cat /etc/shadow` bị chặn?
+:::
+
 ---
 
-## Slide 10: Demo 2 – biến export và tín hiệu
+## Slide 8: Thư mục chung: dev1 ghi, dev2 đọc, guest bị chặn
+
+```bash
+sudo chmod 2770 /srv/club-shared
+ls -ld /srv/club-shared
+```
+
+```text
+drwxrws--- 2 root clbdev 4096 ... /srv/club-shared
+ls: cannot open directory '/srv/club-shared': Permission denied
+```
+
+Dòng cuối là kết quả khi `clb-guest` thử `ls`.
+
+::: details Ghi chú cho mentor
+- Chữ `s` ở nhóm group là setgid; nhóm other là `---` nên người ngoài không vào được.
+- Dùng `sudo -u clb-dev1 bash -c '...'` để thử từng user, đứng ở `/tmp` vì home quyền 750.
+:::
+
+---
+
+## Slide 9: Hai cách dừng một process
+
+![kill gửi SIGTERM để process tự dọn; kill -9 gửi SIGKILL giết ngay](/slides/img/s04-signals.svg)
+
+::: details Ghi chú cho mentor
+- Mỗi process có PID, UID, PPID. Tìm bằng `ps aux`, `pgrep -a tên`; `jobs` cho job của shell.
+- Lab: `sleep 600 &`, `kill %1`; process `trap "" TERM` bỏ qua SIGTERM nên cần `pkill -9`.
+- Không dùng `pkill sleep` vì dừng mọi process tên `sleep` của bạn.
+:::
+
+---
+
+## Slide 10: Chỉ biến đã export mới sang process con
+
+![Biến shell không sang process con, biến export thì có](/slides/img/s04-env.svg)
+
+::: details Ghi chú cho mentor
+- Ứng dụng starter-project đọc `DB_PASSWORD`, `WEB_PORT` từ môi trường; `docker run -e` và `env:` trong Actions bắt chước cơ chế này.
+- systemd (tùy chọn, L2): unit file trong `/etc/systemd/system/`; `systemctl start|stop|status`, log bằng `journalctl -u tên`, `Restart=on-failure` tự khởi động lại. WSL2 cần `systemd=true` trong `/etc/wsl.conf`.
+:::
+
+---
+
+## Slide 11: Demo 2: biến export
 
 ```bash
 CLUB=dsc
@@ -129,60 +161,48 @@ con thay: []
 con thay: [dsc]
 ```
 
-- Quên `export` thì ứng dụng đọc `DB_PASSWORD` thấy gì?
-- Tiếp theo: chạy `sleep 300 &`, tìm bằng `pgrep -a`, dừng bằng `kill`
+Quên `export` thì ứng dụng đọc `DB_PASSWORD` thấy gì?
 
 ---
 
-## Slide 11: Lab – bạn sẽ làm gì
+## Slide 12: Debug: thêm vào group vẫn Permission denied
 
-- Phần 1: tạo group `clbdev` và ba user, thêm thành viên bằng `usermod -aG` (đừng quên `-a`)
-- Phần 2: thư mục chung `/srv/club-shared` với `chmod 2770`, thử từng user, so sánh với thư mục không có setgid
-- Phần 3: chạy process nền, dừng bằng `kill`, xử lý process bỏ qua SIGTERM bằng `kill -9`
-- Phần 4: so sánh biến shell và biến `export` bằng `bash -c`
-- Toàn bộ lệnh và kết quả mong đợi nằm trong bài lab: [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md)
+![Phiên cũ giữ danh sách group cũ nên vẫn bị từ chối, đăng nhập lại thì được](/slides/img/s04-stale-group.svg)
 
----
-
-## Slide 12: Lỗi thường gặp
+::: details Ghi chú cho mentor
+- Thử thách: bạn mới báo Permission denied 10 phút sau `usermod -aG`. Việc đầu tiên: `id` trong terminal của bạn ấy, rồi `ls -ld` và `namei -l`. Không dùng `chmod 777`.
+- Bonus: Dockerfile backend chạy user không phải root theo nguyên tắc quyền tối thiểu.
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| Permission denied dù đã thêm vào group | Đăng nhập lại hoặc `newgrp clbdev`, kiểm tra bằng `id` |
 | File chung có group là tên cá nhân | `sudo chmod g+s thư-mục`, file cũ sửa bằng `chgrp` |
 | Dev khác chỉ đọc được file | Dùng umask 002 hoặc 007 |
 | `usermod -G` làm mất group khác | Luôn dùng `usermod -aG` |
 | `status=203/EXEC` | Kiểm tra đường dẫn tuyệt đối và `chmod 755` |
-
-- Điều tra theo thứ tự: `id`, `ls -ld`, `namei -l`; phiên đang chạy giữ danh sách group cũ
+:::
 
 ---
 
-## Slide 13: Thử thách tại lớp
+## Slide 13: Lab: bốn phần trong 60 phút
 
-- Tình huống: bạn mới báo Permission denied 10 phút sau khi bạn đã chạy `usermod -aG`
-- Việc làm đầu tiên là gì? Không được dùng `chmod 777`
-- Bonus: giải thích vì sao Dockerfile của backend starter-project chạy bằng user không phải root
+| Phần | Việc làm | Mốc xong |
+| --- | --- | --- |
+| 1 | Group `clbdev` và ba user, `usermod -aG` | `id clb-guest` không có `clbdev` |
+| 2 | Thư mục `chmod 2770`, so với không setgid | guest bị `Permission denied` |
+| 3 | `sleep` nền, `kill`, `kill -9` | lệnh cuối in `sach` |
+| 4 | Biến shell và biến `export` | `[trong]` rồi `[doi-mat-khau-that]` |
 
-<details><summary>Gợi ý</summary>
+Lệnh đầy đủ: [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md).
 
-Chạy `id` trong terminal của bạn ấy, rồi `ls -ld` và `namei -l`.
-
-</details>
-
-<details><summary>Đáp án</summary>
-
-Phiên cũ chưa nạp group mới; yêu cầu đăng nhập lại rồi kiểm tra `id`. Service chạy user riêng theo nguyên tắc quyền tối thiểu.
-
-</details>
+::: details Ghi chú cho mentor
+- Nhắc `-a` trong `usermod -aG`. Dọn user, group, thư mục thử nghiệm rồi nộp `lab-04/`.
+- Cẩn thận `sudo rm -rf`: chỉ chạy trên đúng hai thư mục của lab.
+:::
 
 ---
 
 ## Slide 14: Recap
 
-- Quyền xét theo đúng một nhóm: owner, group hoặc other; thư mục cần x để vào, w để thêm hoặc xóa
-- Thư mục chung: group sở hữu + `chmod 2770` + umask phù hợp, không `777`
-- Sửa group chỉ có hiệu lực với phiên đăng nhập mới
-- Dừng process bằng SIGTERM trước, SIGKILL là phương án cuối
-- Chỉ biến đã `export` mới truyền sang process con
-- Nhớ dọn user, group, thư mục thử nghiệm rồi nộp `lab-04/`
+![Ba điều cần nhớ: một nhóm quyền, SIGTERM trước, phải export](/slides/img/s04-recap.svg)
+
+Buổi tiếp theo: [Buổi 05 – Networking Fundamentals](session-05.md).

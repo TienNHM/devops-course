@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="430" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Volume không phải backup</text>
+<rect x="40" y="100" width="200" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">postgres</text>
+<text x="140" y="176" font-size="20" text-anchor="middle" fill="#475569">💾 volume</text>
+<path d="M242 150L336 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="289" y="134" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1d63ed">pg_dump</text>
+<rect x="340" y="100" width="220" height="100" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="450" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">📄 backup.sql</text>
+<text x="450" y="176" font-size="20" text-anchor="middle" fill="#475569">nằm ngoài volume</text>
+<path d="M562 150L656 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="609" y="134" font-size="18" font-weight="700" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1d63ed">psql</text>
+<rect x="660" y="100" width="260" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="790" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">database mới</text>
+<text x="790" y="176" font-size="20" text-anchor="middle" fill="#475569">clubdb_restore</text>
+<rect x="40" y="250" width="430" height="110" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="255" y="299" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Volume không phải backup</text>
+<text x="255" y="331" font-size="20" text-anchor="middle" fill="#475569">xóa volume là mất hết</text>
+<rect x="490" y="250" width="430" height="110" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="299" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Phải restore thử</text>
+<text x="705" y="331" font-size="20" text-anchor="middle" fill="#475569">vào database mới</text>
+<text x="480" y="405" font-size="22" text-anchor="middle" fill="#475569">Backup chưa từng restore thử thì chưa phải backup.</text>
+
+</svg>

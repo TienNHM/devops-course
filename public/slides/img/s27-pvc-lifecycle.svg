@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 410" width="960" height="410" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="410" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Vòng đời PVC: Pending lúc đầu là bình thường</text>
+<rect x="40" y="110" width="190" height="110" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<text x="135" y="159" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">① Tạo PVC</text>
+<text x="135" y="191" font-size="20" text-anchor="middle" fill="#475569">chưa có Pod</text>
+<rect x="270" y="110" width="190" height="110" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="365" y="159" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">② Tạo Pod</text>
+<text x="365" y="191" font-size="20" text-anchor="middle" fill="#475569">xếp lịch Pod</text>
+<rect x="500" y="110" width="190" height="110" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="595" y="159" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">③ PV tự tạo</text>
+<text x="595" y="191" font-size="20" text-anchor="middle" fill="#475569">PVC gắn vào PV</text>
+<rect x="730" y="110" width="190" height="110" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="825" y="159" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">④ Xóa Pod</text>
+<text x="825" y="191" font-size="20" text-anchor="middle" fill="#475569">mount lại PVC</text>
+<path d="M232 165L266 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M462 165L496 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M692 165L726 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="255" width="190" height="44" rx="22" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="135" y="284" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Pending</text>
+<rect x="270" y="255" width="190" height="44" rx="22" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="365" y="284" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">đang tạo PV</text>
+<rect x="500" y="255" width="190" height="44" rx="22" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="595" y="284" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Bound</text>
+<rect x="730" y="255" width="190" height="44" rx="22" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="825" y="284" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">dữ liệu còn</text>
+<text x="480" y="365" font-size="22" text-anchor="middle" fill="#475569">kind dùng WaitForFirstConsumer: chưa có Pod thì chưa tạo PV.</text>
+
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#16a34a"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dc2626"/></marker></defs>
+<rect width="960" height="470" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">kind: mỗi node là một container Docker</text>
+<rect x="30" y="80" width="570" height="370" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="50" y="110" font-size="20" font-weight="700" fill="#475569">Laptop · Docker Desktop (WSL2)</text>
+<rect x="60" y="130" width="510" height="300" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="80" y="160" font-size="22" font-weight="700" fill="#1d63ed">container club-control-plane</text>
+<rect x="80" y="180" width="230" height="80" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="195" y="214" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">control plane</text>
+<text x="195" y="246" font-size="20" text-anchor="middle" fill="#475569">apiserver, etcd…</text>
+<rect x="330" y="180" width="220" height="80" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="440" y="214" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">kubelet</text>
+<text x="440" y="246" font-size="20" text-anchor="middle" fill="#475569">+ containerd</text>
+<rect x="80" y="290" width="470" height="110" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="315" y="339" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod của bạn</text>
+<text x="315" y="371" font-size="20" text-anchor="middle" fill="#475569">club-api, postgres…</text>
+<rect x="630" y="120" width="300" height="100" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="648" y="156" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#4ade80" xml:space="preserve">$ docker ps</text>
+<text x="648" y="186" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">club-control-plane</text>
+<rect x="630" y="290" width="300" height="100" rx="12" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="648" y="326" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#4ade80" xml:space="preserve">$ kubectl get nodes</text>
+<text x="648" y="356" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0" xml:space="preserve">club-control-plane  Ready</text>
+<text x="780" y="262" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">cùng một thứ</text>
+<path d="M780 222L780 244" stroke="#16a34a" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+<path d="M780 268L780 286" stroke="#16a34a" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="460" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">describe: đọc từ trên xuống, Events ở cuối</text>
+<rect x="40" y="90" width="580" height="345" rx="12" fill="#0f172a"/>
+<text x="60" y="124" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Name:    demo-web-7d9f8-x2k4p</text>
+<text x="60" y="152" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Node:    club-control-plane</text>
+<text x="60" y="180" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">IP:      10.244.0.7</text>
+<text x="60" y="208" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Image:   nginx:1.27-alpine</text>
+<text x="60" y="236" font-size="19" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">State:   Running</text>
+<text x="60" y="264" font-size="19" fill="#4ade80" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Ready:   True</text>
+<text x="60" y="292" font-size="19" fill="#fbbf24" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">Events:</text>
+<text x="60" y="320" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">  Scheduled  assigned to node</text>
+<text x="60" y="348" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">  Pulled     image pulled</text>
+<text x="60" y="376" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">  Created    container created</text>
+<text x="60" y="404" font-size="19" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace" xml:space="preserve">  Started    container started</text>
+<rect x="40" y="108" width="6" height="112" fill="#60a5fa"/>
+<rect x="40" y="228" width="6" height="56" fill="#4ade80"/>
+<rect x="40" y="292" width="6" height="128" fill="#fbbf24"/>
+<rect x="660" y="100" width="260" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="790" y="144" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Thông tin Pod</text>
+<text x="790" y="172" font-size="20" text-anchor="middle" fill="#475569">Node, IP, Image</text>
+<rect x="660" y="215" width="260" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="790" y="249" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Trạng thái</text>
+<text x="790" y="277" font-size="20" text-anchor="middle" fill="#475569">State, Conditions</text>
+<rect x="660" y="310" width="260" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="790" y="359" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Events</text>
+<text x="790" y="387" font-size="19" text-anchor="middle" fill="#475569">nguyên nhân thường ở đây</text>
+
+</svg>

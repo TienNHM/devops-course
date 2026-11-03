@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Hai thế giới filesystem trong WSL</text>
+<rect x="40" y="90" width="380" height="220" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="230" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#16a34a">Linux (ext4)</text>
+<text x="230" y="175" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">~ = /home/ten-ban</text>
+<text x="230" y="225" font-size="22" text-anchor="middle" fill="#475569">✓ mã nguồn, mọi lab</text>
+<text x="230" y="262" font-size="22" text-anchor="middle" fill="#475569">✓ nhanh, chmod đúng</text>
+<rect x="540" y="90" width="380" height="220" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="730" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#dc2626">Ổ đĩa Windows</text>
+<text x="730" y="175" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">/mnt/c/Users/...</text>
+<text x="730" y="225" font-size="22" text-anchor="middle" fill="#475569">✗ chỉ để trao đổi file</text>
+<text x="730" y="262" font-size="22" text-anchor="middle" fill="#475569">✗ chậm, sai quyền, lỗi \r</text>
+<path d="M424 200L536 200" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
+<text x="480" y="183" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626">chậm</text>
+<rect x="40" y="335" width="880" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="373" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Quy tắc: mã nguồn luôn nằm trong ~</text>
+
+</svg>

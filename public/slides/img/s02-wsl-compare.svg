@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">WSL2 chạy nhân Linux thật, WSL1 chỉ dịch lệnh</text>
+<rect x="40" y="90" width="430" height="300" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="255" y="130" font-size="24" font-weight="700" text-anchor="middle" fill="#475569">WSL1</text>
+<rect x="90" y="150" width="330" height="55" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="255" y="185" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Chương trình Linux</text>
+<path d="M255 207L255 236" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="90" y="240" width="330" height="55" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="255" y="275" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Lớp dịch syscall</text>
+<path d="M255 297L255 326" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="90" y="330" width="330" height="55" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="255" y="365" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Nhân Windows</text>
+<rect x="490" y="90" width="430" height="300" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="130" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">WSL2: dùng trong khóa</text>
+<rect x="540" y="150" width="330" height="55" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="705" y="185" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Chương trình Linux</text>
+<path d="M705 207L705 236" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="540" y="240" width="330" height="55" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="705" y="275" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Nhân Linux thật</text>
+<path d="M705 297L705 326" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="540" y="330" width="330" height="55" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="705" y="365" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">VM nhẹ, tự bật tự tắt</text>
+<text x="480" y="428" font-size="22" text-anchor="middle" fill="#475569">Docker tốt hơn, filesystem Linux nhanh hơn</text>
+
+</svg>

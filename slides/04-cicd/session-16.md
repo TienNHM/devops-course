@@ -2,56 +2,52 @@
 
 > **Tóm tắt:** Viết workflow GitHub Actions chạy npm ci và npm test mỗi lần push hoặc mở pull request, rồi bật cache, tách job và chẩn đoán workflow bị đỏ.
 
-## Slide 1: Mục tiêu buổi học
+## Slide 1: Hôm nay bạn làm được gì
 
-- Giải thích workflow, event, job, step, runner, action lồng nhau thế nào.
-- Viết `.github/workflows/ci.yml` chạy `npm ci` và `npm test`.
-- Đọc log từng step, tìm step làm job thất bại.
-- Bật cache dependency và tách job chạy song song.
+![Ba mục tiêu: viết workflow, đọc log, chạy nhanh hơn](/slides/img/s16-goals.svg)
+
+::: details Ghi chú cho mentor
+- Chi tiết mục tiêu: giải thích workflow, event, job, step, runner, action lồng nhau thế nào; viết `.github/workflows/ci.yml`.
+- Đọc log từng step, tìm step làm job thất bại; bật cache và tách job song song.
 - Chẩn đoán workflow fail do sai `working-directory` hoặc thiếu `package-lock.json`.
+:::
 
 ---
 
-## Slide 2: Vấn đề: quên chạy test
+## Slide 2: Nhớ chạy test phụ thuộc trí nhớ
 
-- Thứ sáu, một bạn push code sửa `/health` nhưng quên chạy test.
-- Tối đó cả nhóm kéo code về, `npm test` đỏ, mất cả buổi tối tìm thủ phạm.
-- "Nhớ chạy test trước khi push" phụ thuộc trí nhớ từng người.
-- GitHub tự chạy test trên máy sạch mỗi khi có push hoặc PR.
+![Thứ sáu push quên test, tối cả nhóm gặp test đỏ, GitHub Actions tự chạy test](/slides/img/s16-forgot-test.svg)
 
----
-
-## Slide 3: Năm khái niệm nền tảng
-
-| Khái niệm | Là gì | Ví dụ |
-| --- | --- | --- |
-| Workflow | File YAML trong `.github/workflows/` | `ci.yml` |
-| Event | Sự kiện kích hoạt, khóa `on` | `push`, `pull_request` |
-| Job | Nhóm step trên một runner | `test` |
-| Step | Lệnh `run` hoặc action `uses` | `npm ci` |
-| Runner | Máy ảo mới cho mỗi job | `ubuntu-latest` |
+::: details Ghi chú cho mentor
+- Kể: thứ sáu một bạn push code sửa `/health` nhưng quên chạy test; tối đó cả nhóm kéo code về, `npm test` đỏ.
+- "Nhớ chạy test trước khi push" phụ thuộc trí nhớ từng người. GitHub tự chạy test trên máy sạch.
+:::
 
 ---
 
-## Slide 4: YAML cần nhớ
+## Slide 3: Một file YAML, năm khái niệm
 
-```yaml
-name: CI
-on: push
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "xin chào"
-```
+![File ci.yml với chú thích workflow, event, job, runner, step](/slides/img/s16-anatomy.svg)
 
-- Map: `khóa: giá trị`. List: mỗi phần tử bắt đầu bằng `- `.
-- `run: |` cho nhiều lệnh shell.
+::: details Ghi chú cho mentor
+- Workflow: file YAML trong `.github/workflows/`. Event: khóa `on`. Job: nhóm step trên một runner. Step: lệnh `run` hoặc action `uses`. Runner: máy ảo mới cho mỗi job.
+- Ví dụ: `ci.yml`, `push`, `pull_request`, job `test`, `npm ci`, `ubuntu-latest`.
+:::
+
+---
+
+## Slide 4: YAML: sai một cấp là lỗi
+
+![So sánh YAML thụt lề đúng và sai, cùng ba cú pháp map, list, run nhiều dòng](/slides/img/s16-yaml-rules.svg)
+
+::: details Ghi chú cho mentor
 - Thụt lề bằng dấu cách, không dùng tab. Sai một cấp là workflow lỗi hoặc chạy sai.
+- Map: `khóa: giá trị`. List: mỗi phần tử bắt đầu bằng `- `. `run: |` cho nhiều lệnh shell.
+:::
 
 ---
 
-## Slide 5: Events thường dùng
+## Slide 5: Bốn event hay dùng
 
 | Event | Khi nào chạy | Dùng cho |
 | --- | --- | --- |
@@ -62,46 +58,49 @@ jobs:
 
 ---
 
-## Slide 6: Runner, action và quyền tối thiểu
+## Slide 6: Runner, action, quyền tối thiểu
 
-- Runner phổ biến: `ubuntu-latest`, `ubuntu-24.04`, `windows-latest`. Muốn không đổi khi GitHub nâng `latest`, dùng nhãn cụ thể.
-- Action là đơn vị tái sử dụng, ví dụ `actions/checkout@v4`.
-- Pin ít nhất theo major version; chỉ dùng action của nhà phát hành đáng tin.
-- CI chỉ đọc code: `permissions: contents: read` là đủ.
+| Thứ cần nhớ | Ví dụ | Lý do |
+| --- | --- | --- |
+| Runner có nhãn cụ thể | `ubuntu-24.04` | `latest` đổi khi GitHub nâng |
+| Action pin theo major | `actions/checkout@v4` | Chỉ dùng nhà phát hành đáng tin |
+| Quyền tối thiểu | `contents: read` | CI chỉ đọc code |
 
----
-
-## Slide 7: Kiến trúc: từ push đến check xanh
-
-```mermaid
-flowchart LR
-    Dev["Developer"] -->|"git push"| Repo["GitHub repo"]
-    Repo -->|"event"| Actions["GitHub Actions"]
-    Actions --> Runner["Runner ubuntu-latest"]
-    Runner --> S1["checkout"]
-    S1 --> S2["setup-node + cache"]
-    S2 --> S3["npm ci"]
-    S3 --> S4["npm test"]
-    S4 --> Result["Check xanh hoặc đỏ"]
-```
+::: details Ghi chú cho mentor
+- Runner phổ biến: `ubuntu-latest`, `ubuntu-24.04`, `windows-latest`.
+- Action là đơn vị tái sử dụng. Pin ít nhất theo major version.
+:::
 
 ---
 
-## Slide 8: Cách hoạt động
+## Slide 7: Từ push đến check xanh
 
-- GitHub đối chiếu event với khóa `on` của mọi file trong `.github/workflows/`.
-- Mỗi job được cấp một runner mới, sạch.
+![Developer push, GitHub kích hoạt Actions, runner chạy bốn step, ra check xanh hoặc đỏ](/slides/img/s16-flow.svg)
+
+::: details Ghi chú cho mentor
+- GitHub đối chiếu event với khóa `on` của mọi file trong `.github/workflows/`. Mỗi job được cấp một runner mới, sạch.
 - Step đầu thường là `actions/checkout@v4` vì runner không có source.
-- Step trả exit code khác 0 thì job fail, các step sau bị bỏ qua.
 - `npm ci` cài đúng theo lock file, báo lỗi nếu thiếu hoặc lệch; dùng trong CI thay `npm install`.
+:::
+
+---
+
+## Slide 8: Step đỏ thì job fail
+
+![Checkout và setup xanh, npm test đỏ, bước sau bị bỏ qua](/slides/img/s16-step-fail.svg)
+
+::: details Ghi chú cho mentor
+- Step trả exit code khác 0 thì job fail, các step sau bị bỏ qua.
+- Hỏi: khi đọc log, bạn tìm step nào trước? (step đỏ đầu tiên)
+:::
 
 ---
 
 ## Slide 9: Demo 1: workflow tối thiểu
 
 ```yaml
-name: CI
-on: push
+name: Hello
+on: workflow_dispatch
 jobs:
   hello:
     runs-on: ubuntu-latest
@@ -109,45 +108,81 @@ jobs:
       - run: echo "Hello from $GITHUB_REPOSITORY on $RUNNER_OS"
 ```
 
-- Kết quả mong đợi: log in tên repo và `Linux`.
-- Thêm `ls` sau echo: thư mục trống, vì chưa có checkout.
-- Thêm `actions/checkout@v4`: `ls` thấy file. Đó là khác biệt giữa `uses` và `run`.
+Log in tên repo và `Linux`. Nút Run workflow chỉ hiện khi file nằm trên nhánh mặc định.
 
 ---
 
-## Slide 10: Demo 2: cache và lỗi đường dẫn
+## Slide 10: Demo 1b: runner trống cho đến khi checkout
 
-- Chạy CI thật lần hai, chỉ dòng báo khôi phục cache.
-- Cố ý sửa `working-directory` sai, push, cho lớp đọc log.
-- Hỏi: dòng nào trong log cho biết nguyên nhân?
-- Sau đó sửa lại cho xanh.
+![So sánh ls khi không có checkout và khi có actions/checkout](/slides/img/s16-checkout-empty.svg)
+
+::: details Ghi chú cho mentor
+- Thêm `ls` sau echo: thư mục trống vì chưa có checkout. Thêm `actions/checkout@v4`: `ls` thấy file.
+- Đó là khác biệt giữa `uses` và `run`.
+:::
 
 ---
 
 ## Slide 11: Lab: bốn phần trong 60 phút
 
-- Chuẩn bị: copy backend vào `lab-16/source`, chạy test local trước.
-- Phần 1: workflow `hello` với `workflow_dispatch` để thấy runner là máy trống.
-- Phần 2 (L1): `ci.yml` với checkout, setup-node 22, `npm ci`, `npm test`, đúng `working-directory`.
-- Phần 3: bật cache với `cache-dependency-path`; Phần 4: tách job `validate` chạy song song.
-- Lệnh chi tiết: [Buổi 16 – GitHub Actions Basics](../../labs/week-08/session-16.md).
+| Phần | Việc làm | Mốc xong |
+| --- | --- | --- |
+| 1 | Workflow `hello` với `workflow_dispatch` | `OS: Linux` |
+| 2 (L1) | `ci.yml`: checkout, Node 22, `npm ci`, `npm test` | Run xanh, `# fail 0` |
+| 3 | Bật cache với `cache-dependency-path` | Lần 2 khôi phục cache |
+| 4 | Job `validate` chạy song song | Hai job xanh |
+
+Lệnh và YAML đầy đủ: [Buổi 16 – GitHub Actions Basics](../../labs/week-08/session-16.md).
+
+::: details Ghi chú cho mentor
+- Chuẩn bị: copy backend vào `lab-16/source`, chạy `npm test` local trước để biết trạng thái đúng.
+- Hết giờ thì ưu tiên hoàn thành L1 (đến hết Phần 2).
+:::
 
 ---
 
-## Slide 12: Cache và matrix
+## Slide 12: Cache tăng tốc, không đổi kết quả
 
+![Lần một lưu cache, lần hai khôi phục cache từ hash của lock file](/slides/img/s16-cache.svg)
+
+::: details Ghi chú cho mentor
 - Cache key tính từ hash của lock file; đổi dependency thì cache làm mới.
+- Với dự án nhỏ, chênh lệch có thể chỉ vài giây; điều quan trọng là thấy dòng khôi phục cache.
+- Cache chỉ tăng tốc; mất cache thì kết quả vẫn đúng.
+:::
+
+---
+
+## Slide 13: Matrix: nhiều phiên bản Node song song
+
+![Job test với matrix node 22 và 24, fail-fast false giữ biến thể còn lại chạy](/slides/img/s16-matrix.svg)
+
+::: details Ghi chú cho mentor
 - Matrix tạo `test (22)` và `test (24)` chạy song song.
 - `fail-fast: false` để một biến thể fail không hủy biến thể khác.
-- Cache chỉ tăng tốc; mất cache thì kết quả vẫn đúng.
+:::
 
 ---
 
-## Slide 13: Debug Tình huống 06 và lỗi thường gặp
+## Slide 14: Debug: sai working-directory
 
-- Cách phá: sai `working-directory`, hoặc ignore `package-lock.json`.
+```text
+npm error code ENOENT
+npm error Could not read package.json
+```
+
+Tìm step đỏ đầu tiên, đọc dòng lỗi đầu tiên: lệnh chạy ở gốc repo, `package.json` nằm ở `lab-16/source`.
+
+::: details Ghi chú cho mentor
+- Cách phá (Tình huống 06): sai `working-directory`, hoặc ignore `package-lock.json`.
 - Điều tra: tìm step đỏ đầu tiên, đọc dòng lỗi đầu tiên, `git ls-files`, tái hiện trên bản clone sạch.
 - Nguyên nhân gốc: runner chỉ có thứ đã commit và thứ workflow khai báo.
+- Hỏi: dòng nào trong log cho biết nguyên nhân? Sau đó sửa lại cho xanh.
+:::
+
+---
+
+## Slide 15: Lỗi thường gặp
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
@@ -157,10 +192,8 @@ jobs:
 
 ---
 
-## Slide 14: Recap
+## Slide 16: Recap
 
-- Workflow là YAML trong `.github/workflows/`; event kích hoạt, job chạy trên runner, step là lệnh hoặc action.
-- Runner mới cho mỗi job, nên phải checkout và cài mọi thứ.
-- Dùng `npm ci`, commit `package-lock.json`, cố định phiên bản Node.
-- Khi workflow đỏ: đọc dòng lỗi đầu tiên, xác định step, tái hiện trên bản clone sạch.
-- Pin action và đặt `permissions` tối thiểu.
+![Ba điều cần nhớ: cấu trúc workflow, runner là máy mới, cách đọc workflow đỏ](/slides/img/s16-recap.svg)
+
+Buổi tiếp theo: [Buổi 17 – Automated Testing](session-17.md).
