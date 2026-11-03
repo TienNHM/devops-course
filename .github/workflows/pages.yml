@@ -14,8 +14,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -38,6 +36,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run docs:check
+
       - run: npm run docs:build
 
       - uses: actions/upload-pages-artifact@v3
@@ -48,6 +48,9 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

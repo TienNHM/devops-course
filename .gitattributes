@@ -1,0 +1,6 @@
+# Keep shell scripts and container/CI files LF so they run on Windows checkouts (Git Bash, WSL on /mnt).
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Dockerfile* text eol=lf
+.dockerignore text eol=lf
