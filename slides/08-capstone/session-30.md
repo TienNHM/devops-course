@@ -211,3 +211,13 @@ Nộp `lab-30/`: output `npm test`, `docker compose ps`, curl CRUD, `report.md`,
 - Thử thách L2: tag semver, chặn merge khi test đỏ, chạy thử trên kind.
 - Buổi sau: kiểm thử triển khai, failure injection, checklist bảo mật.
 :::
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Docker build best practices](https://docs.docker.com/build/building/best-practices/): viết Dockerfile nhỏ, nhanh, an toàn.
+- **Tài liệu chính thức:** [Security hardening for GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions): giữ pipeline CI/CD an toàn.
+- **Best practice:** [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): quy ước viết commit message rõ ràng.
+- **Best practice:** [Semantic Versioning](https://semver.org/): quy tắc đặt phiên bản cho image và release.
+- **Best practice:** [OWASP Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html): checklist bảo mật khi dùng container.

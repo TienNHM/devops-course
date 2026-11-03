@@ -185,3 +185,13 @@ Error: getaddrinfo ENOTFOUND postgres
 ![Ba điều cần nhớ: unit nhanh, CI chạy mỗi PR, phải chặn merge](/slides/img/s17-recap.svg)
 
 Buổi tiếp theo: [Buổi 18 – Docker CI Pipeline](session-18.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Node.js test runner](https://nodejs.org/docs/latest-v22.x/api/test.html): cách viết và chạy unit test bằng Node.
+- **Tài liệu chính thức:** [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions): tra cứu từng khóa trong file workflow.
+- **Tài liệu chính thức:** [Managing a branch protection rule](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule): chặn merge khi CI đỏ.
+- **Best practice:** [DORA: Continuous integration](https://dora.dev/capabilities/continuous-integration/): thói quen CI tốt của các đội mạnh.
+- **Best practice:** [Security hardening for GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions): giữ workflow CI an toàn.

@@ -222,3 +222,13 @@ Buổi tiếp theo: [Buổi 28 – Kubernetes Operations](session-28.md).
 - Database dùng StatefulSet, RWO, `PGDATA` trỏ thư mục con; chạy `init.sql` là việc của bạn.
 - Trên kind: `standard`, policy `Delete`, `WaitForFirstConsumer`.
 :::
+
+---
+
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/): hiểu PV, PVC và vòng đời lưu trữ.
+- **Tài liệu chính thức:** [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/): định tuyến HTTP vào Service trong cluster.
+- **Tài liệu chính thức:** [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/): chạy ứng dụng có trạng thái như database.
+- **Best practice:** [Security Checklist](https://kubernetes.io/docs/concepts/security/security-checklist/): danh sách kiểm tra bảo mật cho cluster.
+- **Best practice:** [Configuration Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/): quy tắc viết cấu hình Service và Ingress.

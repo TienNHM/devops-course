@@ -180,3 +180,13 @@ Lệnh và kết quả mong đợi: [Buổi 24 – Kubernetes Services](../../la
 ![Ba điều cần nhớ: địa chỉ cố định, selector và Ready, xem Endpoints trước](/slides/img/s24-recap.svg)
 
 Buổi sau: [Slide buổi 25 – Configuration Management](session-25.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Service](https://kubernetes.io/docs/concepts/services-networking/service/): địa chỉ cố định cho một nhóm Pod.
+- **Tài liệu chính thức:** [DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/): gọi Service bằng tên thay vì IP.
+- **Tài liệu chính thức:** [Debug Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/): Service không tới được Pod thì kiểm tra gì.
+- **Best practice:** [Kubernetes Configuration Good Practices](https://kubernetes.io/docs/concepts/configuration/overview/): cách đặt label và viết Service đúng chuẩn.
+- **Best practice:** [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/): giới hạn Pod nào được nói chuyện với Pod nào.

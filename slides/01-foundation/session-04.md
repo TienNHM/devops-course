@@ -206,3 +206,12 @@ Lệnh đầy đủ: [Buổi 04 – Linux Administration](../../labs/week-02/ses
 ![Ba điều cần nhớ: một nhóm quyền, SIGTERM trước, phải export](/slides/img/s04-recap.svg)
 
 Buổi tiếp theo: [Buổi 05 – Networking Fundamentals](session-05.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [credentials(7): user, group, process](https://man7.org/linux/man-pages/man7/credentials.7.html): hiểu UID, GID và quyền của tiến trình.
+- **Tài liệu chính thức:** [The Linux Command Line](https://linuxcommand.org/tlcl.php): các chương về quyền, tiến trình, gói phần mềm.
+- **Best practice:** [CIS Benchmarks](https://www.cisecurity.org/benchmarks): chuẩn hardening Linux được dùng rộng rãi.
+- **Best practice:** [OWASP Top 10](https://owasp.org/www-project-top-ten/): 10 rủi ro bảo mật phổ biến cần biết.

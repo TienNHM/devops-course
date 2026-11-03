@@ -192,3 +192,13 @@ Thử thách L2: [Buổi 26 – Thử thách nâng cao](../../labs/week-13/sessi
 - Liveness chỉ hỏi "còn sống", phụ thuộc ngoài như DB thuộc về readiness.
 - `patch` chỉ để thí nghiệm; manifest trong Git là nguồn sự thật.
 :::
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/): giải thích requests và limits.
+- **Tài liệu chính thức:** [Liveness, Readiness và Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/): hướng dẫn cấu hình probe.
+- **Best practice:** [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/): chọn requests và limits để Pod ít bị kill.
+- **Best practice:** [Configuration Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/): các thói quen tốt khi viết manifest.
+- **Best practice:** [Postmortem Culture: Learning from Failure](https://sre.google/sre-book/postmortem-culture/): học từ sự cố mà không đổ lỗi.

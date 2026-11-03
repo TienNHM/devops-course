@@ -198,3 +198,12 @@ Gõ `rm -rf logs /` thay vì `rm -rf logs/` thì chuyện gì có thể xảy ra
 ![Ba điều cần nhớ: cây từ /, find và grep, pipe](/slides/img/s03-recap.svg)
 
 Buổi tiếp theo: Linux Administration ([Slide buổi 04](session-04.md)).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [The Linux Command Line](https://linuxcommand.org/tlcl.php): sách miễn phí dạy dòng lệnh từ cơ bản.
+- **Tài liệu chính thức:** [hier(7): cấu trúc thư mục Linux](https://man7.org/linux/man-pages/man7/hier.7.html): hiểu mỗi thư mục như /etc, /var để làm gì.
+- **Tài liệu chính thức:** [chmod (POSIX)](https://man7.org/linux/man-pages/man1/chmod.1p.html): tra cứu cách đổi quyền file.
+- **Best practice:** [CIS Benchmarks](https://www.cisecurity.org/benchmarks): danh sách chuẩn để cấu hình Linux an toàn.

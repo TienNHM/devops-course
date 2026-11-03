@@ -192,3 +192,13 @@ Hướng điều tra đầy đủ: [Buổi 31 – Thử thách nâng cao](../../
 ![Ba điều cần nhớ: test nhiều tầng, chẩn đoán ngoài vào trong, ghi lại sự cố](/slides/img/s31-recap.svg)
 
 Mỗi sự cố ghi: triệu chứng, nguyên nhân gốc, cách xác minh, cách sửa, cách phòng tránh.
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Debug Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/): tìm nguyên nhân Pod lỗi từng bước.
+- **Tài liệu chính thức:** [Debug Running Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/): dùng exec và logs để xem Pod đang chạy.
+- **Best practice:** [Liveness, Readiness và Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/): dùng probe để phát hiện lỗi sớm.
+- **Best practice:** [Logging Architecture](https://kubernetes.io/docs/concepts/cluster-administration/logging/): cách ghi và đọc log trong cluster.
+- **Best practice:** [OWASP Top Ten](https://owasp.org/www-project-top-ten/): các rủi ro bảo mật web phổ biến nhất.

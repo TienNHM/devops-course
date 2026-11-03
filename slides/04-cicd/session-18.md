@@ -187,3 +187,13 @@ Cổng 3100 để không đụng cổng 3000 của stack khác.
 ![Ba điều cần nhớ: truy vết, quyền tối thiểu, đọc đúng lỗi](/slides/img/s18-recap.svg)
 
 Buổi sau: [Buổi 19 – CD & Deployment Strategies](session-19.md).
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Docker Build with GitHub Actions](https://docs.docker.com/build/ci/github-actions/): build và push image trong pipeline.
+- **Tài liệu chính thức:** [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry): đẩy image lên GHCR.
+- **Best practice:** [Docker build best practices](https://docs.docker.com/build/building/best-practices/): viết Dockerfile nhỏ, nhanh, an toàn.
+- **Best practice:** [Docker Security Cheat Sheet (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html): checklist bảo mật cho container và image.
+- **Best practice:** [Security hardening for GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions): dùng token và secret đúng cách.

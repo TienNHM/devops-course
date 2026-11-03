@@ -210,3 +210,13 @@ Lệnh và kết quả mong đợi: [Buổi 08 – Hands-on lab](../../labs/week
 - `stop` giữ lại container, `rm` xóa; `--rm` cho lệnh một lần.
 - Tên image đầy đủ gồm registry, repository, tag; pin tag.
 :::
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Docker CLI reference](https://docs.docker.com/reference/cli/docker/): tra cứu mọi lệnh và cờ của docker.
+- **Tài liệu chính thức:** [docker container run](https://docs.docker.com/reference/cli/docker/container/run/): các cờ quan trọng của lệnh docker run.
+- **Tài liệu chính thức:** [View container logs](https://docs.docker.com/engine/logging/): xem log để tìm lỗi container.
+- **Best practice:** [Resource constraints](https://docs.docker.com/engine/containers/resource_constraints/): giới hạn CPU và RAM cho container.
+- **Best practice:** [Run the daemon rootless](https://docs.docker.com/engine/security/rootless/): chạy Docker không cần quyền root.

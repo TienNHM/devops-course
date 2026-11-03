@@ -184,3 +184,13 @@ Nộp `lab-22/`: `README.md`, manifest trong `source/`, evidence, ảnh hai Repl
 - Bộ công cụ vận hành: `rollout status`, `history`, `undo`; timeout là lời cảnh báo.
 - Với kind: `docker build`, `kind load docker-image`, tag cố định.
 :::
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Pods](https://kubernetes.io/docs/concepts/workloads/pods/): Pod là đơn vị nhỏ nhất và tạm thời.
+- **Tài liệu chính thức:** [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/): scale, rolling update và rollback.
+- **Best practice:** [Kubernetes Configuration Good Practices](https://kubernetes.io/docs/concepts/configuration/overview/): cách viết manifest gọn, đúng chuẩn.
+- **Best practice:** [Liveness, readiness and startup probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/): để Kubernetes biết app có khỏe không.
+- **Best practice:** [Resource management for containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/): đặt requests và limits cho CPU, RAM.

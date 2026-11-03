@@ -165,3 +165,13 @@ Nộp `lab-21/`: `README.md`, `evidence/command-output.txt`, `report.md`. Giữ 
 - Không commit kubeconfig.
 - Mọi thứ đi qua API Server; chỉ API Server nói chuyện với etcd.
 :::
+
+---
+
+## Slide 14: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/): Kubernetes là gì và giải quyết vấn đề nào.
+- **Tài liệu chính thức:** [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/): API Server, etcd, kubelet làm gì.
+- **Tài liệu chính thức:** [kind Quick Start](https://kind.sigs.k8s.io/docs/user/quick-start/): tạo cluster Kubernetes ngay trên laptop.
+- **Best practice:** [Cloud native security overview](https://kubernetes.io/docs/concepts/security/overview/): các lớp bảo mật khi chạy Kubernetes.
+- **Best practice:** [The Twelve-Factor App](https://12factor.net/): nguyên tắc thiết kế app dễ chạy trên cloud.

@@ -197,3 +197,13 @@ Tìm step đỏ đầu tiên, đọc dòng lỗi đầu tiên: lệnh chạy ở
 ![Ba điều cần nhớ: cấu trúc workflow, runner là máy mới, cách đọc workflow đỏ](/slides/img/s16-recap.svg)
 
 Buổi tiếp theo: [Buổi 17 – Automated Testing](session-17.md).
+
+---
+
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax): tra cứu cú pháp file YAML workflow.
+- **Tài liệu chính thức:** [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets): lưu và dùng secret đúng cách.
+- **Best practice:** [Secure use reference](https://docs.github.com/en/actions/reference/security/secure-use): hướng dẫn bảo mật workflow từ GitHub.
+- **Best practice:** [CI/CD Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html): checklist bảo mật pipeline từ OWASP.
+- **Tài liệu chính thức:** [Dependency caching](https://docs.github.com/en/actions/concepts/workflows-and-actions/dependency-caching): làm workflow chạy nhanh hơn.

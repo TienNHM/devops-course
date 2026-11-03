@@ -194,3 +194,13 @@ Lệnh và kết quả mong đợi: [Buổi 23 – kubectl Fundamentals](../../l
 ![Ba điều cần nhớ: client của API Server, manifest là gốc, describe trước](/slides/img/s23-recap.svg)
 
 Buổi sau: [Slide buổi 24 – Kubernetes Services](session-24.md).
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [kubectl quick reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/): bảng lệnh kubectl hay dùng.
+- **Tài liệu chính thức:** [Organizing cluster access using kubeconfig files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/): kubectl biết cluster nào nhờ kubeconfig.
+- **Tài liệu chính thức:** [Debug Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/): các bước tìm lỗi khi Pod không chạy.
+- **Best practice:** [Kubernetes Configuration Good Practices](https://kubernetes.io/docs/concepts/configuration/overview/): manifest là gốc, giữ trong Git.
+- **Best practice:** [Using RBAC Authorization](https://kubernetes.io/docs/reference/access-authn-authz/rbac/): cho mỗi người đúng quyền cần thiết.

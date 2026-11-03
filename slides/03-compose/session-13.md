@@ -197,3 +197,13 @@ Lệnh và kết quả mong đợi: [Buổi 13 – Docker Compose](../../labs/we
 ![Ba điều cần nhớ: một file, gọi bằng tên, volume giữ dữ liệu](/slides/img/s13-recap.svg)
 
 Buổi tiếp theo: [Buổi 14 – Production-minded Compose](session-14.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Compose file reference](https://docs.docker.com/reference/compose-file/): tra cứu mọi khóa trong compose.yaml.
+- **Tài liệu chính thức:** [Compose services](https://docs.docker.com/reference/compose-file/services/): cách khai báo service, port, volume.
+- **Best practice:** [Environment variables best practices](https://docs.docker.com/compose/how-tos/environment-variables/best-practices/): quản lý biến môi trường và file .env an toàn.
+- **Best practice:** [The Twelve-Factor App: Config](https://12factor.net/config): để cấu hình trong môi trường, không trong code.
+- **Best practice:** [Use secrets in Compose](https://docs.docker.com/compose/how-tos/use-secrets/): không để mật khẩu nằm trong file.

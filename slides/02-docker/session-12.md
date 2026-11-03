@@ -178,3 +178,13 @@ Lệnh đầy đủ: [Buổi 12 – Persistent Storage](../../labs/week-06/sessi
 ![Ba điều cần nhớ: dữ liệu bền ở volume, mount phải khớp, backup phải thử restore](/slides/img/s12-recap.svg)
 
 Buổi sau: [Buổi 13 – Docker Compose](../../labs/week-07/session-13.md) gom mọi thứ vào một file.
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Volumes](https://docs.docker.com/engine/storage/volumes/): giữ dữ liệu khi container bị xóa.
+- **Tài liệu chính thức:** [Bind mounts](https://docs.docker.com/engine/storage/bind-mounts/): gắn thư mục máy thật vào container.
+- **Tài liệu chính thức:** [PostgreSQL: Backup and Restore](https://www.postgresql.org/docs/17/backup-dump.html): sao lưu database bằng pg_dump.
+- **Best practice:** [Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html): dùng mount an toàn, tránh lộ dữ liệu.
+- **Best practice:** [The Twelve-Factor App: Backing services](https://12factor.net/backing-services): coi database là tài nguyên gắn ngoài.

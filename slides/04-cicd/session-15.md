@@ -209,3 +209,13 @@ Không có dòng `=== STAGE: build ===`. Lấy mã thoát bằng `PIPESTATUS[0]`
 ![Ba điều cần nhớ: cổng duyệt, pipeline có gate, đừng tắt gate](/slides/img/s15-recap.svg)
 
 Buổi tiếp theo: [Buổi 16 – GitHub Actions Basics](session-16.md).
+
+---
+
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Understanding GitHub Actions](https://docs.github.com/en/actions/get-started/understanding-github-actions): khái niệm cơ bản về workflow và job.
+- **Tài liệu chính thức:** [npm ci](https://docs.npmjs.com/cli/commands/npm-ci): cài dependency sạch và lặp lại được trong CI.
+- **Best practice:** [Continuous Integration (Martin Fowler)](https://martinfowler.com/articles/continuousIntegration.html): nguyên tắc CI kinh điển.
+- **Best practice:** [Google SRE: Release Engineering](https://sre.google/sre-book/release-engineering/): cách phát hành phần mềm ổn định.
+- **Best practice:** [CI/CD Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html): bảo mật pipeline theo OWASP.

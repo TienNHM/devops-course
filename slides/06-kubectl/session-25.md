@@ -182,3 +182,13 @@ Chi tiết: [Buổi 25 – Thử thách nâng cao](../../labs/week-13/session-25
 - Volume mount được đồng bộ (có độ trễ), `subPath` thì không, và ứng dụng phải tự đọc lại file.
 - Thiếu ConfigMap hoặc Secret gây `CreateContainerConfigError`; giá trị sai lộ ra qua readiness và Events.
 :::
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/): cách tách cấu hình khỏi image.
+- **Tài liệu chính thức:** [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/): lưu dữ liệu nhạy cảm như mật khẩu.
+- **Best practice:** [Good practices for Kubernetes Secrets](https://kubernetes.io/docs/concepts/security/secrets-good-practices/): giữ Secret an toàn hơn.
+- **Best practice:** [Configuration Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/): viết file YAML cấu hình gọn và đúng.
+- **Best practice:** [The Twelve-Factor App: Config](https://12factor.net/config): vì sao cấu hình nên nằm trong môi trường.

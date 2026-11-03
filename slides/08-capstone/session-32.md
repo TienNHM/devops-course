@@ -181,3 +181,13 @@ Nộp `lab-32/`; peer review gửi riêng cho mentor.
 - Khi lỗi: nói to điều thấy, đọc log và events, giả thuyết, kiểm chứng.
 - `down -v` và xóa PVC làm mất dữ liệu, chỉ dùng có chủ ý.
 :::
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [kubectl Quick Reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/): tra lệnh nhanh khi demo.
+- **Tài liệu chính thức:** [About READMEs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes): viết README giúp người khác chạy được dự án.
+- **Best practice:** [Postmortem Culture: Learning from Failure](https://sre.google/sre-book/postmortem-culture/): review sự cố không đổ lỗi cá nhân.
+- **Best practice:** [Architectural Decision Records](https://adr.github.io/): ghi lại vì sao chọn giải pháp.
+- **Best practice:** [Kubernetes Security Checklist](https://kubernetes.io/docs/concepts/security/security-checklist/): tự kiểm tra bảo mật trước khi nộp.

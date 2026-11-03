@@ -218,3 +218,13 @@ Nộp `lab-29/`: `evidence/command-output.txt`, `report.md`, `source/`. Buổi s
 - Nộp bài theo template; buổi sau triển khai CRUD, Compose, CI, publish GHCR.
 - Ví von ADR: nhật ký "vì sao ta chọn vậy" để sáu tháng sau còn nhớ.
 :::
+
+---
+
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Architectural Decision Records](https://adr.github.io/): cách ghi lại quyết định kiến trúc.
+- **Tài liệu chính thức:** [Kubernetes Concepts](https://kubernetes.io/docs/concepts/): bản đồ các khái niệm để thiết kế hệ thống.
+- **Best practice:** [The Twelve-Factor App](https://12factor.net/): 12 nguyên tắc thiết kế ứng dụng hiện đại.
+- **Best practice:** [Kubernetes Configuration Good Practices](https://kubernetes.io/docs/concepts/configuration/overview/): lập kế hoạch manifest gọn và dễ bảo trì.
+- **Best practice:** [Semantic Versioning](https://semver.org/): đặt số phiên bản dễ hiểu cho release.

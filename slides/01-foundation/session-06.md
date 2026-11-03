@@ -197,3 +197,12 @@ Remote có commit mới. Không `git push --force`: sẽ xóa commit của đồ
 Branch protection biến quy ước thành quy tắc, là nền cho CI/CD tuần sau.
 
 Buổi tiếp theo: [Buổi 07 – Container Fundamentals](../02-docker/session-07.md).
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Pro Git book](https://git-scm.com/book/en/v2): sách Git chính thức, miễn phí.
+- **Tài liệu chính thức:** [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow): quy trình branch, PR, merge đơn giản.
+- **Best practice:** [Comparing Git workflows (Atlassian)](https://www.atlassian.com/git/tutorials/comparing-workflows): so sánh các cách làm việc nhóm với Git.
+- **Best practice:** [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches): bảo vệ nhánh main khỏi sửa trực tiếp.

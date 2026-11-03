@@ -184,3 +184,12 @@ Buổi tiếp theo: dựng WSL2, Git và SSH key ([Slide buổi 02](session-02.m
 - Delivery cần người duyệt, Deployment thì tự động.
 - Mỗi bước trong quy trình phải có người làm, đầu vào và đầu ra.
 :::
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [What is DevOps? (Microsoft Learn)](https://learn.microsoft.com/en-us/devops/what-is-devops): giải thích DevOps dễ hiểu cho người mới.
+- **Tài liệu chính thức:** [DevOps Roadmap](https://roadmap.sh/devops): bản đồ kỹ năng để biết mình học đến đâu.
+- **Best practice:** [Google SRE Book: Introduction](https://sre.google/sre-book/introduction/): cách Google vận hành hệ thống ổn định.
+- **Best practice:** [The Twelve-Factor App](https://12factor.net/): 12 nguyên tắc xây ứng dụng dễ triển khai.

@@ -199,3 +199,13 @@ Builder không thấy file vì `.dockerignore` loại nó khỏi context.
 :::
 
 Buổi sau: container networking với `club-api` và Postgres, xem [Buổi 11](session-11.md).
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Multi-stage builds](https://docs.docker.com/build/building/multi-stage/): tách bước build và bước chạy để image nhỏ.
+- **Tài liệu chính thức:** [Build cache](https://docs.docker.com/build/cache/): hiểu vì sao thứ tự lệnh làm build nhanh hay chậm.
+- **Best practice:** [Building best practices](https://docs.docker.com/build/building/best-practices/): checklist tối ưu Dockerfile từ Docker.
+- **Best practice:** [Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html): giảm rủi ro bảo mật khi build image.
+- **Best practice:** [Docker and Node.js best practices](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md): mẹo image Node.js nhỏ và an toàn.

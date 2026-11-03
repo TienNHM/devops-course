@@ -181,3 +181,13 @@ Lệnh chi tiết: [Buổi 19](../../labs/week-10/session-19.md) và [Thử thá
 ![Ba điều cần nhớ: build một lần, cổng sức khỏe, rollback dễ](/slides/img/s19-recap.svg)
 
 Buổi sau: [Buổi 20 – Pipeline Security](session-20.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Managing environments for deployment](https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-deployments/managing-environments-for-deployment): duyệt tay trước khi deploy.
+- **Tài liệu chính thức:** [Deployments (rolling update)](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment): Kubernetes cập nhật dần, không gián đoạn.
+- **Tài liệu chính thức:** [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry): lưu image đã build một lần.
+- **Best practice:** [DORA: Continuous delivery](https://dora.dev/capabilities/continuous-delivery/): cách giao phần mềm nhỏ, thường xuyên, ít rủi ro.
+- **Best practice:** [Google SRE: Canary release](https://sre.google/workbook/canarying-releases/): thử bản mới trên ít người dùng trước.

@@ -187,3 +187,12 @@ Lệnh và kết quả mong đợi: [Buổi 14 – Production-minded Compose](..
 ![Ba điều cần nhớ: chạy khác sẵn sàng, tự dựng lại khi thoát, vận hành an toàn](/slides/img/s14-recap.svg)
 
 Buổi tiếp theo: [Buổi 15 – CI/CD Fundamentals](../../labs/week-08/session-15.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Control startup order](https://docs.docker.com/compose/how-tos/startup-order/): started khác ready và cách chờ dịch vụ.
+- **Tài liệu chính thức:** [Compose services](https://docs.docker.com/reference/compose-file/services/): cấu hình healthcheck, depends_on, restart.
+- **Best practice:** [Use Compose in production](https://docs.docker.com/compose/how-tos/production/): khác biệt khi chạy Compose thật.
+- **Best practice:** [The Twelve-Factor App: Disposability](https://12factor.net/disposability): khởi động nhanh, tắt êm, dễ thay thế.

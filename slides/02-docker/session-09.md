@@ -188,3 +188,13 @@ Nguyên nhân gốc: context không chứa file mà Dockerfile tham chiếu. S�
 - Thử thách ở nhà: giải thích `CMD` và `ENTRYPOINT` bằng bằng chứng của bạn; điều tra lỗi build context.
 - Buổi sau: tối ưu image với layer cache, `.dockerignore`, multi-stage, `USER node`.
 :::
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Dockerfile reference](https://docs.docker.com/reference/dockerfile/): tra cứu từng lệnh trong Dockerfile.
+- **Tài liệu chính thức:** [Build context](https://docs.docker.com/build/concepts/context/): hiểu docker build gửi những file nào.
+- **Best practice:** [Building best practices](https://docs.docker.com/build/building/best-practices/): cách viết Dockerfile gọn, nhanh, an toàn.
+- **Best practice:** [Docker and Node.js best practices](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md): hướng dẫn chuẩn khi đóng gói app Node.js.
+- **Best practice:** [Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html): checklist bảo mật container từ OWASP.

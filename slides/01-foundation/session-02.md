@@ -206,3 +206,13 @@ Clone repo vào `/mnt/c/Users/An/code`: `npm install` mất 10 phút, `./run.sh`
 ![Ba điều cần nhớ: WSL2 + Ubuntu, shell và apt, SSH key](/slides/img/s02-recap.svg)
 
 Buổi tiếp theo: Linux CLI ([Slide buổi 03](session-03.md)).
+
+---
+
+## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [WSL documentation](https://learn.microsoft.com/en-us/windows/wsl/): cài và dùng Linux trên Windows.
+- **Tài liệu chính thức:** [VS Code Remote với WSL](https://code.visualstudio.com/docs/remote/wsl): viết code trong WSL bằng VS Code.
+- **Tài liệu chính thức:** [First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup): cấu hình Git lần đầu đúng cách.
+- **Best practice:** [Set up a WSL development environment](https://learn.microsoft.com/en-us/windows/wsl/setup/environment): gợi ý cấu hình môi trường dev gọn gàng.
+- **Best practice:** [Connecting to GitHub with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh): dùng SSH key an toàn thay cho mật khẩu.

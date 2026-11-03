@@ -197,3 +197,14 @@ Lệnh đầy đủ: [Buổi 20 – Pipeline Security](../../labs/week-10/sessio
 ## Slide 16: Recap
 
 ![Ba điều cần nhớ: quyền nhỏ, dữ liệu qua biến môi trường, giữ gate](/slides/img/s20-recap.svg)
+
+---
+
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Controlling permissions for GITHUB_TOKEN](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token): đặt quyền tối thiểu cho token.
+- **Tài liệu chính thức:** [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions): lưu và dùng secret an toàn.
+- **Tài liệu chính thức:** [Trivy documentation](https://trivy.dev/latest/docs/): quét lỗ hổng trong image và code.
+- **Best practice:** [Security hardening for GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions): danh sách việc cần làm để khóa pipeline.
+- **Best practice:** [CI/CD Security Cheat Sheet (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html): các rủi ro chính của pipeline.
+- **Best practice:** [SLSA specification](https://slsa.dev/spec/v1.0/): chuẩn bảo vệ chuỗi cung ứng phần mềm.

@@ -181,3 +181,12 @@ Container sống, `/health` tốt, nhưng DB không nối được.
 ![Ba điều cần nhớ: có tên là có DNS, -p chỉ để vào từ ngoài, localhost là chính nó](/slides/img/s11-recap.svg)
 
 Buổi sau: [Buổi 12 – Persistent Storage](../../labs/week-06/session-12.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Networking overview](https://docs.docker.com/engine/network/): tổng quan cách container nói chuyện với nhau.
+- **Tài liệu chính thức:** [Bridge network driver](https://docs.docker.com/engine/network/drivers/bridge/): vì sao gọi bằng tên chỉ chạy trên network tự tạo.
+- **Best practice:** [Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html): cô lập network và hạn chế cổng mở.
+- **Best practice:** [Docker Engine security](https://docs.docker.com/engine/security/): nguyên tắc bảo mật chính thức của Docker.

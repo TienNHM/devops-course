@@ -236,3 +236,13 @@ Buổi tiếp theo: [Buổi 29 – Architecture & Planning](../08-capstone/sessi
 - Report 5 mục: triệu chứng, bằng chứng, nguyên nhân, cách sửa, phòng tránh.
 - Rollback cứu dịch vụ, không thay việc tìm nguyên nhân gốc.
 :::
+
+---
+
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Debug Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/): các bước tìm lỗi Pod theo thứ tự.
+- **Tài liệu chính thức:** [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/): rolling update và rollback chi tiết.
+- **Tài liệu chính thức:** [kubectl Quick Reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/): tra nhanh lệnh kubectl hay dùng.
+- **Best practice:** [Postmortem Culture: Learning from Failure](https://sre.google/sre-book/postmortem-culture/): viết báo cáo sự cố không đổ lỗi.
+- **Best practice:** [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/): mức bảo mật chuẩn cho Pod.

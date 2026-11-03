@@ -184,3 +184,13 @@ curl: (7) Failed to connect ... Connection refused
 ![Ba điều cần nhớ: đi từng tầng, đọc mã lỗi, bind và localhost](/slides/img/s05-recap.svg)
 
 Buổi tiếp theo: [Buổi 06 – Git & GitHub Workflow](session-06.md).
+
+---
+
+## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+
+- **Tài liệu chính thức:** [Overview of HTTP (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview): HTTP hoạt động thế nào, giải thích rõ ràng.
+- **Tài liệu chính thức:** [HTTP response status codes (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status): tra mã 200, 404, 500 nghĩa là gì.
+- **Tài liệu chính thức:** [DNS (MDN Glossary)](https://developer.mozilla.org/en-US/docs/Glossary/DNS): DNS đổi tên miền thành địa chỉ IP.
+- **Best practice:** [Transport Layer Security Cheat Sheet (OWASP)](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html): cấu hình HTTPS/TLS an toàn.
+- **Best practice:** [OWASP Top 10](https://owasp.org/www-project-top-ten/): các lỗi bảo mật web thường gặp.
