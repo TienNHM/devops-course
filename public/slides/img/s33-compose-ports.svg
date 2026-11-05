@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Compose chạy floci: một cổng 4566 cho mọi dịch vụ</text>
+<rect x="40" y="110" width="240" height="250" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="160.0" y="197.0" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Máy cá nhân (host)</text>
+<text x="160.0" y="227.0" font-size="19" text-anchor="middle" fill="#0f172a">aws, terraform,</text>
+<text x="160.0" y="257.0" font-size="19" text-anchor="middle" fill="#0f172a">curl</text>
+<text x="160.0" y="287.0" font-size="19" font-weight="700" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">localhost:4566</text>
+<rect x="360" y="90" width="560" height="290" rx="16" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="380" y="125" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Docker Engine</text>
+<rect x="400" y="150" width="230" height="190" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="515.0" y="222.0" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Container floci</text>
+<text x="515.0" y="252.0" font-size="18" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">floci/floci:2.4.0</text>
+<text x="515.0" y="282.0" font-size="19" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">cổng 4566</text>
+<rect x="690" y="150" width="200" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="790.0" y="197.0" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">S3</text>
+<rect x="690" y="260" width="200" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="790.0" y="307.0" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">DynamoDB</text>
+<path d="M282 235L396 235" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M632 205L686 190" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M632 285L686 300" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="425" font-size="19" text-anchor="middle" fill="#475569">ports: "4566:4566" nối cổng 4566 của máy với cổng 4566 trong container.</text>
+</svg>

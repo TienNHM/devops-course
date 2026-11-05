@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Plan so sánh ba nguồn</text>
+<rect x="40" y="100" width="260" height="120" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="170" y="145" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">File .tf</text>
+<text x="170" y="180" font-size="19" text-anchor="middle" fill="#475569">mong muốn</text>
+<rect x="350" y="100" width="260" height="120" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="145" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">terraform.tfstate</text>
+<text x="480" y="180" font-size="19" text-anchor="middle" fill="#475569">Terraform đã ghi nhớ</text>
+<rect x="660" y="100" width="260" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="790" y="145" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">floci</text>
+<text x="790" y="180" font-size="19" text-anchor="middle" fill="#475569">tài nguyên thật</text>
+<path d="M302 160L346 160" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M612 160L656 160" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<rect x="40" y="270" width="880" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="308" font-size="21" font-weight="700" text-anchor="middle" fill="#dc2626">Không commit terraform.tfstate</text>
+<text x="480" y="340" font-size="20" text-anchor="middle" fill="#475569">File có thể chứa giá trị nhạy cảm; thêm vào .gitignore</text>
+</svg>

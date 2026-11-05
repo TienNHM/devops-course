@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="450" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Dữ liệu sau khi khởi động lại container</text>
+<rect x="40" y="100" width="400" height="150" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="240.0" y="152.0" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Chế độ memory (mặc định)</text>
+<text x="240.0" y="182.0" font-size="18" text-anchor="middle" fill="#0f172a">chưa đặt biến môi trường</text>
+<text x="240.0" y="212.0" font-size="19" font-weight="700" text-anchor="middle" fill="#0f172a">khởi động lại: dữ liệu mất</text>
+<rect x="520" y="100" width="400" height="150" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="720.0" y="152.0" font-size="21" font-weight="700" text-anchor="middle" fill="#0f172a">Chế độ persistent</text>
+<text x="720.0" y="182.0" font-size="18" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">FLOCI_STORAGE_MODE=persistent</text>
+<text x="720.0" y="212.0" font-size="19" font-weight="700" text-anchor="middle" fill="#0f172a">khởi động lại: dữ liệu còn</text>
+<rect x="520" y="290" width="400" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="720.0" y="337.0" font-size="20" font-weight="700" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">Thư mục ./data trên máy</text>
+<path d="M720 252L720 286" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="240" y="320" font-size="19" text-anchor="middle" fill="#0f172a" font-weight="700">Phù hợp test và CI:</text>
+<text x="240" y="350" font-size="19" text-anchor="middle" fill="#475569">mỗi lần chạy bắt đầu từ trạng thái sạch.</text>
+<text x="480" y="420" font-size="19" text-anchor="middle" fill="#475569">Volume ./data:/app/data kết hợp FLOCI_STORAGE_PERSISTENT_PATH=/app/data.</text>
+</svg>

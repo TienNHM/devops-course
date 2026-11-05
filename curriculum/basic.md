@@ -1,20 +1,20 @@
 # Lộ trình Cơ bản · 14 ngày
 
-> **Tóm tắt:** 14 ngày, mỗi ngày khoảng 2 giờ: 10 ngày học và 4 ngày sửa lỗi, hoàn thiện, demo. Mỗi ngày là một bộ slide: bạn xem và gõ lệnh làm theo trên chính dự án của mình (Club app), từ máy trống tới image Docker được publish tự động. Không có bài tập hay nộp bài.
+> **Tóm tắt:** 14 ngày, mỗi ngày khoảng 2 giờ: 10 ngày học và 4 ngày sửa lỗi, hoàn thiện, demo. Mỗi ngày là một bộ slide: người học xem và gõ lệnh làm theo trên chính dự án của mình (Club app), từ máy trống tới image Docker được publish tự động. Lộ trình không có bài tập hay nộp bài.
 
-**Đây là lộ trình để bắt đầu.** Bạn không cần biết DevOps trước, chỉ cần dùng máy tính thoải mái và sẵn sàng gõ lệnh. Phần đào sâu (Linux quản trị, mạng, tối ưu image, kiểm thử, bảo mật pipeline) nằm ở [Lộ trình Nâng cao](advanced.md).
+**Đây là lộ trình mở đầu.** Người học không cần biết DevOps trước, chỉ cần sử dụng máy tính thành thạo ở mức cơ bản và sẵn sàng gõ lệnh. DevOps là cách phối hợp giữa phát triển và vận hành phần mềm, trong đó việc build, kiểm thử và triển khai được tự động hóa. Phần đào sâu (Linux quản trị, mạng, tối ưu image, kiểm thử, bảo mật pipeline) nằm ở [Lộ trình Nâng cao](advanced.md).
 
 ## Cuối 14 ngày bạn có gì
 
-Một ứng dụng thật của riêng bạn, trên GitHub:
+Một ứng dụng thật của riêng người học, trên GitHub:
 
 - Chạy cả web, API và database bằng **một lệnh** `docker compose up`.
 - Mỗi Pull Request **tự chạy test**. Mỗi lần merge **tự publish image** lên GHCR.
-- Bạn kể lại và chạy lại được từng bước, vì chính bạn đã làm từng bước.
+- Người học kể lại và chạy lại được từng bước, vì chính mình đã thực hiện từng bước.
 
 ## Kế hoạch 14 ngày
 
-Mỗi ngày học bằng **một bộ slide**: xem, gõ lệnh làm theo, kiểm tra kết quả. Bật nút **Trình chiếu** trên trang slide để học từng slide một.
+Mỗi ngày học bằng **một bộ slide**: xem, gõ lệnh làm theo, kiểm tra kết quả. Nút **Trình chiếu** trên trang slide cho phép học từng slide một.
 
 | Ngày | Việc làm | Cuối ngày bạn có | Slide |
 | --- | --- | --- | --- |
@@ -38,11 +38,11 @@ Mỗi ngày học bằng **một bộ slide**: xem, gõ lệnh làm theo, kiểm
 | 85 phút | Thực hành theo slide, từng bước có phần "Kiểm tra: bạn đúng khi" |
 | 20 phút | Lỗi thường gặp, tự kiểm tra, hỏi mentor |
 
-Kẹt quá 15 phút thì xem slide "Lỗi thường gặp" của ngày đó, rồi hỏi mentor. Ngày nào chưa xong thì bù vào Ngày 11–12.
+Khi một bước kéo dài quá 15 phút, xem slide "Lỗi thường gặp" của ngày đó, sau đó hỏi mentor. Ngày nào chưa hoàn thành thì được bù vào Ngày 11–12.
 
 ## Dự án và repo
 
-Mọi ngày làm việc trong repo cá nhân `devops-labs` (Public), ví dụ thư mục `~/devops-labs` trong WSL:
+Mọi ngày làm việc trong repository (kho mã nguồn) cá nhân `devops-labs` (Public), ví dụ thư mục `~/devops-labs` trong WSL:
 
 ```text
 devops-labs/
@@ -52,29 +52,29 @@ devops-labs/
 
 ## Cuối Cơ bản bạn làm được
 
-Tự kiểm tra khi xong. Làm được cả sáu việc là bạn đã đủ nền để sang Nâng cao, hoặc dừng ở đây vẫn dùng được ngay.
+Người học tự kiểm tra khi kết thúc. Hoàn thành cả sáu việc nghĩa là đã đủ nền tảng để sang Nâng cao, hoặc dừng tại đây vẫn có thể áp dụng ngay.
 
 - [ ] Dùng terminal Linux (WSL2) để tìm, đọc và kiểm tra file của một dự án.
 - [ ] Làm việc với Git và GitHub: nhánh, commit, Pull Request, giải quyết conflict.
-- [ ] Chạy, xem log và gỡ lỗi container Docker.
+- [ ] Chạy, xem log và gỡ lỗi container Docker. Container là một tiến trình được đóng gói cùng môi trường chạy riêng, tách biệt với phần còn lại của máy.
 - [ ] Viết Dockerfile cho một API Node.js và build thành image.
 - [ ] Chạy web, API và Postgres bằng Docker Compose, dữ liệu không mất khi tạo lại container.
 - [ ] Để GitHub Actions tự chạy test và publish image lên GHCR.
 
 ## Phần đã chuyển sang Nâng cao
 
-Để 14 ngày vừa sức người mới, các chủ đề sau được tách ra và học sau, khi bạn đã quen tay:
+Để 14 ngày phù hợp với người mới, các chủ đề sau được tách ra và học sau, khi người học đã quen với công cụ:
 
 - Tổng quan DevOps, quản trị Linux (user, quyền, process), mạng cơ bản.
 - Tối ưu image (multi-stage, cache), mạng giữa các container.
 - Compose cho vận hành (healthcheck nâng cao, restart, giới hạn tài nguyên, log).
 - Kiểm thử tự động sâu, chiến lược triển khai, bảo mật pipeline.
 
-Xem danh sách đầy đủ ở [Lộ trình Nâng cao](advanced.md).
+Danh sách đầy đủ nằm ở [Lộ trình Nâng cao](advanced.md).
 
 ## Bắt đầu thế nào
 
 1. Làm [4 việc chuẩn bị](getting-started.md#truoc-ngay-1-4-viec-khoang-20-phut) (khoảng 20 phút, chỉ một lần).
-2. Vào [Ngày 1](../slides/01-foundation/session-02.md) và bấm **Trình chiếu**.
+2. Vào [Ngày 1](../slides/01-foundation/session-02.md) và chọn **Trình chiếu**.
 
-Muốn biết cách học và các tình huống lỗi thường gặp? Xem [Cách học khóa này](how-to-learn.md). Muốn lên mạng nhanh mà không cần Docker? Có [Vibe Deploy](../vibe/index.md), một lộ trình riêng.
+Cách học và các tình huống lỗi thường gặp được trình bày ở [Cách học khóa này](how-to-learn.md). Người học cần đưa web lên mạng nhanh mà không dùng Docker có thể theo [Vibe Deploy](../vibe/index.md), một lộ trình riêng.

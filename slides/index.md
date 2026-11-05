@@ -38,3 +38,5 @@ Slide cho mentor chiếu trên lớp; học viên làm theo bài Lab. Mỗi slid
 | 15 | 30 | Implementation | [Buổi 30 – Implementation](../labs/week-15/session-30.md) | [Slide Buổi 30](08-capstone/session-30.md) | [Bài tập tuần 15](../assignments/weekly/week-15.md) |
 | 16 | 31 | Testing & Troubleshooting | [Buổi 31 – Testing & Troubleshooting](../labs/week-16/session-31.md) | [Slide Buổi 31](08-capstone/session-31.md) | [Bài tập tuần 16](../assignments/weekly/week-16.md) |
 | 16 | 32 | Final Demo & Review | [Buổi 32 – Final Demo & Review](../labs/week-16/session-32.md) | [Slide Buổi 32](08-capstone/session-32.md) | [Bài tập tuần 16](../assignments/weekly/week-16.md) |
+| Tùy chọn | 33 | AWS cục bộ với floci | Chỉ học bằng slide | [Slide Buổi 33](09-cloud/session-33.md) | Không có |
+| Tùy chọn | 34 | Infrastructure as Code với Terraform trên floci | Chỉ học bằng slide | [Slide Buổi 34](09-cloud/session-34.md) | Không có |

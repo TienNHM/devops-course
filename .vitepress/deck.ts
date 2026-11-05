@@ -8,6 +8,7 @@ const deckRanges: [string, number, number][] = [
   ['06-kubectl', 23, 25],
   ['07-operations', 26, 28],
   ['08-capstone', 29, 32],
+  ['09-cloud', 33, 34],
 ]
 
 export function slideLink(n: number): string {

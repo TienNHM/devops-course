@@ -4,7 +4,7 @@
 
 ::: tip Bạn làm gì
 - **Kết quả:** bài nộp hoàn chỉnh cho mini project, tự chấm được trước khi nộp.
-- **Thời gian:** 20 đến 30 phút điền bài nộp; thử thách làm ở nhà.
+- **Thời gian:** 20 đến 30 phút điền bài nộp; thử thách thực hiện ngoài giờ học.
 - **Cần gì trước:** đã xong 8 mốc của [Mini project: Landing page CLB](09-mini-project.md).
 - **Module trước:** [Mini project: Landing page CLB](09-mini-project.md).
 :::
@@ -18,15 +18,15 @@
 | 3. Trang admin | 10 | Đăng nhập, xem danh sách, đăng xuất; người chưa đăng nhập không thấy dữ liệu |
 | 4. README | 10 | Có mô tả dự án, cách chạy local, cách cấu hình (không chứa khóa thật), cách deploy, link demo |
 | 5. Hiểu và giải thích | 15 | Trả lời 5 câu hỏi trong bài nộp, mỗi câu 3 điểm, đúng ý và bằng lời của mình |
-| 6. Xử lý một lỗi cố tình | 10 | Người chấm cài sẵn một lỗi (ví dụ đổi tên bảng, xóa policy insert, hoặc làm sai URL); bạn chẩn đoán đúng nguyên nhân qua Console/log (5) và sửa đúng cách, không tắt RLS (5) |
+| 6. Xử lý một lỗi cố tình | 10 | Người chấm cài sẵn một lỗi (ví dụ đổi tên bảng, xóa policy insert, hoặc làm sai URL); người học chẩn đoán đúng nguyên nhân qua Console/log (5) và sửa đúng cách, không tắt RLS (5) |
 
-Quy tắc trừ điểm nặng: có secret key hoặc `service_role` trong repo công khai là về 0 điểm nhóm 2 và phải xoay khóa trước khi chấm tiếp. Dùng gói trả phí hay nhập thẻ không phải yêu cầu của bài, và không được cộng điểm.
+Quy tắc trừ điểm nặng: có secret key hoặc `service_role` trong repo công khai thì nhóm 2 bị tính 0 điểm và phải xoay khóa trước khi chấm tiếp. Dùng gói trả phí hay nhập thẻ không phải yêu cầu của bài, và không được cộng điểm.
 
-Thang xếp loại gợi ý: từ 90 là xuất sắc, 75 đến 89 là đạt tốt, 60 đến 74 là đạt, dưới 60 làm lại phần còn thiếu.
+Thang xếp loại gợi ý: từ 90 là xuất sắc, 75 đến 89 là đạt tốt, 60 đến 74 là đạt, dưới 60 cần làm lại phần còn thiếu.
 
 ## Mẫu bài nộp
 
-Sao chép khung dưới đây vào một Issue, một trang Notion hoặc file `SUBMISSION.md` trong repo, rồi điền.
+Sao chép khung dưới đây vào một Issue, một trang Notion hoặc file `SUBMISSION.md` trong repo, rồi điền thông tin.
 
 ```text
 BÀI NỘP MINI PROJECT: LANDING PAGE CLB
@@ -55,7 +55,7 @@ Phần AI: liệt kê 2 việc bạn giao cho agent và 2 việc bạn tự làm
 
 <details><summary>Gợi ý đáp án cho câu 1 đến 3</summary>
 
-1. Bạn commit và đẩy lên GitHub; hosting được nối với repo nhận thay đổi, chạy build (hoặc chỉ sao chép file), rồi phát hành bản mới lên mạng lưới của họ. Trình duyệt người khác tải bản mới.
+1. Thay đổi được commit và đẩy lên GitHub; hosting được nối với repo nhận thay đổi, chạy build (hoặc chỉ sao chép file), rồi phát hành bản mới lên mạng lưới của nền tảng. Trình duyệt của người khác tải bản mới.
 2. Khóa công khai chỉ có quyền thấp, mọi thao tác vẫn bị RLS lọc. Khóa bí mật bỏ qua RLS nên ai cầm được là đọc, sửa, xóa toàn bộ dữ liệu. Vì vậy khóa bí mật chỉ nằm ở backend.
 3. RLS là bộ quy tắc "ai được làm gì với từng dòng". Bảng không bật RLS thì bất kỳ ai có khóa công khai (mà khóa này nằm trong trang, ai cũng lấy được) đều có thể đọc, sửa, xóa dữ liệu qua API.
 
@@ -69,7 +69,7 @@ Chọn một hoặc nhiều thử thách, mỗi thử thách cộng tối đa 5 
 | --- | --- | --- |
 | Function chống spam | Thêm một function trên Vercel hoặc Cloudflare nhận form, kiểm tra dữ liệu và giới hạn tần suất, rồi mới ghi vào Supabase | Xem [bài Fullstack serverless](03-fullstack-serverless.md). Khóa bí mật (nếu dùng) chỉ nằm trong biến môi trường của function, không trong frontend |
 | Firebase thay thế | Làm lại phần lưu dữ liệu bằng Firestore và Security Rules thay cho Supabase | Xem [bài Firebase](05-firebase.md). Viết rules chỉ cho phép tạo, không cho đọc |
-| Preview deploy | Mở một Pull Request đổi giao diện, lấy link preview của hosting, gửi cho bạn bè góp ý trước khi merge | Vercel, Netlify và Cloudflare đều tạo preview cho mỗi nhánh hoặc PR; kiểm tra tài liệu dịch vụ bạn chọn |
+| Preview deploy | Mở một Pull Request đổi giao diện, lấy link preview của hosting, gửi cho người khác góp ý trước khi merge | Vercel, Netlify và Cloudflare đều tạo preview cho mỗi nhánh hoặc PR; kiểm tra tài liệu của dịch vụ đã chọn |
 | CI đơn giản | Thêm GitHub Actions chạy `node --check` cho các file JS và tìm chuỗi `sb_secret_` trong repo, fail nếu có | Là cầu nối sang khóa DevOps chính, xem mục Tiếp theo bên dưới |
 | Agent qua MCP | Dùng MCP server của Supabase để agent đọc cấu trúc bảng ở chế độ chỉ đọc, kiểm tra thiếu RLS | Xem [bài AI agent và deploy](06-ai-agent-deploy.md). Dùng project thử, không dùng dữ liệu thật |
 
@@ -77,9 +77,9 @@ Chọn một hoặc nhiều thử thách, mỗi thử thách cộng tối đa 5 
 
 1. Vì sao trang admin chỉ cần "ẩn" đường dẫn là chưa đủ an toàn?
 2. Khi form gửi lên Supabase, vì sao không nên gọi `select` ngay sau `insert` trong dự án này?
-3. Bạn phát hiện mình lỡ commit secret key lên repo công khai. Làm gì đầu tiên?
+3. Secret key lỡ bị commit lên repo công khai. Việc đầu tiên cần làm là gì?
 4. Vì sao hiển thị dữ liệu người dùng nhập bằng `textContent` an toàn hơn `innerHTML`?
-5. Người chấm cài lỗi "xóa policy insert". Bạn thấy triệu chứng gì, và cách sửa nào là sai?
+5. Người chấm cài lỗi "xóa policy insert". Triệu chứng quan sát được là gì, và cách sửa nào là sai?
 
 <details><summary>Đáp án</summary>
 

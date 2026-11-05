@@ -1,9 +1,9 @@
 # Dùng AI agent để deploy
 
-> **Tóm tắt:** Cài CLI, viết file hướng dẫn cho agent, lập kế hoạch, chạy vòng lặp deploy - xem log - sửa, dùng MCP an toàn, và luôn kiểm tra lời "xong rồi" của agent bằng bằng chứng.
+> **Tóm tắt:** Cài CLI, viết file hướng dẫn cho agent, lập kế hoạch, chạy vòng lặp deploy - xem log - sửa, dùng MCP an toàn, và luôn kiểm tra báo cáo "xong" của agent bằng bằng chứng.
 
 ::: tip Bạn làm gì
-- **Kết quả:** một file `AGENTS.md` và một vòng deploy - xem log - sửa do agent làm, có bằng chứng bạn tự kiểm tra.
+- **Kết quả:** một file `AGENTS.md` và một vòng deploy - xem log - sửa do agent thực hiện, có bằng chứng do người học tự kiểm tra.
 - **Thời gian:** 60 đến 90 phút.
 - **Cần gì trước:** có sẵn một sản phẩm đã đưa lên mạng ở [Đưa web tĩnh lên mạng](02-static-hosting.md), một AI agent, Node.js và Git.
 - **Module trước:** [Fullstack serverless](03-fullstack-serverless.md). Đây là trang tra cứu, không nằm trong lộ trình tuyến tính.
@@ -13,28 +13,28 @@
 
 Thời lượng ước tính: 60 đến 90 phút.
 
-- Cài và đăng nhập các CLI (`gh`, `vercel`, `netlify`, `wrangler`, `supabase`, `firebase`) mà agent sẽ dùng thay bạn gõ lệnh.
-- Viết một file `AGENTS.md` (hoặc `CLAUDE.md`, `.cursorrules`) để agent biết dự án dùng gì, chạy gì và tuyệt đối không đụng vào đâu.
+- Cài và đăng nhập các CLI (`gh`, `vercel`, `netlify`, `wrangler`, `supabase`, `firebase`) mà agent sẽ dùng để chạy lệnh thay người học.
+- Viết một file `AGENTS.md` (hoặc `CLAUDE.md`, `.cursorrules`) để agent biết dự án dùng công cụ nào, chạy lệnh nào và tuyệt đối không đụng vào đâu.
 - Yêu cầu agent lập kế hoạch trước khi sửa code, rồi chạy vòng lặp deploy - xem log - sửa cho tới khi có link chạy thật.
-- Kết nối MCP server ở chế độ ít quyền nhất, và biết việc nào bắt buộc tự tay làm (đăng nhập, trả phí, DNS, dán secret).
-- Kiểm tra "agent nói xong" bằng bằng chứng: mở URL, `curl`, đọc log, đọc diff.
+- Kết nối MCP server ở chế độ ít quyền nhất, và xác định việc bắt buộc tự thực hiện (đăng nhập, trả phí, DNS, dán secret).
+- Kiểm tra báo cáo "xong" của agent bằng bằng chứng: mở URL, `curl`, đọc log, đọc diff.
 
 ## Khái niệm trong 5 phút
 
-Hãy tưởng tượng bạn thuê một nhân viên mới mở cửa hàng giúp mình. Nhân viên này làm rất nhanh, nhưng chưa biết gì về cửa hàng của bạn và đôi khi tự tin quá mức. Bạn cần ba thứ:
+**AI agent** là AI không chỉ trả lời câu hỏi mà còn tự đọc file, chạy lệnh và sửa code. Agent làm việc nhanh nhưng chưa biết ngữ cảnh dự án và đôi khi tự tin quá mức, nên cần ba thành phần kiểm soát:
 
-1. **Sổ tay nhân viên** (`AGENTS.md`): cửa hàng bán gì, mở cửa bằng chìa nào, cấm đụng vào két sắt.
-2. **Chìa khóa có giới hạn** (CLI đã đăng nhập, MCP ít quyền): đủ để làm việc, không đủ để dọn sạch cửa hàng.
-3. **Biên bản nghiệm thu** (URL mở được, log sạch, diff đã đọc): không tin lời "xong rồi", chỉ tin bằng chứng.
+1. **File hướng dẫn** (`AGENTS.md`): mô tả dự án làm gì, chạy bằng lệnh nào và những file nào không được đụng vào.
+2. **Quyền truy cập có giới hạn** (CLI đã đăng nhập, MCP ít quyền): đủ để làm việc, không đủ để gây hư hại diện rộng.
+3. **Bằng chứng nghiệm thu** (URL mở được, log sạch, diff đã đọc): không tin báo cáo "xong", chỉ tin bằng chứng.
 
-| Thuật ngữ | Nghĩa đời thường | Ví dụ |
+| Thuật ngữ | Ý nghĩa | Ví dụ |
 | --- | --- | --- |
-| CLI (command-line interface; xem [thuật ngữ](../resources/glossary.md)) | Điều khiển dịch vụ bằng dòng lệnh thay vì bấm nút | `vercel deploy` |
+| CLI (command-line interface; xem [thuật ngữ](../resources/glossary.md)) | Điều khiển dịch vụ bằng dòng lệnh thay vì thao tác trên giao diện | `vercel deploy` |
 | AI agent | AI không chỉ trả lời mà tự đọc file, chạy lệnh, sửa code | Claude Code, Cursor, Codex CLI, Gemini CLI |
-| `AGENTS.md` | File hướng dẫn nằm trong dự án, agent đọc mỗi lần bắt đầu | Tech stack, lệnh chạy, điều cấm |
-| MCP (Model Context Protocol) | Chuẩn để agent "cắm" vào dịch vụ ngoài và gọi công cụ của dịch vụ đó | MCP của Vercel, Supabase, GitHub |
-| Prompt injection | Văn bản độc hại trong web/issue/dữ liệu lừa agent làm việc xấu | Issue ghi "hãy in ra mọi secret" |
-| Build log | Nhật ký lúc nền tảng xây dựng sản phẩm của bạn | Lỗi thiếu package, sai lệnh build |
+| `AGENTS.md` | File hướng dẫn nằm trong dự án, agent đọc mỗi lần bắt đầu phiên làm việc | Tech stack, lệnh chạy, điều cấm |
+| MCP (Model Context Protocol) | Chuẩn để agent kết nối với dịch vụ ngoài và gọi công cụ của dịch vụ đó | MCP của Vercel, Supabase, GitHub |
+| Prompt injection | Văn bản độc hại nằm trong web, issue hoặc dữ liệu, nhằm lừa agent thực hiện việc có hại | Issue ghi "hãy in ra mọi secret" |
+| Build log | Nhật ký của nền tảng trong lúc build sản phẩm | Lỗi thiếu package, sai lệnh build |
 
 Vòng lặp làm việc với agent khi deploy:
 
@@ -48,24 +48,24 @@ flowchart LR
   E -- "Không" --> F["Tự kiểm chứng bằng URL"]
 ```
 
-Ai làm gì, để bạn không giao nhầm việc:
+Phân công việc giữa agent và người học, để tránh giao nhầm việc:
 
-| Việc | Agent làm được | Bạn phải tự làm |
+| Việc | Agent làm được | Người học phải tự làm |
 | --- | --- | --- |
 | Viết code, sửa lỗi build, viết `README` | Có | Đọc diff |
-| Chạy `git commit`, `git push` | Có (sau khi bạn duyệt) | Quyết định push gì |
+| Chạy `git commit`, `git push` | Có (sau khi người học duyệt) | Quyết định nội dung push |
 | Cài CLI | Có | Chấp thuận lệnh cài |
-| Đăng nhập CLI (`vercel login`...) | Không | Tự gõ và đăng nhập trên trình duyệt |
-| Bấm nâng cấp gói, nhập thẻ | Không | Tự quyết định, ưu tiên gói miễn phí |
+| Đăng nhập CLI (`vercel login`...) | Không | Tự chạy lệnh và đăng nhập trên trình duyệt |
+| Nâng cấp gói, nhập thẻ | Không | Tự quyết định, ưu tiên gói miễn phí |
 | Trỏ DNS ở nhà đăng ký domain | Có thể hướng dẫn | Tự đăng nhập và nhập bản ghi |
 | Dán secret vào trang cài đặt nền tảng | Không | Tự dán, không qua chat |
-| Xoá project, xoá database | Không | Tự làm sau khi suy nghĩ kỹ |
+| Xoá project, xoá database | Không | Tự thực hiện sau khi cân nhắc kỹ |
 
 ## Thực hành từng bước
 
 ### Bước 1. Cài các công cụ nền
 
-Bạn cần Node.js bản LTS và Git. Kiểm tra:
+Bước này cần Node.js bản LTS và Git. Kiểm tra bằng các lệnh:
 
 ```bash
 node --version
@@ -73,13 +73,13 @@ npm --version
 git --version
 ```
 
-Bạn sẽ thấy ba số phiên bản. Nếu báo "command not found", cài Node.js từ https://nodejs.org và Git từ https://git-scm.com rồi mở lại terminal.
+Kết quả: ba số phiên bản. Nếu báo "command not found", cài Node.js từ https://nodejs.org và Git từ https://git-scm.com rồi mở lại terminal.
 
-Chỉ cài CLI của nền tảng bạn thực sự dùng, không cần cài hết sáu cái. Lệnh cài từng CLI (`gh`, `vercel`, `netlify`, `wrangler`, `firebase`, `supabase`) nằm ở [trang nâng cao](06-ai-agent-deploy-advanced.md#cai-cac-cli-cua-nen-tang). Mỗi lệnh cài nên in ra phiên bản hoặc trang trợ giúp, không báo lỗi đỏ.
+Chỉ cài CLI của nền tảng thực sự dùng, không cần cài cả sáu CLI. Lệnh cài từng CLI (`gh`, `vercel`, `netlify`, `wrangler`, `firebase`, `supabase`) nằm ở [trang nâng cao](06-ai-agent-deploy-advanced.md#cai-cac-cli-cua-nen-tang). Mỗi lệnh cài nên in ra phiên bản hoặc trang trợ giúp, không báo lỗi đỏ.
 
 ### Bước 2. Tự đăng nhập từng CLI
 
-Bước này bạn làm một mình, không nhờ agent. Mỗi lệnh sẽ mở trình duyệt để bạn đăng nhập và cho phép:
+Người học tự thực hiện bước này, không nhờ agent. Mỗi lệnh mở trình duyệt để đăng nhập và cấp quyền:
 
 ```bash
 gh auth login
@@ -90,7 +90,7 @@ npx supabase login
 firebase login
 ```
 
-Kiểm tra đã vào được chưa:
+Kiểm tra trạng thái đăng nhập:
 
 ```bash
 gh auth status
@@ -99,13 +99,13 @@ npx wrangler whoami
 firebase projects:list
 ```
 
-Bạn sẽ thấy tên tài khoản của mình. Giao diện đăng nhập có thể khác chút giữa các lần cập nhật.
+Kết quả: tên tài khoản của người học. Giao diện đăng nhập có thể khác đôi chút giữa các lần cập nhật.
 
-Lý do không nhờ agent: mật khẩu và mã xác thực của bạn không nên đi qua khung chat. Sau khi bạn đăng nhập, CLI lưu phiên đăng nhập trên máy và agent có thể gọi lệnh CLI dưới quyền của bạn. Vì vậy hãy đăng nhập bằng tài khoản cá nhân cho dự án thử nghiệm, không dùng tài khoản công ty có quyền rộng.
+Lý do không nhờ agent: mật khẩu và mã xác thực không nên đi qua khung chat. Sau khi đăng nhập, CLI lưu phiên đăng nhập trên máy và agent có thể gọi lệnh CLI dưới quyền của người học. Vì vậy nên đăng nhập bằng tài khoản cá nhân cho dự án thử nghiệm, không dùng tài khoản công ty có quyền rộng.
 
 ### Bước 3. Tạo file hướng dẫn cho agent
 
-Claude Code đọc `CLAUDE.md`. Theo tài liệu hiện hành, nếu dự án chỉ có `AGENTS.md` mà không có `CLAUDE.md`, Claude Code cũng đọc `AGENTS.md`; nếu có cả hai, nó chỉ đọc `CLAUDE.md`, nên hãy để `CLAUDE.md` nhập nội dung từ `AGENTS.md` bằng dòng `@AGENTS.md`. Việc đọc thẳng `AGENTS.md` cần bản Claude Code đủ mới (tài liệu ghi từ v2.1.277; kiểm tra 21/10/2026), bản cũ thì dùng cách nhập bằng `@AGENTS.md`. Các agent khác (Codex CLI, Cursor, GitHub Copilot agent, Gemini CLI) có file riêng hoặc đọc `AGENTS.md`; hãy xem tài liệu của công cụ bạn dùng để biết tên file chính xác. Cursor còn dùng thư mục `.cursor/rules/` thay cho `.cursorrules` kiểu cũ (kiểm tra tài liệu Cursor).
+Claude Code đọc `CLAUDE.md`. Theo tài liệu hiện hành, nếu dự án chỉ có `AGENTS.md` mà không có `CLAUDE.md`, Claude Code cũng đọc `AGENTS.md`; nếu có cả hai, Claude Code chỉ đọc `CLAUDE.md`, nên để `CLAUDE.md` nhập nội dung từ `AGENTS.md` bằng dòng `@AGENTS.md`. Việc đọc thẳng `AGENTS.md` cần bản Claude Code đủ mới (tài liệu ghi từ v2.1.277; kiểm tra 21/10/2026), bản cũ thì dùng cách nhập bằng `@AGENTS.md`. Các agent khác (Codex CLI, Cursor, GitHub Copilot agent, Gemini CLI) có file riêng hoặc đọc `AGENTS.md`; cần xem tài liệu của công cụ đang dùng để biết tên file chính xác. Cursor còn dùng thư mục `.cursor/rules/` thay cho `.cursorrules` kiểu cũ (kiểm tra tài liệu Cursor).
 
 Tạo `AGENTS.md` ở thư mục gốc dự án. Ví dụ cho một trang web tĩnh deploy lên Cloudflare (Workers với static assets, đường chính theo [bài 02](02-static-hosting.md)):
 
@@ -140,15 +140,15 @@ Tạo `CLAUDE.md` rất ngắn để dùng chung nội dung:
 @AGENTS.md
 ```
 
-Nếu dùng Claude Code, bạn cũng có thể chạy `/init` để agent tự đọc dự án và đề xuất file, rồi bạn sửa lại phần quy tắc. Vercel có lệnh `vercel agent init` để sinh `AGENTS.md` với gợi ý deploy lên Vercel; hãy đọc kết quả trước khi giữ lại.
+Với Claude Code, có thể chạy `/init` để agent tự đọc dự án và đề xuất file, sau đó người học sửa lại phần quy tắc. Vercel có lệnh `vercel agent init` để sinh `AGENTS.md` với gợi ý deploy lên Vercel; cần đọc kết quả trước khi giữ lại.
 
-Bạn sẽ thấy: file nằm ở thư mục gốc, tối đa vài chục dòng. File dài và mơ hồ làm agent làm theo kém đi, nên chỉ ghi điều agent không tự đoán được.
+Kết quả: file nằm ở thư mục gốc, tối đa vài chục dòng. File dài và mơ hồ làm agent làm theo kém đi, nên chỉ ghi những điều agent không tự đoán được.
 
 Với công cụ app-builder như Lovable, Bolt, v0, Replit: không có file trong repo, nhưng thường có ô "project knowledge" hoặc "custom instructions". Dán cùng nội dung quy tắc vào đó (không dán secret).
 
 ### Bước 4. Bắt agent lập kế hoạch trước khi code
 
-Mở agent ở thư mục dự án và dán:
+Mở agent ở thư mục dự án và dán prompt sau:
 
 ```text
 Hãy đọc AGENTS.md. Tôi muốn đưa dự án này lên Internet bằng Cloudflare Workers (static assets).
@@ -160,17 +160,17 @@ CHƯA sửa file nào. Hãy trả lời:
 Chờ tôi đồng ý rồi mới bắt đầu.
 ```
 
-Bạn sẽ thấy một bản kế hoạch có đánh số. Hãy đọc từng dòng. Nếu thấy "tạo tài khoản", "nhập thẻ", "tắt kiểm tra bảo mật cho chạy được" hay "dán khóa vào file", hãy dừng lại và sửa kế hoạch.
+Kết quả: một bản kế hoạch có đánh số. Cần đọc từng dòng. Nếu thấy "tạo tài khoản", "nhập thẻ", "tắt kiểm tra bảo mật cho chạy được" hoặc "dán khóa vào file", dừng lại và sửa kế hoạch.
 
 ### Bước 5. Chạy vòng lặp deploy - xem log - sửa
 
-Cách ổn định nhất là kết nối repo GitHub với nền tảng (Vercel, Netlify, Cloudflare Pages đều có). Mỗi lần `git push`, nền tảng tự build và deploy. Vòng lặp:
+Cách ổn định nhất là kết nối repo GitHub với nền tảng (Vercel, Netlify, Cloudflare Pages đều hỗ trợ). Mỗi lần `git push`, nền tảng tự build và deploy. Vòng lặp gồm các bước:
 
-1. Agent sửa code, bạn đọc diff (xem bước 7 về cách đọc).
+1. Agent sửa code, người học đọc diff (xem bước 7 về cách đọc).
 2. Agent commit và push lên nhánh mới. Nền tảng tạo link preview.
-3. Nếu build đỏ, bạn dán build log cho agent, hoặc để agent tự lấy log qua CLI (xem [CLI cheatsheet](cli-cheatsheet.md)).
-4. Agent đề xuất sửa nguyên nhân gốc, không "tắt cho qua".
-5. Lặp lại tới khi preview chạy tốt. Sau đó bạn mới merge vào `main` để lên production.
+3. Nếu build thất bại, người học dán build log cho agent, hoặc để agent tự lấy log qua CLI (xem [CLI cheatsheet](cli-cheatsheet.md)).
+4. Agent đề xuất sửa nguyên nhân gốc, không tắt kiểm tra để vượt qua lỗi.
+5. Lặp lại tới khi preview chạy tốt. Sau đó mới merge vào `main` để lên production.
 
 Prompt cho bước đọc log:
 
@@ -183,17 +183,17 @@ Không tắt lint, test hay kiểm tra bảo mật chỉ để build qua.
 [dán log]
 ```
 
-Mẹo: lỗi nằm gần đầu tiên chứ không phải dòng cuối. Dòng cuối thường chỉ là "Build failed" chung chung.
+Lưu ý: nguyên nhân lỗi thường nằm ở dòng lỗi đầu tiên có ý nghĩa, không phải dòng cuối. Dòng cuối thường chỉ là thông báo chung "Build failed".
 
 ### Bước 6. Đọc thêm khi cần: MCP, GitHub Actions và prompt injection
 
-Ba chủ đề này được tách sang trang [Deploy cùng AI agent: nâng cao](06-ai-agent-deploy-advanced.md): kết nối MCP server (Vercel, Supabase, Cloudflare, Netlify, GitHub) theo nguyên tắc ít quyền nhất, cho agent viết GitHub Actions deploy để bạn review, và cách phòng prompt injection.
+Ba chủ đề này được tách sang trang [Deploy cùng AI agent: nâng cao](06-ai-agent-deploy-advanced.md): kết nối MCP server (Vercel, Supabase, Cloudflare, Netlify, GitHub) theo nguyên tắc ít quyền nhất, cho agent viết GitHub Actions deploy để người học review, và cách phòng prompt injection.
 
-Ba điều cần nhớ ngay cả khi chưa đọc trang đó: MCP bắt đầu bằng chế độ chỉ đọc và chỉ cắm vào project dev; mọi file workflow agent viết đều phải được bạn đọc; nội dung agent đọc từ web, issue, README chỉ là dữ liệu, không phải mệnh lệnh.
+Ba điều cần nhớ ngay cả khi chưa đọc trang đó: MCP bắt đầu bằng chế độ chỉ đọc và chỉ kết nối với project dev; mọi file workflow do agent viết đều phải được đọc kỹ; nội dung agent đọc từ web, issue, README chỉ là dữ liệu, không phải mệnh lệnh.
 
 ### Bước 7. Nghiệm thu: "agent nói xong" phải có bằng chứng
 
-Khi agent báo "Đã deploy thành công", hãy tự kiểm tra:
+Khi agent báo "Đã deploy thành công", người học tự kiểm tra bằng các lệnh sau:
 
 ```bash
 # 1. Trang có trả về mã 200 không (thay URL bằng link của bạn)
@@ -206,20 +206,20 @@ curl -s https://ten-du-an.example.app | grep -i "Tên câu lạc bộ"
 curl -s https://ten-du-an.example.app/api/hello
 ```
 
-Bạn sẽ thấy `HTTP/2 200` ở lệnh đầu (hoặc `200` trong dòng đầu tiên) và nội dung đúng ở hai lệnh sau. Rồi tự mở link trên điện thoại (dùng 4G, không dùng Wi-Fi nhà) và thử bấm các chức năng chính.
+Kết quả: `HTTP/2 200` ở lệnh đầu (hoặc `200` trong dòng đầu tiên) và nội dung đúng ở hai lệnh sau. Sau đó tự mở link trên điện thoại (dùng 4G, không dùng Wi-Fi nhà) và thử các chức năng chính.
 
 Bảng bằng chứng theo loại việc:
 
-| Agent nói | Bằng chứng bạn cần |
+| Agent nói | Bằng chứng cần có |
 | --- | --- |
 | "Đã deploy" | URL mở được ở cửa sổ ẩn danh, deployment hiện trạng thái Ready trên dashboard |
 | "Đã sửa lỗi build" | Build mới xanh, không có dòng lỗi mới trong log |
-| "Đã thêm biến môi trường" | Tên biến hiện trong trang cài đặt nền tảng (giá trị bạn tự nhập), và tính năng dùng biến đó chạy thật |
-| "Đã bật bảo mật cho database" | Bạn tự thử truy cập khi chưa đăng nhập và thấy bị từ chối; xem chi tiết ở [Supabase](04-supabase.md) và [Firebase](05-firebase.md) |
+| "Đã thêm biến môi trường" | Tên biến hiện trong trang cài đặt nền tảng (giá trị do người học tự nhập), và tính năng dùng biến đó chạy thật |
+| "Đã bật bảo mật cho database" | Người học tự thử truy cập khi chưa đăng nhập và thấy bị từ chối; xem chi tiết ở [Supabase](04-supabase.md) và [Firebase](05-firebase.md) |
 | "Đã thêm domain" | Mở domain mới thấy trang, có ổ khóa HTTPS; xem [Domain và bảo mật](07-domain-security-production.md) |
-| "Không có secret trong code" | Bạn tự chạy `git grep -i "key\|secret\|token"` và đọc kết quả |
+| "Không có secret trong code" | Người học tự chạy `git grep -i "key\|secret\|token"` và đọc kết quả |
 
-Đọc diff trước khi chấp nhận:
+Đọc diff trước khi chấp nhận thay đổi:
 
 ```bash
 git status
@@ -227,11 +227,11 @@ git diff
 git log --oneline -5
 ```
 
-Chú ý đặc biệt: file mới lạ (`.env`, `*.pem`), thay đổi trong `.github/workflows/`, thay đổi cấu hình bảo mật, dòng bị xoá liên quan tới kiểm tra quyền.
+Cần chú ý đặc biệt: file mới lạ (`.env`, `*.pem`), thay đổi trong `.github/workflows/`, thay đổi cấu hình bảo mật, và dòng bị xoá liên quan đến kiểm tra quyền.
 
 ## Nhờ AI agent làm giúp
 
-Prompt sao chép được để agent kiểm tra lại chính nó và viết `AGENTS.md`:
+Prompt sao chép được để agent đề xuất `AGENTS.md`:
 
 ```text
 Hãy đọc cấu trúc dự án này và đề xuất nội dung AGENTS.md ngắn (dưới 40 dòng) gồm:
@@ -251,13 +251,13 @@ Bạn nói đã deploy xong. Hãy đưa bằng chứng, không phải lời kh�
 Nếu có bước nào bạn không kiểm tra được, hãy nói rõ là chưa kiểm tra.
 ```
 
-Điều bạn phải tự kiểm tra: đọc kết quả `curl`, tự mở URL, tự đọc `git diff`.
+Việc người học phải tự kiểm tra: đọc kết quả `curl`, tự mở URL, tự đọc `git diff`.
 
 ::: danger Việc KHÔNG giao cho agent
 - Đăng nhập tài khoản, nhập mật khẩu, mã 2FA.
-- Bấm nâng cấp gói, nhập thông tin thẻ, bật chi tiêu vượt hạn mức.
+- Nâng cấp gói, nhập thông tin thẻ, bật chi tiêu vượt hạn mức.
 - Dán secret, API key, `service_role` key vào khung chat hoặc vào file trong repo.
-- Nhập bản ghi DNS ở nhà đăng ký domain (agent có thể nói bản ghi cần nhập, bạn tự nhập).
+- Nhập bản ghi DNS ở nhà đăng ký domain (agent có thể cho biết bản ghi cần nhập, người học tự nhập).
 - Xoá project, xoá database, đổi quyền thành viên.
 - Dán dữ liệu cá nhân của người dùng thật vào prompt.
 :::
@@ -266,13 +266,13 @@ Nếu có bước nào bạn không kiểm tra được, hãy nói rõ là chưa
 
 | Triệu chứng | Nguyên nhân thường gặp | Cách xử lý |
 | --- | --- | --- |
-| Build đỏ với `Cannot find module` hoặc `command not found: vite` | Thiếu `package.json`, quên commit `package-lock.json`, hoặc lệnh build sai | Chạy `npm install` và `npm run build` ở máy bạn trước. Cho agent đọc log, sửa dependency, không đổi sang lệnh build lạ |
+| Build đỏ với `Cannot find module` hoặc `command not found: vite` | Thiếu `package.json`, quên commit `package-lock.json`, hoặc lệnh build sai | Chạy `npm install` và `npm run build` ở máy cá nhân trước. Cho agent đọc log, sửa dependency, không đổi sang lệnh build lạ |
 | Deploy xong nhưng trang trắng hoặc 404 | Sai thư mục output (ví dụ `dist` so với `public`), hoặc đường dẫn file tĩnh sai | Kiểm tra "Build output directory" trong cài đặt nền tảng khớp với thư mục thực tế. Mở tab Network của trình duyệt xem file nào 404 |
-| Chạy local được, lên mạng lỗi biến môi trường `undefined` | Biến chỉ có trong `.env` trên máy, chưa khai báo trên nền tảng | Tự thêm biến trong trang cài đặt nền tảng, rồi deploy lại. Nhiều framework chỉ lộ ra trình duyệt các biến có tiền tố riêng (kiểm tra tài liệu framework) |
+| Chạy local được, lên mạng lỗi biến môi trường `undefined` | Biến chỉ có trong `.env` trên máy, chưa khai báo trên nền tảng | Tự thêm biến trong trang cài đặt nền tảng, rồi deploy lại. Nhiều framework chỉ đưa ra trình duyệt các biến có tiền tố riêng (kiểm tra tài liệu framework) |
 | Agent đề nghị "tắt kiểm tra cho chạy được" (tắt RLS, mở rule `allow read, write: if true`, bỏ `--no-verify`) | Agent chọn đường ngắn nhất để hết lỗi | Từ chối. Yêu cầu agent nêu nguyên nhân gốc và cách sửa đúng. Nhắc lại quy tắc ở `AGENTS.md` |
 | Agent in ra hoặc commit nhầm khóa bí mật | `.env` không có trong `.gitignore`, hoặc agent đọc file khoá | Xoay (rotate) khóa ngay ở trang quản trị nền tảng. Gỡ file khỏi git, thêm `.env` vào `.gitignore`. Đọc [Domain và bảo mật](07-domain-security-production.md). Xoá khỏi lịch sử không thay được việc xoay khóa |
-| `gh auth status` báo chưa đăng nhập, hoặc `git push` bị từ chối | Chưa chạy `gh auth login`, hoặc token hết hạn | Tự chạy lại `gh auth login`. Kiểm tra bạn có quyền ghi vào repo |
-| MCP báo cần đăng nhập hoặc không thấy công cụ | Chưa hoàn tất OAuth, hoặc client chưa được nền tảng hỗ trợ | Gõ `/mcp` trong Claude Code để đăng nhập lại, đọc danh sách client được hỗ trợ trong tài liệu của nền tảng |
+| `gh auth status` báo chưa đăng nhập, hoặc `git push` bị từ chối | Chưa chạy `gh auth login`, hoặc token hết hạn | Tự chạy lại `gh auth login`. Kiểm tra quyền ghi vào repo |
+| MCP báo cần đăng nhập hoặc không thấy công cụ | Chưa hoàn tất OAuth, hoặc client chưa được nền tảng hỗ trợ | Nhập `/mcp` trong Claude Code để đăng nhập lại, đọc danh sách client được hỗ trợ trong tài liệu của nền tảng |
 
 Xem thêm các lỗi chung ở [Xử lý sự cố](08-troubleshooting.md).
 
@@ -295,7 +295,7 @@ Sáu câu hỏi tự kiểm tra (kèm đáp án) nằm ở cuối trang [Deploy 
 
 **Tiếp theo:** đây là trang tra cứu. Đọc thêm [nâng cao](06-ai-agent-deploy-advanced.md) khi cần MCP hoặc GitHub Actions; trước khi mở cho người dùng thật, đọc [Tên miền, bảo mật, production](07-domain-security-production.md). Sau đó dùng [Thư viện prompt](prompt-library.md) và [CLI cheatsheet](cli-cheatsheet.md) làm tài liệu tra cứu, và [Xử lý sự cố](08-troubleshooting.md) khi gặp lỗi. Quay lại [trang chủ track](index.md) để xem lộ trình.
 
-Tài liệu chính thức (giao diện và lệnh có thể thay đổi, hãy đối chiếu):
+Tài liệu chính thức (giao diện và lệnh có thể thay đổi, cần đối chiếu):
 
 - Claude Code, CLAUDE.md và AGENTS.md: https://code.claude.com/docs/en/memory
 - Vercel CLI: https://vercel.com/docs/cli và Vercel MCP: https://vercel.com/docs/agent-resources/vercel-mcp

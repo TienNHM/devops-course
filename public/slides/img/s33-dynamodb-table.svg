@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 390" width="960" height="390" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="390" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">DynamoDB: bảng, item và partition key</text>
+<rect x="40" y="110" width="240" height="200" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="160.0" y="187.0" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bảng</text>
+<text x="160.0" y="217.0" font-size="20" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">club-events</text>
+<text x="160.0" y="247.0" font-size="19" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">khóa: event_id</text>
+<rect x="320" y="110" width="600" height="200" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<rect x="320" y="110" width="600" height="50" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="335" y="143" font-size="19" text-anchor="start" fill="#0f172a" font-weight="700">event_id (khóa)</text>
+<text x="560" y="143" font-size="19" text-anchor="start" fill="#0f172a" font-weight="700">title</text>
+<text x="780" y="143" font-size="19" text-anchor="start" fill="#0f172a" font-weight="700">date</text>
+<text x="335" y="200" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, monospace">e001</text>
+<text x="560" y="200" font-size="19" text-anchor="start" fill="#0f172a">Workshop Docker</text>
+<text x="780" y="200" font-size="19" text-anchor="start" fill="#0f172a">2026-11-20</text>
+<text x="335" y="260" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, monospace">e002</text>
+<text x="560" y="260" font-size="19" text-anchor="start" fill="#0f172a">Demo CI/CD</text>
+<text x="780" y="260" font-size="19" text-anchor="start" fill="#0f172a">2026-12-05</text>
+<path d="M282 210L316 210" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="360" font-size="19" text-anchor="middle" fill="#475569">Mỗi dòng là một item; partition key xác định item duy nhất.</text>
+</svg>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 // Tiến độ học: lưu trong localStorage, mọi truy cập đều bọc try/catch.
 // Khi thiếu storage (chế độ riêng tư, bị chặn), trang vẫn render bình thường.
 
-export const TOTAL_SESSIONS = 32
+export const TOTAL_SESSIONS = 34
 export const TOTAL_WEEKS = 16
 const DONE_KEY = 'devops-course:done'
 const CHECK_PREFIX = 'devops-course:chk:'
@@ -124,13 +124,13 @@ export function checkKey(path: string, index: number): string {
 }
 
 // Hai lộ trình: Cơ bản (10 ngày) và Nâng cao (22 buổi). Danh sách buổi nằm ở ../tracks.ts
-import { ADVANCED_SESSIONS, BASIC_SESSIONS, basicDay, trackOfSession, type TrackId } from '../tracks'
-export { ADVANCED_SESSIONS, BASIC_SESSIONS, basicDay, trackOfSession }
+import { ADVANCED_SESSIONS, BASIC_SESSIONS, basicDay, slideOnly, trackOfSession, type TrackId } from '../tracks'
+export { ADVANCED_SESSIONS, BASIC_SESSIONS, basicDay, slideOnly, trackOfSession }
 export type { TrackId }
 
 export const TRACKS: Record<TrackId, { id: TrackId; name: string; sub: string; link: string; sessions: number[]; unit: string }> = {
   basic: { id: 'basic', name: 'Cơ bản', sub: '14 ngày, 2 giờ mỗi ngày', link: '/curriculum/basic', sessions: BASIC_SESSIONS, unit: 'ngày' },
-  advanced: { id: 'advanced', name: 'Nâng cao', sub: 'Đào sâu, Kubernetes, Capstone', link: '/curriculum/advanced', sessions: ADVANCED_SESSIONS, unit: 'buổi' },
+  advanced: { id: 'advanced', name: 'Nâng cao', sub: 'Đào sâu, Kubernetes, Capstone, Cloud', link: '/curriculum/advanced', sessions: ADVANCED_SESSIONS, unit: 'buổi' },
 }
 
 export const trackTotal = (id: TrackId) => TRACKS[id].sessions.length
@@ -140,7 +140,7 @@ export function trackDone(id: TrackId): number {
 }
 
 // Trang nào thuộc lộ trình nào (để hiện bộ chuyển lộ trình ở sidebar); null nếu không thuộc lộ trình nào.
-// Vibe Deploy là lộ trình riêng, không tính vào 32 buổi.
+// Vibe Deploy là lộ trình riêng, không tính vào các buổi của Cơ bản và Nâng cao.
 export type PathTrack = TrackId | 'vibe'
 
 export function trackOfPath(path: string): PathTrack | null {

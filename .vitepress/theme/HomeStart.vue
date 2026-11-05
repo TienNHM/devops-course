@@ -39,33 +39,33 @@ function reset() {
 <template>
   <div class="home-start">
     <section class="block">
-      <h2>Chọn lộ trình của bạn</h2>
+      <h2>Chọn lộ trình học</h2>
       <div class="tracks">
         <a class="track basic" :href="withBase(TRACKS.basic.link)">
           <span class="tag start">Bắt đầu ở đây</span>
           <strong>Cơ bản</strong>
           <span class="range">14 ngày · 2 giờ mỗi ngày</span>
-          <span class="desc">Một dự án làm xuyên suốt: Linux, Git, Docker, Compose và GitHub Actions. Ngày 10, ứng dụng của bạn tự được kiểm thử, đóng gói và đưa lên kho image.</span>
-          <span class="who">Dành cho: người mới, chưa cần biết DevOps.</span>
+          <span class="desc">Một dự án xuyên suốt gồm Linux, Git, Docker, Compose và GitHub Actions. Đến Ngày 10, ứng dụng được tự động kiểm thử, đóng gói và đưa lên registry (kho image).</span>
+          <span class="who">Đối tượng: người mới bắt đầu, chưa cần biết DevOps.</span>
         </a>
         <a class="track" :href="withBase(TRACKS.advanced.link)">
           <span class="tag">Sau khi xong Cơ bản</span>
           <strong>Nâng cao</strong>
-          <span class="range">22 buổi · tự học theo phần</span>
-          <span class="desc">Đào sâu Linux, mạng, tối ưu image, kiểm thử và bảo mật pipeline, rồi Kubernetes trên máy bạn (kind) và dự án cuối khóa theo nhóm.</span>
-          <span class="who">Dành cho: người đã dùng được Docker, Compose và CI.</span>
+          <span class="range">22 buổi + 2 buổi tùy chọn</span>
+          <span class="desc">Nội dung đi sâu vào Linux, mạng, tối ưu image, kiểm thử và bảo mật pipeline, sau đó là Kubernetes trên máy cá nhân (kind) và dự án cuối khóa theo nhóm.</span>
+          <span class="who">Đối tượng: người đã sử dụng được Docker, Compose và CI.</span>
         </a>
         <a class="track vibe" :href="withBase('/vibe/')">
           <span class="tag">Lộ trình riêng</span>
           <strong>Vibe Deploy</strong>
           <span class="range">Khoảng 3–4 giờ</span>
-          <span class="desc">Đưa website lên mạng nhanh bằng hosting miễn phí và công cụ AI, không cần Docker hay Kubernetes.</span>
-          <span class="who">Dành cho: ai chỉ muốn có link web mở được từ điện thoại.</span>
+          <span class="desc">Đưa website lên Internet nhanh bằng hosting miễn phí và công cụ AI, không cần Docker hay Kubernetes.</span>
+          <span class="who">Đối tượng: người chỉ cần một đường dẫn website mở được từ điện thoại.</span>
         </a>
       </div>
       <p class="who-note">
-        Đã biết lập trình? Cứ học theo lộ trình và làm thêm mức L2 ở mỗi bài. Là mentor?
-        <a :href="withBase('/mentors/')">Vào khu Mentor</a>.
+        Người đã biết lập trình học theo lộ trình và thực hiện thêm mức L2 ở mỗi bài. Mentor có thể truy cập khu dành riêng:
+        <a :href="withBase('/mentors/')">Khu Mentor</a>.
       </p>
     </section>
 
@@ -76,21 +76,21 @@ function reset() {
           <span class="n">1</span>
           <div>
             <strong>Cài môi trường</strong>
-            <p>Làm <a :href="withBase('/curriculum/getting-started')">4 việc trước Ngày 1</a>, một lần, khoảng 20 phút.</p>
+            <p>Thực hiện <a :href="withBase('/curriculum/getting-started')">4 việc trước Ngày 1</a>, chỉ một lần, khoảng 20 phút.</p>
           </div>
         </li>
         <li>
           <span class="n">2</span>
           <div>
             <strong>Học theo slide</strong>
-            <p>Mỗi ngày một bộ slide: xem, gõ lệnh làm theo, rồi kiểm tra kết quả.</p>
+            <p>Mỗi ngày có một bộ slide: xem slide, chạy các lệnh theo hướng dẫn, rồi kiểm tra kết quả.</p>
           </div>
         </li>
         <li>
           <span class="n">3</span>
           <div>
             <strong>Ôn và demo</strong>
-            <p>Ngày 11–14: sửa lỗi, hoàn thiện dự án và demo 10 phút.</p>
+            <p>Ngày 11–14: sửa lỗi, hoàn thiện dự án và demo trong 10 phút.</p>
           </div>
         </li>
       </ol>
@@ -99,7 +99,7 @@ function reset() {
 
     <section class="block progress">
       <div class="progress-text">
-        <strong>Tiến độ của bạn: đã xong {{ count }} bài</strong>
+        <strong>Tiến độ học tập: đã hoàn thành {{ count }} bài</strong>
         <div class="row">
           <span>Cơ bản {{ basic.done }}/{{ basic.total }} ngày</span>
           <div class="bar" role="progressbar" aria-valuemin="0" :aria-valuemax="basic.total" :aria-valuenow="basic.done">
@@ -115,7 +115,7 @@ function reset() {
       </div>
       <div class="progress-actions">
         <a v-if="next && count > 0" class="button small" :href="withBase(next.link)">Học tiếp: {{ next.label }}</a>
-        <span v-else-if="!next" class="done-all">Bạn đã hoàn thành cả hai lộ trình.</span>
+        <span v-else-if="!next" class="done-all">Đã hoàn thành cả hai lộ trình.</span>
         <button v-if="count > 0" type="button" class="reset" @click="reset">Xóa tiến độ</button>
       </div>
     </section>

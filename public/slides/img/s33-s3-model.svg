@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">S3: bucket chứa object, mỗi object có key</text>
+<rect x="40" y="110" width="260" height="230" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="170.0" y="202.0" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bucket</text>
+<text x="170.0" y="232.0" font-size="20" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">club-assets</text>
+<text x="170.0" y="262.0" font-size="18" text-anchor="middle" fill="#0f172a">tên duy nhất</text>
+<rect x="360" y="110" width="560" height="230" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="380" y="145" font-size="20" text-anchor="start" fill="#475569" font-weight="700">Các object trong bucket</text>
+<rect x="390" y="165" width="500" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="410" y="195" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, monospace">members.csv</text>
+<text x="870" y="195" font-size="18" text-anchor="end" fill="#475569">128 byte</text>
+<rect x="390" y="220" width="500" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="410" y="250" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, monospace">exports/2026-11.csv</text>
+<text x="870" y="250" font-size="18" text-anchor="end" fill="#475569">4 KB</text>
+<rect x="390" y="275" width="500" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="410" y="305" font-size="19" text-anchor="start" fill="#0f172a" font-family="Consolas, monospace">logo.png</text>
+<text x="870" y="305" font-size="18" text-anchor="end" fill="#475569">12 KB</text>
+<path d="M302 225L386 225" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="385" font-size="19" text-anchor="middle" fill="#475569">Key là tên đầy đủ của object; dấu / chỉ là một phần của key.</text>
+</svg>

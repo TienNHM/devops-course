@@ -1,6 +1,6 @@
 # Firebase cho người mới
 
-> **Tóm tắt:** Dùng Firebase để có link công khai, đăng nhập Google và cơ sở dữ liệu Firestore. Tập trung vào Security Rules, gói Spark miễn phí và cách nhờ AI agent làm an toàn.
+> **Tóm tắt:** Dùng Firebase để có link công khai, đăng nhập Google và cơ sở dữ liệu Firestore. Nội dung tập trung vào Security Rules, gói Spark miễn phí và cách nhờ AI agent làm việc an toàn.
 
 ::: tip Bạn làm gì
 - **Kết quả:** web có link `.web.app`, đăng nhập Google, và dữ liệu Firestore mà mỗi người chỉ thấy phần của mình.
@@ -13,27 +13,27 @@
 
 Thời lượng ước tính: 60 đến 90 phút.
 
-- Tạo project Firebase và đưa một trang web tĩnh lên Internet bằng Firebase Hosting, có cả link xem thử (preview channel).
-- Bật đăng nhập Google bằng Authentication và hiểu vì sao `firebaseConfig` không phải secret.
-- Lưu dữ liệu vào Firestore và viết Security Rules theo uid, không bao giờ để chế độ mở toang.
+- Tạo project Firebase và đưa một trang web tĩnh lên Internet bằng Firebase Hosting, kèm link xem thử (preview channel).
+- Bật đăng nhập Google bằng Authentication và giải thích vì sao `firebaseConfig` không phải secret.
+- Lưu dữ liệu vào Firestore và viết Security Rules theo uid, không để chế độ mở toang.
 - Thử mọi thứ an toàn trên máy bằng Emulator Suite trước khi chạm vào dữ liệu thật.
-- Biết khi nào nên chọn Firebase, khi nào nên chọn [Supabase](04-supabase.md).
+- Xác định khi nào nên chọn Firebase, khi nào nên chọn [Supabase](04-supabase.md).
 
 ## Khái niệm trong 5 phút
 
-Hãy tưởng tượng bạn mở một cửa hàng trong trung tâm thương mại do Google quản lý. Google lo mặt bằng (Hosting), bảo vệ ở cửa kiểm tra thẻ (Authentication), kho hàng (Firestore, Storage) và quy định ra vào kho (Security Rules). Bạn chỉ cần bày hàng.
+**Firebase** là nền tảng của Google cung cấp các dịch vụ backend dựng sẵn cho ứng dụng: Hosting (phát web tĩnh), Authentication (đăng nhập), Firestore và Storage (lưu dữ liệu và file), và Security Rules (quy tắc truy cập dữ liệu). **Authentication** (xác thực) là bước kiểm tra danh tính người dùng, ví dụ bằng tài khoản Google.
 
-| Dịch vụ | Việc nó làm | Ví dụ đời thường |
+| Dịch vụ | Chức năng | Tên gọi tiếng Việt |
 | --- | --- | --- |
-| Project | Cái hộp chứa mọi thứ của một sản phẩm | Một cửa hàng |
-| Hosting | Phát trang web tĩnh ra Internet, có HTTPS | Mặt bằng và biển hiệu |
-| Authentication | Đăng nhập (Google, email...) và cấp uid cho từng người | Bảo vệ kiểm tra thẻ |
-| Firestore | Cơ sở dữ liệu dạng document | Tủ hồ sơ có ngăn kéo |
-| Storage | Lưu file, ảnh | Kho chứa đồ lớn |
-| Cloud Functions | Chạy code phía server | Nhân viên làm việc sau quầy |
-| Security Rules | Luật ai được đọc, ghi gì | Nội quy kho |
+| Project | Đơn vị chứa mọi thành phần của một sản phẩm | Dự án |
+| Hosting | Phát trang web tĩnh ra Internet, có HTTPS | Dịch vụ lưu trữ web |
+| Authentication | Đăng nhập (Google, email...) và cấp uid cho từng người | Xác thực |
+| Firestore | Cơ sở dữ liệu dạng document | Cơ sở dữ liệu tài liệu |
+| Storage | Lưu file, ảnh | Lưu trữ file |
+| Cloud Functions | Chạy code phía server | Hàm chạy phía server |
+| Security Rules | Quy tắc xác định ai được đọc, ghi gì | Quy tắc bảo mật |
 
-Mô hình chung của một app dùng Firebase: trình duyệt nói chuyện thẳng với Firebase, không có server của bạn ở giữa. Vì vậy Security Rules là hàng rào duy nhất.
+Mô hình chung của một app dùng Firebase: trình duyệt giao tiếp trực tiếp với Firebase, không có server riêng ở giữa. Vì vậy Security Rules là hàng rào bảo vệ duy nhất.
 
 ```mermaid
 flowchart LR
@@ -46,7 +46,7 @@ flowchart LR
 
 ### firebaseConfig không phải secret, Rules mới là hàng rào
 
-Đoạn `firebaseConfig` (apiKey, projectId, appId...) nằm trong code web, ai mở trình duyệt cũng xem được. Điều này bình thường: nó chỉ giống địa chỉ cửa hàng, không phải chìa khóa. Thứ bảo vệ dữ liệu là Security Rules. Nếu rules mở toang thì ai biết địa chỉ cũng vào lấy hàng được.
+Đoạn `firebaseConfig` (apiKey, projectId, appId...) nằm trong code web và ai mở trình duyệt cũng xem được. Điều này bình thường: đoạn cấu hình chỉ định danh project, không phải khóa truy cập. Thứ bảo vệ dữ liệu là Security Rules. Khi rules mở toang, bất kỳ ai biết định danh project đều truy cập được dữ liệu.
 
 ::: danger Không đưa lên repo, frontend hay prompt
 File khóa service account (JSON tải từ mục Service accounts), biến `GOOGLE_APPLICATION_CREDENTIALS`, token CI. Đây là chìa khóa admin, bỏ qua mọi rules.
@@ -54,7 +54,7 @@ File khóa service account (JSON tải từ mục Service accounts), biến `GOO
 
 ### Firestore khác SQL thế nào
 
-Firestore là NoSQL ([thuật ngữ](../resources/glossary.md)). Dữ liệu nằm trong document (giống một tờ phiếu JSON), các document nằm trong collection (giống một ngăn kéo). Không có bảng, không có JOIN.
+Firestore là NoSQL ([thuật ngữ](../resources/glossary.md)), tức không dùng bảng và JOIN như SQL. Dữ liệu nằm trong document (một bản ghi dạng JSON), các document nằm trong collection (nhóm các document).
 
 | | Firestore (NoSQL) | Supabase (Postgres, SQL) |
 | --- | --- | --- |
@@ -65,7 +65,7 @@ Firestore là NoSQL ([thuật ngữ](../resources/glossary.md)). Dữ liệu n�
 | Hợp với | App di động, chat, ghi chú, dữ liệu theo từng người dùng | Dữ liệu có quan hệ, thống kê, quản lý có nhiều bảng |
 | Rủi ro hay gặp | Rules lỏng, query tốn lượt đọc | Quên bật RLS |
 
-Cách chọn nhanh: dữ liệu giống "tờ phiếu của từng người" và cần realtime thì Firebase. Dữ liệu có quan hệ (đơn hàng, sản phẩm, khách hàng) và bạn muốn học thứ dùng được lâu dài (SQL) thì Supabase. Đừng dùng cả hai cho một sản phẩm nhỏ.
+Cách chọn nhanh: khi dữ liệu có dạng bản ghi riêng của từng người và cần realtime thì chọn Firebase. Khi dữ liệu có quan hệ (đơn hàng, sản phẩm, khách hàng) và cần học một công nghệ dùng được lâu dài (SQL) thì chọn Supabase. Không dùng cả hai cho một sản phẩm nhỏ.
 
 ### Gói Spark và gói Blaze
 
@@ -79,27 +79,27 @@ Firebase có gói Spark (không cần thẻ) và Blaze (trả theo mức dùng).
 | Cloud Functions | Không có trên Spark, cần Blaze |
 | Cloud Storage | Không có trên Spark, cần Blaze |
 
-Các con số và danh sách này đổi theo thời gian, hãy kiểm tra [trang giá chính thức](https://firebase.google.com/pricing) trước khi quyết định.
+Các con số và danh sách này thay đổi theo thời gian; cần kiểm tra [trang giá chính thức](https://firebase.google.com/pricing) trước khi quyết định.
 
 ::: danger Blaze là gói trả tiền
-Blaze yêu cầu gắn thẻ thanh toán và có thể phát sinh tiền khi vượt hạn mức miễn phí. Việc nâng cấp là quyết định của riêng bạn, đừng nhờ AI agent bấm hộ. Nếu nâng cấp, hãy đặt ngay budget alert trong Google Cloud Billing, và hiểu rằng cảnh báo ngân sách chỉ báo chứ không tự ngắt dịch vụ.
+Blaze yêu cầu gắn thẻ thanh toán và có thể phát sinh chi phí khi vượt hạn mức miễn phí. Việc nâng cấp là quyết định của người học, không nhờ AI agent thực hiện. Nếu nâng cấp, đặt ngay budget alert trong Google Cloud Billing; cảnh báo ngân sách chỉ thông báo chứ không tự ngắt dịch vụ.
 :::
 
-Với người mới, đường ưu tiên là Spark: Hosting + Authentication + Firestore là đủ cho rất nhiều sản phẩm.
+Với người mới, nên ưu tiên gói Spark: Hosting, Authentication và Firestore đủ cho nhiều sản phẩm.
 
 ## Thực hành từng bước
 
-Bạn sẽ dùng thư mục mẫu [examples/vibe/firebase](../examples/vibe/firebase/README.md) hoặc code do AI viết cho bạn. Giao diện Firebase console đổi thường xuyên nên tên nút có thể khác chút.
+Bài dùng thư mục mẫu [examples/vibe/firebase](../examples/vibe/firebase/README.md) hoặc code do AI viết. Giao diện Firebase console thay đổi thường xuyên nên tên nút có thể khác đôi chút.
 
 ### Bước 1. Tạo project (gói Spark)
 
 Vào [Firebase console](https://console.firebase.google.com), chọn tạo project mới, đặt tên, có thể tắt Google Analytics cho đơn giản. Ghi lại Project ID (dạng `ten-du-an-ab123`).
 
-Bạn sẽ thấy trang tổng quan của project, góc dưới trái ghi gói Spark.
+Kết quả: trang tổng quan của project, góc dưới trái ghi gói Spark.
 
 ### Bước 2. Cài Firebase CLI và đăng nhập
 
-Cần Node.js đã cài sẵn.
+Yêu cầu Node.js đã được cài sẵn.
 
 ```bash
 npm i -g firebase-tools
@@ -107,7 +107,7 @@ firebase --version
 firebase login
 ```
 
-Bạn sẽ thấy trình duyệt mở ra để chọn tài khoản Google, sau đó terminal báo đăng nhập thành công. Bước đăng nhập do chính bạn thực hiện, không giao cho agent.
+Kết quả: trình duyệt mở ra để chọn tài khoản Google, sau đó terminal báo đăng nhập thành công. Người học tự thực hiện bước đăng nhập, không giao cho agent.
 
 ### Bước 3. Khởi tạo và deploy Hosting
 
@@ -117,37 +117,37 @@ Trong thư mục chứa trang web:
 firebase init hosting
 ```
 
-Trả lời: chọn project có sẵn, thư mục public là `public` (hoặc `dist` nếu app có bước build), không ghi đè `index.html` có sẵn. Lệnh này tạo `firebase.json` và `.firebaserc`. Sau đó:
+Trả lời các câu hỏi: chọn project có sẵn, thư mục public là `public` (hoặc `dist` nếu app có bước build), không ghi đè `index.html` có sẵn. Lệnh này tạo `firebase.json` và `.firebaserc`. Sau đó:
 
 ```bash
 firebase deploy --only hosting
 ```
 
-Bạn sẽ thấy dòng `Hosting URL:` có dạng `https://your-firebase-project-id.web.app`. Mở link đó: web của bạn đã online với HTTPS.
+Kết quả: dòng `Hosting URL:` có dạng `https://your-firebase-project-id.web.app`. Mở link đó: web đã online với HTTPS.
 
 ### Bước 4. Link xem thử bằng preview channel
 
-Trước khi sửa trang thật, hãy đăng lên một địa chỉ tạm:
+Trước khi sửa trang thật, đăng bản thử lên một địa chỉ tạm:
 
 ```bash
 firebase hosting:channel:deploy thu-nghiem
 ```
 
-Bạn sẽ thấy một URL xem thử riêng, gửi cho bạn bè xem được mà trang thật không đổi. Chạy lại cùng tên kênh sẽ cập nhật bản xem thử. Kênh có thể đặt thời gian hết hạn, xem mục preview channel trong tài liệu chính thức ở cuối bài.
+Kết quả: một URL xem thử riêng, có thể gửi cho người khác xem mà trang thật không đổi. Chạy lại cùng tên kênh sẽ cập nhật bản xem thử. Kênh có thể đặt thời gian hết hạn, xem mục preview channel trong tài liệu chính thức ở cuối bài.
 
 ### Bước 5. Bật Authentication
 
-Trong console: Build, Authentication, Get started, tab Sign-in method, bật Google, chọn email hỗ trợ, lưu. Sau đó vào tab Settings, mục Authorized domains và kiểm tra tên miền của bạn có trong danh sách (`your-firebase-project-id.web.app` thường có sẵn; domain riêng phải tự thêm).
+Trong console: Build, Authentication, Get started, tab Sign-in method, bật Google, chọn email hỗ trợ, lưu. Sau đó vào tab Settings, mục Authorized domains và kiểm tra tên miền của dự án có trong danh sách (`your-firebase-project-id.web.app` thường có sẵn; domain riêng phải tự thêm).
 
 Lấy cấu hình web: Project settings, mục Your apps, thêm Web app, sao chép đoạn `firebaseConfig` vào code (ví dụ mẫu: `public/app.js`). Đây không phải secret.
 
 ### Bước 6. Tạo Firestore ở chế độ production
 
-Build, Firestore Database, Create database. Khi được hỏi, chọn production mode (khóa mọi truy cập). Tránh test mode: nó mở toang dữ liệu và tự hết hạn sau một thời gian, khiến app đang chạy bỗng lỗi.
+Build, Firestore Database, Create database. Khi được hỏi, chọn production mode (khóa mọi truy cập). Không chọn test mode: chế độ này mở toang dữ liệu và tự hết hạn sau một thời gian, khiến app đang chạy bỗng lỗi.
 
 ### Bước 7. Viết Security Rules theo uid
 
-Mở `firestore.rules`. Ví dụ rút gọn dưới đây cho mỗi người chỉ đọc và ghi ghi chú của chính mình (bản đầy đủ có kiểm tra độ dài, trường hợp lệ ở thư mục mẫu):
+Mở `firestore.rules`. Ví dụ rút gọn dưới đây cho phép mỗi người chỉ đọc và ghi ghi chú của chính mình (bản đầy đủ có kiểm tra độ dài, trường hợp lệ ở thư mục mẫu):
 
 ```text
 rules_version = '2';
@@ -176,18 +176,18 @@ allow read, write: if request.auth != null; // đăng nhập là xem được d�
 allow read, write: if request.time < timestamp.date(2026, 12, 1); // kiểu test mode, hết hạn là hỏng
 ```
 
-Kiểu thứ hai chỉ chấp nhận khi dữ liệu đó thật sự dùng chung cho mọi người đã đăng nhập.
+Kiểu thứ hai chỉ chấp nhận được khi dữ liệu đó thật sự dùng chung cho mọi người đã đăng nhập.
 
 ### Bước 8. Thử bằng Emulator Suite
 
-Emulator chạy Authentication, Firestore, Hosting giả lập trên máy, dữ liệu thật không bị ảnh hưởng. Cần Java JDK 11 trở lên cho Firestore Emulator.
+Emulator chạy Authentication, Firestore, Hosting giả lập trên máy, nên dữ liệu thật không bị ảnh hưởng. Firestore Emulator cần Java JDK 11 trở lên.
 
 ```bash
 firebase init emulators
 firebase emulators:start
 ```
 
-Bạn sẽ thấy bảng điều khiển tại `http://localhost:4000`. Cổng mặc định: Auth 9099, Firestore 8080, Hosting 5000, Storage 9199. Thử ghi một document khi chưa đăng nhập: rules phải từ chối. Thử đăng nhập hai người khác nhau: người A không thấy ghi chú người B.
+Kết quả: bảng điều khiển tại `http://localhost:4000`. Cổng mặc định: Auth 9099, Firestore 8080, Hosting 5000, Storage 9199. Thử ghi một document khi chưa đăng nhập: rules phải từ chối. Thử đăng nhập hai người khác nhau: người A không thấy ghi chú của người B.
 
 ### Bước 9. Deploy rules và kiểm tra
 
@@ -195,11 +195,11 @@ Bạn sẽ thấy bảng điều khiển tại `http://localhost:4000`. Cổng m
 firebase deploy --only hosting,firestore:rules
 ```
 
-Mở web, đăng nhập Google, thêm một ghi chú. Mở cửa sổ ẩn danh, đăng nhập tài khoản khác, xác nhận không thấy ghi chú cũ.
+Mở web, đăng nhập Google và thêm một ghi chú. Mở cửa sổ ẩn danh, đăng nhập tài khoản khác và xác nhận không thấy ghi chú cũ.
 
 ::: details Nâng cao: Cloud Functions, Storage và App Hosting (đọc để biết)
 
-- Cloud Functions và Cloud Storage cần gói Blaze. Trước khi bấm nâng cấp, hãy tự cân nhắc: có cần thật không? Phần lớn app nhỏ chưa cần. Nếu cần backend đơn giản mà không muốn trả phí, xem [Vercel hoặc Netlify Functions](03-fullstack-serverless.md). Nếu vẫn dùng Blaze, đặt budget alert ngay.
+- Cloud Functions và Cloud Storage cần gói Blaze. Trước khi nâng cấp, cần cân nhắc xem có thật sự cần hay không; phần lớn app nhỏ chưa cần. Nếu cần backend đơn giản mà không muốn trả phí, xem [Vercel hoặc Netlify Functions](03-fullstack-serverless.md). Nếu vẫn dùng Blaze, đặt budget alert ngay.
 - Storage rules mẫu (`storage.rules`) cho mỗi người một thư mục `users/uid`, chỉ nhận ảnh dưới 5 MB.
 - Firebase App Hosting dành cho web app có server (ví dụ Next.js, Angular), kết nối GitHub repo để mỗi lần push là một lần phát hành; theo tài liệu chính thức nó yêu cầu gói Blaze. Với web tĩnh, Firebase Hosting là đủ.
 
@@ -207,7 +207,7 @@ Mở web, đăng nhập Google, thêm một ghi chú. Mở cửa sổ ẩn danh,
 
 ## Nhờ AI agent làm giúp
 
-Agent rất giỏi viết code Firebase nhưng hay chọn đường tắt: mở rules cho "chạy được". Bạn phải là người kiểm tra.
+Agent viết code Firebase tốt nhưng thường chọn giải pháp tắt: mở rules để "chạy được". Người học là người kiểm tra.
 
 Prompt khởi tạo:
 
@@ -250,27 +250,27 @@ claude mcp add firebase npx -- -y firebase-tools@latest mcp
 claude mcp list
 ```
 
-MCP server dùng chung thông tin đăng nhập với Firebase CLI, tức là agent hành động với quyền của bạn. Một số tool đổi được dữ liệu thật (deploy, ghi database, sửa user, gửi tin nhắn). Hạn chế bằng cờ `--only` (ví dụ chỉ `auth,firestore`), và đọc kỹ từng yêu cầu xin phép trước khi duyệt. Cách cài và danh sách tool có thể đổi, xem tài liệu chính thức.
+MCP server dùng chung thông tin đăng nhập với Firebase CLI, nghĩa là agent hành động với quyền của người học. Một số tool đổi được dữ liệu thật (deploy, ghi database, sửa user, gửi tin nhắn). Hạn chế bằng cờ `--only` (ví dụ chỉ `auth,firestore`), và đọc kỹ từng yêu cầu xin phép trước khi duyệt. Cách cài và danh sách tool có thể đổi, xem tài liệu chính thức.
 
 :::
 
-Bạn tự kiểm tra: rules có chữ `if true` hay `if request.auth != null` đơn độc không, query phía client có lọc theo `ownerId` không, `.env` và file service account có nằm ngoài repo không.
+Việc người học tự kiểm tra: rules có chữ `if true` hoặc `if request.auth != null` đơn độc không, query phía client có lọc theo `ownerId` không, `.env` và file service account có nằm ngoài repo không.
 
 ::: danger Không giao cho agent
-Dán file service account hoặc token vào chat, bấm nâng cấp Blaze, nhập thông tin thẻ, xác nhận xóa project hoặc dữ liệu, dán dữ liệu cá nhân thật của người dùng vào prompt.
+Dán file service account hoặc token vào chat, nâng cấp Blaze, nhập thông tin thẻ, xác nhận xóa project hoặc dữ liệu, dán dữ liệu cá nhân thật của người dùng vào prompt.
 :::
 
 ## Nếu bị lỗi
 
 | Triệu chứng | Nguyên nhân thường gặp | Cách xử lý |
 | --- | --- | --- |
-| `Missing or insufficient permissions` khi đọc ghi Firestore | Rules chặn, hoặc query không lọc theo `ownerId`, hoặc chưa đăng nhập | Mở Rules Playground hoặc Emulator UI để xem rule nào từ chối. Thêm `where('ownerId', '==', uid)` vào query. Đừng sửa rules thành `if true` |
+| `Missing or insufficient permissions` khi đọc ghi Firestore | Rules chặn, hoặc query không lọc theo `ownerId`, hoặc chưa đăng nhập | Mở Rules Playground hoặc Emulator UI để xem rule nào từ chối. Thêm `where('ownerId', '==', uid)` vào query. Không sửa rules thành `if true` |
 | App chạy tốt vài tuần rồi đột ngột lỗi permission | Rules test mode có ngày hết hạn | Thay bằng rules theo uid rồi `firebase deploy --only firestore:rules` |
 | Popup đăng nhập báo `auth/unauthorized-domain` | Tên miền chưa có trong Authorized domains | Authentication, Settings, Authorized domains, thêm domain (kể cả domain tùy chỉnh và `localhost` nếu thử cục bộ) |
-| `auth/operation-not-allowed` | Chưa bật nhà cung cấp đăng nhập | Authentication, Sign-in method, bật Google (hoặc nhà cung cấp bạn dùng) |
+| `auth/operation-not-allowed` | Chưa bật nhà cung cấp đăng nhập | Authentication, Sign-in method, bật Google (hoặc nhà cung cấp đang dùng) |
 | Hosting deploy xong nhưng vẫn thấy trang cũ hoặc trang trắng | Cache trình duyệt, sai thư mục `public` trong `firebase.json`, app có bước build nhưng chưa build | Tải lại cứng (Ctrl+Shift+R), kiểm tra `public` trỏ đúng thư mục có `index.html` (thường là `dist`), chạy build trước khi deploy |
 | `Error: HTTP Error: 403` hoặc `Failed to get Firebase project` | Đăng nhập sai tài khoản Google hoặc `.firebaserc` sai Project ID | `firebase logout`, `firebase login`, rồi `firebase use` để chọn đúng project |
-| Cloud Functions hoặc Storage báo cần nâng cấp, `must be on the Blaze plan` | Các dịch vụ này không có trên Spark | Chọn lại hướng không cần chúng, hoặc tự quyết định nâng cấp và đặt budget alert. Đừng để agent bấm hộ |
+| Cloud Functions hoặc Storage báo cần nâng cấp, `must be on the Blaze plan` | Các dịch vụ này không có trên Spark | Chọn hướng không cần chúng, hoặc tự quyết định nâng cấp và đặt budget alert. Không để agent thao tác thay |
 | Đột ngột hết lượt đọc/ghi, app báo `resource-exhausted` hoặc quota exceeded | Vượt hạn mức hằng ngày của Spark, thường do vòng lặp đọc liên tục hoặc listener quá rộng | Xem tab Usage, sửa code để đọc ít hơn (giới hạn bằng `limit`, lọc theo điều kiện), hạn mức đặt lại mỗi ngày |
 | Emulator không lên, báo thiếu Java | Firestore Emulator cần JDK | Cài JDK 11 trở lên, mở terminal mới rồi chạy lại `firebase emulators:start` |
 
@@ -280,13 +280,13 @@ Dán file service account hoặc token vào chat, bấm nâng cấp Blaze, nhậ
 2. Vì sao không nên chọn test mode khi tạo Firestore?
 3. Viết điều kiện rules để chỉ chủ sở hữu (field `ownerId`) được đọc một document.
 4. Dịch vụ nào trong số Hosting, Authentication, Firestore, Cloud Functions, Storage cần gói Blaze?
-5. Dữ liệu của bạn có nhiều bảng liên kết và cần báo cáo thống kê. Chọn Firebase hay Supabase?
-6. Bạn nên làm gì nếu lỡ commit file khóa service account lên GitHub công khai?
+5. Dữ liệu có nhiều bảng liên kết và cần báo cáo thống kê. Nên chọn Firebase hay Supabase?
+6. Cần làm gì nếu lỡ commit file khóa service account lên GitHub công khai?
 
 <details><summary>Đáp án</summary>
 
-1. Không. `firebaseConfig` chỉ định danh project, giống địa chỉ cửa hàng. Security Rules mới là hàng rào. Thứ phải giữ kín là file khóa service account.
-2. Test mode mở toang dữ liệu cho mọi người và tự hết hạn, nên vừa không an toàn vừa làm app hỏng bất ngờ. Hãy chọn production mode rồi viết rules theo uid.
+1. Không. `firebaseConfig` chỉ định danh project, không phải khóa truy cập. Security Rules mới là hàng rào bảo vệ. Thứ phải giữ kín là file khóa service account.
+2. Test mode mở toang dữ liệu cho mọi người và tự hết hạn, nên vừa không an toàn vừa làm app hỏng bất ngờ. Nên chọn production mode rồi viết rules theo uid.
 3. `allow read: if request.auth != null && request.auth.uid == resource.data.ownerId;`
 4. Cloud Functions và Storage (theo trang giá chính thức tại thời điểm viết). Hosting, Authentication, Firestore có hạn mức miễn phí trên Spark.
 5. Supabase (Postgres, SQL) phù hợp hơn vì có quan hệ giữa các bảng và truy vấn thống kê.

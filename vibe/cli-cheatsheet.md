@@ -5,24 +5,24 @@
 ::: tip Bạn làm gì
 - **Kết quả:** tìm nhanh đúng lệnh cho gh, git, Vercel, Netlify, Cloudflare, Supabase, Firebase mà không phải đọc cả tài liệu.
 - **Thời gian:** tra cứu 1 đến 2 phút mỗi lệnh.
-- **Cần gì trước:** đã cài CLI của nền tảng bạn dùng (xem [Deploy cùng AI agent: nâng cao](06-ai-agent-deploy-advanced.md#cai-cac-cli-cua-nen-tang)) và đã tự đăng nhập.
+- **Cần gì trước:** đã cài CLI của nền tảng đang dùng (xem [Deploy cùng AI agent: nâng cao](06-ai-agent-deploy-advanced.md#cai-cac-cli-cua-nen-tang)) và đã tự đăng nhập.
 - **Module trước:** đây là trang tra cứu, không nằm trong lộ trình tuyến tính.
 :::
 
 ## Cách đọc bảng này
 
-Các lệnh dưới đây đã được đối chiếu với tài liệu chính thức vào tháng 10/2026. CLI cập nhật thường xuyên, nên nếu lệnh báo lỗi hãy chạy `ten-cli --help` hoặc mở link tài liệu ở cuối trang. Chỗ viết hoa kiểu `TEN-DU-AN` là placeholder, bạn thay bằng giá trị của mình.
+CLI (command-line interface) là chương trình điều khiển một dịch vụ bằng lệnh gõ trong terminal. Các lệnh dưới đây đã được đối chiếu với tài liệu chính thức vào tháng 10/2026. CLI cập nhật thường xuyên, nên khi lệnh báo lỗi, chạy `ten-cli --help` hoặc mở link tài liệu ở cuối trang. Chỗ viết hoa kiểu `TEN-DU-AN` là placeholder (giá trị giữ chỗ), cần thay bằng giá trị thực của dự án.
 
-Ba lưu ý chung (cảnh báo lệnh xoá nằm ngay bên dưới):
+Có hai lưu ý chung (cảnh báo lệnh xoá nằm ngay bên dưới):
 
-- Mọi lệnh đăng nhập đều mở trình duyệt để bạn tự đăng nhập. Đừng nhờ agent đăng nhập hộ và đừng dán mật khẩu hay token vào chat.
-- Khi tự động hoá trong CI, dùng token đặt trong biến môi trường hoặc secret của nền tảng, không viết vào lệnh hay file trong repo.
+- Mọi lệnh đăng nhập đều mở trình duyệt để người học tự đăng nhập. Không nhờ agent đăng nhập hộ và không dán mật khẩu hay token vào chat.
+- Khi tự động hoá trong CI (hệ thống tự chạy kiểm thử và deploy), dùng token đặt trong biến môi trường hoặc secret của nền tảng, không viết vào lệnh hay file trong repo.
 
 ::: danger Lệnh xoá và lệnh tốn tiền
 Lệnh có chữ `rm`, `delete`, `remove`, `--force`, `destroy`, `buy` là lệnh xoá hoặc tốn tiền, không hoàn tác được. Chỉ tự chạy sau khi đã đọc kỹ, thử trên project thử nghiệm, và không giao cho agent.
 :::
 
-Cài đặt các CLI (chỉ cài cái bạn dùng):
+Cài đặt các CLI (chỉ cài CLI của nền tảng đang dùng):
 
 ```bash
 npm i -g vercel
@@ -57,7 +57,7 @@ CLI Supabase theo tài liệu hiện hành cài theo từng dự án (dùng `npx
 | Kiểm tra đăng nhập | `gh auth status` |
 | Tạo repo private từ thư mục hiện tại và đẩy code | `gh repo create TEN-REPO --private --source=. --remote=origin --push` |
 | Xem repo | `gh repo view` |
-| Đặt secret cho Actions (CLI sẽ hỏi giá trị, bạn tự nhập) | `gh secret set TEN_SECRET` |
+| Đặt secret cho Actions (CLI sẽ hỏi giá trị, người học tự nhập) | `gh secret set TEN_SECRET` |
 | Đặt biến thường (không bí mật) | `gh variable set TEN_BIEN` |
 | Liệt kê các lần chạy Actions | `gh run list` |
 | Xem log của lần chạy | `gh run view MA-RUN --log` |
@@ -66,7 +66,7 @@ CLI Supabase theo tài liệu hiện hành cài theo từng dự án (dùng `npx
 | Tạo pull request | `gh pr create` |
 | Liệt kê pull request | `gh pr list` |
 
-Lưu ý: `gh repo create` khi chạy không tương tác cần một trong `--public`, `--private`, `--internal`. Hãy chọn `--private` nếu chưa chắc. Chi tiết cờ của `gh secret set`, `gh workflow run` và `gh pr create`: xem `gh TEN-LENH --help` hoặc trang https://cli.github.com/manual/.
+Lưu ý: `gh repo create` khi chạy không tương tác cần một trong `--public`, `--private`, `--internal`. Nên chọn `--private` khi chưa chắc chắn. Chi tiết cờ của `gh secret set`, `gh workflow run` và `gh pr create`: xem `gh TEN-LENH --help` hoặc trang https://cli.github.com/manual/.
 
 ## Vercel
 
@@ -96,9 +96,9 @@ Lưu ý: `gh repo create` khi chạy không tương tác cần một trong `--pu
 
 Lưu ý:
 
-- Gói Hobby (miễn phí) theo tài liệu chỉ cho quay lui về bản production liền trước. Quay lui xa hơn cần gói trả phí; hãy tự quyết định, đừng nâng cấp chỉ vì lệnh báo lỗi.
+- Gói Hobby (miễn phí) theo tài liệu chỉ cho quay lui về bản production liền trước. Quay lui xa hơn cần gói trả phí; người học tự quyết định, không nâng cấp chỉ vì lệnh báo lỗi.
 - `vercel logs --follow` đã bị đánh dấu ngừng dùng ở bản mới; lệnh trả kết quả truy vấn thay vì stream. Dùng `--since` để chọn khoảng thời gian.
-- Có các lệnh liên quan mua hàng (`vercel buy ...`, `vercel domains buy`). Đừng nhờ agent chạy các lệnh này; nếu cần mua, bạn tự quyết định.
+- Có các lệnh liên quan mua hàng (`vercel buy ...`, `vercel domains buy`). Không giao cho agent chạy các lệnh này; nếu cần mua, người học tự quyết định.
 - Trong CI, đặt token ở biến môi trường `VERCEL_TOKEN`, không dùng `--token` ghi thẳng giá trị vào lệnh.
 
 ## Netlify
@@ -125,8 +125,8 @@ Lưu ý:
 Lưu ý:
 
 - Nếu đặt `GIA_TRI` trực tiếp trong lệnh, giá trị lọt vào lịch sử terminal. Với secret thật, ưu tiên nhập qua trang cài đặt của Netlify hoặc dùng `env:import` từ file `.env` không commit.
-- Theo tài liệu, `netlify deploy --allow-anonymous` cho phép deploy không đăng nhập và tạo site cần nhận quyền sở hữu (claim) sau đó (thời hạn claim: xem tài liệu Netlify); chỉ dùng cho thử nghiệm, đừng đưa dữ liệu thật.
-- Netlify CLI không có lệnh quay lui đã kiểm chứng trong tài liệu tôi đối chiếu: để quay lui, vào tab Deploys của site trên dashboard, mở một deploy cũ và dùng nút publish deploy đó (giao diện có thể khác chút). Xem tài liệu Netlify để xác nhận.
+- Theo tài liệu, `netlify deploy --allow-anonymous` cho phép deploy không đăng nhập và tạo site cần nhận quyền sở hữu (claim) sau đó (thời hạn claim: xem tài liệu Netlify); chỉ dùng cho thử nghiệm, không đưa dữ liệu thật.
+- Netlify CLI không có lệnh quay lui đã được kiểm chứng trong tài liệu đã đối chiếu: để quay lui, vào tab Deploys của site trên dashboard, mở một deploy cũ và dùng nút publish deploy đó (giao diện có thể khác chút). Xem tài liệu Netlify để xác nhận.
 
 ## Cloudflare (wrangler)
 
@@ -155,7 +155,7 @@ Cloudflare ([thuật ngữ](../resources/glossary.md)) có hai nhóm lệnh. Ki�
 Lưu ý:
 
 - `wrangler secret put` nhận giá trị bằng nhắc nhập hoặc từ stdin; mỗi lần đặt secret cho Worker sẽ tạo phiên bản mới và deploy ngay, theo tài liệu.
-- `wrangler login` (có `--browser=false` nếu máy không mở được trình duyệt) và `wrangler whoami` đã đối chiếu với trang lệnh chung của Wrangler. Các lệnh Pages đã đối chiếu với trang `wrangler pages`; lệnh `wrangler dev` và `wrangler deploy` đã đối chiếu với hướng dẫn static assets, còn `tail`, `secret`, `versions`, `rollback` chưa đối chiếu từng cờ, hãy chạy `npx wrangler --help` nếu báo lỗi.
+- `wrangler login` (có `--browser=false` nếu máy không mở được trình duyệt) và `wrangler whoami` đã đối chiếu với trang lệnh chung của Wrangler. Các lệnh Pages đã đối chiếu với trang `wrangler pages`; lệnh `wrangler dev` và `wrangler deploy` đã đối chiếu với hướng dẫn static assets, còn `tail`, `secret`, `versions`, `rollback` chưa đối chiếu từng cờ, nên chạy `npx wrangler --help` nếu báo lỗi.
 - Quay lui cho Pages: dùng tab Deployments trên dashboard để đưa bản cũ lên (giao diện có thể khác chút).
 - Cờ `[COMMAND]` của `wrangler pages dev` đã bị đánh dấu ngừng dùng trong tài liệu.
 - Với CI, dùng API token và account id đặt trong secret của hệ thống CI (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`), token chỉ cấp đúng quyền cần.
@@ -188,8 +188,8 @@ Lưu ý:
 - Luôn chạy `db push --dry-run` trước `db push`. Migration thay đổi database thật; cẩn thận với lệnh xoá bảng hay cột. Theo tài liệu, `supabase stop --no-backup` xoá dữ liệu cục bộ.
 - Thứ tự bật bảo mật: tạo bảng, bật RLS, viết policy, rồi mới dùng ở frontend. Xem [Supabase](04-supabase.md).
 - Khóa `service_role` tuyệt đối không dán vào lệnh, vào chat hay vào code frontend.
-- Xem log: dùng mục Logs trên dashboard Supabase (tôi không tìm thấy lệnh xem log hosted đã kiểm chứng).
-- Quay lui: Supabase không có lệnh rollback database; cách an toàn là viết một migration mới sửa lại và dùng bản sao lưu theo tài liệu (kiểm tra gói của bạn có sao lưu hay không).
+- Xem log: dùng mục Logs trên dashboard Supabase (chưa tìm thấy lệnh xem log hosted đã được kiểm chứng).
+- Quay lui: Supabase không có lệnh rollback database; cách an toàn là viết một migration mới sửa lại và dùng bản sao lưu theo tài liệu (kiểm tra gói đang dùng có sao lưu hay không).
 - Secret không đặt bằng `NAME=VALUE` trên dòng lệnh nếu máy dùng chung; ưu tiên `--env-file` (cờ có trong tài liệu) với file không commit.
 
 ## Firebase
@@ -215,9 +215,9 @@ Lưu ý:
 Lưu ý:
 
 - Cài đặt: `npm install -g firebase-tools` hoặc bản binary độc lập theo README của firebase-tools.
-- Trong CI, tài liệu Firebase khuyên dùng service account (biến `GOOGLE_APPLICATION_CREDENTIALS` trỏ tới file khóa, file này tuyệt đối không commit) thay cho token `login:ci` vì token dài hạn rất nhạy cảm. Cấu hình service account hơi phức tạp, đây là việc bạn tự làm theo tài liệu.
-- Tài liệu Hosting nêu `hosting:channel:deploy` cho link xem thử công khai ai có link đều mở được; link có thời hạn theo cấu hình kênh. Đừng đưa dữ liệu nhạy cảm vào bản xem thử.
-- Quay lui Hosting: dùng trang Hosting trên Firebase console để đưa một bản phát hành cũ trở lại, hoặc xem mục "Manage live and preview channels, releases, and versions" trong tài liệu Hosting. Tôi chưa kiểm chứng được lệnh CLI rollback chính thức.
+- Trong CI, tài liệu Firebase khuyên dùng service account (biến `GOOGLE_APPLICATION_CREDENTIALS` trỏ tới file khóa, file này tuyệt đối không commit) thay cho token `login:ci` vì token dài hạn rất nhạy cảm. Cấu hình service account hơi phức tạp, người học tự thực hiện bước này theo tài liệu.
+- Tài liệu Hosting nêu `hosting:channel:deploy` cho link xem thử công khai ai có link đều mở được; link có thời hạn theo cấu hình kênh. Không đưa dữ liệu nhạy cảm vào bản xem thử.
+- Quay lui Hosting: dùng trang Hosting trên Firebase console để đưa một bản phát hành cũ trở lại, hoặc xem mục "Manage live and preview channels, releases, and versions" trong tài liệu Hosting. Chưa kiểm chứng được lệnh CLI rollback chính thức.
 - `--only firestore:rules` theo cú pháp mục tiêu deploy chuẩn của Firebase; xem trang Deploy Targets trong tài liệu CLI nếu thấy khác.
 - Thư mục `public` của Hosting được phục vụ công khai hoàn toàn, nên không để file nhạy cảm vào đó.
 - `firebase hosting:disable` và các lệnh `firestore:delete` ảnh hưởng thật tới sản phẩm; không để agent tự chạy.
@@ -227,11 +227,11 @@ Lưu ý:
 | Mức | Ví dụ | Quy tắc |
 | --- | --- | --- |
 | An toàn, chỉ đọc | `git status`, `git diff`, `vercel list`, `vercel logs`, `gh run view`, `wrangler pages deployment list`, `firebase projects:list` | Cho phép |
-| Thay đổi trên máy bạn | `git commit`, `npm install`, `supabase start` | Cho phép, đọc `git diff` sau đó |
-| Tác động lên mạng, có thể hoàn tác | `vercel deploy` (preview), `netlify deploy` (nháp), `firebase hosting:channel:deploy` | Cho phép khi bạn đã xem kế hoạch |
-| Tác động production | `vercel deploy --prod`, `netlify deploy --prod`, `firebase deploy`, `supabase db push`, `wrangler deploy` | Bạn xác nhận từng lần |
-| Không thể hoàn tác hoặc tốn tiền | các lệnh `rm`, `delete`, `remove`, `destroy`, `buy`, `firestore:delete`, `git push --force` | Bạn tự chạy, không giao cho agent |
-| Đăng nhập, secret | `login`, `secret put`, `env add` với giá trị thật | Bạn tự làm, không qua chat |
+| Thay đổi trên máy cá nhân | `git commit`, `npm install`, `supabase start` | Cho phép, đọc `git diff` sau đó |
+| Tác động lên mạng, có thể hoàn tác | `vercel deploy` (preview), `netlify deploy` (nháp), `firebase hosting:channel:deploy` | Cho phép khi người học đã xem kế hoạch |
+| Tác động production | `vercel deploy --prod`, `netlify deploy --prod`, `firebase deploy`, `supabase db push`, `wrangler deploy` | Người học xác nhận từng lần |
+| Không thể hoàn tác hoặc tốn tiền | các lệnh `rm`, `delete`, `remove`, `destroy`, `buy`, `firestore:delete`, `git push --force` | Người học tự chạy, không giao cho agent |
+| Đăng nhập, secret | `login`, `secret put`, `env add` với giá trị thật | Người học tự thực hiện, không qua chat |
 
 ## Tiếp theo + Tài liệu chính thức
 

@@ -4,7 +4,7 @@ import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import { courseTracks, courseTree, type Lesson } from './course'
 import { slideLink } from './deck'
-import { ADVANCED_SESSIONS, BASIC_SESSIONS, trackOfSession, type TrackId } from './tracks'
+import { ADVANCED_SESSIONS, BASIC_SESSIONS, TOTAL_SESSIONS, trackOfSession, type TrackId } from './tracks'
 
 const repo = process.env.REPO_URL || 'https://github.com/TienNHM/devops-course'
 
@@ -63,8 +63,8 @@ function learningSidebar(track?: TrackId): Item[] {
   )
   // Mỗi ngày/buổi là một nhóm gập; bấm tên đi thẳng vào slide, bên trong có Slide rồi Lab.
   const lessonItem = (l: Lesson): Item | null =>
-    l.day
-      ? page(l.label, l.slide) // Cơ bản: chỉ học bằng slide
+    l.slideOnly
+      ? page(l.label, l.slide) // chỉ học bằng slide (Cơ bản và module tùy chọn)
       : group(l.label, [page('Xem slide', l.slide), page('Làm lab', l.lab)], { collapsed: true, link: l.slide })
   const stagesOf = (t: (typeof tracks)[number]) =>
     t.stages.map((st, i) =>
@@ -99,13 +99,14 @@ const slideDecks: { dir: string; name: string }[] = [
   { dir: '06-kubectl', name: 'kubectl' },
   { dir: '07-operations', name: 'Operations' },
   { dir: '08-capstone', name: 'Capstone' },
+  { dir: '09-cloud', name: 'Cloud và IaC' },
 ]
 // Chỉ dùng cho trang tổng quan /slides/: liệt kê 8 bộ slide. Trang slide từng buổi dùng sidebar học (learningSidebar).
 function slidesSidebar(): Item[] {
   const deckItem = (d: { dir: string; name: string }): Item | null => {
     const dirPath = join(root, 'slides', d.dir)
     if (!existsSync(dirPath)) return null
-    const sessions = Array.from({ length: 32 }, (_, i) => pad(i + 1))
+    const sessions = Array.from({ length: TOTAL_SESSIONS }, (_, i) => pad(i + 1))
       .filter((n) => existsSync(join(dirPath, `session-${n}.md`)))
       .map((n) => ({
         text: h1(`slides/${d.dir}/session-${n}.md`).replace(/^Slide (?:buổi|Ngày) /, 'Bài '),
@@ -113,7 +114,7 @@ function slidesSidebar(): Item[] {
       }))
     return { text: `${d.dir.slice(0, 2)} · ${d.name}`, collapsed: true, link: `/slides/${d.dir}/`, items: sessions }
   }
-  return present([group('Slide', [page('Tổng quan 32 bài', '/slides/')]), group('Các bộ slide', slideDecks.map(deckItem))])
+  return present([group('Slide', [page('Tổng quan các bài', '/slides/')]), group('Các bộ slide', slideDecks.map(deckItem))])
 }
 
 // Sidebar chung cho các trang tra cứu
@@ -139,7 +140,7 @@ function referenceSidebar(): Item[] {
       page('Mẫu bài tập', '/templates/assignment-template'),
       page('Mẫu dự án', '/templates/project-template'),
     ]),
-    group('Slide', [page('Slide 32 buổi', '/slides/')]),
+    group('Slide', [page('Tất cả bộ slide', '/slides/')]),
   ])
 }
 
@@ -224,7 +225,7 @@ function vibeSidebar(): Item[] {
 
 // Mỗi buổi (lab và slide) dùng sidebar của lộ trình chứa nó. Khóa theo buổi, nên trang tuần và bài tập tuần dùng sidebar chung.
 const sessionSidebars: Record<string, Item[]> = {}
-for (let n = 1; n <= 32; n++) {
+for (let n = 1; n <= TOTAL_SESSIONS; n++) {
   const sb = learningSidebar(trackOfSession(n))
   sessionSidebars[`/labs/week-${pad(Math.ceil(n / 2))}/session-${pad(n)}`] = sb
   sessionSidebars[slideLink(n)] = sb

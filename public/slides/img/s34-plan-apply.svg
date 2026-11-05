@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Chu trình init, plan, apply, destroy</text>
+<rect x="40" y="110" width="170" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="155" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">File .tf</text>
+<text x="125" y="188" font-size="19" text-anchor="middle" fill="#475569">mô tả mong muốn</text>
+<rect x="270" y="110" width="190" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="365" y="155" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">terraform plan</text>
+<text x="365" y="188" font-size="19" text-anchor="middle" fill="#475569">xem sự khác biệt</text>
+<rect x="520" y="110" width="190" height="110" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="615" y="155" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">terraform apply</text>
+<text x="615" y="188" font-size="19" text-anchor="middle" fill="#475569">thực hiện thay đổi</text>
+<rect x="770" y="110" width="150" height="110" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5"/>
+<text x="845" y="155" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">floci</text>
+<text x="845" y="188" font-size="19" text-anchor="middle" fill="#475569">S3, DynamoDB</text>
+<path d="M212 165L266 165" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M462 165L516 165" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<path d="M712 165L766 165" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<rect x="270" y="290" width="440" height="70" rx="12" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="490" y="333" font-size="21" text-anchor="middle" fill="#0f172a">terraform.tfstate: bản ghi tài nguyên đã tạo</text>
+<path d="M615 222L615 286" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<text x="40" y="270" font-size="20" fill="#475569">Bắt đầu: init</text>
+<text x="40" y="300" font-size="20" fill="#475569">Kết thúc: destroy</text>
+</svg>

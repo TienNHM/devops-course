@@ -4,33 +4,33 @@
 
 ::: tip Bạn làm gì
 - **Kết quả:** một landing page CLB có link công khai, form đăng ký lưu vào Supabase và trang admin có đăng nhập.
-- **Thời gian:** 3 đến 4 giờ nếu bạn đã làm các bài 01, 02, 04 (các mốc trùng chỉ là làm lại nhanh theo bài cũ).
-- **Cần gì trước:** đã làm xong [01 Git và GitHub](01-git-github.md), [02 Hosting tĩnh](02-static-hosting.md) và [04 Supabase](04-supabase.md). Bài này **không dạy lại** các bước đó, chỉ chỉ chỗ để bạn làm lại. Nếu bạn học Firebase thì xem thử thách trong trang chấm điểm.
-- **Đây là Chặng 3, tùy chọn:** chỉ làm khi bạn muốn một dự án thật có database và đăng nhập. Chỉ cần link công khai thì dừng ở Chặng 1.
+- **Thời gian:** 3 đến 4 giờ nếu đã làm các bài 01, 02, 04 (các mốc trùng chỉ là làm lại nhanh theo bài cũ).
+- **Cần gì trước:** đã làm xong [01 Git và GitHub](01-git-github.md), [02 Hosting tĩnh](02-static-hosting.md) và [04 Supabase](04-supabase.md). Bài này **không dạy lại** các bước đó, chỉ chỉ ra chỗ để làm lại. Người học theo hướng Firebase xem thử thách trong trang chấm điểm.
+- **Đây là Chặng 3, tùy chọn:** chỉ làm khi cần một dự án thật có database và đăng nhập. Nếu chỉ cần link công khai thì dừng ở Chặng 1.
 :::
 
 ## Bạn sẽ làm được gì
 
 - Có một link công khai dạng `https://ten-cua-ban.xxx` mà bất kỳ ai cũng mở được trên điện thoại.
-- Có form đăng ký thành viên: người lạ điền vào thì dữ liệu nằm trong database Supabase của bạn.
-- Có trang admin: chỉ bạn đăng nhập mới xem được danh sách, người lạ gọi thẳng API chỉ nhận về danh sách rỗng.
+- Có form đăng ký thành viên: người lạ điền vào thì dữ liệu nằm trong database Supabase của dự án.
+- Có trang admin: chỉ người đăng nhập mới xem được danh sách, người lạ gọi thẳng API chỉ nhận về danh sách rỗng.
 - Không lộ secret: repo công khai không chứa khóa bí mật, `.env` không bị commit.
 - Giải thích được bằng lời của mình vì sao hệ thống chạy, và sửa được một lỗi cố tình bị cài.
 
-Đây là bài ghép lại: mốc nào đã học ở bài trước thì có dòng "đã học ở bài X, làm lại theo". Kẹt ở đâu, mở [Xử lý sự cố](08-troubleshooting.md).
+Đây là bài ghép lại: mốc nào đã học ở bài trước thì có dòng "đã học ở bài X, làm lại theo". Khi bị kẹt, mở [Xử lý sự cố](08-troubleshooting.md).
 
 ## Khái niệm trong 5 phút
 
-Hãy nghĩ tới một quầy đăng ký ở cổng trường.
+Bảng sau đối chiếu từng thành phần của hệ thống đăng ký thành viên với khái niệm kỹ thuật tương ứng.
 
-| Ngoài đời | Trong dự án |
+| Thành phần | Trong dự án |
 | --- | --- |
-| Tờ rơi và bàn đăng ký | Trang web tĩnh (HTML, CSS, JS) đặt trên hosting |
-| Hộp phiếu có khe nhét giấy | Bảng `members` chỉ cho phép "nhét vào" (insert) |
-| Chìa khóa hộp phiếu, chỉ BTC giữ | Tài khoản admin + bảng `admins` + policy đọc |
-| Quy định "ai được làm gì với hộp phiếu" | Row Level Security (RLS; [thuật ngữ](../resources/glossary.md)) |
-| Chìa khóa vạn năng của chủ nhà | `service_role` hoặc secret key, không bao giờ đưa ra ngoài |
-| Biển hiệu và địa chỉ quầy | Domain và HTTPS |
+| Giao diện và biểu mẫu đăng ký | Trang web tĩnh (HTML, CSS, JS) đặt trên hosting |
+| Nơi chỉ cho phép ghi thêm dữ liệu | Bảng `members` chỉ cho phép "nhét vào" (insert) |
+| Quyền đọc danh sách, chỉ ban tổ chức có | Tài khoản admin + bảng `admins` + policy đọc |
+| Quy tắc xác định ai được làm gì với từng dòng dữ liệu | Row Level Security (RLS; [thuật ngữ](../resources/glossary.md)) |
+| Khóa có toàn quyền, bỏ qua mọi quy tắc | `service_role` hoặc secret key, không bao giờ đưa ra ngoài |
+| Địa chỉ truy cập và kết nối mã hóa | Domain (tên miền) và HTTPS (giao thức web có mã hóa) |
 
 ```mermaid
 flowchart LR
@@ -43,7 +43,7 @@ flowchart LR
   SB -->|"RLS lọc dữ liệu"| AD
 ```
 
-Điều quan trọng nhất: trang web nằm hoàn toàn trong trình duyệt của khách, ai cũng "xem mã nguồn" được. Vì vậy mọi thứ đặt trong trang đều coi như công khai. Khóa công khai (publishable) chỉ an toàn vì RLS đứng sau canh cửa. Đọc lại phần khóa và RLS ở [bài 04 Supabase](04-supabase.md) trước khi làm mốc 5.
+Nguyên tắc quan trọng nhất: trang web chạy hoàn toàn trong trình duyệt của khách, nên ai cũng xem được mã nguồn. Vì vậy mọi nội dung đặt trong trang đều được coi là công khai. Khóa công khai (publishable) chỉ an toàn vì RLS kiểm soát quyền truy cập ở phía database. Cần đọc lại phần khóa và RLS ở [bài 04 Supabase](04-supabase.md) trước khi làm mốc 5.
 
 ## Yêu cầu của sản phẩm
 
@@ -62,15 +62,15 @@ Ràng buộc bảo mật (không thương lượng):
 - Chỉ dùng khóa công khai (publishable hoặc anon) trong code frontend; `config.js` chỉ chứa Project URL và khóa này. Không có `service_role` hay secret key trong repo và lịch sử Git; `.env` (nếu có) không được commit.
 - Không dán dữ liệu thành viên thật vào AI để "nhờ xử lý".
 
-**Mẫu tham chiếu đã chạy được:** tải gói [vibe-club-landing.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-club-landing.zip) (có `index.html`, `admin.html`, `app.js`, `admin.js`, `schema.sql`, `config.example.js`), giải nén để so sánh sau mỗi mốc. Trong gói chỉ có `config.example.js` (không có `config.js` thật): để chạy, bạn đổi tên `config.example.js` thành `config.js` rồi điền URL và khóa công khai của mình ở mốc 5. Mã nguồn cũng có ở [examples/vibe/club-landing](../examples/vibe/club-landing/README.md). Hãy tự làm trước, mở mẫu để đối chiếu sau. Ai không muốn tự làm giao diện có thể bắt đầu thẳng từ gói mẫu này và bỏ qua mốc 1.
+**Mẫu tham chiếu đã chạy được:** tải gói [vibe-club-landing.zip](https://devops-course.tiennhm.io.vn/downloads/vibe-club-landing.zip) (có `index.html`, `admin.html`, `app.js`, `admin.js`, `schema.sql`, `config.example.js`), giải nén để so sánh sau mỗi mốc. Trong gói chỉ có `config.example.js` (không có `config.js` thật): để chạy, đổi tên `config.example.js` thành `config.js` rồi điền URL và khóa công khai của dự án ở mốc 5. Mã nguồn cũng có ở [examples/vibe/club-landing](../examples/vibe/club-landing/README.md). Nên tự làm trước, mở mẫu để đối chiếu sau. Người học không muốn tự làm giao diện có thể bắt đầu thẳng từ gói mẫu này và bỏ qua mốc 1.
 
 ## Thực hành từng bước
 
-Mỗi mốc có việc cần làm, kết quả mong đợi và tiêu chí đo được. Dừng lại tích checklist rồi mới sang mốc tiếp.
+Mỗi mốc có việc cần làm, kết quả mong đợi và tiêu chí đo được. Cần hoàn thành checklist của mốc hiện tại rồi mới sang mốc tiếp theo.
 
 ### Mốc 1: Nhờ agent tạo bản đầu (20 phút, nội dung riêng của dự án)
 
-Mở agent (Claude Code, Cursor, Copilot agent, Codex hoặc Gemini CLI) trong một thư mục trống tên `club-landing`. Dán prompt:
+Mở agent (Claude Code, Cursor, Copilot agent, Codex hoặc Gemini CLI) trong một thư mục trống tên `club-landing`. Dán prompt sau:
 
 ```text
 Tạo landing page cho câu lạc bộ công nghệ sinh viên bằng HTML, CSS và JavaScript thuần,
@@ -82,13 +82,13 @@ Chưa kết nối database; khi submit chỉ hiện thông báo thử.
 Trước khi viết, hãy liệt kê kế hoạch file ngắn gọn. Không cài thêm thư viện nào.
 ```
 
-Bạn sẽ thấy: 3 file mới, mở `index.html` lên là có trang đẹp. Tiêu chí: mở được trong trình duyệt, nhìn ổn khi thu nhỏ cửa sổ về cỡ điện thoại.
+Kết quả đúng: có 3 file mới, mở `index.html` hiển thị một trang hoàn chỉnh. Tiêu chí: mở được trong trình duyệt, hiển thị ổn khi thu nhỏ cửa sổ về cỡ điện thoại.
 
 ### Mốc 2: Chạy local và đọc lại (15 phút)
 
-Bấm đúp `index.html` để mở bằng trình duyệt (không cần cài Node hay chạy server). Thử bấm mọi nút, gõ email sai, để trống ô bắt buộc. Rồi nhờ agent giải thích file `app.js` từng dòng và tự hỏi: "dòng nào gọi ra ngoài Internet?". Ở mốc này câu trả lời phải là: không dòng nào.
+Chạy local nghĩa là chạy ứng dụng ngay trên máy cá nhân, chưa đưa lên Internet. Bấm đúp `index.html` để mở bằng trình duyệt (không cần cài Node hay chạy server). Thử bấm mọi nút, gõ email sai, để trống ô bắt buộc. Sau đó nhờ agent giải thích file `app.js` từng dòng và đặt câu hỏi kiểm tra: "dòng nào gọi ra ngoài Internet?". Ở mốc này câu trả lời đúng là: không dòng nào.
 
-Tiêu chí: không có lỗi đỏ trong Console (nhấn F12), bạn chỉ ra được file nào lo giao diện, file nào lo hành vi.
+Tiêu chí: không có lỗi đỏ trong Console (nhấn F12), và chỉ ra được file nào lo giao diện, file nào lo hành vi.
 
 ### Mốc 3: Đưa lên GitHub (15 phút)
 
@@ -98,18 +98,18 @@ Tiêu chí: tìm trong repo chữ `secret` và `service_role` không ra kết qu
 
 ### Mốc 4: Deploy bản tĩnh (20 phút)
 
-**Đã học ở [bài 02 Hosting tĩnh](02-static-hosting.md), làm lại theo bài đó** (GitHub Pages là đủ). Mốc này chỉ cần bản tĩnh chưa có Supabase, nên chưa có `config.js`. Ở mốc 5 bạn thêm `config.js` rồi push lại, hosting tự deploy bản mới.
+**Đã học ở [bài 02 Hosting tĩnh](02-static-hosting.md), làm lại theo bài đó** (GitHub Pages là đủ). Mốc này chỉ cần bản tĩnh chưa có Supabase, nên chưa có `config.js`. Ở mốc 5, thêm `config.js` rồi push lại; hosting tự deploy bản mới.
 
 Tiêu chí: link mở được trên thiết bị khác (thử bằng điện thoại dùng 4G), và có ít nhất 2 lần deploy trong lịch sử.
 
 ### Mốc 5: Thêm Supabase và RLS (45 phút)
 
-Đây là mốc khó nhất và là phần riêng của dự án. Làm lần lượt:
+Đây là mốc khó nhất và là phần riêng của dự án. Thực hiện lần lượt:
 
 1. **Đã học ở [bài 04 Supabase](04-supabase.md), Bước 1 và Bước 3:** tạo project Supabase, lấy Project URL và publishable key.
 2. Mở SQL Editor, chép khối SQL trong mục gập bên dưới (bảng `members` và `admins`, bật RLS, policy) vào và bấm Run. Đây cũng là nội dung file `schema.sql` trong gói mẫu.
 3. Kiểm tra RLS đã bật cho cả hai bảng `members`, `admins` (Table Editor, nhãn RLS enabled).
-4. Trong thư mục dự án, **đổi tên** `config.example.js` (có trong gói mẫu) thành `config.js`, mở bằng trình soạn thảo và thay hai giá trị `SUPABASE_URL` và `SUPABASE_KEY` bằng URL và khóa công khai của bạn. Đừng đụng tới dòng nào khác. Nếu tự làm bằng agent thì tự tạo `config.js` có hai giá trị đó.
+4. Trong thư mục dự án, **đổi tên** `config.example.js` (có trong gói mẫu) thành `config.js`, mở bằng trình soạn thảo và thay hai giá trị `SUPABASE_URL` và `SUPABASE_KEY` bằng URL và khóa công khai của dự án. Không sửa dòng nào khác. Nếu tự làm bằng agent thì tự tạo `config.js` có hai giá trị đó.
 5. Nhờ agent nối form với `supabase-js` (prompt ở mục sau). Chạy local, gửi một đăng ký thử, kiểm tra dòng đó xuất hiện trong Table Editor.
 6. Tạo user admin và thêm vào bảng `admins`, làm trang `admin.html` đăng nhập và xem danh sách. Cách tạo admin an toàn: mục "Tạo admin đầu tiên" ở [Supabase nâng cao](04-supabase-advanced.md).
 7. Thử "tấn công" chính mình theo [bài 04, Bước 5](04-supabase.md): đọc `members` bằng khóa công khai, không đăng nhập (tab ẩn danh, đổi `signups` thành `members` trong URL). Phải ra rỗng hoặc lỗi quyền.
@@ -187,14 +187,14 @@ Phân quyền admin bằng bảng `admins`, không bằng `user_metadata` (ngư�
 
 Đưa bản có Supabase lên mạng (mặc định, đơn giản nhất):
 
-8. Commit cả `config.js` rồi push, như bạn đã deploy ở mốc 4. Không cần build, không cần đặt biến môi trường. Hosting tự cập nhật sau vài phút.
-9. Vì sao commit `config.js` là an toàn: file chỉ có Project URL và khóa công khai (`sb_publishable_...` hoặc `anon`). Trang chạy trong trình duyệt nên khách luôn xem được khóa này (Xem nguồn trang, tab Network), Supabase thiết kế như vậy; quyền thật nằm ở RLS. Còn `service_role` hay `sb_secret_` thì bỏ qua RLS: tuyệt đối không đặt vào repo, kể cả repo riêng tư.
+8. Commit cả `config.js` rồi push, tương tự lần deploy ở mốc 4. Không cần build, không cần đặt biến môi trường. Hosting tự cập nhật sau vài phút.
+9. Lý do commit `config.js` là an toàn: file chỉ có Project URL và khóa công khai (`sb_publishable_...` hoặc `anon`). Trang chạy trong trình duyệt nên khách luôn xem được khóa này (Xem nguồn trang, tab Network); Supabase thiết kế như vậy, quyền thật nằm ở RLS. Ngược lại, `service_role` hay `sb_secret_` bỏ qua RLS nên tuyệt đối không đặt vào repo, kể cả repo riêng tư.
 10. Mở link online: dòng "Chưa cấu hình Supabase" phải biến mất. Gửi một đăng ký thử rồi đăng nhập `/admin.html`.
 11. Quay lại Supabase, Authentication, URL Configuration: đặt Site URL thành địa chỉ trang thật và thêm địa chỉ đó (có `/**`) vào Redirect URLs, giữ localhost nếu còn làm trên máy.
 
 ::: details Nâng cao: tạo config lúc build (không commit config.js)
 
-Cách này dành cho ai muốn đổi khóa mà không sửa code, hoặc muốn repo không chứa giá trị cấu hình nào. Nó cần dùng terminal một chút.
+Cách này dành cho trường hợp cần đổi khóa mà không sửa code, hoặc muốn repo không chứa giá trị cấu hình nào. Cách này yêu cầu dùng terminal ở mức cơ bản.
 
 1. Thêm dòng `config.js` vào `.gitignore` (và xóa `config.js` khỏi Git nếu đã commit).
 2. Trong cài đặt của nền tảng, đặt biến môi trường `SUPABASE_URL` (Project URL) và `SUPABASE_KEY` (publishable key). Đây là khóa công khai, không phải bí mật.
@@ -215,21 +215,21 @@ Tiêu chí: một đăng ký thử từ link công khai (không phải localhost
 
 ### Mốc 6: Domain và HTTPS (20 phút)
 
-Dùng domain phụ miễn phí của hosting (ví dụ `ten-ban.vercel.app`, `ten-ban.pages.dev`, `ten-ban.netlify.app`, `ten-ban.github.io`) là đủ điểm. Nếu bạn tự quyết định mua domain riêng, làm theo [bài Domain, bảo mật và production](07-domain-security-production.md): đây là việc bạn tự thao tác, không giao cho agent.
+Dùng domain phụ miễn phí của hosting (ví dụ `ten-ban.vercel.app`, `ten-ban.pages.dev`, `ten-ban.netlify.app`, `ten-ban.github.io`) là đủ điểm. Nếu quyết định mua domain riêng, thực hiện theo [bài Domain, bảo mật và production](07-domain-security-production.md); người học tự thao tác bước này, không giao cho agent.
 
 Tiêu chí: thanh địa chỉ có ổ khóa (HTTPS), không có cảnh báo "mixed content" trong Console.
 
 ### Mốc 7: Rà soát bảo mật (20 phút)
 
-Làm hết danh sách trong mục "Tự rà soát" bên dưới, rồi chụp ảnh làm bằng chứng cho bài nộp.
+Hoàn thành toàn bộ danh sách trong mục "Tự rà soát" bên dưới, rồi chụp ảnh làm bằng chứng cho bài nộp.
 
 ### Mốc 8: Demo (10 phút)
 
-Đứng trước một người bạn, cầm điện thoại: mở link, đăng ký bằng email của bạn đó, mở admin trên laptop và cho thấy dòng mới xuất hiện. Sau đó trả lời năm câu hỏi giải thích ở mục "Mẫu bài nộp" trong [trang chấm điểm](09-mini-project-advanced.md).
+Demo trước một người xem, bằng điện thoại: mở link, đăng ký bằng email của người xem, mở admin trên laptop và cho thấy dòng mới xuất hiện. Sau đó trả lời năm câu hỏi giải thích ở mục "Mẫu bài nộp" trong [trang chấm điểm](09-mini-project-advanced.md).
 
 ## Nhờ AI agent làm giúp
 
-Mỗi mốc có prompt gợi ý. Sao chép, sửa phần trong ngoặc vuông cho đúng dự án của bạn.
+Mỗi mốc có prompt gợi ý. Sao chép prompt và sửa phần trong ngoặc vuông cho đúng với dự án.
 
 Mốc 2, hiểu code:
 
@@ -245,7 +245,7 @@ Tạo .gitignore cho dự án web tĩnh này: chặn .env, .env.*, node_modules.
 Sau đó chạy git status và liệt kê file sẽ được commit. KHÔNG chạy git push, tôi sẽ tự đẩy.
 ```
 
-Mốc 5, nối Supabase (dán URL và khóa công khai vào config.js bằng tay, đừng dán vào chat):
+Mốc 5, nối Supabase (dán URL và khóa công khai vào config.js bằng tay, không dán vào chat):
 
 ```text
 Nối form đăng ký với Supabase bằng supabase-js lấy từ CDN jsdelivr (không build).
@@ -271,7 +271,7 @@ innerHTML với dữ liệu người dùng, bảng thiếu RLS, policy kiểu "u
 Liệt kê phát hiện kèm mức độ. KHÔNG tự sửa schema trên Supabase thật, chỉ đề xuất câu lệnh SQL để tôi đọc rồi tự chạy.
 ```
 
-Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5; thử đọc `members` ẩn danh bằng URL REST; nhìn lại danh sách file trước khi commit; mở trang trên điện thoại.
+Phần người học phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5; thử đọc `members` ẩn danh bằng URL REST; nhìn lại danh sách file trước khi commit; mở trang trên điện thoại.
 
 ::: danger Những việc KHÔNG giao cho agent
 - Dán `service_role`, secret key, mật khẩu admin hay token vào khung chat hoặc file trong repo.
@@ -292,7 +292,7 @@ Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5;
 | XSS | Đăng ký thử với họ tên là một đoạn thẻ HTML in đậm, xem ở admin | Hiện nguyên chữ, không in đậm |
 | Email trùng | Đăng ký hai lần cùng email | Lần hai báo đã đăng ký, không tạo dòng mới |
 | Admin an toàn | Mật khẩu mạnh, tắt đăng ký công khai nếu không cần | Người lạ không tự tạo được user |
-| Chi phí | Xem trang giá chính thức, chỉ dùng gói free, bật cảnh báo nếu dịch vụ có | Bạn nói được giới hạn gói free đang dùng |
+| Chi phí | Xem trang giá chính thức, chỉ dùng gói free, bật cảnh báo nếu dịch vụ có | Nêu được giới hạn gói free đang dùng |
 
 ## Nếu bị lỗi
 
@@ -304,7 +304,7 @@ Bạn phải tự kiểm tra: đọc từng policy trong khối SQL ở mốc 5;
 | Local chạy, online trang không gửi được | `config.js` chưa được commit và push (hoặc còn bị `.gitignore` chặn) | Xóa dòng `config.js` khỏi `.gitignore`, commit và push lại; hoặc dùng cách nâng cao tạo config lúc build |
 | Console: `supabase is not defined` | Thẻ script CDN nằm sau `app.js`, hoặc mất mạng, hoặc bị chặn | Đặt script CDN trước `app.js`; thử mạng khác |
 | Console: `Invalid API key` | Dán nhầm khóa, thừa khoảng trắng, hoặc khóa đã bị xoay | Copy lại khóa công khai từ Project Settings, API Keys |
-| `build-config.mjs` báo "secret key" hoặc "service_role" (cách nâng cao) | Bạn đặt nhầm khóa bí mật vào biến môi trường | Dừng lại, đặt khóa công khai; nếu khóa bí mật từng bị dán vào chat hoặc repo thì xoay ngay |
+| `build-config.mjs` báo "secret key" hoặc "service_role" (cách nâng cao) | Khóa bí mật bị đặt nhầm vào biến môi trường | Dừng lại, đặt khóa công khai; nếu khóa bí mật từng bị dán vào chat hoặc repo thì xoay ngay |
 | Vài tuần sau, form báo lỗi hoặc admin không tải được | Project Supabase gói free bị tạm dừng vì ít hoạt động | Vào dashboard Supabase, bấm khôi phục (restore) project; đọc trang Project Pausing để biết điều kiện hiện hành |
 | Trang hosting hiện 404 | Thư mục xuất bản sai, hoặc file không tên `index.html` | Kiểm tra Publish/Output directory trỏ đúng thư mục chứa `index.html` |
 
@@ -332,17 +332,17 @@ Năm câu hỏi tự kiểm tra (kèm đáp án) nằm ở [trang chấm điểm
 
 ## Tiếp theo
 
-Bước kế: [07 Tên miền, bảo mật, production](07-domain-security-production.md) (domain riêng, rà soát bảo mật), rồi [11 Hoàn thiện và ra mắt](11-launch-polish.md) khi bạn muốn gửi link cho người lạ.
+Bước kế: [07 Tên miền, bảo mật, production](07-domain-security-production.md) (domain riêng, rà soát bảo mật), rồi [11 Hoàn thiện và ra mắt](11-launch-polish.md) trước khi gửi link cho người lạ.
 
 ::: details Tra cứu thêm
 - Làm sản phẩm bằng Lovable, Bolt, v0 hay Replit: [10 App-builder](10-app-builders.md).
 - Chấm điểm và nộp bài: [trang chấm điểm](09-mini-project-advanced.md).
 - Gặp lỗi: [Xử lý sự cố](08-troubleshooting.md); prompt mẫu: [Thư viện prompt](prompt-library.md); lệnh: [CLI cheatsheet](cli-cheatsheet.md); nền tảng: [Nền tảng hosting](platforms.md); lộ trình: [trang chủ track](index.md).
-- Khi sản phẩm lớn lên, bảng dưới cho biết lúc nào cần học thêm DevOps.
+- Khi sản phẩm lớn lên, bảng dưới cho biết thời điểm cần học thêm DevOps.
 
 | Dấu hiệu | Nên học |
 | --- | --- |
-| Chạy trên máy bạn thì được, máy bạn khác thì lỗi | Docker trong khóa [DevOps chính](../index.md) |
+| Chạy được trên máy này nhưng lỗi trên máy khác | Docker trong khóa [DevOps chính](../index.md) |
 | Mỗi lần sửa phải kiểm tra tay, sợ làm hỏng | CI/CD với GitHub Actions |
 | Nhiều người cùng sửa, cần môi trường thử riêng | Môi trường staging, preview, quản lý cấu hình |
 | Lượng người dùng lớn, cần nhiều bản chạy song song | Kubernetes, giám sát, logging |

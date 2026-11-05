@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Tạo tay và khai báo bằng mã</text>
+<rect x="40" y="90" width="420" height="270" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="250" y="130" font-size="24" font-weight="700" text-anchor="middle" fill="#dc2626">Gõ lệnh từng bước</text>
+<text x="70" y="180" font-size="20" font-family="Consolas, monospace" fill="#0f172a">aws s3 mb ...</text>
+<text x="70" y="215" font-size="20" font-family="Consolas, monospace" fill="#0f172a">aws dynamodb create-table ...</text>
+<text x="70" y="262" font-size="20" fill="#475569">Không có bản ghi trạng thái mong muốn</text>
+<text x="70" y="295" font-size="20" fill="#475569">Môi trường thứ hai: gõ lại, dễ sai</text>
+<text x="70" y="328" font-size="20" fill="#475569">Khó xem ai đã đổi gì</text>
+<rect x="500" y="90" width="420" height="270" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="710" y="130" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">Khai báo trong file .tf</text>
+<text x="530" y="180" font-size="20" font-family="Consolas, monospace" fill="#0f172a">resource "aws_s3_bucket" ...</text>
+<text x="530" y="215" font-size="20" font-family="Consolas, monospace" fill="#0f172a">resource "aws_dynamodb_table" ...</text>
+<text x="530" y="262" font-size="20" fill="#475569">File nằm trong Git, có lịch sử</text>
+<text x="530" y="295" font-size="20" fill="#475569">plan cho xem thay đổi trước khi làm</text>
+<text x="530" y="328" font-size="20" fill="#475569">apply lặp lại cho kết quả như nhau</text>
+</svg>

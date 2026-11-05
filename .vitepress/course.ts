@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { ADVANCED_STAGES, BASIC_STAGES, basicDay, type TrackId } from './tracks'
+import { ADVANCED_STAGES, BASIC_STAGES, basicDay, slideOnly, type TrackId } from './tracks'
 import { slideLink } from './deck'
 
 // Cấu trúc khóa học: giai đoạn → tuần. Sidebar chỉ liệt kê tới cấp tuần (hub tuần),
@@ -39,10 +39,12 @@ const pad = (n: number) => String(n).padStart(2, '0')
 
 // Tên buổi đọc từ dòng "# Buổi 13 – Docker Compose" của labs/week-XX/session-NN.md
 function sessionName(s: number): string {
-  const file = join(labsDir, `week-${pad(Math.ceil(s / 2))}`, `session-${pad(s)}.md`)
+  const lab = join(labsDir, `week-${pad(Math.ceil(s / 2))}`, `session-${pad(s)}.md`)
+  // Buổi không có trang lab (module tùy chọn): lấy tên từ tiêu đề của bộ slide
+  const file = existsSync(lab) ? lab : join(rootDir, `${slideLink(s)}.md`)
   if (!existsSync(file)) return `Buổi ${pad(s)}`
   const h1 = readFileSync(file, 'utf8').match(/^# (.+)$/m)?.[1]
-  return h1 ? h1.replace(/^(?:Buổi|Ngày) \d+\s*[–·:-]\s*/, '').trim() : `Buổi ${pad(s)}`
+  return h1 ? h1.replace(/^(?:Slide )?(?:buổi|Buổi|Ngày) \d+\s*[–·:-]\s*/, '').trim() : `Buổi ${pad(s)}`
 }
 
 function week(n: number): Week {
@@ -81,6 +83,7 @@ export type { TrackId }
 export interface Lesson {
   n: number // số buổi 1–32 (giữ nguyên đường dẫn bài)
   day: number | null // ngày học 1–10 của lộ trình Cơ bản; null với Nâng cao
+  slideOnly: boolean // true: chỉ có slide, không có trang lab
   title: string // "Dockerfile cho Club API"
   label: string // "Ngày 6 · Dockerfile cho Club API" hoặc "Buổi 17 · Automated Testing"
   slide: string // "/slides/02-docker/session-09"
@@ -107,6 +110,7 @@ function lesson(n: number): Lesson {
   return {
     n,
     day,
+    slideOnly: slideOnly(n),
     title,
     label: day ? `Ngày ${day} · ${title}` : `Buổi ${pad(n)} · ${title}`,
     slide: slideLink(n),

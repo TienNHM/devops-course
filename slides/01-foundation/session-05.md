@@ -1,58 +1,67 @@
 # Slide buổi 05 – Networking Fundamentals
 
-> **Tóm tắt:** Hiểu IP, DNS, TCP, port, HTTP và localhost, rồi dùng ping, curl, nslookup, ss để chẩn đoán một request theo từng tầng.
+> **Tóm tắt:** Buổi học trình bày các khái niệm IP, DNS, TCP, port, HTTP và localhost, sau đó dùng ping, curl, nslookup và ss để chẩn đoán một request theo từng tầng.
 
 Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fundamentals](../../labs/week-03/session-05.md).
 
-## Slide 1: Hôm nay bạn làm được gì
+## Slide 1: Mục tiêu của buổi học
 
 ![Ba mục tiêu: đọc từng tầng, phân loại lỗi, hiểu bind và container](/slides/img/s05-goals.svg)
 
 ::: details Ghi chú cho mentor
-- Đọc nhanh 3 thẻ. Ngoài ra: xử lý `Address already in use` bằng cách tìm process giữ port.
-- Hỏi: ai từng nhắn "web không vào được" mà không biết lỗi ở đâu?
+- Đọc nhanh 3 thẻ. Ngoài ra: xử lý `Address already in use` bằng cách tìm process đang giữ port.
+- Câu hỏi mở đầu: ai từng báo "web không vào được" mà không biết lỗi nằm ở đâu?
 :::
 
 ---
 
-## Slide 2: "Không vào được" là một trong 5 lỗi
+## Slide 2: Bài toán thực tế: "không vào được" có 5 nguyên nhân
 
 ![Năm nguyên nhân khác nhau cho cùng một câu không vào được](/slides/img/s05-five-causes.svg)
 
 ::: details Ghi chú cho mentor
-- Starter-project có ba thành phần nói chuyện qua mạng: Nginx 8080, API 3000, PostgreSQL 5432.
-- Mọi lỗi kết nối trong Docker, Compose, Kubernetes là lỗi mạng ở một tầng cụ thể.
+- Starter-project có ba thành phần giao tiếp qua mạng: Nginx 8080, API 3000, PostgreSQL 5432.
+- Mọi lỗi kết nối trong Docker, Compose, Kubernetes đều là lỗi mạng ở một tầng cụ thể.
 :::
 
 ---
 
-## Slide 3: IP chọn máy, port chọn chương trình
+## Slide 3: Khái niệm: Địa chỉ IP và port
 
 ![Gói tin tới địa chỉ IP rồi tới đúng port của chương trình](/slides/img/s05-ip-port.svg)
 
+- **Địa chỉ IP** xác định một máy trong mạng; **port** là số xác định một chương trình đang lắng nghe trên máy đó.
+- Gói tin đến địa chỉ IP trước, sau đó được chuyển tới chương trình đang dùng port tương ứng.
+- Port quen thuộc: 22 (SSH), 53 (DNS), 80 và 443 (HTTP và HTTPS).
+
 ::: details Ghi chú cho mentor
-- Cùng subnet nói chuyện trực tiếp, khác subnet đi qua gateway.
+- Các máy cùng subnet giao tiếp trực tiếp, khác subnet thì đi qua gateway.
 - `127.0.0.0/8` là loopback. Dải private: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`; WSL2, Docker, kind đều dùng.
-- Port quen thuộc: 22 SSH, 53 DNS, 80 và 443 HTTP(S). TCP bắt tay ba bước; UDP không kết nối.
+- TCP bắt tay ba bước; UDP không thiết lập kết nối.
 :::
 
 ---
 
-## Slide 4: DNS đổi tên thành IP
+## Slide 4: Khái niệm: DNS
 
 ![Tra /etc/hosts trước, rồi hỏi resolver để ra địa chỉ IP](/slides/img/s05-dns.svg)
 
+- **DNS** (Domain Name System) là hệ thống chuyển tên miền thành địa chỉ IP.
+- Máy tra tệp `/etc/hosts` trước, sau đó hỏi resolver (máy chủ phân giải tên); kết quả được lưu đệm (cache) theo TTL.
+- Ví dụ: `localhost` trỏ về `127.0.0.1`; resolver trong WSL2 được khai báo ở `/etc/resolv.conf`.
+
 ::: details Ghi chú cho mentor
-- Resolver trong WSL2 ghi ở `/etc/resolv.conf`. `localhost` trỏ về `127.0.0.1`.
-- Kết quả được cache theo TTL.
-- Hỏi: dòng nào của `nslookup` cho biết resolver đang dùng? (dòng `Server`)
+- Câu hỏi: dòng nào của `nslookup` cho biết resolver đang dùng? (dòng `Server`)
 :::
 
 ---
 
-## Slide 5: Một request đi qua bốn bước
+## Slide 5: Khái niệm: Request đi qua bốn bước
 
 ![DNS, TCP, TLS, HTTP và công cụ kiểm tra từng bước](/slides/img/s05-request-steps.svg)
+
+- **TCP** là giao thức thiết lập kết nối tin cậy giữa hai máy; **TLS** mã hóa kết nối; **HTTP** là giao thức trao đổi request và response giữa client và server.
+- Một request HTTPS đi theo thứ tự DNS, TCP, TLS, HTTP; lỗi ở bước nào thì chẩn đoán bằng công cụ của bước đó.
 
 ::: details Ghi chú cho mentor
 - Lỗi DNS ở bước 1, lỗi TCP ở bước 2, lỗi ứng dụng ở bước 4.
@@ -61,7 +70,7 @@ Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fu
 
 ---
 
-## Slide 6: Đọc curl -v: dòng *, > và <
+## Slide 6: Đọc kết quả `curl -v`: các dòng `*`, `>` và `<`
 
 ```text
 $ curl -v https://example.com/ -o /dev/null
@@ -72,11 +81,11 @@ $ curl -v https://example.com/ -o /dev/null
 < HTTP/2 200                           # response
 ```
 
-Dòng nào chứng minh DNS thành công? Dòng nào chứng minh TCP?
+Câu hỏi: dòng nào chứng minh DNS thành công, và dòng nào chứng minh TCP thành công?
 
 ::: details Ghi chú cho mentor
-- Trong lab dùng `2>&1` vì `curl -v` ghi chẩn đoán ra stderr.
-- Tầng IP: `ip -br addr` cho `lo` và `eth0`. Tầng port: `ss -ltnp`.
+- Trong lab dùng `2>&1` vì `curl -v` ghi thông tin chẩn đoán ra stderr.
+- Tầng IP: `ip -br addr` hiển thị `lo` và `eth0`. Tầng port: `ss -ltnp`.
 :::
 
 ---
@@ -86,8 +95,8 @@ Dòng nào chứng minh DNS thành công? Dòng nào chứng minh TCP?
 ![Cây quyết định: DNS, TCP, HTTP và lỗi tương ứng](/slides/img/s05-diagnose.svg)
 
 ::: details Ghi chú cho mentor
-- Đi theo thứ tự: DNS có ra IP không, rồi TCP nối được không, rồi HTTP trả gì.
-- 2xx mà người dùng vẫn lỗi thì kiểm tra phía client.
+- Đi theo thứ tự: DNS có trả về IP không, rồi TCP nối được không, rồi HTTP trả về gì.
+- Nếu nhận mã 2xx mà người dùng vẫn gặp lỗi thì kiểm tra phía client.
 :::
 
 ---
@@ -97,15 +106,18 @@ Dòng nào chứng minh DNS thành công? Dòng nào chứng minh TCP?
 ![curl 7 refused, 28 timeout, 6 không phân giải được tên](/slides/img/s05-three-errors.svg)
 
 ::: details Ghi chú cho mentor
-- Hỏi: với mỗi lỗi, lệnh tiếp theo bạn chạy là gì?
-- `192.0.2.1` thuộc dải TEST-NET-1 dành cho tài liệu nên không ai trả lời, dùng để tái hiện timeout.
+- Câu hỏi: với mỗi lỗi, lệnh tiếp theo cần chạy là gì?
+- `192.0.2.1` thuộc dải TEST-NET-1 dành cho tài liệu nên không có máy nào phản hồi; địa chỉ này dùng để tái hiện timeout.
 :::
 
 ---
 
-## Slide 9: Bind address: ai được gọi vào server
+## Slide 9: Khái niệm: Bind address
 
 ![bind 127.0.0.1 chỉ nhận từ chính máy, bind 0.0.0.0 nhận từ mọi card mạng](/slides/img/s05-bind.svg)
+
+- **Bind address** là địa chỉ IP mà server gắn vào để nhận kết nối; địa chỉ này quyết định ai được phép gọi tới server.
+- Bind `127.0.0.1` chỉ nhận kết nối từ chính máy; bind `0.0.0.0` nhận kết nối qua mọi card mạng.
 
 ::: details Ghi chú cho mentor
 - Demo: `python3 -m http.server 9000 --bind 127.0.0.1` rồi `ss -ltnp`, sau đó `--bind 0.0.0.0` và so sánh cột Local Address.
@@ -114,13 +126,16 @@ Dòng nào chứng minh DNS thành công? Dòng nào chứng minh TCP?
 
 ---
 
-## Slide 10: localhost trong container là chính container
+## Slide 10: Khái niệm: localhost trong container và reverse proxy
 
 ![API trong container gọi postgres theo tên service, không dùng localhost](/slides/img/s05-container.svg)
 
+- Mỗi container có network namespace riêng, nên `localhost` trong container trỏ về chính container đó, không phải máy chủ hay container khác.
+- **Reverse proxy** là server nhận request thay cho các dịch vụ phía sau và chuyển tiếp chúng; do đó API gọi postgres bằng tên service.
+- Ví dụ trong dự án: Nginx phục vụ `/` là tệp tĩnh và chuyển `/api/` sang `http://backend:3000`.
+
 ::: details Ghi chú cho mentor
-- Mỗi container có network namespace riêng.
-- Nginx là reverse proxy: `/` là file tĩnh, `/api/` chuyển sang `http://backend:3000`. Gọi `/health` qua 8080 sẽ nhận frontend vì không khớp `/api/`.
+- Gọi `/health` qua cổng 8080 sẽ nhận trang frontend vì đường dẫn không khớp `/api/`.
 :::
 
 ---
@@ -134,10 +149,10 @@ $ ss -ltnp 'sport = :9000'
 LISTEN 0 5 0.0.0.0:9000 0.0.0.0:* users:(("python3",pid=2410,fd=3))
 ```
 
-Có PID thì `ps -p PID`, rồi `kill PID` nhẹ nhàng hoặc đổi port.
+Khi đã có PID, chạy `ps -p PID` để xem process, sau đó dừng nhẹ nhàng bằng `kill PID` hoặc đổi port.
 
 ::: details Ghi chú cho mentor
-- Docker báo `port is already allocated`. Không `kill -9` ngay, không kill process không biết là gì.
+- Docker báo `port is already allocated`. Không dùng `kill -9` ngay và không dừng process chưa rõ nguồn gốc.
 - Phòng tránh: đặt port bằng biến môi trường như `WEB_PORT`.
 :::
 
@@ -156,12 +171,12 @@ Lệnh đầy đủ: [Buổi 05 – Networking Fundamentals](../../labs/week-03/
 
 ::: details Ghi chú cho mentor
 - Luôn dùng `tee -a` để không ghi đè bằng chứng.
-- Nộp `lab-05/` với bằng chứng dạng text, không dùng ảnh thay log.
+- Nộp `lab-05/` với bằng chứng dạng văn bản, không dùng ảnh thay cho log.
 :::
 
 ---
 
-## Slide 13: Ping được chưa chắc web sống
+## Slide 13: Ping được chưa chắc web đang hoạt động
 
 ```text
 $ ping -c 1 1.1.1.1
@@ -170,16 +185,16 @@ $ curl -sS http://127.0.0.1:9000/
 curl: (7) Failed to connect ... Connection refused
 ```
 
-`ping` chỉ hỏi ICMP. Muốn biết service sống, dùng `curl` và `ss`.
+`ping` chỉ gửi gói ICMP. Để biết service đang hoạt động, dùng `curl` và `ss`.
 
 ::: details Ghi chú cho mentor
-- Ngược lại, ping lỗi chưa chắc mất mạng vì nhiều mạng chặn ICMP.
-- `curl (6)`: `nslookup tên`, xem `/etc/resolv.conf`. `curl (28)`: kiểm tra IP, `ip route`, firewall.
+- Ngược lại, ping lỗi chưa chắc là mất mạng vì nhiều mạng chặn ICMP.
+- `curl (6)`: chạy `nslookup tên`, xem `/etc/resolv.conf`. `curl (28)`: kiểm tra IP, `ip route`, firewall.
 :::
 
 ---
 
-## Slide 14: Recap
+## Slide 14: Tổng kết
 
 ![Ba điều cần nhớ: đi từng tầng, đọc mã lỗi, bind và localhost](/slides/img/s05-recap.svg)
 

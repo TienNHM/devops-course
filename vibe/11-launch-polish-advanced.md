@@ -11,6 +11,8 @@
 
 ## Favicon, sitemap, robots {#favicon-sitemap-robots}
 
+Favicon là biểu tượng nhỏ hiển thị trên thẻ trình duyệt. `robots.txt` là file văn bản cho công cụ tìm kiếm biết phần nào của website được phép thu thập. `sitemap.xml` là danh sách các trang của website để công cụ tìm kiếm lập chỉ mục (index, tức đưa trang vào cơ sở dữ liệu tìm kiếm).
+
 ```html
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -36,13 +38,13 @@ Và `sitemap.xml` cho web nhỏ vài trang:
 </urlset>
 ```
 
-Nếu muốn một trang (ví dụ trang admin) không bị Google lập chỉ mục, đừng chỉ dựa vào `robots.txt` (ai cũng đọc được file này). Hãy bảo vệ trang bằng đăng nhập và thêm `meta name="robots" content="noindex"`.
+Nếu muốn một trang (ví dụ trang admin) không bị Google lập chỉ mục, không chỉ dựa vào `robots.txt` (ai cũng đọc được file này). Cần bảo vệ trang bằng đăng nhập và thêm `meta name="robots" content="noindex"`.
 
-Bạn sẽ thấy: mở `https://ten-mien-cua-ban.vn/robots.txt` và `/sitemap.xml` trên trình duyệt hiện đúng nội dung vừa tạo.
+Kết quả đúng: mở `https://ten-mien-cua-ban.vn/robots.txt` và `/sitemap.xml` trên trình duyệt hiện đúng nội dung vừa tạo.
 
 ## Analytics thân thiện riêng tư và cookie
 
-Bảng dưới là các lựa chọn phổ biến. Gói và giá thay đổi, hãy mở trang chính thức trước khi quyết định (kiểm tra 10/2026):
+Analytics là công cụ thống kê lượt truy cập website. Cookie là một đoạn dữ liệu nhỏ website lưu trong trình duyệt của người truy cập. Bảng dưới là các lựa chọn phổ biến. Gói và giá thay đổi, nên cần mở trang chính thức trước khi quyết định (kiểm tra 10/2026):
 
 | Công cụ | Điểm chính | Lưu ý gói miễn phí |
 | --- | --- | --- |
@@ -51,55 +53,57 @@ Bảng dưới là các lựa chọn phổ biến. Gói và giá thay đổi, h�
 | Plausible | Gọn, ưu tiên riêng tư, có thể tự host | Bản dịch vụ đám mây thường tính phí, có thể có dùng thử; xem trang giá |
 | Umami | Mã nguồn mở, tự host hoặc dùng bản cloud | Có thể có gói free cho cloud; kiểm tra trang giá |
 
-Chọn một cái là đủ. Với người mới trên Vercel, bật Vercel Web Analytics nhanh nhất; với web ở nơi khác, thử Cloudflare Web Analytics.
+Chọn một công cụ là đủ. Với người mới trên Vercel, bật Vercel Web Analytics là nhanh nhất; với web ở nơi khác, dùng Cloudflare Web Analytics.
 
-Về cookie và đồng ý (consent), mức cơ bản:
+Về cookie và sự đồng ý của người dùng (consent), mức cơ bản như sau:
 
-- Công cụ không dùng cookie theo dõi thì thường không cần banner phức tạp, nhưng bạn vẫn nên có một trang "Quyền riêng tư" ngắn nói rõ bạn thu thập gì, dùng để làm gì, liên hệ ai để xóa dữ liệu.
-- Nếu bạn dùng Google Analytics, pixel quảng cáo hoặc công cụ đặt cookie theo dõi, nhiều nơi (như châu Âu) yêu cầu hỏi đồng ý trước. Quy định mỗi quốc gia mỗi khác; nếu nhắm tới người dùng ngoài Việt Nam hoặc thu dữ liệu nhạy cảm, hãy hỏi người am hiểu pháp lý.
-- Form thu email, số điện thoại là dữ liệu cá nhân: chỉ hỏi điều thật sự cần, ghi rõ mục đích bên cạnh nút gửi.
+- Công cụ không dùng cookie theo dõi thì thường không cần banner phức tạp, nhưng vẫn nên có một trang "Quyền riêng tư" ngắn nêu rõ dữ liệu nào được thu thập, mục đích sử dụng và đầu mối liên hệ để xóa dữ liệu.
+- Khi dùng Google Analytics, pixel quảng cáo hoặc công cụ đặt cookie theo dõi, nhiều khu vực (như châu Âu) yêu cầu hỏi đồng ý trước. Quy định mỗi quốc gia khác nhau; nếu nhắm tới người dùng ngoài Việt Nam hoặc thu dữ liệu nhạy cảm, cần tham vấn người am hiểu pháp lý.
+- Form thu email, số điện thoại là dữ liệu cá nhân: chỉ hỏi thông tin thật sự cần, ghi rõ mục đích bên cạnh nút gửi.
 
-Bạn sẽ thấy: sau khi bật, mở web ở cửa sổ ẩn danh vài lần, vài phút sau bảng analytics có số lượt xem tăng lên.
+Kết quả đúng: sau khi bật, mở web ở cửa sổ ẩn danh vài lần, vài phút sau bảng analytics có số lượt xem tăng lên.
 
 ## Thanh toán nằm ngoài phạm vi
 
-Track này không dạy bạn nhận tiền bằng code tự viết. Lý do: lỗi trong xử lý thẻ có thể gây mất tiền thật và vi phạm quy định bảo mật thẻ, rủi ro quá lớn cho sản phẩm do AI viết.
+Track này không hướng dẫn nhận tiền bằng code tự viết. Lý do: lỗi trong xử lý thẻ có thể gây mất tiền thật và vi phạm quy định bảo mật thẻ, đây là rủi ro quá lớn đối với sản phẩm do AI viết.
 
 Nếu cần nhận tiền:
 
-- Dùng trang thanh toán dựng sẵn của nhà cung cấp, ví dụ [Stripe Payment Links](https://docs.stripe.com/payment-links) hoặc Stripe Checkout: bạn tạo link trong dashboard của họ, web của bạn chỉ có một nút dẫn tới link đó.
-- Ở Việt Nam, có thể dùng cổng thanh toán nội địa có sẵn trang thanh toán hoặc link thanh toán; tự đọc điều khoản, phí và quy trình đăng ký của từng bên.
-- Không tự thu số thẻ trong form của bạn. Không lưu số thẻ vào database.
-- Không dán khóa thanh toán (secret key, webhook secret) vào prompt hay vào repo. Nếu sau này cần webhook, hãy học kỹ từ tài liệu của nhà cung cấp và nhờ người có kinh nghiệm xem lại.
-- Việc tạo tài khoản, xác minh danh tính, nhập thông tin ngân hàng là việc bạn tự làm; không nhờ agent làm hộ.
+- Dùng trang thanh toán dựng sẵn của nhà cung cấp, ví dụ [Stripe Payment Links](https://docs.stripe.com/payment-links) hoặc Stripe Checkout: người học tạo link trong dashboard của nhà cung cấp, web chỉ có một nút dẫn tới link đó.
+- Ở Việt Nam, có thể dùng cổng thanh toán nội địa có sẵn trang thanh toán hoặc link thanh toán; cần tự đọc điều khoản, phí và quy trình đăng ký của từng bên.
+- Không tự thu số thẻ trong form của web. Không lưu số thẻ vào database.
+- Không dán khóa thanh toán (secret key, webhook secret) vào prompt hay vào repo. Nếu sau này cần webhook, cần học kỹ từ tài liệu của nhà cung cấp và nhờ người có kinh nghiệm xem lại.
+- Việc tạo tài khoản, xác minh danh tính, nhập thông tin ngân hàng do người học tự thực hiện; không nhờ agent làm hộ.
 
 ## Sao lưu dữ liệu ở mức thực hành
 
-Bài [07](07-domain-security-production.md) đã nói tổng quan; ở đây bạn làm thật một lần.
+Bài [07](07-domain-security-production.md) đã trình bày tổng quan; phần này thực hiện sao lưu thật một lần.
 
 **Supabase, cách 1: xuất CSV.** Vào Table Editor, chọn bảng, dùng nút xuất ra CSV. Dễ nhất, đủ dùng cho bảng vài trăm dòng.
 
-**Supabase, cách 2: dump bằng CLI.** Theo tài liệu Supabase, dự án gói Free nên tự xuất dữ liệu định kỳ (gói trả phí mới có backup hằng ngày). Với CLI đã `supabase login` và `supabase link` ở máy bạn:
+**Supabase, cách 2: dump bằng CLI.** Theo tài liệu Supabase, dự án gói Free nên tự xuất dữ liệu định kỳ (gói trả phí mới có backup hằng ngày). Với CLI đã `supabase login` và `supabase link` trên máy cá nhân:
 
 ```bash
 supabase db dump --linked -f backup-schema.sql
 supabase db dump --linked --data-only -f backup-data.sql
 ```
 
-Lưu ý quan trọng: backup của Supabase không gồm file đã tải lên Storage (chỉ có thông tin mô tả), nên ảnh và tệp cần tải về riêng. File backup có thể chứa dữ liệu cá nhân: đừng đẩy lên GitHub công khai, thêm `backup-*.sql` vào `.gitignore`.
+Lưu ý quan trọng: backup của Supabase không gồm file đã tải lên Storage (chỉ có thông tin mô tả), nên ảnh và tệp cần tải về riêng. File backup có thể chứa dữ liệu cá nhân: không đẩy lên GitHub công khai, cần thêm `backup-*.sql` vào `.gitignore`.
 
-**Firebase.** Với Firestore, xem tính năng export/import trong tài liệu Firebase và Google Cloud (có thể cần gói Blaze và tốn phí lưu trữ, bạn tự cân nhắc). Dự án nhỏ có thể tự viết một script đọc collection ra file JSON bằng tài khoản của bạn.
+**Firebase.** Với Firestore, xem tính năng export/import trong tài liệu Firebase và Google Cloud (có thể cần gói Blaze và tốn phí lưu trữ; người học tự cân nhắc). Dự án nhỏ có thể tự viết một script đọc collection ra file JSON bằng tài khoản của dự án.
 
-**Đặt lịch nhắc.** Backup không đặt lịch thì sẽ không bao giờ làm. Tạo sự kiện lặp trong Google Calendar hoặc điện thoại: "Chủ nhật 20:00: backup dữ liệu web CLB". Tần suất tùy mức quan trọng: tuần một lần cho dữ liệu thay đổi nhiều, tháng một lần cho dữ liệu ít đổi. Cất bản sao ở một nơi khác với nơi chạy dự án (ổ đĩa của bạn, Google Drive riêng tư).
+**Đặt lịch nhắc.** Backup không đặt lịch thì thường không được thực hiện. Tạo sự kiện lặp trong Google Calendar hoặc điện thoại: "Chủ nhật 20:00: backup dữ liệu web CLB". Tần suất tùy mức quan trọng: tuần một lần cho dữ liệu thay đổi nhiều, tháng một lần cho dữ liệu ít đổi. Cất bản sao ở một nơi khác với nơi chạy dự án (ổ đĩa cá nhân, Google Drive riêng tư).
 
-Bạn sẽ thấy: file `backup-data.sql` hoặc CSV có dung lượng lớn hơn 0 và mở bằng trình soạn thảo thấy dữ liệu của bạn. Thử nạp vào một dự án trống ít nhất một lần để biết nó dùng được.
+Kết quả đúng: file `backup-data.sql` hoặc CSV có dung lượng lớn hơn 0 và mở bằng trình soạn thảo thấy dữ liệu của dự án. Cần thử nạp vào một dự án trống ít nhất một lần để xác nhận bản backup dùng được.
 
 ## Đo hiệu năng bằng Lighthouse
+
+Lighthouse là công cụ tích hợp trong Chrome, chấm điểm một trang web theo bốn tiêu chí: hiệu năng, khả năng truy cập, thực hành tốt nhất và SEO.
 
 1. Mở web đã deploy bằng Chrome, ở cửa sổ ẩn danh (để tiện ích mở rộng không làm sai điểm).
 2. Nhấn F12, chọn tab Lighthouse, chọn Mobile, tích Performance, Accessibility, Best practices, SEO, bấm Analyze page load.
 3. Chờ vài chục giây. Báo cáo cho 4 điểm từ 0 đến 100 và danh sách "Opportunities", "Diagnostics".
-4. Ghi lại điểm ban đầu, sửa từng nhóm lỗi, đo lại. Xem [giới thiệu Lighthouse của Chrome](https://developer.chrome.com/docs/lighthouse/overview) nếu muốn biết chi tiết từng chỉ số.
+4. Ghi lại điểm ban đầu, sửa từng nhóm lỗi, đo lại. Xem [giới thiệu Lighthouse của Chrome](https://developer.chrome.com/docs/lighthouse/overview) để xem chi tiết từng chỉ số.
 
 Các cảnh báo hay gặp với web AI viết và cách xử lý:
 

@@ -1,23 +1,23 @@
 # Thư viện prompt cho vibe deploy
 
-> **Tóm tắt:** 30 prompt sao chép được theo tình huống, từ khởi tạo dự án tới deploy, Supabase, Firebase, domain, bảo mật, rollback, kèm điều bạn phải tự kiểm tra sau mỗi lần.
+> **Tóm tắt:** 30 prompt sao chép được theo tình huống, từ khởi tạo dự án tới deploy, Supabase, Firebase, domain, bảo mật, rollback, kèm phần người học phải tự kiểm tra sau mỗi lần.
 
 ::: tip Bạn làm gì
 - **Kết quả:** chọn đúng một prompt theo tình huống, sao chép, thay phần trong ngoặc vuông và chạy với agent, rồi tự kiểm tra kết quả.
 - **Thời gian:** tra cứu 2 đến 5 phút mỗi prompt.
 - **Cần gì trước:** một AI agent và một dự án (xem [Deploy cùng AI agent](06-ai-agent-deploy.md)).
-- **Module trước:** đây là trang tra cứu, không nằm trong lộ trình tuyến tính. Dùng khi bạn đang làm [Đưa web tĩnh lên mạng](02-static-hosting.md) trở đi.
+- **Module trước:** đây là trang tra cứu, không nằm trong lộ trình tuyến tính. Dùng khi đang làm từ [Đưa web tĩnh lên mạng](02-static-hosting.md) trở đi.
 :::
 
 ## Cách dùng thư viện này
 
-Mỗi prompt (xem thuật ngữ ở [bảng thuật ngữ](../resources/glossary.md)) có ba phần: **Mục tiêu**, **Khi nào dùng**, và **Bạn tự kiểm tra**. Chỗ viết hoa trong dấu ngoặc vuông như `[TÊN DỰ ÁN]` là chỗ bạn thay bằng thông tin của mình.
+Prompt là đoạn văn bản hướng dẫn gửi cho AI agent để agent thực hiện một việc cụ thể (xem thêm ở [bảng thuật ngữ](../resources/glossary.md)). Mỗi prompt trong thư viện có ba phần: **Mục tiêu**, **Khi nào dùng**, và **Tự kiểm tra**. Chỗ viết hoa trong dấu ngoặc vuông như `[TÊN DỰ ÁN]` là chỗ cần thay bằng thông tin của dự án.
 
 Ba quy tắc áp dụng cho mọi prompt:
 
 1. Có `AGENTS.md` trong dự án (xem [Dùng AI agent để deploy](06-ai-agent-deploy.md)) để agent luôn nhớ các quy tắc an toàn.
-2. Không bao giờ dán secret, API key, `service_role` key, mật khẩu hay dữ liệu cá nhân của người dùng vào prompt. Nếu log có chứa chúng, xoá đi trước khi dán.
-3. Agent chỉ đề xuất và làm phần code. Đăng nhập, bấm trả phí, nhập DNS, dán secret vào trang cài đặt là việc của bạn.
+2. Không dán secret, API key, `service_role` key, mật khẩu hay dữ liệu cá nhân của người dùng vào prompt. Nếu log có chứa các giá trị này, cần xoá trước khi dán.
+3. Agent chỉ đề xuất và làm phần code. Đăng nhập, bấm trả phí, nhập DNS, dán secret vào trang cài đặt là việc của người học.
 
 Mục lục theo tình huống:
 
@@ -45,7 +45,7 @@ Hãy tạo thêm: .gitignore (chặn .env, node_modules), README.md (tiếng Vi�
 Trước khi viết code, hãy liệt kê file bạn sẽ tạo và chờ tôi đồng ý.
 ```
 
-- **Bạn tự kiểm tra:** Mở `public/index.html` bằng trình duyệt thấy trang; `.gitignore` có dòng `.env`; không có khóa nào trong file.
+- **Tự kiểm tra:** Mở `public/index.html` bằng trình duyệt thấy trang; `.gitignore` có dòng `.env`; không có khóa nào trong file.
 
 ### 2. Chọn công nghệ phù hợp để deploy dễ
 
@@ -58,7 +58,7 @@ Hãy so sánh 2 đến 3 cách làm (web tĩnh, web có hàm serverless, web có
 Khuyên tôi một cách và giải thích bằng ngôn ngữ đời thường. Chưa viết code.
 ```
 
-- **Bạn tự kiểm tra:** Đối chiếu giới hạn gói miễn phí trên trang giá chính thức của nền tảng, không tin con số agent đưa ra.
+- **Tự kiểm tra:** Đối chiếu giới hạn gói miễn phí trên trang giá chính thức của nền tảng, không dựa vào con số agent đưa ra.
 
 ### 3. Khởi tạo Git và đẩy lên GitHub
 
@@ -70,7 +70,7 @@ Dự án này chưa có Git. Hãy: git init, kiểm tra .gitignore đã chặn .
 Sau đó đưa cho tôi đúng lệnh gh repo create để tôi tự chạy (repo ở chế độ private). Đừng tự tạo repo công khai.
 ```
 
-- **Bạn tự kiểm tra:** Đọc danh sách file sẽ commit, không có `.env` hay file lạ; tự chạy lệnh tạo repo và xác nhận repo là Private.
+- **Tự kiểm tra:** Đọc danh sách file sẽ commit, không có `.env` hay file lạ; tự chạy lệnh tạo repo và xác nhận repo là Private.
 
 ## Chuẩn bị deploy
 
@@ -84,7 +84,7 @@ Hãy rà soát dự án này xem đã sẵn sàng deploy lên [NỀN TẢNG] ch�
 Chạy thử lệnh build ở máy nếu có. Trả lời dạng danh sách: ĐẠT, CHƯA ĐẠT, và cách sửa. Chưa sửa gì.
 ```
 
-- **Bạn tự kiểm tra:** Tự chạy lại lệnh build và xác nhận kết quả khớp với báo cáo.
+- **Tự kiểm tra:** Tự chạy lại lệnh build và xác nhận kết quả khớp với báo cáo.
 
 ### 5. Liệt kê biến môi trường cần có (không đụng giá trị)
 
@@ -96,7 +96,7 @@ Hãy quét code và liệt kê mọi biến môi trường mà dự án đọc. 
 Với mỗi biến, ghi: dùng để làm gì, là công khai (an toàn ở trình duyệt) hay bí mật (chỉ ở máy chủ).
 ```
 
-- **Bạn tự kiểm tra:** `.env.example` không chứa giá trị thật; biến bí mật không có tiền tố mà framework dùng để đưa ra trình duyệt.
+- **Tự kiểm tra:** `.env.example` không chứa giá trị thật; biến bí mật không có tiền tố mà framework dùng để đưa ra trình duyệt.
 
 ### 6. Chọn nền tảng deploy cho dự án này
 
@@ -109,7 +109,7 @@ Nêu rõ: dự án cần gì (chỉ file tĩnh hay có hàm máy chủ), các b�
 Nếu bạn nhắc tới giới hạn gói miễn phí, hãy ghi rằng tôi cần kiểm tra trang giá chính thức.
 ```
 
-- **Bạn tự kiểm tra:** Mở trang giá chính thức và đọc giới hạn trước khi quyết định.
+- **Tự kiểm tra:** Mở trang giá chính thức và đọc giới hạn trước khi quyết định.
 
 ## Deploy từng nền tảng
 
@@ -123,7 +123,7 @@ Hãy chuẩn bị để deploy thư mục public/ lên GitHub Pages bằng GitHu
 Cảnh báo tôi nếu trang dùng đường dẫn tuyệt đối bắt đầu bằng / vì sẽ vỡ khi nằm trong thư mục con của domain. Sau đó hướng dẫn tôi bật Pages trong Settings của repo (tôi sẽ tự bấm). Đừng thêm secret nào.
 ```
 
-- **Bạn tự kiểm tra:** Tab Actions xanh; mở link Pages thấy trang, ảnh và CSS tải đủ.
+- **Tự kiểm tra:** Tab Actions xanh; mở link Pages thấy trang, ảnh và CSS tải đủ.
 
 ### 8. Deploy lên Vercel qua kết nối GitHub
 
@@ -135,7 +135,7 @@ Hãy chuẩn bị dự án để import vào Vercel từ GitHub: xác định fr
 Sau đó viết cho tôi các bước tôi tự làm trên giao diện Vercel (giao diện có thể khác chút): Add New Project, chọn repo, kiểm tra cấu hình, thêm biến môi trường, Deploy. Không yêu cầu tôi nâng cấp gói.
 ```
 
-- **Bạn tự kiểm tra:** Deployment có trạng thái Ready; mở link production ở cửa sổ ẩn danh; biến bí mật không bị lộ trong mã nguồn trang (xem Page Source).
+- **Tự kiểm tra:** Deployment có trạng thái Ready; mở link production ở cửa sổ ẩn danh; biến bí mật không bị lộ trong mã nguồn trang (xem Page Source).
 
 ### 9. Deploy lên Netlify
 
@@ -147,7 +147,7 @@ Hãy chuẩn bị dự án để deploy lên Netlify: tạo netlify.toml với l
 Cho tôi các bước để kết nối repo GitHub trên giao diện Netlify (tôi tự thao tác), và lệnh CLI tương ứng nếu tôi muốn dùng (netlify deploy cho bản nháp, netlify deploy --prod cho bản thật). Tôi sẽ tự đăng nhập CLI.
 ```
 
-- **Bạn tự kiểm tra:** Chạy `netlify deploy` (bản nháp) và mở link nháp trước khi dùng `--prod`.
+- **Tự kiểm tra:** Chạy `netlify deploy` (bản nháp) và mở link nháp trước khi dùng `--prod`.
 
 ### 10. Deploy lên Cloudflare Pages
 
@@ -159,7 +159,7 @@ Hãy chuẩn bị dự án để deploy lên Cloudflare Pages: xác định lệ
 Hướng dẫn tôi từng bước trên dashboard để kết nối repo GitHub (tôi tự thao tác), và lệnh wrangler pages deploy kèm --project-name nếu tôi muốn deploy bằng CLI. Trước khi đưa lệnh, hãy nhắc tôi đối chiếu với tài liệu wrangler hiện hành vì lệnh có thể đổi.
 ```
 
-- **Bạn tự kiểm tra:** Dashboard hiện deployment thành công; mở link `pages.dev` thấy trang; nếu có hàm, gọi thử đường dẫn của hàm bằng `curl`.
+- **Tự kiểm tra:** Dashboard hiện deployment thành công; mở link `pages.dev` thấy trang; nếu có hàm, gọi thử đường dẫn của hàm bằng `curl`.
 
 ### 11. Deploy lên Firebase Hosting
 
@@ -171,7 +171,7 @@ Hãy chuẩn bị dự án để deploy lên Firebase Hosting: tạo firebase.js
 Tôi sẽ tự chạy firebase login và firebase init. Hãy cho tôi các câu trả lời nên chọn khi firebase init hỏi (chỉ chọn Hosting trước, chưa bật gì khác), rồi lệnh firebase deploy --only hosting. Đề xuất dùng firebase hosting:channel:deploy cho bản xem thử trước.
 ```
 
-- **Bạn tự kiểm tra:** Mở link preview và link live; không có file nhạy cảm trong thư mục `public` (Hosting công khai mọi file trong đó).
+- **Tự kiểm tra:** Mở link preview và link live; không có file nhạy cảm trong thư mục `public` (Hosting công khai mọi file trong đó).
 
 ### 12. Chạy thử hàm serverless trước khi deploy
 
@@ -183,7 +183,7 @@ Hãy chỉ cho tôi cách chạy thử hàm serverless của dự án này ở m
 Chạy thử và đưa tôi lệnh curl để gọi hàm. Kiểm tra hàm có trả lỗi rõ ràng khi thiếu biến môi trường thay vì lộ chi tiết nội bộ. Không in giá trị biến môi trường ra log.
 ```
 
-- **Bạn tự kiểm tra:** Tự chạy lệnh `curl` và thấy kết quả đúng; xem log không có giá trị bí mật.
+- **Tự kiểm tra:** Tự chạy lệnh `curl` và thấy kết quả đúng; xem log không có giá trị bí mật.
 
 ## Database và đăng nhập
 
@@ -197,7 +197,7 @@ Tôi cần lưu [MÔ TẢ DỮ LIỆU, ví dụ: danh sách đăng ký sự ki�
 Giải thích từng policy bằng tiếng Việt. Không dùng service_role key trong code frontend. Không viết policy kiểu cho phép tất cả. Tôi sẽ tự chạy SQL trong SQL Editor của dashboard.
 ```
 
-- **Bạn tự kiểm tra:** Đọc từng dòng SQL; trên dashboard bảng có nhãn RLS bật; xem [Supabase](04-supabase.md) để thử truy cập khi chưa đăng nhập và thấy bị từ chối.
+- **Tự kiểm tra:** Đọc từng dòng SQL; trên dashboard bảng có nhãn RLS bật; xem [Supabase](04-supabase.md) để thử truy cập khi chưa đăng nhập và thấy bị từ chối.
 
 ### 14. Kết nối frontend với Supabase đúng khóa
 
@@ -209,7 +209,7 @@ Hãy viết code frontend kết nối Supabase bằng URL và khóa công khai (
 Kiểm tra giúp tôi: trong toàn bộ mã nguồn không có service_role key hay secret key. Nếu có đoạn nào cần quyền cao hơn, đề xuất đặt vào hàm máy chủ (Edge Function hoặc serverless function) và đọc khóa bí mật từ biến môi trường của nền tảng, không đưa ra trình duyệt.
 ```
 
-- **Bạn tự kiểm tra:** Chạy `git grep -i service_role` (không ra kết quả trong code frontend); mở Page Source của trang đã deploy, tìm chuỗi `service_role` (không được thấy).
+- **Tự kiểm tra:** Chạy `git grep -i service_role` (không ra kết quả trong code frontend); mở Page Source của trang đã deploy, tìm chuỗi `service_role` (không được thấy).
 
 ### 15. Thêm Firebase (Auth, Firestore) với Security Rules
 
@@ -221,7 +221,7 @@ Tôi cần lưu [MÔ TẢ DỮ LIỆU] bằng Firestore và đăng nhập bằng
 Giải thích từng dòng rule bằng tiếng Việt, và đề xuất cách thử rule bằng Firebase Emulator trước khi deploy bằng firebase deploy --only firestore:rules.
 ```
 
-- **Bạn tự kiểm tra:** Đọc file rules, không có `if true`; thử bằng emulator hoặc Rules Playground: người chưa đăng nhập bị từ chối; xem [Firebase](05-firebase.md).
+- **Tự kiểm tra:** Đọc file rules, không có `if true`; thử bằng emulator hoặc Rules Playground: người chưa đăng nhập bị từ chối; xem [Firebase](05-firebase.md).
 
 ### 16. Rà soát RLS hoặc Security Rules do AI viết
 
@@ -233,7 +233,7 @@ Hãy đóng vai người tấn công và rà soát các policy RLS (hoặc Fireb
 Liệt kê lỗ hổng theo mức độ và cách sửa. Không sửa tự động, chỉ báo cáo.
 ```
 
-- **Bạn tự kiểm tra:** Tự thử bằng hai tài khoản thử nghiệm: tài khoản A không thấy dữ liệu của B; thử gọi API khi chưa đăng nhập.
+- **Tự kiểm tra:** Tự thử bằng hai tài khoản thử nghiệm: tài khoản A không thấy dữ liệu của B; thử gọi API khi chưa đăng nhập.
 
 ## Log, lỗi, biến môi trường
 
@@ -249,7 +249,7 @@ Không tắt lint, type check, test hay kiểm tra bảo mật chỉ để build
 [DÁN LOG ĐÃ XOÁ SECRET]
 ```
 
-- **Bạn tự kiểm tra:** Build mới xanh; chạy `git diff` xem agent có xoá kiểm tra nào không.
+- **Tự kiểm tra:** Build mới xanh; chạy `git diff` xem agent có xoá kiểm tra nào không.
 
 ### 18. Trang deploy xong nhưng lỗi khi chạy (runtime)
 
@@ -261,7 +261,7 @@ Build xanh nhưng trang [MÔ TẢ LỖI, ví dụ: trắng, hoặc /api/hello tr
 Cho tôi 3 giả thuyết khả dĩ nhất, xếp theo khả năng, kèm cách kiểm tra từng cái. Chưa sửa code. Tôi sẽ dán kết quả log đã xoá secret.
 ```
 
-- **Bạn tự kiểm tra:** Tự mở tab Network, xem request nào lỗi và mã trạng thái là gì, đối chiếu với giả thuyết.
+- **Tự kiểm tra:** Tự mở tab Network, xem request nào lỗi và mã trạng thái là gì, đối chiếu với giả thuyết.
 
 ### 19. Thêm biến môi trường đúng cách
 
@@ -273,7 +273,7 @@ Tôi cần thêm biến môi trường [TÊN_BIẾN]. Hãy: sửa code để đ�
 Cho tôi các bước tự làm: đặt giá trị trong trang cài đặt biến môi trường của [NỀN TẢNG], rồi deploy lại. Tuyệt đối không yêu cầu tôi gửi giá trị thật cho bạn. Nói rõ biến này an toàn để lộ ra trình duyệt hay phải giữ ở máy chủ.
 ```
 
-- **Bạn tự kiểm tra:** Giá trị bạn tự đặt trên nền tảng; tính năng chạy sau khi deploy lại; `git grep` không thấy giá trị thật.
+- **Tự kiểm tra:** Giá trị do người học tự đặt trên nền tảng; tính năng chạy sau khi deploy lại; `git grep` không thấy giá trị thật.
 
 ### 20. Phát hiện và xử lý khóa bị lộ
 
@@ -289,13 +289,13 @@ Tôi nghi ngờ khóa bí mật đã bị lộ trong repo. Hãy: tìm các chu�
 Danh sách phải có: XOAY (rotate) khóa ở trang quản trị dịch vụ NGAY (việc tôi tự làm), cập nhật khóa mới vào biến môi trường nền tảng (tôi tự làm), gỡ khóa khỏi code, và xem lại log dịch vụ để tìm truy cập lạ. Nói rõ rằng chỉ xoá file là chưa đủ vì khóa còn trong lịch sử Git.
 ```
 
-- **Bạn tự kiểm tra:** Khóa cũ đã bị vô hiệu ở trang quản trị; dịch vụ vẫn chạy bằng khóa mới; không còn khóa trong code hiện tại.
+- **Tự kiểm tra:** Khóa cũ đã bị vô hiệu ở trang quản trị; dịch vụ vẫn chạy bằng khóa mới; không còn khóa trong code hiện tại.
 
 ## Domain
 
 ### 21. Thêm domain riêng
 
-- **Mục tiêu:** Trang chạy trên domain của bạn với HTTPS.
+- **Mục tiêu:** Trang chạy trên domain riêng với HTTPS.
 - **Khi nào dùng:** Đã có domain mua ở nhà đăng ký.
 
 ```text
@@ -303,7 +303,7 @@ Tôi đã có domain [TÊN MIỀN] và muốn dùng cho dự án deploy trên [N
 Tôi sẽ tự nhập bản ghi ở nhà đăng ký. Đừng yêu cầu tôi cung cấp mật khẩu nhà đăng ký. Nhắc tôi rằng DNS có thể mất vài phút đến vài giờ để lan truyền, và cách kiểm tra bằng lệnh nslookup hoặc dig.
 ```
 
-- **Bạn tự kiểm tra:** Dùng `nslookup ten-mien` thấy giá trị đúng; mở domain thấy trang và biểu tượng ổ khóa; xem [Domain và bảo mật](07-domain-security-production.md).
+- **Tự kiểm tra:** Dùng `nslookup ten-mien` thấy giá trị đúng; mở domain thấy trang và biểu tượng ổ khóa; xem [Domain và bảo mật](07-domain-security-production.md).
 
 ## Bảo mật, chi phí, tài liệu, review, rollback, CI (prompt 22 đến 30)
 

@@ -1,6 +1,6 @@
 # Tài liệu chính thức
 
-Tài liệu chính thức là nguồn chuẩn; phần cuối trang có thêm best practices và hướng dẫn chuẩn. Cột "Dùng cho" cho biết buổi nên mở tài liệu đó; cột "Mức độ" gợi ý khi nào nên đọc. Nếu lệnh trong khóa học khác với tài liệu, ưu tiên tài liệu theo phiên bản bạn đang cài và báo mentor.
+Tài liệu chính thức là nguồn tham chiếu chuẩn. Phần cuối trang bổ sung các best practices (thực hành tốt nhất) và hướng dẫn chuẩn. Cột "Dùng cho" cho biết buổi học cần mở tài liệu tương ứng; cột "Mức độ" gợi ý thời điểm nên đọc. Khi lệnh trong khóa học khác với tài liệu, cần ưu tiên tài liệu theo phiên bản đang cài đặt và báo cho mentor.
 
 ## Nền tảng
 
@@ -10,7 +10,7 @@ Tài liệu chính thức là nguồn chuẩn; phần cuối trang có thêm bes
 | WSL | https://learn.microsoft.com/en-us/windows/wsl/ | [Buổi 02](../labs/week-01/session-02.md), cài môi trường | Cơ bản |
 | Linux | https://linuxcommand.org/tlcl.php | [Buổi 03](../labs/week-02/session-03.md), [buổi 04](../labs/week-02/session-04.md) | Cơ bản |
 | Git | https://git-scm.com/book/en/v2 | [Buổi 06](../labs/week-03/session-06.md) | Cơ bản |
-| YAML | https://yaml.org/spec/1.2.2/ | Mọi buổi viết Compose, Actions, Kubernetes | Tra cứu khi cần, khá hàn lâm |
+| YAML | https://yaml.org/spec/1.2.2/ | Mọi buổi viết Compose, Actions, Kubernetes | Tra cứu khi cần; nội dung mang tính đặc tả |
 
 ## Docker
 
@@ -51,7 +51,7 @@ Tài liệu chính thức là nguồn chuẩn; phần cuối trang có thêm bes
 
 ## Best practices và hướng dẫn chuẩn
 
-Các nguồn dưới đây nói về cách làm đúng, không chỉ cách dùng công cụ. Đọc sau khi bạn đã chạy được lab.
+Các nguồn dưới đây trình bày cách làm đúng, không chỉ cách sử dụng công cụ. Nên đọc sau khi đã chạy thành công bài lab.
 
 ### Git và làm việc nhóm
 
@@ -69,7 +69,7 @@ Các nguồn dưới đây nói về cách làm đúng, không chỉ cách dùng
 | Chủ đề | Link | Dùng cho | Mức độ |
 | --- | --- | --- | --- |
 | CIS Benchmarks | https://www.cisecurity.org/cis-benchmarks | [Buổi 04](../labs/week-02/session-04.md), tham khảo cấu hình an toàn | Tra cứu |
-| Ubuntu Server: Introduction to security | https://documentation.ubuntu.com/server/explanation/intro-to/security/ | [Buổi 04](../labs/week-02/session-04.md), tổng quan bảo mật server | Cơ bản |
+| Ubuntu Server: Introduction to security | https://documentation.ubuntu.com/server/explanation/intro-to/security/ | [Buổi 04](../labs/week-02/session-04.md), tổng quan về bảo mật server | Cơ bản |
 | OpenSSH manual pages | https://www.openssh.com/manual.html | [Buổi 04](../labs/week-02/session-04.md), cấu hình SSH và khóa | Tra cứu |
 | ufw (tường lửa) | https://manpages.ubuntu.com/manpages/noble/man8/ufw.8.html | [Buổi 05](../labs/week-03/session-05.md), mở và đóng port | Tra cứu |
 | systemd.service | https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html | [Buổi 04](../labs/week-02/session-04.md), quản lý service | Tra cứu |
@@ -120,7 +120,7 @@ Các nguồn dưới đây nói về cách làm đúng, không chỉ cách dùng
 | Chủ đề | Link | Dùng cho | Mức độ |
 | --- | --- | --- | --- |
 | Google SRE: Postmortem Culture | https://sre.google/sre-book/postmortem-culture/ | [Buổi 31](../labs/week-16/session-31.md), [buổi 32](../labs/week-16/session-32.md), viết báo cáo sau sự cố | Nâng cao |
-| Google SRE: Monitoring Distributed Systems | https://sre.google/sre-book/monitoring-distributed-systems/ | [Buổi 28](../labs/week-14/session-28.md), nên theo dõi chỉ số nào | Nâng cao |
+| Google SRE: Monitoring Distributed Systems | https://sre.google/sre-book/monitoring-distributed-systems/ | [Buổi 28](../labs/week-14/session-28.md), các chỉ số cần theo dõi | Nâng cao |
 | Atlassian Incident Management Handbook | https://www.atlassian.com/incident-management/handbook | [Buổi 31](../labs/week-16/session-31.md), quy trình xử lý sự cố | Cơ bản |
 | PagerDuty Incident Response | https://response.pagerduty.com/ | [Buổi 31](../labs/week-16/session-31.md), vai trò khi có sự cố | Nâng cao |
 
@@ -134,4 +134,4 @@ Các nguồn dưới đây nói về cách làm đúng, không chỉ cách dùng
 | Keep a Changelog | https://keepachangelog.com/en/1.1.0/ | [Buổi 18](../labs/week-09/session-18.md), ghi lại thay đổi giữa các phiên bản | Cơ bản |
 | About READMEs (GitHub) | https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes | [Buổi 30](../labs/week-15/session-30.md), README hiển thị trên GitHub | Cơ bản |
 
-Tài liệu chính thức là nguồn chuẩn; sách để đào sâu ([danh sách sách](books.md)), video để minh họa, lab để đánh giá năng lực. Khi quên lệnh, xem [Cheatsheets](cheatsheets.md); khi gặp từ lạ, xem [Thuật ngữ](glossary.md).
+Tài liệu chính thức là nguồn tham chiếu chuẩn; sách giúp đào sâu kiến thức ([danh sách sách](books.md)), video minh họa nội dung và lab đánh giá năng lực thực hành. Khi cần tra lệnh, xem [Cheatsheets](cheatsheets.md); khi gặp thuật ngữ mới, xem [Thuật ngữ](glossary.md).

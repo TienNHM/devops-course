@@ -6,7 +6,7 @@
 
 - Dự án cuối khóa được chấm trên 10 tiêu chí, tổng 100 điểm; cần tối thiểu 60 điểm để hoàn thành khóa.
 - Mentor chấm bằng bằng chứng (source, lịch sử Git, log, kết quả chạy), không chấm theo lời kể hay ảnh chụp đơn lẻ.
-- Điểm cá nhân phụ thuộc hệ số đóng góp; hãy làm việc qua Pull Request để đóng góp của bạn được ghi nhận.
+- Điểm cá nhân phụ thuộc hệ số đóng góp; vì vậy mỗi thành viên nên làm việc qua Pull Request để đóng góp được ghi nhận.
 
 Đề bài và yêu cầu: [Capstone](../assignments/capstone/README.md). Kịch bản demo: [Hướng dẫn demo](../assignments/capstone/demo-guide.md).
 
@@ -182,7 +182,7 @@ Hệ số đóng góp nằm trong khoảng 0,6 đến 1,0 và thường là 1,0.
 | --- | --- | --- |
 | Số PR đã merge và độ lớn | Danh sách PR của repo, lọc theo tác giả | Có đưa thay đổi thật vào `main` không |
 | Commit theo tác giả | `git shortlog -sn --no-merges` | Chỉ là tham khảo, không đo bằng số dòng |
-| Review đã làm | Tab Pull requests, mục review của từng người | Có đọc code của bạn không, comment có nội dung không |
+| Review đã làm | Tab Pull requests, mục review của từng người | Có đọc code của đồng đội không, comment có nội dung không |
 | Issue và board | GitHub Projects | Có nhận và hoàn thành việc đã giao |
 | Peer review | [Template peer review](../templates/peer-review-template.md) | Góc nhìn của đồng đội |
 | Buổi hỏi đáp | Quan sát của mentor | Có hiểu phần của mình và phần của nhóm không |
@@ -228,7 +228,7 @@ Xếp loại theo bảng trong [Đánh giá](assessment.md).
 ## 6. Dành cho mentor: lệnh kiểm tra nhanh
 
 ::: warning Dành cho mentor
-Mục này dành cho người chấm; học viên không cần đọc. Các lệnh giả định bạn đã clone repo nhóm và đang ở thư mục gốc repo.
+Mục này dành cho người chấm; học viên không bắt buộc đọc. Các lệnh giả định mentor đã clone repo nhóm và đang ở thư mục gốc repo.
 :::
 
 #### Tiêu chí 1. Git workflow và source structure (5 điểm)
@@ -240,7 +240,7 @@ git log --format='%an %s' | head -30
 git ls-files | grep -E '(^|/)\.env$' || echo "khong co .env duoc commit"
 ```
 
-Đầu ra mong đợi: nhiều tác giả, thông điệp commit mô tả được thay đổi, dòng cuối in thông báo không có `.env`. Lưu ý: nếu nhóm dùng Squash and merge thì không có merge commit; hãy đếm PR trên GitHub (`gh pr list --state merged` nếu mentor đã cài GitHub CLI).
+Đầu ra mong đợi: nhiều tác giả, thông điệp commit mô tả được thay đổi, dòng cuối in thông báo không có `.env`. Lưu ý: nếu nhóm dùng Squash and merge thì không có merge commit; cần đếm PR trên GitHub (`gh pr list --state merged` nếu mentor đã cài GitHub CLI).
 
 #### Tiêu chí 2. Dockerfile và image optimization (10 điểm)
 

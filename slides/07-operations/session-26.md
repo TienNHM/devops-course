@@ -1,92 +1,116 @@
 # Slide buổi 26 – Resource & Health
 
-> **Tóm tắt:** Đặt requests/limits và ba loại probe cho backend club-api, mô phỏng OOMKilled và readiness probe fail, rồi chẩn đoán bằng describe, events và logs. Bài lab đầy đủ: [Buổi 26 – Resource & Health](../../labs/week-13/session-26.md).
+> **Tóm tắt:** Buổi học khai báo requests, limits và ba loại probe cho backend club-api, mô phỏng lỗi OOMKilled và readiness probe thất bại, sau đó chẩn đoán bằng `describe`, events và logs. Bài lab đầy đủ: [Buổi 26 – Resource & Health](../../labs/week-13/session-26.md).
 
-## Slide 1: Hôm nay bạn làm được gì
+## Slide 1: Mục tiêu của buổi 26
 
 ![Ba mục tiêu: requests và limits, ba loại probe, đọc lỗi Pod](/slides/img/s26-goals.svg)
 
 ::: details Ghi chú cho mentor
-- Đọc nhanh 3 thẻ, không đọc từng dòng.
-- Mục tiêu đầy đủ: phân biệt `requests` và `limits`; đoán QoS class từ manifest; cấu hình đủ ba probe cho club-api; tái hiện OOMKilled (exit 137); chẩn đoán Pod `Running` nhưng `0/1` (Tình huống 10).
+- Đọc nhanh ba thẻ, không đọc từng dòng.
+- Mục tiêu đầy đủ: phân biệt `requests` và `limits`; xác định QoS class từ manifest; cấu hình đủ ba probe cho club-api; tái hiện OOMKilled (exit code 137); chẩn đoán Pod ở trạng thái `Running` nhưng `0/1` (Tình huống 10).
 :::
 
 ---
 
-## Slide 2: Chạy ở máy dev, lên cluster thì hỏng
+## Slide 2: Bài toán thực tế: chạy ổn ở máy dev, lỗi trên cluster
 
 ![Ba triệu chứng: Pod chết lặp lại, Running nhưng 0/1, Pending](/slides/img/s26-problems.svg)
 
 ::: details Ghi chú cho mentor
-- API chạy ổn trên máy dev, lên cluster thì người dùng nhận 502.
-- Pod "đang chạy" nhưng chưa nối được DB mà vẫn nhận traffic.
-- Pod chết lặp lại, log không có lỗi nào: bị kernel giết vì vượt memory.
-- Tất cả là lỗi cấu hình tài nguyên và health check, không phải lỗi code.
+- API chạy ổn trên máy dev, nhưng khi triển khai lên cluster thì người dùng nhận lỗi 502.
+- Pod ở trạng thái `Running` nhưng chưa kết nối được cơ sở dữ liệu, vẫn nhận traffic.
+- Pod khởi động lại liên tục mà log không có lỗi: kernel kết thúc tiến trình vì vượt giới hạn memory.
+- Cả ba triệu chứng xuất phát từ cấu hình tài nguyên và health check, không phải từ lỗi mã nguồn.
 :::
 
 ---
 
-## Slide 3: requests xếp chỗ, limits đặt trần
+## Slide 3: Khái niệm: requests và limits
+
+- **`requests`** là lượng CPU và memory tối thiểu mà container yêu cầu; **`limits`** là mức tối đa container được phép dùng.
+- Scheduler dựa vào `requests` để chọn Node cho Pod; kubelet và kernel cưỡng chế `limits` khi Pod đang chạy.
+- Ví dụ trong dự án: club-api khai báo `requests` 100m CPU và 128Mi memory, `limits` 500m CPU và 256Mi memory.
+
+---
+
+## Slide 4: Hành vi khi vượt giới hạn
 
 ![Memory và CPU: dưới requests được đảm bảo, vượt limit memory thì OOMKilled, vượt limit CPU thì throttle](/slides/img/s26-req-limits.svg)
 
 ::: details Ghi chú cho mentor
-- `requests`: scheduler dùng để xếp Pod vào Node. `limits`: kubelet và kernel cưỡng chế lúc chạy.
-- Vượt CPU limit: bị throttle (chậm). Vượt memory limit: OOMKilled.
-- CPU: `1` là 1 core, `500m` là 0,5 core. Memory: `128Mi`, `1Gi` (khác `128M`); luôn dùng `Mi`, `Gi`.
+- `requests` dùng cho scheduler khi xếp Pod vào Node; `limits` do kubelet và kernel cưỡng chế lúc chạy.
+- Vượt CPU limit: container bị throttle (giới hạn tốc độ xử lý). Vượt memory limit: container bị OOMKilled.
+- Đơn vị CPU: `1` là một core, `500m` là 0,5 core. Đơn vị memory: `128Mi`, `1Gi` (khác `128M`); nên dùng `Mi`, `Gi`.
 :::
 
 ---
 
-## Slide 4: QoS class quyết định ai bị đuổi trước
+## Slide 5: Khái niệm: QoS class
+
+- **QoS class** (Quality of Service) là nhóm ưu tiên mà Kubernetes gán cho Pod dựa trên cách khai báo `requests` và `limits`; có ba nhóm: Guaranteed, Burstable và BestEffort.
+- Khi Node thiếu tài nguyên, Pod thuộc nhóm ưu tiên thấp hơn bị loại bỏ (evict) trước.
+- Ví dụ trong dự án: club-api (100m/128Mi và 500m/256Mi) thuộc nhóm Burstable.
+
+---
+
+## Slide 6: Thứ tự bị loại bỏ theo QoS class
 
 ![BestEffort bị đuổi trước, rồi Burstable, cuối cùng Guaranteed](/slides/img/s26-qos.svg)
 
 ::: details Ghi chú cho mentor
-- Guaranteed: mọi container có requests và limits, requests bằng limits (cpu và memory).
-- Burstable: có khai báo nhưng không đủ điều kiện Guaranteed. BestEffort: không khai báo gì.
+- Guaranteed: mọi container có `requests` và `limits`, và `requests` bằng `limits` (cả CPU lẫn memory).
+- Burstable: có khai báo nhưng không đủ điều kiện của Guaranteed. BestEffort: không khai báo gì.
 - club-api hiện tại (100m/128Mi và 500m/256Mi) là Burstable.
 :::
 
 ---
 
-## Slide 5: Ba probe, ba câu hỏi
+## Slide 7: Khái niệm: Probe
+
+- **Probe** là phép kiểm tra định kỳ do kubelet thực hiện trên container, bằng `httpGet`, `tcpSocket` hoặc `exec`.
+- Kubernetes có ba loại: startup (ứng dụng đã khởi động xong chưa), readiness (có nhận traffic được không), liveness (có cần khởi động lại không).
+- Ví dụ trong dự án: club-api có hai endpoint, `/health` và `/ready`, phục vụ ba probe này.
+
+---
+
+## Slide 8: Ba probe, ba câu hỏi
 
 ![startup, readiness, liveness: câu hỏi và hậu quả khi fail](/slides/img/s26-probes.svg)
 
 ::: details Ghi chú cho mentor
-- Tham số chính: `periodSeconds`, `timeoutSeconds`, `failureThreshold`. Cơ chế: `httpGet`, `tcpSocket`, `exec`.
-- Startup tối đa: `failureThreshold x periodSeconds`.
-- Ví von readiness: biển "đang dọn bàn, chưa nhận khách" ở cửa.
+- Tham số chính: `periodSeconds`, `timeoutSeconds`, `failureThreshold`. Cơ chế kiểm tra: `httpGet`, `tcpSocket`, `exec`.
+- Thời gian khởi động tối đa của startup probe bằng `failureThreshold` nhân `periodSeconds`.
+- Ví dụ so sánh: readiness giống biển "chưa nhận khách" ở cửa hàng: cửa hàng vẫn mở nhưng chưa phục vụ.
 :::
 
 ---
 
-## Slide 6: club-api có hai endpoint cho hai việc
+## Slide 9: Hai endpoint của club-api
 
 ![kubelet gọi /health cho liveness và startup, /ready cho readiness và chạm DB](/slides/img/s26-endpoints.svg)
 
 ::: details Ghi chú cho mentor
-- `/health` luôn trả 200, không chạm DB. `/ready` chạy `SELECT 1`, lỗi thì trả 503.
-- Thiết kế cố ý: liveness hỏi "còn sống", readiness hỏi "phục vụ được không".
-- Liveness không nên phụ thuộc DB: restart không sửa được DB.
+- `/health` luôn trả về 200 và không truy vấn cơ sở dữ liệu. `/ready` chạy `SELECT 1` và trả về 503 khi lỗi.
+- Thiết kế có chủ đích: liveness kiểm tra tiến trình còn sống, readiness kiểm tra khả năng phục vụ.
+- Liveness không nên phụ thuộc cơ sở dữ liệu, vì khởi động lại Pod không sửa được cơ sở dữ liệu.
 :::
 
 ---
 
-## Slide 7: Khi DB sập, chuyện gì xảy ra
+## Slide 10: Diễn biến khi cơ sở dữ liệu ngừng hoạt động
 
 ![Bảng diễn biến: readiness 503, liveness 200, Endpoints rỗng, Pod 0/1 không restart](/slides/img/s26-db-down.svg)
 
 ::: details Ghi chú cho mentor
-- Startup chạy trước, xong mới bật liveness và readiness.
-- DB sập: readiness fail nên Pod ra khỏi Endpoints; liveness vẫn 200 nên không restart.
-- DB quay lại: Pod tự Ready lại, không cần can thiệp.
+- Startup probe chạy trước; khi startup thành công, liveness và readiness mới được kích hoạt.
+- Cơ sở dữ liệu ngừng: readiness thất bại nên Pod bị loại khỏi Endpoints; liveness vẫn trả về 200 nên Pod không bị khởi động lại.
+- Cơ sở dữ liệu hoạt động trở lại: Pod tự chuyển về trạng thái Ready, không cần can thiệp.
 :::
 
 ---
 
-## Slide 8: Demo: tắt database rồi bật lại
+## Slide 11: Demo: tắt rồi bật lại database
 
 ```bash
 kubectl -n club scale statefulset postgres --replicas=0
@@ -95,18 +119,18 @@ kubectl -n club get endpoints backend       # rỗng
 kubectl -n club scale statefulset postgres --replicas=1
 ```
 
-Câu hỏi: nếu liveness trỏ `/ready` thì sẽ khác gì?
+Câu hỏi thảo luận: nếu liveness probe trỏ tới `/ready`, kết quả thay đổi như thế nào?
 
 ::: details Ghi chú cho mentor
-- Xem requests, limits và QoS hiện tại của `club-api` trước khi tắt DB.
-- Bật DB lại: hai IP trở về Endpoints, không Pod nào bị restart.
+- Trước khi tắt cơ sở dữ liệu, xem `requests`, `limits` và QoS hiện tại của `club-api`.
+- Sau khi bật lại, hai IP trở về Endpoints và không Pod nào bị khởi động lại.
 - Lệnh `scale statefulset` lấy từ mô tả demo cũ của slide; tên StatefulSet là `postgres` theo bài lab.
 - Người hướng dẫn chạy trực tiếp trên cluster; học viên quan sát và ghi lại dự đoán.
 :::
 
 ---
 
-## Slide 9: Lab: thêm probe vào manifest
+## Slide 12: Lab: thêm probe vào manifest
 
 ```yaml
 startupProbe:
@@ -119,83 +143,91 @@ livenessProbe:
   httpGet: {path: /health, port: 3000}
 ```
 
-Startup tối đa 2 x 15 = 30 giây. Đầy đủ: [Buổi 26 – Resource & Health](../../labs/week-13/session-26.md#hands-on-lab).
+Startup probe cho phép tối đa 2 x 15 = 30 giây. Hướng dẫn đầy đủ: [Buổi 26 – Resource & Health](../../labs/week-13/session-26.md#hands-on-lab).
 
 ::: details Ghi chú cho mentor
-- Phần 1: đọc requests, limits, QoS; `kubectl top` có thể báo Metrics API not available (bình thường trên kind).
-- Phần 2: viết `source/backend-deploy.yaml` có requests, limits và đủ ba probe; apply, chờ rollout, xem probe đã ghi nhận.
-- `startupProbe` đủ 30 giây nên không cần `initialDelaySeconds`.
+- Phần 1: đọc `requests`, `limits`, QoS; `kubectl top` có thể báo Metrics API not available (bình thường trên kind).
+- Phần 2: viết `source/backend-deploy.yaml` có `requests`, `limits` và đủ ba probe; apply, chờ rollout, kiểm tra probe đã được ghi nhận.
+- `startupProbe` cho phép 30 giây nên không cần `initialDelaySeconds`.
 :::
 
 ---
 
-## Slide 10: Lab: OOMKilled
+## Slide 13: Khái niệm: OOMKilled
+
+- **OOMKilled** là trạng thái của container bị kernel kết thúc vì vượt memory limit (OOM: out of memory).
+- Tiến trình nhận tín hiệu SIGKILL nên không kịp ghi log, và `describe` hiển thị exit code 137.
+- Ví dụ trong lab: Pod `oom-demo` có limit memory `64Mi` và cấp phát bộ nhớ liên tục cho đến khi bị kết thúc.
+
+---
+
+## Slide 14: Lab: OOMKilled
 
 ![Log dừng đột ngột, describe báo OOMKilled exit code 137 vì SIGKILL](/slides/img/s26-oom.svg)
 
 ::: details Ghi chú cho mentor
 - Pod thử nghiệm `oom-demo` dùng image `club-api:1.0.0`, limit memory `64Mi`, cố ý cấp phát bộ nhớ liên tục, `restartPolicy: Never`.
-- Log dừng đột ngột, không có stack trace: SIGKILL = 128 + 9 = 137, app không kịp ghi log.
+- Log dừng đột ngột, không có stack trace: SIGKILL = 128 + 9 = 137, ứng dụng không kịp ghi log.
 - Số dòng `allocated` có thể khác nhau (Node.js khi khởi động đã chiếm khoảng 40 MiB).
-- Dọn dẹp Pod thử nghiệm ngay: `kubectl -n club delete pod oom-demo`.
+- Xóa Pod thử nghiệm ngay sau bài tập: `kubectl -n club delete pod oom-demo`.
 :::
 
 ---
 
-## Slide 11: Lab: readiness fail (Tình huống 10)
+## Slide 15: Lab: readiness thất bại (Tình huống 10)
 
 ![Pod mới 0/1, Pod cũ vẫn 1/1, rollout treo vì path readiness sai](/slides/img/s26-readiness.svg)
 
 ::: details Ghi chú cho mentor
-- Phá bằng cách đặt sai đường dẫn readiness probe (`/readyy`). Pod mới `Running` nhưng `0/1`, RESTARTS 0; hai Pod cũ vẫn phục vụ.
-- Events: `Readiness probe failed` kèm mã HTTP.
-- Khôi phục bằng `apply` lại manifest; `patch` chỉ để thí nghiệm.
-- Cách phòng: thử endpoint của probe bằng `exec` hoặc `port-forward` trước khi viết vào manifest.
+- Gây lỗi bằng cách đặt sai đường dẫn readiness probe (`/readyy`). Pod mới ở trạng thái `Running` nhưng `0/1`, RESTARTS bằng 0; hai Pod cũ vẫn phục vụ.
+- Events chứa `Readiness probe failed` kèm mã HTTP.
+- Khôi phục bằng cách `apply` lại manifest; `patch` chỉ dùng để thí nghiệm.
+- Phòng tránh: thử endpoint của probe bằng `exec` hoặc `port-forward` trước khi ghi vào manifest.
 :::
 
 ---
 
-## Slide 12: Đọc mã trong Events
+## Slide 16: Đọc mã trong Events
 
 | Mã | Ý nghĩa | Hướng xử lý |
 | --- | --- | --- |
 | 404 | Sai path | Sửa path trong probe |
-| 503 | App báo chưa sẵn sàng (thường do DB) | Kiểm tra DB và cấu hình |
-| `connection refused` | Sai cổng hoặc app chưa lắng nghe | Kiểm tra port và startup |
+| 503 | Ứng dụng báo chưa sẵn sàng (thường do DB) | Kiểm tra DB và cấu hình |
+| `connection refused` | Sai cổng hoặc ứng dụng chưa lắng nghe | Kiểm tra port và quá trình khởi động |
 
 ---
 
-## Slide 13: Lỗi thường gặp và thử thách L2
+## Slide 17: Lỗi thường gặp và thử thách L2
 
 | Triệu chứng | Nguyên nhân | Xử lý |
 | --- | --- | --- |
-| `Running` nhưng `0/1` | Readiness fail | `describe`, đọc Events |
-| RESTARTS tăng, log sạch | OOMKilled | `describe`, xem Last State |
-| Mọi Pod restart khi DB sập | Liveness gọi DB | Liveness chỉ dùng `/health` |
-| `Pending`, `Insufficient memory` | `requests` quá lớn | Giảm requests |
+| `Running` nhưng `0/1` | Readiness thất bại | `describe`, đọc Events |
+| RESTARTS tăng, log không có lỗi | OOMKilled | `describe`, xem Last State |
+| Mọi Pod restart khi DB ngừng | Liveness gọi DB | Liveness chỉ dùng `/health` |
+| `Pending`, `Insufficient memory` | `requests` quá lớn | Giảm `requests` |
 
 Thử thách L2: [Buổi 26 – Thử thách nâng cao](../../labs/week-13/session-26-challenge.md).
 
 ::: details Ghi chú cho mentor
 - Thử thách L2: A. Guaranteed QoS; B. liveness phụ thuộc DB gây restart dây chuyền; C. startupProbe sai cổng.
-- Với `Pending`, xem Allocatable của Node trong `describe node`.
+- Với trạng thái `Pending`, xem Allocatable của Node trong `describe node`.
 :::
 
 ---
 
-## Slide 14: Recap
+## Slide 18: Tổng kết
 
 ![Ba điều cần nhớ: requests xếp và limits cưỡng chế, probe đúng việc, 0/1 thì describe](/slides/img/s26-recap.svg)
 
 ::: details Ghi chú cho mentor
-- QoS class quyết định thứ tự bị đuổi khi Node thiếu tài nguyên.
-- Liveness chỉ hỏi "còn sống", phụ thuộc ngoài như DB thuộc về readiness.
-- `patch` chỉ để thí nghiệm; manifest trong Git là nguồn sự thật.
+- QoS class quyết định thứ tự bị loại bỏ khi Node thiếu tài nguyên.
+- Liveness chỉ kiểm tra tiến trình còn sống; phụ thuộc bên ngoài như cơ sở dữ liệu thuộc về readiness.
+- `patch` chỉ dùng để thí nghiệm; manifest trong Git là nguồn sự thật.
 :::
 
 ---
 
-## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+## Slide 19: Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/): giải thích requests và limits.
 - **Tài liệu chính thức:** [Liveness, Readiness và Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/): hướng dẫn cấu hình probe.

@@ -1,10 +1,10 @@
 # Slide buổi 14 – Production-minded Compose
 
-> **Tóm tắt:** Nâng `compose.yaml` từ mức chạy được lên mức đáng tin cậy: healthcheck, thứ tự khởi động, restart, giới hạn tài nguyên, secrets, logging, backup và restore.
+> **Tóm tắt:** Buổi học nâng `compose.yaml` từ mức chạy được lên mức đáng tin cậy bằng healthcheck, thứ tự khởi động, restart policy, giới hạn tài nguyên, secrets, logging, backup và restore.
 
 Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md).
 
-## Slide 1: Hôm nay bạn làm được gì
+## Slide 1: Mục tiêu của buổi học
 
 ![Ba mục tiêu: healthcheck, tự hồi phục, Break và Debug](/slides/img/s14-goals.svg)
 
@@ -14,25 +14,27 @@ Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/we
 
 ---
 
-## Slide 2: Một buổi demo hỏng
+## Slide 2: Một buổi demo thất bại
 
 ![Ba sự cố: lỗi 500 lúc khởi động, API chết không tự dậy, log chiếm hàng GB](/slides/img/s14-bad-demo.svg)
 
 ::: details Ghi chú cho mentor
-- Kể: chạy `up -d`, mở trình duyệt ngay thì lỗi 500, chạy lại lần hai thì được.
-- Máy khởi động lại, container API chết; vài tuần sau, log chiếm hàng GB.
-- Không lỗi nào nằm ở code: chúng nằm ở cách vận hành.
+- Tình huống: chạy `up -d` rồi mở trình duyệt ngay thì gặp lỗi 500, chạy lại lần hai thì được.
+- Khi máy khởi động lại, container API dừng; vài tuần sau, log chiếm hàng GB.
+- Không lỗi nào nằm ở mã nguồn: nguyên nhân nằm ở cách vận hành.
 :::
 
 ---
 
-## Slide 3: Started khác ready
+## Slide 3: Khái niệm: Healthcheck
 
 ![Container Up chỉ cho biết PID 1 chạy; healthcheck cho ra starting, healthy hoặc unhealthy](/slides/img/s14-started-ready.svg)
 
+- **Healthcheck** là lệnh Docker chạy định kỳ bên trong container để xác định ứng dụng có hoạt động đúng hay không.
+- Nếu không có healthcheck, Docker chỉ biết tiến trình chính (PID 1) còn chạy hay không. Với healthcheck, container có ba trạng thái: `starting`, `healthy`, `unhealthy`.
+- Ví dụ trong dự án: backend được kiểm tra bằng cách gọi `/health`; exit code 0 là `healthy`, 1 là `unhealthy`.
+
 ::: details Ghi chú cho mentor
-- Docker chỉ biết tiến trình chính (PID 1) có đang chạy không.
-- Healthcheck: lệnh chạy định kỳ trong container, exit 0 là healthy, 1 là unhealthy. Ba trạng thái: `starting`, `healthy`, `unhealthy`.
 - Đây là nền tảng của liveness và readiness probe ở Kubernetes.
 :::
 
@@ -44,12 +46,20 @@ Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/we
 
 ::: details Ghi chú cho mentor
 - `test`: lệnh kiểm tra, dạng `CMD` hoặc `CMD-SHELL`. `interval` gợi ý 5s đến 10s. `timeout` gợi ý 3s. `retries` gợi ý 3 đến 5. `start_period` gợi ý 10s đến 30s.
-- Lỗi trong `start_period` chưa tính vào `retries`.
+- Lỗi xảy ra trong `start_period` chưa được tính vào `retries`.
 :::
 
 ---
 
-## Slide 5: depends_on với condition
+## Slide 5: Khái niệm: depends_on và condition
+
+- **`depends_on`** là khai báo thứ tự khởi động giữa các service; `condition` quy định Compose chờ đến trạng thái nào của service được phụ thuộc.
+- Mặc định, Compose chỉ chờ container được tạo, chưa chờ ứng dụng sẵn sàng; do đó `depends_on` thường chưa đủ.
+- Ví dụ trong dự án: backend khai báo `condition: service_healthy` để chỉ khởi động sau khi Postgres đã `healthy`.
+
+---
+
+## Slide 6: Các giá trị của depends_on
 
 | Cú pháp | Compose chờ điều gì |
 | --- | --- |
@@ -59,34 +69,45 @@ Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/we
 
 ::: details Ghi chú cho mentor
 - `depends_on` chỉ tác động lúc `docker compose up`.
-- Postgres restart giữa chừng thì Compose không restart API; ứng dụng vẫn phải chịu được mất kết nối tạm thời.
+- Khi Postgres restart giữa chừng, Compose không restart API; ứng dụng vẫn phải chịu được việc mất kết nối tạm thời.
 :::
 
 ---
 
-## Slide 6: Chuỗi khởi động: mỗi bước chờ bước trước
+## Slide 7: Chuỗi khởi động: mỗi bước chờ bước trước
 
 ![Postgres healthy rồi tới backend, backend healthy rồi tới frontend](/slides/img/s14-startup-chain.svg)
 
 ::: details Ghi chú cho mentor
-- Compose start postgres, chạy `pg_isready` mỗi 5s; khi healthy mới start backend; backend gọi `/health` mỗi 10s; khi healthy mới start frontend.
-- `pg_isready` có thể báo sẵn sàng sớm ở bước khởi tạo, nên sau `down -v` hãy chờ vài giây trước khi truy vấn.
+- Compose khởi động postgres và chạy `pg_isready` mỗi 5s; khi postgres `healthy` mới khởi động backend; backend gọi `/health` mỗi 10s; khi backend `healthy` mới khởi động frontend.
+- `pg_isready` có thể báo sẵn sàng sớm ở bước khởi tạo, nên sau `down -v` cần chờ vài giây trước khi truy vấn.
 :::
 
 ---
 
-## Slide 7: Restart policy chỉ phản ứng khi tiến trình thoát
+## Slide 8: Khái niệm: Restart policy
 
 ![Thoát bất thường thì được dựng lại, stop thì nằm yên, unhealthy thì không restart](/slides/img/s14-restart.svg)
 
+- **Restart policy** là cấu hình quy định Docker có khởi động lại container hay không khi tiến trình chính thoát.
+- Policy chỉ phản ứng với việc tiến trình thoát; container ở trạng thái `unhealthy` không bị restart.
+- Các giá trị: `no` (mặc định), `on-failure` (exit code khác 0), `always` (kể cả sau khi daemon khởi động lại), `unless-stopped` (như `always`, trừ khi người dùng chủ động dừng).
+
 ::: details Ghi chú cho mentor
-- Policy: `no` (mặc định), `on-failure` (exit code khác 0), `always` (kể cả sau khi daemon khởi động lại), `unless-stopped` (như `always`, trừ khi bạn chủ động dừng).
-- Docker 29.x coi `kill` do người dùng gõ là dừng thủ công; dùng thoát bất thường thật (dừng postgres khi pool có kết nối nhàn rỗi) để kiểm chứng.
+- Docker 29.x coi `kill` do người dùng gõ là dừng thủ công; cần dùng một lần thoát bất thường thật (dừng postgres khi pool có kết nối nhàn rỗi) để kiểm chứng.
 :::
 
 ---
 
-## Slide 8: Demo: sống khác sẵn sàng
+## Slide 9: Khái niệm: Liveness và readiness
+
+- **Liveness** cho biết ứng dụng còn sống (tiến trình chạy); **readiness** cho biết ứng dụng sẵn sàng phục vụ yêu cầu, gồm cả các phụ thuộc như database.
+- Hai trạng thái này có thể khác nhau: ứng dụng còn sống nhưng chưa sẵn sàng khi mất kết nối database.
+- Ví dụ trong dự án: `/health` trả `200` khi API còn sống; `/ready` trả `503` khi PostgreSQL dừng.
+
+---
+
+## Slide 10: Demo: sống khác sẵn sàng
 
 ```text
 $ docker compose stop postgres
@@ -97,17 +118,17 @@ $ curl -s -o /dev/null -w "%{http_code}\n" localhost:3000/ready
 $ docker compose start postgres      # chờ healthy: /ready lại 200
 ```
 
-`/health` là còn sống; `/ready` là sẵn sàng phục vụ.
+`/health` cho biết ứng dụng còn sống; `/ready` cho biết ứng dụng sẵn sàng phục vụ.
 
 ::: details Ghi chú cho mentor
-- `/ready` trả `503` với `{"status":"not-ready"}` khi DB dừng.
-- Nếu pool đang giữ kết nối nhàn rỗi, backend có thể crash và được dựng lại ngay; gọi lại sau vài giây.
-- Thêm: terminal thứ hai chạy `watch docker compose ps` để quan sát khoảng chờ khi `up -d`.
+- `/ready` trả `503` với `{"status":"not-ready"}` khi database dừng.
+- Nếu pool đang giữ kết nối nhàn rỗi, backend có thể bị crash và được dựng lại ngay; gọi lại sau vài giây.
+- Mở rộng: dùng terminal thứ hai chạy `watch docker compose ps` để quan sát khoảng chờ khi `up -d`.
 :::
 
 ---
 
-## Slide 9: Viết healthcheck cho backend
+## Slide 11: Viết healthcheck cho backend
 
 ```yaml
 healthcheck:
@@ -122,50 +143,56 @@ Dùng `127.0.0.1`, không dùng `localhost`; chạy `docker compose config --qui
 
 ::: details Ghi chú cho mentor
 - Image `node:22-alpine` và `nginx:alpine` đều có `wget` của BusyBox.
-- `localhost` có thể phân giải sang IPv6 trong khi ứng dụng chỉ nghe IPv4.
-- Frontend dùng `depends_on` với `condition: service_healthy` tới backend. Cấu hình cụ thể: Phần 2 của bài lab.
+- `localhost` có thể được phân giải sang IPv6 trong khi ứng dụng chỉ lắng nghe IPv4.
+- Frontend dùng `depends_on` với `condition: service_healthy` tới backend. Cấu hình cụ thể nằm ở Phần 2 của bài lab.
 :::
 
 ---
 
-## Slide 10: Giới hạn tài nguyên và log rotation (L2)
+## Slide 12: Khái niệm: Giới hạn tài nguyên và log rotation (L2)
 
 ![Vượt memory bị OOM kill exit 137; log xoay vòng 3 file 10 MB](/slides/img/s14-limits-logs.svg)
 
+- **Giới hạn tài nguyên** (CPU, memory) ngăn một container chiếm toàn bộ tài nguyên của máy. **Log rotation** giới hạn số lượng và kích thước tệp log.
+- Vượt giới hạn CPU thì container bị làm chậm; vượt giới hạn memory thì bị OOM kill với exit code 137.
+- Ví dụ trong dự án: log được xoay vòng thành 3 tệp, mỗi tệp 10 MB.
+
 ::: details Ghi chú cho mentor
-- Không đặt giới hạn thì một container rò bộ nhớ có thể kéo sập cả WSL2.
-- Vượt CPU: bị làm chậm. Vượt memory: bị OOM kill, exit code 137.
-- Tin vào `docker inspect`, không tin vào file YAML.
+- Khi không đặt giới hạn, một container rò rỉ bộ nhớ có thể làm sập cả WSL2.
+- Kiểm tra bằng `docker inspect`, không dựa vào nội dung tệp YAML.
 :::
 
 ---
 
-## Slide 11: Secrets và backup (L2)
+## Slide 13: Khái niệm: Secrets và backup (L2)
 
 ![pg_dump ra backup.sql rồi restore vào database mới; volume không phải backup](/slides/img/s14-backup.svg)
 
+- **Secret** là dữ liệu nhạy cảm như mật khẩu; không ghi cứng trong YAML. **Backup** là bản sao dữ liệu để khôi phục khi mất mát; volume không phải là backup.
+- `.env` đủ dùng cho lab; secret dạng tệp an toàn hơn, nhưng ứng dụng phải biết đọc tệp đó.
+- Ví dụ trong dự án: image postgres hỗ trợ `POSTGRES_PASSWORD_FILE`; `pg_dump` xuất database ra tệp SQL để restore sang database mới.
+
 ::: details Ghi chú cho mentor
-- Mật khẩu ghi cứng trong YAML là không chấp nhận được; `.env` đủ cho lab; secret dạng file an toàn hơn.
-- Image postgres hỗ trợ `POSTGRES_PASSWORD_FILE`; ứng dụng phải biết đọc file.
-- `pg_dump` ra file SQL, dùng `exec -T` khi chuyển hướng; restore thử vào database mới.
+- Mật khẩu ghi cứng trong YAML là không chấp nhận được.
+- `pg_dump` xuất ra tệp SQL, dùng `exec -T` khi chuyển hướng đầu ra; restore thử vào một database mới để xác nhận backup dùng được.
 :::
 
 ---
 
-## Slide 12: Break và Debug: healthcheck quá ngặt
+## Slide 14: Break và Debug: healthcheck quá ngặt
 
 ![Healthcheck sai đường dẫn và retries 1 làm backend unhealthy, frontend không được tạo](/slides/img/s14-break-hc.svg)
 
 ::: details Ghi chú cho mentor
 - Cấu hình sai: đường dẫn kiểm tra sai (`/healthz`), `retries: 1`, không có `start_period`.
 - Triệu chứng: backend `(unhealthy)`, frontend không được tạo, `up` báo `dependency failed to start`.
-- Điều tra: đọc `.State.Health.Log` bằng `docker inspect`, chạy tay lệnh check trong container.
-- Phòng tránh: chạy tay lệnh check trước khi đưa vào YAML; `timeout` lớn hơn thời gian phản hồi vài lần.
+- Điều tra: đọc `.State.Health.Log` bằng `docker inspect`, chạy thủ công lệnh kiểm tra trong container.
+- Phòng tránh: chạy thủ công lệnh kiểm tra trước khi đưa vào YAML; đặt `timeout` lớn hơn thời gian phản hồi vài lần.
 :::
 
 ---
 
-## Slide 13: Lab và thử thách
+## Slide 15: Lab và thử thách
 
 | Phần | Việc làm | Mốc xong |
 | --- | --- | --- |
@@ -176,13 +203,13 @@ Dùng `127.0.0.1`, không dùng `localhost`; chạy `docker compose config --qui
 Lệnh và kết quả mong đợi: [Buổi 14 – Production-minded Compose](../../labs/week-07/session-14.md).
 
 ::: details Ghi chú cho mentor
-- Thử thách L2 ở nhà: giới hạn tài nguyên, secrets, backup và restore, bốn thử thách ([thử thách buổi 14](../../labs/week-07/session-14-challenge.md)).
-- Câu hỏi thảo luận: Postgres restart giữa chừng thì frontend và backend có bị khởi động lại không? Vì sao `unhealthy` không tự được restart?
+- Thử thách L2 làm ở nhà: giới hạn tài nguyên, secrets, backup và restore, gồm bốn thử thách ([thử thách buổi 14](../../labs/week-07/session-14-challenge.md)).
+- Câu hỏi thảo luận: khi Postgres restart giữa chừng, frontend và backend có bị khởi động lại không; vì sao `unhealthy` không tự động được restart.
 :::
 
 ---
 
-## Slide 14: Recap
+## Slide 16: Tổng kết
 
 ![Ba điều cần nhớ: chạy khác sẵn sàng, tự dựng lại khi thoát, vận hành an toàn](/slides/img/s14-recap.svg)
 
@@ -190,7 +217,7 @@ Buổi tiếp theo: [Buổi 15 – CI/CD Fundamentals](../../labs/week-08/sessio
 
 ---
 
-## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Control startup order](https://docs.docker.com/compose/how-tos/startup-order/): started khác ready và cách chờ dịch vụ.
 - **Tài liệu chính thức:** [Compose services](https://docs.docker.com/reference/compose-file/services/): cấu hình healthcheck, depends_on, restart.

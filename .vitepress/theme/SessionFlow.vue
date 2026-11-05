@@ -12,6 +12,7 @@ import {
   pad,
   sessionLink,
   slideLink,
+  slideOnly,
   weekOfSession,
 } from './progress'
 import { data as tracks } from './course.data'
@@ -43,7 +44,7 @@ const hub = computed(() => {
 })
 const done = (n: number) => doneSessions.value.includes(n)
 // Cơ bản: nộp bài ngay cuối trang lab. Nâng cao: nộp theo bài tập tuần.
-const isBasic = computed(() => (session.value ? basicDay(session.value) !== null : false))
+const isBasic = computed(() => (session.value ? slideOnly(session.value) : false))
 const unitName = (n: number) => (basicDay(n) ? `Ngày ${basicDay(n)}` : `Buổi ${pad(n)}`)
 
 onMounted(loadProgress)

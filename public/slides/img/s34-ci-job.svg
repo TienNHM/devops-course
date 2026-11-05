@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="440" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Integration test với floci trong CI</text>
+<rect x="40" y="90" width="880" height="320" rx="16" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="60" y="124" font-size="20" font-weight="700" fill="#475569">Runner của GitHub</text>
+<rect x="70" y="150" width="400" height="230" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="270" y="188" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Job: terraform-test</text>
+<text x="100" y="228" font-size="20" fill="#0f172a">1. checkout</text>
+<text x="100" y="260" font-size="20" fill="#0f172a">2. setup-terraform</text>
+<text x="100" y="292" font-size="20" fill="#0f172a">3. chờ floci sẵn sàng</text>
+<text x="100" y="324" font-size="20" fill="#0f172a">4. terraform apply</text>
+<text x="100" y="356" font-size="20" fill="#0f172a">5. aws s3api head-bucket</text>
+<rect x="580" y="150" width="310" height="140" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="735" y="190" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">floci/floci:2.4.0</text>
+<text x="735" y="222" font-size="19" text-anchor="middle" fill="#475569">service container</text>
+<text x="735" y="256" font-size="19" text-anchor="middle" font-family="Consolas, monospace" fill="#0f172a">ports: 4566:4566</text>
+<path d="M472 220L576 220" stroke="#16a34a" stroke-width="3" fill="none" marker-end="url(#a)"/>
+<text x="735" y="335" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626">Lệnh thất bại: job đỏ</text>
+<text x="735" y="365" font-size="19" text-anchor="middle" fill="#475569">pull request bị chặn</text>
+</svg>

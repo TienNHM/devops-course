@@ -1,47 +1,51 @@
 # Slide Ngày 05 – Vận hành và sửa lỗi container
 
-> **Tóm tắt:** Dùng `ps`, `logs`, `exec`, `inspect`, `stop`, `rm` để vận hành container của dự án Club, rồi tự sửa hai container hỏng: một container thoát ngay và một container sai cổng.
+> **Tóm tắt:** Sử dụng các lệnh `ps`, `logs`, `exec`, `inspect`, `stop`, `rm` để vận hành container của dự án Club, sau đó chẩn đoán và sửa hai container lỗi: một container thoát ngay sau khi khởi động và một container cấu hình sai cổng.
 
-## Slide 1: Hôm nay bạn làm ra gì
+## Slide 1: Mục tiêu của Ngày 5
 
 ![Ba mục tiêu: vòng đời, quan sát, chẩn đoán](/slides/img/s08-goals.svg)
 
-- Sản phẩm: điều khiển web Club bằng 6 lệnh và sửa 2 container hỏng bằng cách đọc log.
-- Cần có: xong [Ngày 4](session-07.md), Docker Desktop đang chạy, terminal WSL trong `~/devops-labs`.
-- Thời gian: 15 phút xem, 85 phút làm, 20 phút tổng kết.
+- Sản phẩm: điều khiển web Club bằng 6 lệnh và sửa 2 container lỗi bằng cách đọc log.
+- Điều kiện: đã hoàn thành [Ngày 4](session-07.md), Docker Desktop đang chạy, terminal WSL đang ở thư mục `~/devops-labs`.
+- Thời gian: 15 phút trình bày, 85 phút thực hành, 20 phút tổng kết.
 
 ::: details Ghi chú cho mentor
-- Chốt sản phẩm: 6 lệnh cốt lõi và hai container hỏng được sửa bằng cách đọc log, không đoán.
-- Hỏi: ai từng gõ `docker run` rồi không biết nó đang ở đâu?
+- Chốt sản phẩm: 6 lệnh cốt lõi và hai container lỗi được sửa dựa trên log, không dựa trên phỏng đoán.
+- Câu hỏi mở đầu: người học nào từng chạy `docker run` rồi không xác định được container đang ở trạng thái nào.
 :::
 
 ---
 
-## Slide 2: Bài toán thật: chạy rồi mà không thấy gì
+## Slide 2: Bài toán thực tế: container đã chạy nhưng không quan sát được
 
 ![docker ps trống sau docker run -d, ba câu hỏi chưa có đáp án](/slides/img/s08-no-visibility.svg)
 
 ::: details Ghi chú cho mentor
-- Tình huống thật: bạn của CLB gửi lệnh "chạy thử cho nhanh", `docker ps` trống; hoặc container `Up` mà trang web không mở được.
-- Hôm nay học hỏi container ba câu: có đang chạy không, đang in ra gì, cấu hình thật là gì.
+- Tình huống thực tế: một thành viên câu lạc bộ gửi lệnh chạy thử, nhưng `docker ps` trả về danh sách rỗng; hoặc container ở trạng thái `Up` mà trang web không truy cập được.
+- Ngày hôm nay hướng dẫn đặt ba câu hỏi cho container: container có đang chạy hay không, container đang ghi ra nội dung gì, cấu hình thực tế của container là gì.
 :::
 
 ---
 
-## Slide 3: Vòng đời container
+## Slide 3: Khái niệm: Vòng đời container
 
 ![Created, Running, Exited, Removed và các lệnh chuyển trạng thái](/slides/img/s08-lifecycle.svg)
 
+- **Vòng đời container** là chuỗi trạng thái mà container đi qua: `Created`, `Running`, `Exited` và `Removed`.
+- Container tồn tại chừng nào tiến trình chính còn chạy. Khi tiến trình này kết thúc, container chuyển sang `Exited` nhưng vẫn còn trên đĩa cho đến khi bị xóa.
+- Ví dụ trong dự án: `docker stop` chuyển container từ `Running` sang `Exited`; `docker rm` chuyển container sang `Removed`.
+
 ::: details Ghi chú cho mentor
-- Container sống chừng nào tiến trình chính còn sống; tiến trình thoát thì container `Exited` và ExitCode được lưu lại.
-- Hỏi: container `Exited` còn trên đĩa không?
+- Container sống chừng nào tiến trình chính còn sống. Khi tiến trình thoát, container chuyển sang `Exited` và exit code được lưu lại.
+- Câu hỏi: container ở trạng thái `Exited` có còn trên đĩa không.
 :::
 
 ---
 
 ## Slide 4: Bước 0 (3 phút): Dọn container cũ
 
-Mọi container hôm nay có tên bắt đầu bằng `club-`. Dọn container của Ngày 4 để khỏi trùng tên và trùng cổng.
+Mọi container trong ngày hôm nay có tên bắt đầu bằng `club-`. Cần xóa container của Ngày 4 để tránh trùng tên và trùng cổng.
 
 ```bash
 cd ~/devops-labs
@@ -49,24 +53,40 @@ docker rm -f club-web 2>/dev/null
 docker ps -a
 ```
 
-**Kiểm tra: bạn đúng khi** danh sách không còn `club-web` (có thể rỗng).
+**Kiểm tra: kết quả đúng khi** danh sách không còn `club-web` (danh sách có thể rỗng).
 
 ---
 
-## Slide 5: Bước 1 (20 phút): Chạy web Club
+## Slide 5: Khái niệm: Cổng và ánh xạ cổng
+
+- **Ánh xạ cổng** (port mapping) là quy tắc chuyển các kết nối đến một cổng trên máy chủ vào một cổng bên trong container.
+- Container có mạng riêng, nên dịch vụ bên trong không tự xuất hiện trên máy chủ. Cờ `-p` tạo ra quy tắc chuyển tiếp này.
+- Ví dụ trong dự án: `-p 8080:80` chuyển các kết nối đến cổng 8080 của máy chủ vào cổng 80 của Nginx trong container.
+
+---
+
+## Slide 6: Khái niệm: Biến môi trường
+
+- **Biến môi trường** (environment variable) là một cặp `TÊN=giá trị` được truyền cho tiến trình khi nó khởi động.
+- Ứng dụng đọc cấu hình, như mật khẩu hoặc tên cơ sở dữ liệu, từ biến môi trường nên không cần sửa mã nguồn hay build lại image.
+- Ví dụ trong dự án: cờ `-e POSTGRES_PASSWORD=...` truyền mật khẩu cho Postgres ở Bước 3.
+
+---
+
+## Slide 7: Bước 1 (20 phút): Chạy web Club
 
 ![Các cờ -d, --name, -p, -e, --rm và ý nghĩa](/slides/img/s08-run-flags.svg)
 
-`-p 8080:80` đọc là `cổng-máy-bạn:cổng-trong-container`.
+Cú pháp `-p 8080:80` được đọc là `cổng-máy-chủ:cổng-trong-container`.
 
 ::: details Ghi chú cho mentor
-- `--name` phải duy nhất; `-p 8080:80` là cổng máy bạn 8080 vào cổng 80 trong container.
-- `-e` truyền biến môi trường; cần ở bước Postgres.
+- `--name` phải duy nhất; `-p 8080:80` chuyển cổng 8080 của máy chủ vào cổng 80 trong container.
+- `-e` truyền biến môi trường và sẽ được dùng ở bước Postgres.
 :::
 
 ---
 
-## Slide 6: Bước 1: Chạy và gọi thử
+## Slide 8: Bước 1: Chạy container và gọi thử
 
 ```bash
 docker run -d --name club-web -p 8080:80 \
@@ -76,33 +96,49 @@ docker ps
 curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8080
 ```
 
-Mong đợi: `docker ps` có `club-web ... Up ... 0.0.0.0:8080->80/tcp`, `curl` in `200`.
+Kết quả mong đợi: `docker ps` có dòng `club-web ... Up ... 0.0.0.0:8080->80/tcp`, lệnh `curl` in ra `200`.
 
-**Kiểm tra: bạn đúng khi** thấy `200`.
+**Kiểm tra: kết quả đúng khi** `curl` in ra `200`.
 
 ---
 
-## Slide 7: Bước 1: Xem log
+## Slide 9: Khái niệm: Log của container
 
-Mở terminal WSL thứ hai, chạy `curl -s http://localhost:8080 > /dev/null` vài lần. Rồi quay lại terminal đầu:
+- **Log** (nhật ký) của container là toàn bộ nội dung mà tiến trình chính ghi ra đầu ra chuẩn (stdout) và đầu ra lỗi (stderr).
+- Docker lưu nội dung này, nên có thể đọc lại ngay cả khi container đã dừng. Vì vậy log là nguồn thông tin đầu tiên khi chẩn đoán lỗi.
+- Ví dụ trong dự án: Nginx ghi mỗi yêu cầu HTTP thành một dòng log; lệnh `docker logs` hiển thị các dòng đó.
+
+---
+
+## Slide 10: Bước 1: Đọc log
+
+Mở terminal WSL thứ hai và chạy `curl -s http://localhost:8080 > /dev/null` vài lần. Sau đó quay lại terminal đầu:
 
 ```bash
 docker logs --tail 5 club-web
 ```
 
-Mong đợi: các dòng `GET / HTTP/1.1" 200`. Thêm `-f` để xem trực tiếp, Ctrl+C để thoát (container vẫn chạy).
+Kết quả mong đợi: các dòng chứa `GET / HTTP/1.1" 200`. Thêm `-f` để theo dõi log trực tiếp; nhấn Ctrl+C để thoát (container vẫn tiếp tục chạy).
 
-**Kiểm tra: bạn đúng khi** log có dòng `GET` của chính bạn.
+**Kiểm tra: kết quả đúng khi** log có các dòng `GET` do chính các lệnh `curl` vừa tạo ra.
 
 ---
 
-## Slide 8: Bước 1: Vào trong container bằng exec
+## Slide 11: Khái niệm: Lệnh exec
+
+- **`docker exec`** là lệnh chạy thêm một tiến trình mới bên trong container đang chạy.
+- Lệnh không khởi động lại container, nên cho phép quan sát hệ thống tệp và tiến trình từ bên trong. Cờ `-it` gắn terminal tương tác vào tiến trình đó.
+- Ví dụ trong dự án: `docker exec -it club-web sh` mở một shell trong container `club-web`.
+
+---
+
+## Slide 12: Bước 1: Vào container bằng exec
 
 ```bash
 docker exec -it club-web sh
 ```
 
-Trong shell của container:
+Trong shell của container, chạy:
 
 ```sh
 ls /usr/share/nginx/html
@@ -110,16 +146,24 @@ ps
 exit
 ```
 
-Mong đợi: thấy `index.html` của Club và `nginx: master process` ở PID 1. Thoát shell không làm container dừng.
+Kết quả mong đợi: thấy `index.html` của Club và `nginx: master process` có PID 1. Thoát shell không làm container dừng.
 
 ::: details Ghi chú cho mentor
-- `exec` thêm một tiến trình vào container đang chạy, không khởi động lại.
-- Cho học viên thấy Nginx là PID 1: đó là tiến trình chính, nó thoát thì container thoát.
+- `exec` thêm một tiến trình vào container đang chạy, không khởi động lại container.
+- Cho người học quan sát Nginx có PID 1: đây là tiến trình chính; khi tiến trình này thoát thì container cũng thoát.
 :::
 
 ---
 
-## Slide 9: Bước 1: Soi cấu hình bằng inspect
+## Slide 13: Khái niệm: Lệnh inspect
+
+- **`docker inspect`** là lệnh hiển thị toàn bộ thông tin cấu hình và trạng thái của một container dưới dạng JSON.
+- Thông tin này phản ánh trạng thái thực tế, nên được dùng làm căn cứ khi log chưa đủ rõ. Cờ `--format` cho phép chỉ lấy một trường cần thiết.
+- Lưu ý: kết quả đầy đủ của `inspect` có thể chứa biến môi trường, kể cả mật khẩu. Chỉ sao chép phần đã lọc bằng `--format`.
+
+---
+
+## Slide 14: Bước 1: Kiểm tra cấu hình bằng inspect
 
 ![ps -a, logs, inspect, exec nhìn vào cùng một container](/slides/img/s08-observe-commands.svg)
 
@@ -127,18 +171,26 @@ Mong đợi: thấy `index.html` của Club và `nginx: master process` ở PID 
 docker inspect --format 'status={{.State.Status}} started={{.State.StartedAt}}' club-web
 ```
 
-**Kiểm tra: bạn đúng khi** `inspect` in `status=running`.
+**Kiểm tra: kết quả đúng khi** `inspect` in ra `status=running`.
 
 ::: details Ghi chú cho mentor
-- Bộ ba chẩn đoán đầu tiên: `ps -a`, `logs`, `inspect`.
-- `inspect` là nguồn sự thật; luôn dùng `--format`, đừng dán toàn bộ output vì có thể chứa mật khẩu.
+- Bộ ba lệnh chẩn đoán đầu tiên: `ps -a`, `logs`, `inspect`.
+- `inspect` là nguồn thông tin đáng tin cậy nhất; luôn dùng `--format`, không dán toàn bộ kết quả vì có thể chứa mật khẩu.
 :::
 
 ---
 
-## Slide 10: Bước 2 (10 phút): Dừng container
+## Slide 15: Khái niệm: Exit code
 
-`stop` chỉ tắt container, nó vẫn còn trên đĩa.
+- **Exit code** (mã thoát) là một số nguyên mà tiến trình trả về hệ điều hành khi kết thúc.
+- Giá trị `0` biểu thị tiến trình kết thúc bình thường; giá trị khác `0` biểu thị có lỗi. Docker lưu giá trị này trong trạng thái của container.
+- Ví dụ trong dự án: `docker ps -a` hiển thị `Exited (0)` khi container dừng bình thường và `Exited (1)` khi tiến trình thoát do lỗi.
+
+---
+
+## Slide 16: Bước 2 (10 phút): Dừng container
+
+Lệnh `stop` chỉ dừng container; container vẫn còn trên đĩa.
 
 ```bash
 docker stop club-web
@@ -147,13 +199,13 @@ docker ps -a --filter name=club-web --format '{{.Names}}  {{.Status}}'
 docker inspect --format 'exit={{.State.ExitCode}}' club-web
 ```
 
-Mong đợi: `docker ps` không còn `club-web`; `docker ps -a` hiện `Exited (0) ... ago`; `exit=0`.
+Kết quả mong đợi: `docker ps` không còn `club-web`; `docker ps -a` hiển thị `Exited (0) ... ago`; kết quả cuối là `exit=0`.
 
-**Kiểm tra: bạn đúng khi** thấy `Exited (0)`. ExitCode `0` là thoát êm, khác `0` là có lỗi.
+**Kiểm tra: kết quả đúng khi** thấy `Exited (0)`. Exit code `0` nghĩa là thoát bình thường, khác `0` nghĩa là có lỗi.
 
 ---
 
-## Slide 11: Bước 2: Chạy lại và xóa
+## Slide 17: Bước 2: Chạy lại và xóa container
 
 ```bash
 docker start club-web
@@ -162,13 +214,13 @@ docker rm -f club-web
 docker ps -a --filter name=club-web
 ```
 
-Mong đợi: `docker rm` đầu báo `cannot remove container ... container is running` (cố ý). `docker rm -f` dừng và xóa; danh sách cuối chỉ còn dòng tiêu đề.
+Kết quả mong đợi: lệnh `docker rm` đầu tiên báo `cannot remove container ... container is running` (lỗi có chủ đích). Lệnh `docker rm -f` dừng và xóa container; danh sách cuối chỉ còn dòng tiêu đề.
 
-**Kiểm tra: bạn đúng khi** `club-web` biến mất sau `docker rm -f`.
+**Kiểm tra: kết quả đúng khi** `club-web` không còn xuất hiện sau `docker rm -f`.
 
 ---
 
-## Slide 12: Bước 3 (20 phút): Postgres chạy xong là chết
+## Slide 18: Bước 3 (20 phút): Postgres khởi động rồi thoát ngay
 
 ![postgres thiếu POSTGRES_PASSWORD nên Exited (1); log nói rõ lý do](/slides/img/s08-exit-fast.svg)
 
@@ -177,15 +229,15 @@ docker run -d --name club-db-bad postgres:17-alpine
 docker ps
 ```
 
-Mong đợi: `docker ps` không thấy `club-db-bad`.
+Kết quả mong đợi: `docker ps` không hiển thị `club-db-bad`.
 
 ::: details Ghi chú cho mentor
-- `docker ps` chỉ liệt kê container đang chạy; `docker ps -a` mới hiện `Exited (1)`.
+- `docker ps` chỉ liệt kê container đang chạy; cần `docker ps -a` mới thấy trạng thái `Exited (1)`.
 :::
 
 ---
 
-## Slide 13: Bước 3: Điều tra theo thứ tự ps, logs, inspect
+## Slide 19: Bước 3: Điều tra theo thứ tự ps, logs, inspect
 
 ```bash
 docker ps -a --filter name=club-db-bad
@@ -193,13 +245,13 @@ docker logs club-db-bad 2>&1 | head -4
 docker inspect --format 'exit={{.State.ExitCode}}' club-db-bad
 ```
 
-Mong đợi: `Exited (1)`, `exit=1`, và log có `Error: Database is uninitialized and superuser password is not specified.`
+Kết quả mong đợi: `Exited (1)`, `exit=1`, và log chứa `Error: Database is uninitialized and superuser password is not specified.`
 
-**Kiểm tra: bạn đúng khi** đọc ra nguyên nhân: thiếu biến `POSTGRES_PASSWORD`.
+**Kiểm tra: kết quả đúng khi** xác định được nguyên nhân: thiếu biến `POSTGRES_PASSWORD`.
 
 ---
 
-## Slide 14: Bước 3: Sửa bằng biến môi trường
+## Slide 20: Bước 3: Sửa bằng biến môi trường
 
 ```bash
 docker rm club-db-bad
@@ -208,20 +260,20 @@ until [ "$(docker logs club-db 2>&1 | grep -c 'ready to accept connections')" -g
 docker exec club-db pg_isready -U postgres
 ```
 
-Mong đợi: `/var/run/postgresql:5432 - accepting connections`. Mật khẩu này chỉ để học.
+Kết quả mong đợi: `/var/run/postgresql:5432 - accepting connections`. Mật khẩu này chỉ dùng cho mục đích học tập.
 
-**Kiểm tra: bạn đúng khi** `pg_isready` báo `accepting connections`. Dọn: `docker rm -f club-db`.
+**Kiểm tra: kết quả đúng khi** `pg_isready` báo `accepting connections`. Dọn dẹp: `docker rm -f club-db`.
 
 ::: details Ghi chú cho mentor
-- Vòng `until` đợi dòng `ready to accept connections` hai lần vì Postgres khởi động một server tạm trước rồi mới chạy server thật.
-- Nhắc: `docker inspect` hiển thị cả biến chứa mật khẩu; luôn lọc bằng `--format` hoặc `grep` trước khi dán cho người khác.
+- Vòng lặp `until` chờ dòng `ready to accept connections` xuất hiện hai lần, vì Postgres khởi động một server tạm trước rồi mới chạy server chính thức.
+- Nhắc lại: `docker inspect` hiển thị cả biến môi trường chứa mật khẩu; cần lọc bằng `--format` hoặc `grep` trước khi chia sẻ cho người khác.
 :::
 
 ---
 
-## Slide 15: Bước 4 (20 phút): Container Up nhưng không truy cập được
+## Slide 21: Bước 4 (20 phút): Container ở trạng thái Up nhưng không truy cập được
 
-Lần này bạn cố ý nối nhầm cổng: Nginx nghe cổng 80 trong container, nhưng bạn viết `8081:8080`.
+Ở bước này, cổng được nối sai có chủ đích: Nginx lắng nghe cổng 80 trong container, nhưng lệnh dưới đây dùng `8081:8080`.
 
 ```bash
 docker run -d --name club-web-bad -p 8081:8080 \
@@ -233,24 +285,24 @@ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8081
 
 ---
 
-## Slide 16: Bước 4: Container sống mà dịch vụ không trả lời
+## Slide 22: Bước 4: Container chạy nhưng dịch vụ không phản hồi
 
-Mong đợi: container `Up` với `0.0.0.0:8081->8080/tcp`, nhưng `curl` báo `Empty reply from server` hoặc `Connection reset by peer` (hoặc in `000`).
+Kết quả mong đợi: container ở trạng thái `Up` với `0.0.0.0:8081->8080/tcp`, nhưng `curl` báo `Empty reply from server` hoặc `Connection reset by peer` (hoặc in ra `000`).
 
-Tìm cổng Nginx thật sự nghe:
+Xác định cổng mà Nginx thực sự lắng nghe:
 
 ```bash
 docker logs club-web-bad 2>&1 | tail -3
 docker exec club-web-bad netstat -ltn
 ```
 
-**Kiểm tra: bạn đúng khi** `netstat` cho thấy `0.0.0.0:80` đang `LISTEN`, không có cổng `8080`.
+**Kiểm tra: kết quả đúng khi** `netstat` cho thấy `0.0.0.0:80` ở trạng thái `LISTEN` và không có cổng `8080`.
 
 ---
 
-## Slide 17: Bước 4: Sửa cổng
+## Slide 23: Bước 4: Sửa cổng
 
-Nối cổng máy bạn vào cổng 80 của container.
+Nối cổng của máy chủ vào cổng 80 của container.
 
 ```bash
 docker rm -f club-web-bad
@@ -260,56 +312,56 @@ docker run -d --name club-web-bad -p 8081:80 \
 curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8081
 ```
 
-**Kiểm tra: bạn đúng khi** `curl` in `200`. Dọn: `docker rm -f club-web-bad`.
+**Kiểm tra: kết quả đúng khi** `curl` in ra `200`. Dọn dẹp: `docker rm -f club-web-bad`.
 
 ::: details Ghi chú cho mentor
-- Hỏi: vì sao `8081:8080` hỏng còn `8081:80` chạy? Định dạng luôn là `máy:container`.
+- Câu hỏi: vì sao `8081:8080` không hoạt động còn `8081:80` hoạt động. Định dạng luôn là `máy-chủ:container`.
 - Cuối bước: `docker ps -a --filter name=club-` không còn container nào.
 :::
 
 ---
 
-## Slide 18: Lỗi thường gặp (1/2)
+## Slide 24: Lỗi thường gặp (1/2)
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
 | `Cannot connect to the Docker daemon` | Docker Desktop chưa chạy | Mở Docker Desktop, bật WSL integration cho Ubuntu |
-| `port is already allocated` | Cổng máy đã có người giữ | `docker ps --filter publish=8080`, dừng container cũ hoặc đổi cổng |
-| `container name is already in use` | Tên trùng container cũ (kể cả đã dừng) | `docker rm -f tên-container` |
+| `port is already allocated` | Cổng trên máy chủ đang bị tiến trình khác sử dụng | `docker ps --filter publish=8080`, dừng container cũ hoặc đổi cổng |
+| `container name is already in use` | Tên trùng với container cũ (kể cả container đã dừng) | `docker rm -f tên-container` |
 
 ---
 
-## Slide 19: Lỗi thường gặp (2/2)
+## Slide 25: Lỗi thường gặp (2/2)
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `docker ps` trống dù vừa `run -d` | Container đã thoát | `docker ps -a`, `docker logs`, `docker inspect` |
-| Terminal bị chiếm sau `docker run` | Quên `-d` | Ctrl+C rồi chạy lại với `-d` |
-| `pg_isready` lỗi ngay sau khi chạy Postgres | Mới có một dòng `ready to accept connections` | Đợi dòng đó xuất hiện hai lần |
+| `docker ps` trống dù vừa chạy `run -d` | Container đã thoát | `docker ps -a`, `docker logs`, `docker inspect` |
+| Terminal bị chiếm sau `docker run` | Thiếu cờ `-d` | Nhấn Ctrl+C rồi chạy lại với `-d` |
+| `pg_isready` báo lỗi ngay sau khi chạy Postgres | Mới có một dòng `ready to accept connections` | Chờ dòng đó xuất hiện hai lần |
 
 ---
 
-## Slide 20: Tự kiểm tra
+## Slide 26: Tự kiểm tra
 
-1. Khác nhau giữa `docker stop` và `docker rm -f` là gì?
-2. `docker run -d -p 9000:80 nginx:1.27-alpine` mở cổng nào trên máy bạn, Nginx nghe cổng nào?
-3. `docker run -d --name api club-api:1.0.0` mà `docker ps` trống: ba lệnh tiếp theo là gì?
+1. `docker stop` và `docker rm -f` khác nhau như thế nào?
+2. Lệnh `docker run -d -p 9000:80 nginx:1.27-alpine` mở cổng nào trên máy chủ, và Nginx lắng nghe cổng nào?
+3. Sau `docker run -d --name api club-api:1.0.0`, `docker ps` trả về danh sách rỗng. Ba lệnh tiếp theo cần chạy là gì?
 
 ::: details Ghi chú cho mentor
-- Đáp án 1: `stop` dừng nhưng container còn trên đĩa (xem bằng `docker ps -a`, log còn). `rm -f` buộc dừng rồi xóa hẳn, log mất theo.
-- Đáp án 2: cổng 9000 trên máy bạn, Nginx nghe cổng 80 trong container. Định dạng `máy:container`.
-- Đáp án 3: `docker ps -a` (trạng thái, ExitCode), `docker logs api` (đọc lỗi), `docker inspect api` nếu log chưa rõ.
+- Đáp án 1: `stop` dừng container nhưng container vẫn còn trên đĩa (xem bằng `docker ps -a`, log vẫn còn). `rm -f` buộc dừng rồi xóa hẳn, log mất theo.
+- Đáp án 2: cổng 9000 trên máy chủ; Nginx lắng nghe cổng 80 trong container. Định dạng là `máy-chủ:container`.
+- Đáp án 3: `docker ps -a` (trạng thái, exit code), `docker logs api` (đọc lỗi), `docker inspect api` nếu log chưa đủ rõ.
 :::
 
 ---
 
-## Slide 21: Tiếp theo
+## Slide 27: Tiếp theo
 
 Ngày 6: viết Dockerfile cho Club API và build image đầu tiên: [Ngày 6 – Dockerfile cho Club API](session-09.md).
 
 ---
 
-## Slide 22: Đọc thêm: tài liệu chuẩn và best practices
+## Slide 28: Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Docker CLI reference](https://docs.docker.com/reference/cli/docker/): tra cứu mọi lệnh và cờ của docker.
 - **Tài liệu chính thức:** [docker container run](https://docs.docker.com/reference/cli/docker/container/run/): các cờ quan trọng của lệnh docker run.

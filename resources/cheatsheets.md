@@ -1,10 +1,10 @@
 # Cheatsheets
 
-Tờ tóm tắt lệnh dùng xuyên suốt khóa học. Mỗi lệnh có một dòng chú thích, nhóm theo tác vụ. Tất cả lệnh giả định bạn làm việc trong WSL2 Ubuntu, trong filesystem của WSL (ví dụ `~/devops-labs`), không dùng `/mnt/c`.
+Trang này tóm tắt các lệnh dùng xuyên suốt khóa học. Mỗi lệnh có một dòng chú thích và được nhóm theo tác vụ. Mọi lệnh giả định người học làm việc trong WSL2 Ubuntu, trên filesystem của WSL (ví dụ `~/devops-labs`) và không dùng `/mnt/c`.
 
-Khi cần chi tiết hơn, xem [Tài liệu chính thức](documentation.md) và [Thuật ngữ](glossary.md). Cách cài môi trường: [Hướng dẫn cài đặt môi trường](setup-guide.md). Mới làm quen terminal: [Terminal 101](terminal-101.md).
+Khi cần thông tin chi tiết hơn, xem [Tài liệu chính thức](documentation.md) và [Thuật ngữ](glossary.md). Cách cài đặt môi trường: [Hướng dẫn cài đặt môi trường](setup-guide.md). Làm quen với terminal: [Terminal 101](terminal-101.md).
 
-Trong các ví dụ, phần trong dấu `<` `>` như `<pod>` là chỗ bạn thay bằng giá trị thật.
+Trong các ví dụ, phần nằm trong dấu `<` `>` như `<pod>` là vị trí cần thay bằng giá trị thực tế.
 
 ::: tip Mục lục nhảy
 1. [Linux CLI và quản trị cơ bản](#linux) (buổi 03 đến 04)
@@ -20,7 +20,7 @@ Trong các ví dụ, phần trong dấu `<` `>` như `<pod>` là chỗ bạn tha
 :::
 
 ::: warning Lệnh có thể làm mất dữ liệu
-Các lệnh sau xóa thật, không hoàn tác được. Đọc kỹ trước khi chạy, và thử trên đối tượng thử, không thử trên dữ liệu bạn cần: `docker volume prune`, `docker compose down -v` (mất dữ liệu database), `kubectl delete ...`, `kind delete cluster`. Với lệnh `rm -rf`, `sudo`, `chmod` hãy xem hộp cảnh báo ở [Terminal 101](terminal-101.md).
+Các lệnh sau xóa dữ liệu thật và không thể hoàn tác. Cần đọc kỹ trước khi chạy và thử trên đối tượng thử nghiệm, không thử trên dữ liệu cần giữ: `docker volume prune`, `docker compose down -v` (mất dữ liệu database), `kubectl delete ...`, `kind delete cluster`. Với các lệnh `rm -rf`, `sudo` và `chmod`, xem hộp cảnh báo trong [Terminal 101](terminal-101.md).
 :::
 
 ## 1. Linux CLI và quản trị cơ bản {#linux}
@@ -166,7 +166,7 @@ git stash pop                    # lấy lại thay đổi vừa cất
 git merge --abort                # hủy merge đang conflict
 ```
 
-Khi gặp conflict: mở file, tìm các dấu `<<<<<<<`, `=======`, `>>>>>>>`, chọn nội dung đúng, xóa các dấu đó, rồi `git add` và `git commit`.
+Khi xảy ra conflict: mở file, tìm các dấu `<<<<<<<`, `=======`, `>>>>>>>`, chọn nội dung đúng, xóa các dấu đó, rồi chạy `git add` và `git commit`.
 
 ### Quy trình Pull Request
 
@@ -187,7 +187,7 @@ echo ".env" >> .gitignore        # bỏ qua file chứa secret
 git rm --cached .env             # gỡ file đã lỡ commit khỏi index (vẫn còn trong lịch sử)
 ```
 
-Nếu secret thật đã bị đẩy lên GitHub, hãy coi như đã lộ: thu hồi và tạo secret mới, không chỉ xóa file.
+Nếu secret thật đã bị đẩy lên GitHub, secret đó được coi là đã lộ. Cần thu hồi và tạo secret mới, không chỉ xóa file.
 
 ## 3. Networking {#networking}
 
@@ -216,9 +216,9 @@ Cổng thường gặp trong khóa học:
 | 80 | HTTP, Nginx trong container frontend |
 | 3000 | Backend Express |
 | 5432 | PostgreSQL |
-| 8080 | Cổng web trên máy bạn (biến `WEB_PORT`) |
+| 8080 | Cổng web trên máy cá nhân (biến `WEB_PORT`) |
 
-Thứ tự gỡ lỗi mạng: tên có phân giải được không (`dig`), cổng có mở không (`ss`), dịch vụ có trả lời không (`curl`), cuối cùng mới xem firewall.
+Thứ tự gỡ lỗi mạng gồm bốn bước: kiểm tra tên có phân giải được hay không (`dig`), cổng có mở hay không (`ss`), dịch vụ có phản hồi hay không (`curl`), và cuối cùng là firewall.
 
 ## 4. Docker CLI {#docker-cli}
 
@@ -288,7 +288,7 @@ docker image prune               # xóa image dangling
 docker volume prune              # xóa volume không container nào dùng (mất dữ liệu, cẩn thận)
 ```
 
-Registry: đăng nhập GHCR bằng token đặt trong biến môi trường, không gõ token vào lịch sử shell.
+Registry: đăng nhập GHCR bằng token đặt trong biến môi trường, không nhập token trực tiếp để tránh lưu vào lịch sử shell.
 
 ```bash
 echo "$GHCR_TOKEN" | docker login ghcr.io -u OWNER --password-stdin   # đăng nhập GHCR an toàn hơn
@@ -332,11 +332,11 @@ CMD ["node", "server.js"]
 
 Quy tắc tối ưu:
 
-- Chép `package*.json` và cài dependency trước khi chép mã nguồn, để tận dụng cache layer.
+- Chép `package*.json` và cài dependency trước khi chép mã nguồn để tận dụng cache layer.
 - Dùng file `.dockerignore` để loại `node_modules`, `.git`, `.env`.
 - Dùng image nền nhỏ và ghim phiên bản (ví dụ `node:22-alpine`), không dùng `latest`.
 - Chạy bằng user không phải root.
-- Dùng dạng exec cho `CMD` và `ENTRYPOINT`: `CMD ["node", "server.js"]`, để tín hiệu dừng đến đúng process.
+- Dùng dạng exec cho `CMD` và `ENTRYPOINT`, ví dụ `CMD ["node", "server.js"]`, để tín hiệu dừng được gửi đến đúng process.
 
 ## 6. Docker Compose {#compose}
 
@@ -503,8 +503,8 @@ Lưu ý bảo mật:
 
 - Đặt `permissions` ở mức thấp nhất; chỉ mở `packages: write` ở job cần push.
 - Không in secret ra log, không đưa secret vào lệnh `echo`.
-- Với workflow từ fork, secret không được truyền vào; đừng thiết kế pipeline phụ thuộc vào điều đó.
-- Ghim action bằng phiên bản chính (`@v4`); môi trường yêu cầu chặt hơn thì ghim theo commit SHA.
+- Với workflow từ fork, secret không được truyền vào; do đó không nên thiết kế pipeline phụ thuộc vào secret trong trường hợp này.
+- Ghim action theo phiên bản chính (`@v4`); với môi trường yêu cầu chặt hơn, ghim theo commit SHA.
 
 ## 8. kubectl và YAML mẫu {#kubectl}
 
@@ -512,7 +512,7 @@ Dùng chính từ buổi 21 đến 28 ([buổi 21](../labs/week-11/session-21.md
 
 ### kind và context {#kind-context}
 
-Cluster của khóa tên `club`, nên context phải là `kind-club`. Trước mỗi lệnh `kubectl apply` hoặc `kubectl delete`, kiểm tra đang trỏ đúng cluster:
+Cluster của khóa học có tên `club`, nên context phải là `kind-club`. Trước mỗi lệnh `kubectl apply` hoặc `kubectl delete`, kiểm tra kubectl đang trỏ đúng cluster:
 
 ```bash
 kubectl config current-context   # kết quả mong đợi: kind-club
@@ -689,7 +689,7 @@ spec:
 
 Dùng chính từ buổi 27 và 28 ([buổi 27](../labs/week-14/session-27.md), [buổi 28](../labs/week-14/session-28.md)) và 10 tình huống trong `examples/troubleshooting`.
 
-Quy trình chung: nhìn trạng thái (`get`), đọc sự kiện (`describe`), đọc log (`logs`), rồi mới sửa. Mỗi lần chỉ đổi một thứ.
+Quy trình chung gồm: xem trạng thái (`get`), đọc sự kiện (`describe`), đọc log (`logs`), sau đó mới sửa. Mỗi lần chỉ thay đổi một thứ.
 
 ```mermaid
 flowchart TD
@@ -739,11 +739,11 @@ Với Docker và Compose, quy trình tương tự: `docker ps -a` (trạng thái
 
 ## 10. YAML tips {#yaml-tips}
 
-- Dùng 2 dấu cách để thụt lề, tuyệt đối không dùng tab.
-- Thụt lề quyết định cấu trúc: một lệch dòng là một lỗi khác nghĩa.
+- Dùng 2 dấu cách để thụt lề, không dùng tab.
+- Thụt lề quyết định cấu trúc: chỉ cần lệch một dòng, ý nghĩa của tài liệu sẽ thay đổi.
 - Danh sách dùng dấu gạch đầu dòng: `- item`. Map dùng `key: value` (sau dấu hai chấm phải có dấu cách).
 - Chuỗi có ký tự đặc biệt (`:`, `#`, bắt đầu bằng `*` hoặc `&`) nên đặt trong dấu nháy.
-- Cẩn thận với giá trị bị hiểu thành kiểu khác: `"8080"` là chuỗi, `8080` là số; `yes`, `no`, `on`, `off` có thể bị hiểu là boolean trong YAML 1.1, hãy đặt trong nháy khi muốn là chuỗi.
+- Cẩn thận với giá trị bị hiểu thành kiểu khác: `"8080"` là chuỗi, `8080` là số; `yes`, `no`, `on`, `off` có thể bị hiểu là boolean trong YAML 1.1, cần đặt trong nháy khi muốn giá trị là chuỗi.
 - Nhiều tài liệu trong một file ngăn cách bằng dòng `---`.
 - Chuỗi nhiều dòng: `|` giữ nguyên xuống dòng, `>` gộp các dòng thành một.
 - Chú thích bắt đầu bằng `#`.

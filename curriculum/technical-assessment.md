@@ -8,7 +8,7 @@
 - Được dùng tài liệu chính thức và ghi chú cá nhân, không được dùng chatbot AI hay nhờ người khác.
 - Cách ôn tốt nhất: làm lại các lab và mười tình huống lỗi, rồi tự trả lời 10 câu mẫu ở cuối trang.
 
-Technical Assessment đo khả năng hiểu và tự xử lý, không đo khả năng học thuộc. Phần lớn điểm nằm ở bài thực hành trên máy: bạn phải containerize, dựng Compose, đọc log và sửa lỗi Kubernetes trong thời gian giới hạn. Phần lý thuyết chỉ kiểm tra những khái niệm bạn cần để thao tác đúng.
+Technical Assessment đo khả năng hiểu và tự xử lý, không đo khả năng học thuộc. Phần lớn điểm nằm ở bài thực hành trên máy: học viên phải containerize (đóng gói ứng dụng vào container), dựng Compose, đọc log và sửa lỗi Kubernetes trong thời gian giới hạn. Phần lý thuyết chỉ kiểm tra những khái niệm cần thiết để thao tác đúng.
 
 Cách tính điểm tổng hợp nằm ở [Đánh giá](assessment.md). Lịch tuần nằm ở [Lộ trình](syllabus.md).
 
@@ -27,7 +27,7 @@ Cách tính điểm tổng hợp nằm ở [Đánh giá](assessment.md). Lịch 
 
 ## Chủ đề ôn tập
 
-Ngân hàng câu hỏi chia theo tám chủ đề. Mỗi đề lý thuyết được sinh từ ngân hàng này, nên hãy ôn đều thay vì đoán tủ.
+Ngân hàng câu hỏi chia theo tám chủ đề. Mỗi đề lý thuyết được sinh từ ngân hàng này, nên cần ôn đều các chủ đề, không nên đoán trước nội dung ra đề.
 
 | Chủ đề | Bạn cần làm được |
 | --- | --- |
@@ -40,24 +40,24 @@ Ngân hàng câu hỏi chia theo tám chủ đề. Mỗi đề lý thuyết đư
 | Kubernetes | Pod, Deployment, Service, ConfigMap, Secret, probe, resource, PVC, Ingress, `kind load docker-image` |
 | Troubleshooting | Quy trình đọc triệu chứng, xem log và event, tìm nguyên nhân gốc, kiểm chứng sau khi sửa |
 
-Gợi ý ôn: làm lại mười [tình huống lỗi](../examples/troubleshooting/README.md) mà không nhìn đáp án, và tự giải thích bằng lời tại sao lỗi xảy ra.
+Gợi ý ôn: làm lại mười [tình huống lỗi](../examples/troubleshooting/README.md) mà không nhìn đáp án, và tự giải thích bằng lời nguyên nhân gây ra lỗi.
 
 ## Bài thực hành giữa khóa (60 phút)
 
-Bạn nhận một thư mục mã nguồn backend và frontend (không có Dockerfile và compose.yaml). Nhiệm vụ gồm bốn phần:
+Học viên nhận một thư mục mã nguồn backend và frontend (không có Dockerfile và compose.yaml). Nhiệm vụ gồm bốn phần:
 
 1. Viết Dockerfile cho backend: multi-stage, base image pin phiên bản, chạy bằng user không phải root, có `.dockerignore`.
 2. Viết `compose.yaml` chạy ba service (frontend, backend, postgres) trên một network riêng, postgres có volume và healthcheck, backend chờ postgres khỏe.
 3. Kiểm chứng: gọi `/health` và `/api/members` qua frontend, tắt rồi bật lại stack và chứng minh dữ liệu còn nguyên.
-4. Trả lời nhanh ba câu hỏi giải thích thiết kế của bạn.
+4. Trả lời nhanh ba câu hỏi giải thích thiết kế của mình.
 
-Tham số đề (cổng, tên biến, tên database, tên user) khác nhau giữa các học viên, vì vậy hãy đọc kỹ đề bài của bạn.
+Tham số đề (cổng, tên biến, tên database, tên user) khác nhau giữa các học viên, vì vậy cần đọc kỹ đề bài được giao.
 
 Tiêu chí chấm gồm: Dockerfile (25 điểm), Compose (30 điểm), kiểm chứng (10 điểm), giải thích (5 điểm). Chi tiết thang điểm được công bố trên đề thi.
 
 ## Bài thực hành cuối khóa (90 phút)
 
-Mentor dựng sẵn một namespace trên cụm kind. Ứng dụng trong namespace đó bị hỏng ở năm điểm khác nhau. Bạn chỉ nhận triệu chứng. Với mỗi lỗi bạn phải:
+Mentor dựng sẵn một namespace trên cụm kind. Ứng dụng trong namespace đó bị hỏng ở năm điểm khác nhau. Học viên chỉ nhận triệu chứng. Với mỗi lỗi, học viên phải:
 
 1. Tìm nguyên nhân gốc bằng `kubectl get`, `describe`, `logs`, `events`.
 2. Sửa manifest hoặc tài nguyên.
@@ -68,17 +68,17 @@ Mỗi lỗi 10 điểm (nguyên nhân 4, cách sửa 4, kiểm chứng 2), cộn
 
 ## Quy định chung
 
-- Làm trên máy của bạn trong WSL2, trong filesystem của WSL (không dùng `/mnt/c`).
-- Được dùng: tài liệu chính thức (docs.docker.com, kubernetes.io, docs.github.com), `--help`, `man`, ghi chú cá nhân bạn viết trước đó.
-- Không được dùng: chatbot AI, nhờ người khác, copy bài lab của bạn khác, tìm lời giải trên diễn đàn.
+- Làm trên máy cá nhân trong WSL2, trong filesystem của WSL (không dùng `/mnt/c`).
+- Được dùng: tài liệu chính thức (docs.docker.com, kubernetes.io, docs.github.com), `--help`, `man`, ghi chú cá nhân do chính học viên viết trước đó.
+- Không được dùng: chatbot AI, nhờ người khác, copy bài lab của học viên khác, tìm lời giải trên diễn đàn.
 - Không ghi secret thật vào bài nộp. Mật khẩu trong đề thi là giá trị giả.
 - Bài thực hành nộp bằng cách push lên nhánh `assessment` trong repo cá nhân kèm file `NOTES.md`, hoặc theo hướng dẫn của mentor tại phòng thi.
-- Mentor có thể hỏi vấn đáp ngắn trên bài của bạn. Nếu không giải thích được phần mình nộp, điểm phần đó có thể bị điều chỉnh.
+- Mentor có thể hỏi vấn đáp ngắn về bài đã nộp. Nếu không giải thích được phần mình nộp, điểm phần đó có thể bị điều chỉnh.
 - Vắng mặt có lý do chính đáng được thi bù bằng đề tham số khác. Chi tiết nộp trễ và khiếu nại nằm ở [Đánh giá](assessment.md).
 
 ## Mẫu 10 câu có đáp án
 
-Các câu dưới đây cùng dạng với đề thật nhưng không nằm trong ngân hàng. Hãy tự trả lời trước khi mở đáp án.
+Các câu dưới đây cùng dạng với đề thật nhưng không nằm trong ngân hàng. Học viên nên tự trả lời trước khi mở đáp án.
 
 ### Câu 1 (Linux, trắc nghiệm)
 
@@ -97,7 +97,7 @@ Lệnh nào theo dõi nội dung mới được ghi vào file log theo thời gi
 
 ### Câu 2 (Git, trắc nghiệm)
 
-Bạn lỡ chạy `git add notes.txt` và muốn bỏ file khỏi staging area nhưng giữ nguyên nội dung file. Lệnh nào phù hợp?
+Một học viên đã chạy `git add notes.txt` nhầm và muốn bỏ file khỏi staging area nhưng giữ nguyên nội dung file. Lệnh nào phù hợp?
 
 - A. `git restore --staged notes.txt`
 - B. `git reset --hard`
@@ -117,7 +117,7 @@ Trình duyệt nhận mã trạng thái 404 từ một web server. Điều gì �
 - A. Server không chạy.
 - B. Server đang quá tải.
 - C. Server nhận được request nhưng không tìm thấy tài nguyên ở đường dẫn đó.
-- D. Bạn chưa đăng nhập.
+- D. Người dùng chưa đăng nhập.
 
 <details><summary>Đáp án</summary>
 
@@ -152,7 +152,7 @@ Sai. `docker compose restart` chỉ khởi động lại container hiện có, k
 
 ### Câu 6 (CI/CD, đúng/sai kèm giải thích)
 
-Phát biểu: "Workflow có `on: push` với `branches: [main]` sẽ chạy khi bạn push lên nhánh `feature/login`." Đúng hay sai? Giải thích.
+Phát biểu: "Workflow có `on: push` với `branches: [main]` sẽ chạy khi push lên nhánh `feature/login`." Đúng hay sai? Giải thích.
 
 <details><summary>Đáp án</summary>
 
@@ -177,7 +177,7 @@ Pod `club-api-7d9f` ở trạng thái `CrashLoopBackOff`. Container đã khởi 
 
 ### Câu 8 (Kubernetes, tình huống)
 
-Bạn cập nhật Deployment lên image mới, sau đó Pod mới liên tục lỗi và ứng dụng chập chờn. Bạn muốn quay về phiên bản trước nhanh nhất. Lệnh nào?
+Deployment được cập nhật lên image mới, sau đó Pod mới liên tục lỗi và ứng dụng chập chờn. Cần quay về phiên bản trước nhanh nhất. Lệnh nào phù hợp?
 
 <details><summary>Đáp án</summary>
 
@@ -187,7 +187,7 @@ Bạn cập nhật Deployment lên image mới, sau đó Pod mới liên tục l
 
 ### Câu 9 (Troubleshooting, tình huống)
 
-`kubectl describe pod` cho thấy event: "Failed to pull image club-api:1.0.1 ... not found". Deployment YAML ghi `image: club-api:1.0.1`. Nhóm bạn chỉ build tag `1.0.0`. Nguyên nhân gốc và cách sửa?
+`kubectl describe pod` cho thấy event: "Failed to pull image club-api:1.0.1 ... not found". Deployment YAML ghi `image: club-api:1.0.1`. Nhóm chỉ build tag `1.0.0`. Nguyên nhân gốc và cách sửa?
 
 <details><summary>Đáp án</summary>
 
@@ -197,7 +197,7 @@ Nguyên nhân gốc: manifest tham chiếu một tag không tồn tại (sai tag
 
 ### Câu 10 (Troubleshooting, tình huống)
 
-Container backend chạy được, `curl localhost:3000/health` trả về 200, nhưng frontend báo "502 Bad Gateway" khi gọi `/api/members`. Hãy nêu ba bước kiểm tra theo thứ tự hợp lý.
+Container backend chạy được, `curl localhost:3000/health` trả về 200, nhưng frontend báo "502 Bad Gateway" khi gọi `/api/members`. Nêu ba bước kiểm tra theo thứ tự hợp lý.
 
 <details><summary>Đáp án</summary>
 
@@ -211,12 +211,12 @@ Container backend chạy được, `curl localhost:3000/health` trả về 200, 
 
 ## Sau bài kiểm tra
 
-Mentor công bố điểm và nhận xét theo từng tiêu chí. Hãy dùng nhận xét để bổ sung lab còn yếu trước Final Project. Quy trình khiếu nại và thi bù xem tại [Đánh giá](assessment.md).
+Mentor công bố điểm và nhận xét theo từng tiêu chí. Học viên nên dùng nhận xét để bổ sung các lab còn yếu trước Final Project. Quy trình khiếu nại và thi bù xem tại [Đánh giá](assessment.md).
 
 ## Dành cho mentor: ghi chú chấm bài
 
 ::: warning Dành cho mentor
-Mục này dành cho người chấm; học viên không cần đọc. Đáp án 10 câu mẫu ở trên là tài liệu tự ôn cho học viên và không nằm trong ngân hàng đề thật.
+Mục này dành cho người chấm; học viên không bắt buộc đọc. Đáp án 10 câu mẫu ở trên là tài liệu tự ôn cho học viên và không nằm trong ngân hàng đề thật.
 :::
 
 Lệnh kiểm tra nhanh khi chấm bài thực hành giữa khóa (chạy trong thư mục bài nộp của học viên, điều chỉnh cổng và tên theo tham số đề của từng người):

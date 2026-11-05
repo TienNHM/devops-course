@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Văn phong học thuật cho người mới: viết lại 32 bộ slide, các trang `curriculum`, `resources`, `vibe`, trang chủ; thêm slide "Khái niệm" trước mỗi thuật ngữ mới (định nghĩa một câu, ví dụ trong dự án). Quy tắc văn phong nằm trong ghi chú soạn bài của người biên soạn.
+- Thêm module tùy chọn "Phần 6 · Cloud và IaC" cho Lộ trình Nâng cao: buổi 33 (AWS cục bộ với floci) và buổi 34 (Terraform và kiểm thử tích hợp trên floci), chỉ học bằng slide.
 - Lộ trình Cơ bản học bằng slide: bỏ lab, bài tập và nộp bài khỏi đường học Ngày 1–10; 10 bộ slide viết lại thành bài học đầy đủ (bước làm, kiểm tra, lỗi thường gặp, tự kiểm tra). Các trang lab cũ của Cơ bản giữ làm bản lưu trữ, ẩn khỏi menu. Tiến độ ("Đánh dấu đã xong") chuyển sang trang slide.
 - Lộ trình Cơ bản rút gọn thành 14 ngày (2 giờ mỗi ngày): 10 ngày học theo một dự án xuyên suốt (Club app) và 4 ngày sửa lỗi, hoàn thiện, demo. Viết lại 10 bài lab và 10 bộ slide theo hướng project-based, bỏ lý thuyết dài; thêm trang `curriculum/basic-wrapup`.
 - Các buổi bị cắt khỏi Cơ bản (01, 04, 05, 10, 11, 14, 15, 17, 19, 20) chuyển sang Lộ trình Nâng cao; đường dẫn bài giữ nguyên. Sidebar, trang chủ, tiến độ và điều hướng theo hai lộ trình mới.

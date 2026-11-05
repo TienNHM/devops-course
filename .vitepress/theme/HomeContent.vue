@@ -8,14 +8,14 @@ const meta = {
   basic: {
     title: 'Lộ trình Cơ bản',
     meta: '14 ngày · 2 giờ mỗi ngày',
-    lead: 'Dành cho người mới. Mỗi ngày một việc làm thật trên cùng một dự án, từ máy trống tới image Docker được publish tự động. 10 ngày học, 4 ngày sửa lỗi, hoàn thiện và demo.',
+    lead: 'Dành cho người mới bắt đầu. Mỗi ngày người học thực hiện một công việc trên cùng một dự án, từ máy trống đến image Docker được publish tự động. Lộ trình gồm 10 ngày học và 4 ngày sửa lỗi, hoàn thiện và demo.',
     link: '/curriculum/basic',
     cta: 'Xem kế hoạch 14 ngày',
   },
   advanced: {
     title: 'Lộ trình Nâng cao',
     meta: 'Sau khi xong Cơ bản',
-    lead: 'Đào sâu những phần được tách khỏi Cơ bản (Linux, mạng, tối ưu image, kiểm thử và bảo mật pipeline), rồi chạy ứng dụng trên Kubernetes và làm dự án cuối khóa theo nhóm.',
+    lead: 'Lộ trình đi sâu vào các nội dung tách khỏi Cơ bản (Linux, mạng, tối ưu image, kiểm thử và bảo mật pipeline), sau đó triển khai ứng dụng trên Kubernetes và thực hiện dự án cuối khóa theo nhóm.',
     link: '/curriculum/advanced',
     cta: 'Xem Lộ trình Nâng cao',
   },
@@ -69,7 +69,7 @@ onMounted(loadProgress)
       </div>
     </section>
     <p class="vibe-note">
-      Chỉ muốn đưa web lên mạng nhanh? Có lộ trình riêng, không cần học Docker hay Kubernetes:
+      Lộ trình riêng dành cho nhu cầu đưa website lên Internet nhanh, không yêu cầu kiến thức Docker hay Kubernetes:
       <a :href="withBase('/vibe/')">Vibe Deploy</a>.
     </p>
   </div>

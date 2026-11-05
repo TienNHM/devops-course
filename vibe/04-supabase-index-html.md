@@ -1,6 +1,6 @@
 # File index.html hoàn chỉnh cho bài Supabase
 
-Đây là file `index.html` dùng ở Bước 4 của [bài Supabase](04-supabase.md). Bạn chỉ sửa hai dòng có chữ `THAY`: Project URL và publishable key.
+Đây là file `index.html` dùng ở Bước 4 của [bài Supabase](04-supabase.md). Chỉ cần sửa hai dòng có chữ `THAY`: Project URL và publishable key.
 
 ```html
 <!doctype html>

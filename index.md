@@ -4,8 +4,8 @@ title: DevOps – From Code to Deployment
 
 hero:
   name: DevOps – From Code to Deployment
-  text: Học DevOps bằng cách tự dựng, tự phá và tự sửa một hệ thống thật
-  tagline: Ba lộ trình cho thành viên HCMUTE DSC. Cơ bản học trong 14 ngày bằng một dự án thật, Nâng cao đi tiếp tới Kubernetes, và Vibe Deploy để đưa web lên mạng nhanh.
+  text: Học DevOps qua việc tự xây dựng, tự gây lỗi và tự sửa lỗi một hệ thống thực tế
+  tagline: Ba lộ trình dành cho thành viên HCMUTE DSC. Lộ trình Cơ bản kéo dài 14 ngày và dựa trên một dự án thực tế. Lộ trình Nâng cao tiếp nối đến Kubernetes. Lộ trình Vibe Deploy hướng dẫn đưa website lên Internet nhanh chóng.
   actions:
     - theme: brand
       text: Bắt đầu Lộ trình Cơ bản
@@ -17,13 +17,13 @@ hero:
 features:
   - icon: 🧱
     title: Một ứng dụng xuyên suốt
-    details: Club Management API chạy từ terminal tới Compose, GitHub Actions và cluster kind. Bạn tự viết manifest, không nhận bản hoàn chỉnh ngay.
+    details: Club Management API được triển khai lần lượt từ terminal đến Compose, GitHub Actions và cluster kind. Người học tự viết manifest thay vì nhận bản hoàn chỉnh.
   - icon: 💥
     title: Cố tình làm hỏng rồi tự sửa
-    details: Port bận, mất dữ liệu, ImagePullBackOff, CrashLoopBackOff. Chỉ có triệu chứng, bạn đi tìm nguyên nhân gốc.
+    details: Các lỗi gồm port bị chiếm, mất dữ liệu, ImagePullBackOff và CrashLoopBackOff. Đề bài chỉ cung cấp triệu chứng, người học tự xác định nguyên nhân gốc.
   - icon: 💻
-    title: Chạy hoàn toàn trên máy bạn
-    details: Windows 11, WSL2, Docker Desktop và kind. Không cần cloud, không cần mở máy ra Internet.
+    title: Chạy hoàn toàn trên máy cá nhân
+    details: Môi trường gồm Windows 11, WSL2, Docker Desktop và kind. Không cần dịch vụ cloud và không cần mở máy ra Internet.
 ---
 
 <HomeContent />

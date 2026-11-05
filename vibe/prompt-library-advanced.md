@@ -3,7 +3,7 @@
 > **Tóm tắt:** Chín prompt cuối của thư viện (22 đến 30): rà soát bảo mật, giới hạn chi phí, dữ liệu cá nhân, dọn dẹp, README, review diff, rollback, GitHub Actions và MCP ít quyền nhất.
 
 ::: tip Bạn làm gì
-- **Kết quả:** có prompt sẵn cho các việc cuối trước và sau khi ra mắt, mỗi prompt kèm điều bạn tự kiểm tra.
+- **Kết quả:** có prompt sẵn cho các việc cuối trước và sau khi ra mắt, mỗi prompt kèm phần người học tự kiểm tra.
 - **Thời gian:** tra cứu 2 đến 5 phút mỗi prompt.
 - **Cần gì trước:** đã đọc phần "Cách dùng" ở [Thư viện prompt](prompt-library.md) (ba quy tắc an toàn) và có `AGENTS.md` trong dự án.
 - **Module trước:** [Thư viện prompt](prompt-library.md) (prompt 1 đến 21).
@@ -21,7 +21,7 @@ Hãy rà soát dự án này như người kiểm tra an ninh, chỉ báo cáo, 
 Trả lời theo bảng: vấn đề, mức độ, file liên quan, cách sửa.
 ```
 
-- **Bạn tự kiểm tra:** Với mục nghiêm trọng, tự xác minh lại (đọc file, thử truy cập). Đừng tin báo cáo "không có vấn đề" nếu bạn chưa thử.
+- **Tự kiểm tra:** Với mục nghiêm trọng, tự xác minh lại (đọc file, thử truy cập). Báo cáo "không có vấn đề" chỉ đáng tin khi đã tự thử.
 
 ### 23. Giới hạn chi phí và hạn mức
 
@@ -33,7 +33,7 @@ Hãy liệt kê mọi nơi dự án có thể phát sinh chi phí theo mức dù
 Nhắc tôi những thiết lập tôi phải tự làm ở trang quản trị của nền tảng như cảnh báo chi tiêu và hạn mức chi tiêu (spending cap) nếu có. Không bật hay mua gói trả phí thay tôi.
 ```
 
-- **Bạn tự kiểm tra:** Tự vào trang Billing/Usage của từng nền tảng đặt cảnh báo; kiểm tra gói đang dùng là gói miễn phí.
+- **Tự kiểm tra:** Tự vào trang Billing/Usage của từng nền tảng đặt cảnh báo; kiểm tra gói đang dùng là gói miễn phí.
 
 ### 24. Rà soát việc gửi dữ liệu cá nhân cho AI
 
@@ -45,7 +45,7 @@ Hãy rà soát code và quy trình làm việc của tôi: có chỗ nào dữ l
 Đề xuất cách thay bằng dữ liệu giả khi gỡ lỗi, che bớt thông tin trong log, và nhắc tôi không dán dữ liệu thật vào bất kỳ prompt nào.
 ```
 
-- **Bạn tự kiểm tra:** Xem log thật trên nền tảng, đảm bảo không có email hay số điện thoại; repo không chứa file dữ liệu người dùng thật.
+- **Tự kiểm tra:** Xem log thật trên nền tảng, đảm bảo không có email hay số điện thoại; repo không chứa file dữ liệu người dùng thật.
 
 ### 25. Giảm chi phí và dọn dẹp
 
@@ -57,13 +57,13 @@ Hãy giúp tôi giảm mức dùng: nén ảnh lớn, bật cache cho file tĩnh
 Chỉ ĐỀ XUẤT xoá, đừng chạy lệnh xoá nào. Tôi tự quyết định sau khi kiểm tra từng mục.
 ```
 
-- **Bạn tự kiểm tra:** Xem trang Usage trước và sau; đọc kỹ từng mục trước khi tự xoá, vì xoá database hay project không hoàn tác được.
+- **Tự kiểm tra:** Xem trang Usage trước và sau; đọc kỹ từng mục trước khi tự xoá, vì xoá database hay project không hoàn tác được.
 
 ## Tài liệu, review, rollback và CI
 
 ### 26. Viết README cho dự án
 
-- **Mục tiêu:** Người khác (và bạn tương lai) biết dự án chạy ra sao.
+- **Mục tiêu:** Người khác (và chính người học về sau) biết dự án chạy như thế nào.
 - **Khi nào dùng:** Sau khi dự án chạy được.
 
 ```text
@@ -71,7 +71,7 @@ Hãy viết README.md tiếng Việt cho dự án này gồm: dự án là gì, 
 Không đưa bất kỳ giá trị khóa hay URL nội bộ nào. Dùng ngôn ngữ cho người mới.
 ```
 
-- **Bạn tự kiểm tra:** Làm theo README từng bước trên thư mục mới; không có secret trong file.
+- **Tự kiểm tra:** Làm theo README từng bước trên thư mục mới; không có secret trong file.
 
 ### 27. Review diff trước khi commit
 
@@ -83,7 +83,7 @@ Hãy chạy git diff và review thay đổi chưa commit như một người rà
 Đừng commit. Trả lời bằng danh sách ngắn, kèm tên file và dòng.
 ```
 
-- **Bạn tự kiểm tra:** Tự chạy `git diff --stat` và đọc ít nhất các file nhạy cảm (workflow, cấu hình bảo mật, rules).
+- **Tự kiểm tra:** Tự chạy `git diff --stat` và đọc ít nhất các file nhạy cảm (workflow, cấu hình bảo mật, rules).
 
 ### 28. Rollback khi bản mới bị lỗi
 
@@ -95,7 +95,7 @@ Bản deploy mới nhất lên [NỀN TẢNG] bị lỗi: [MÔ TẢ]. Ưu tiên 
 Hãy cho tôi cách quay về deployment trước đó theo tài liệu chính thức của nền tảng (qua dashboard hoặc CLI), kèm lưu ý về gói miễn phí nếu có giới hạn. Sau khi tôi khôi phục, giúp tôi so sánh hai commit để tìm nguyên nhân. Đừng chạy git push --force hay xoá deployment.
 ```
 
-- **Bạn tự kiểm tra:** Mở lại URL production thấy bản cũ chạy tốt; không xoá lịch sử Git. Với database đã đổi cấu trúc, hỏi kỹ trước, vì quay lại code không quay lại dữ liệu.
+- **Tự kiểm tra:** Mở lại URL production thấy bản cũ chạy tốt; không xoá lịch sử Git. Với database đã đổi cấu trúc, hỏi kỹ trước, vì quay lại code không quay lại dữ liệu.
 
 ### 29. Tạo GitHub Actions để deploy
 
@@ -108,7 +108,7 @@ Yêu cầu: khai báo permissions tối thiểu, lấy token từ secrets (chỉ
 Sau khi viết, tự review lại file theo danh sách trên và liệt kê tên các secret tôi phải tự tạo trong Settings của repo.
 ```
 
-- **Bạn tự kiểm tra:** Đọc từng dòng workflow; tự tạo secret trong GitHub (hoặc `gh secret set`); xem tab Actions, log không in ra giá trị bí mật.
+- **Tự kiểm tra:** Đọc từng dòng workflow; tự tạo secret trong GitHub (hoặc `gh secret set`); xem tab Actions, log không in ra giá trị bí mật.
 
 ### 30. Thiết lập kết nối MCP ít quyền nhất
 
@@ -120,7 +120,7 @@ Tôi muốn kết nối MCP của [NỀN TẢNG] để bạn xem log và trạng
 Chỉ đưa cho tôi lệnh hoặc nội dung cấu hình, tôi tự chạy và tự đăng nhập OAuth. Đừng yêu cầu token từ tôi. Liệt kê những thao tác bạn sẽ KHÔNG làm qua MCP (xoá, đổi cấu hình thanh toán, đọc secret).
 ```
 
-- **Bạn tự kiểm tra:** Đối chiếu URL với tài liệu chính thức; sau khi kết nối, xem danh sách công cụ và quyền được cấp; đặt chế độ xác nhận trong công cụ agent.
+- **Tự kiểm tra:** Đối chiếu URL với tài liệu chính thức; sau khi kết nối, xem danh sách công cụ và quyền được cấp; đặt chế độ xác nhận trong công cụ agent.
 
 ## Tiếp theo
 

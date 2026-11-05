@@ -1,46 +1,46 @@
 # Lộ trình 16 tuần
 
-Khóa dành cho sinh viên và người đi làm mới muốn đưa ứng dụng web từ máy mình lên chạy thật, chưa cần biết DevOps trước. Cuối khóa bạn tự dựng được một hệ thống gồm giao diện web, API và cơ sở dữ liệu, có quy trình tự kiểm tra, đóng gói và triển khai, rồi bảo vệ được cách làm của mình. Khóa kéo dài 16 tuần, 32 buổi, mỗi buổi 120 phút (tổng 64 giờ) cộng khoảng 2–3 giờ tự học mỗi tuần.
+Khóa dành cho sinh viên và người đi làm mới muốn đưa ứng dụng web từ máy cá nhân lên chạy thật, chưa cần biết DevOps trước. DevOps là cách phối hợp giữa phát triển và vận hành phần mềm, trong đó việc kiểm thử, build và triển khai được tự động hóa. Cuối khóa, người học tự dựng được một hệ thống gồm giao diện web, API và cơ sở dữ liệu, có quy trình tự kiểm tra, đóng gói và triển khai, và bảo vệ được cách làm của mình. Khóa kéo dài 16 tuần, 32 buổi, mỗi buổi 120 phút (tổng 64 giờ) cộng khoảng 2–3 giờ tự học mỗi tuần.
 
 > **Tóm tắt:** 16 tuần, 32 buổi, 5 giai đoạn: nền tảng Linux và Git, Docker, CI/CD, Kubernetes, dự án cuối khóa. Trang này gộp lịch học và giáo án; chưa bắt đầu thì đọc [Bắt đầu từ đây](getting-started.md).
 
-Triết lý: **Learn, Build, Break, Debug, Deploy, Explain.** Học trên máy của mình (local-first), mỗi buổi đều có phần thực hành.
+Triết lý: **Learn, Build, Break, Debug, Deploy, Explain.** Việc học diễn ra trên máy cá nhân (local-first), và mỗi buổi đều có phần thực hành.
 
 ## Hai lộ trình
 
 ::: warning Cấu trúc hiện tại
 Khóa chia thành hai lộ trình. **Cơ bản** học trong 14 ngày (mỗi ngày khoảng 2 giờ, 10 ngày học và 4 ngày hoàn thiện), **Nâng cao** gồm các phần đào sâu, Kubernetes và dự án cuối khóa. Thứ tự học thật nằm ở hai trang: [Lộ trình Cơ bản](basic.md) và [Lộ trình Nâng cao](advanced.md).
 
-Các bảng "tuần" và "giai đoạn" bên dưới là cách đánh số 32 buổi gốc. Giữ lại để tra cứu: số buổi và đường dẫn bài không đổi, chỉ cách gom nhóm thay đổi.
+Các bảng "tuần" và "giai đoạn" bên dưới là cách đánh số 32 buổi gốc. Các bảng được giữ lại để tra cứu: số buổi và đường dẫn bài không đổi, chỉ cách gom nhóm thay đổi.
 :::
 
 | Lộ trình | Nội dung | Số bài |
 | --- | --- | --- |
 | Cơ bản | Môi trường, Linux, Git, Docker, Compose, GitHub Actions trên một dự án | 10 ngày học + 4 ngày hoàn thiện |
-| Nâng cao | Đào sâu Linux, mạng, tối ưu image, kiểm thử, bảo mật pipeline; Kubernetes; Capstone | 22 buổi |
+| Nâng cao | Đào sâu Linux, mạng, tối ưu image, kiểm thử, bảo mật pipeline; Kubernetes; Capstone; module tùy chọn Cloud và IaC | 22 buổi + 2 buổi tùy chọn |
 
 Ngoài ra có [Vibe Deploy](../vibe/index.md): một lộ trình riêng, độc lập, để đưa web lên mạng nhanh mà không cần học các phần trên.
 
 ## Bốn điều cần biết trước
 
-- Mỗi buổi 120 phút gồm 15 phút ôn tập, 30 phút kiến thức, 60 phút thực hành, 15 phút review. Khi tự học, bạn đi theo thứ tự đọc, làm lab, gặp lỗi, tự kiểm tra, nộp bài.
+- Mỗi buổi 120 phút gồm 15 phút ôn tập, 30 phút kiến thức, 60 phút thực hành, 15 phút review. Khi tự học, người học đi theo thứ tự đọc, làm lab, gặp lỗi, tự kiểm tra, nộp bài.
 - Mỗi lab có hai mức: L1 (làm theo hướng dẫn) và L2 (tự thiết kế, tự giải thích). Xem [Chuẩn đầu ra](learning-outcomes.md).
-- Mỗi tuần có một buổi office hour ngắn để giải đáp lỗi bạn không tự xử lý được.
-- Buổi 19 chạy hoàn toàn trên máy bạn (local-only): không mở máy học viên ra Internet. Máy chạy trên GitHub chỉ build và publish image; việc triển khai vào máy local làm bằng script hoặc self-hosted runner nội bộ.
+- Mỗi tuần có một buổi office hour ngắn để giải đáp lỗi người học không tự xử lý được.
+- Buổi 19 chạy hoàn toàn trên máy của người học (local-only): không mở máy học viên ra Internet. Máy chạy (runner) trên GitHub chỉ build và publish image; việc triển khai vào máy local làm bằng script hoặc self-hosted runner nội bộ.
 
 ## Năm giai đoạn
 
-**Giai đoạn 1 – Nền tảng (tuần 1–3, 6 buổi).** Bạn làm quen với Linux và terminal, hiểu máy tính nói chuyện với nhau qua mạng thế nào, và dùng Git để lưu lịch sử, làm việc nhóm. Đây là bộ đồ nghề cho mọi giai đoạn sau. Từ khóa: [terminal](../resources/glossary.md), [Git](../resources/glossary.md), [DNS](../resources/glossary.md).
+**Giai đoạn 1 – Nền tảng (tuần 1–3, 6 buổi).** Người học làm quen với Linux và terminal, tìm hiểu cách các máy tính giao tiếp qua mạng, và dùng Git để lưu lịch sử thay đổi và làm việc nhóm. Đây là nền tảng cho mọi giai đoạn sau. Từ khóa: [terminal](../resources/glossary.md), [Git](../resources/glossary.md), [DNS](../resources/glossary.md).
 
-**Giai đoạn 2 – Docker (tuần 4–7, 8 buổi).** Bạn đóng gói ứng dụng vào container để chạy giống nhau trên mọi máy, rồi ghép nhiều container (web, API, cơ sở dữ liệu) thành một hệ thống bằng Docker Compose. Từ khóa: [container](../resources/glossary.md), [image](../resources/glossary.md), [Compose](../resources/glossary.md).
+**Giai đoạn 2 – Docker (tuần 4–7, 8 buổi).** Người học đóng gói ứng dụng vào container (tiến trình chạy trong môi trường riêng, giống nhau trên mọi máy), sau đó ghép nhiều container (web, API, cơ sở dữ liệu) thành một hệ thống bằng Docker Compose. Từ khóa: [container](../resources/glossary.md), [image](../resources/glossary.md), [Compose](../resources/glossary.md).
 
-**Giai đoạn 3 – CI/CD (tuần 8–10, 6 buổi).** Bạn để GitHub tự chạy kiểm thử, đóng gói image và đưa lên kho chứa mỗi khi bạn đẩy mã, kèm các thói quen giữ pipeline an toàn. Từ khóa: [CI/CD](../resources/glossary.md), [pipeline](../resources/glossary.md), [registry](../resources/glossary.md).
+**Giai đoạn 3 – CI/CD (tuần 8–10, 6 buổi).** CI/CD là quy trình tự động kiểm thử, đóng gói và phát hành phần mềm sau mỗi thay đổi mã nguồn. Người học để GitHub tự chạy kiểm thử, đóng gói image và đưa lên kho chứa mỗi khi đẩy mã, kèm các thực hành giữ pipeline an toàn. Từ khóa: [CI/CD](../resources/glossary.md), [pipeline](../resources/glossary.md), [registry](../resources/glossary.md).
 
-**Giai đoạn 4 – Kubernetes (tuần 11–14, 8 buổi).** Bạn chạy ứng dụng trên một cụm máy giả lập ngay trên laptop, học cách cấu hình, kiểm tra sức khỏe, lưu dữ liệu, mở ra bên ngoài và sửa lỗi. Từ khóa: [Kubernetes](../resources/glossary.md), [Pod](../resources/glossary.md), [kubectl](../resources/glossary.md).
+**Giai đoạn 4 – Kubernetes (tuần 11–14, 8 buổi).** Người học chạy ứng dụng trên một cụm máy giả lập ngay trên laptop, và học cách cấu hình, kiểm tra sức khỏe, lưu dữ liệu, mở ra bên ngoài và sửa lỗi. Kubernetes là hệ thống điều phối container, tự động triển khai, mở rộng và phục hồi các ứng dụng chạy trong container. Từ khóa: [Kubernetes](../resources/glossary.md), [Pod](../resources/glossary.md), [kubectl](../resources/glossary.md).
 
-**Giai đoạn 5 – Dự án cuối khóa (tuần 15–16, 4 buổi).** Bạn làm việc nhóm để ghép toàn bộ những gì đã học thành một sản phẩm, kiểm thử, cố ý gây lỗi để luyện sửa, rồi demo và bảo vệ. Xem [Capstone](../assignments/capstone/README.md).
+**Giai đoạn 5 – Dự án cuối khóa (tuần 15–16, 4 buổi).** Người học làm việc nhóm để ghép toàn bộ kiến thức đã học thành một sản phẩm, kiểm thử, cố ý gây lỗi để luyện sửa, sau đó demo và bảo vệ. Xem [Capstone](../assignments/capstone/README.md).
 
-Muốn đi đường tắt để đưa web lên mạng mà chưa học Kubernetes? Xem nhánh riêng [Vibe Deploy](../vibe/index.md).
+Người học muốn đưa web lên mạng nhanh mà chưa học Kubernetes có thể theo nhánh riêng [Vibe Deploy](../vibe/index.md).
 
 ## Bảng 16 tuần
 
@@ -63,7 +63,7 @@ Muốn đi đường tắt để đưa web lên mạng mà chưa học Kubernete
 | 15 | 5 | Capstone: lập kế hoạch và triển khai | Hoàn thiện ứng dụng và quy trình tự động của nhóm | [Tuần 15](../labs/week-15/README.md) | [Bài tập](../assignments/weekly/week-15.md) |
 | 16 | 5 | Capstone: kiểm thử và bảo vệ | Demo, báo cáo, xử lý sự cố được giao | [Tuần 16](../labs/week-16/README.md) | [Bài tập](../assignments/weekly/week-16.md) |
 
-Thử thách nâng cao (L2) của từng tuần nằm ở cuối các bài lab, làm ở nhà nếu bạn muốn đi sâu hơn. Danh sách đầy đủ ở ngay bên dưới.
+Thử thách nâng cao (L2) của từng tuần nằm ở cuối các bài lab, làm ở nhà khi người học muốn đi sâu hơn. Danh sách đầy đủ nằm ngay bên dưới.
 
 ::: details Thử thách nâng cao (L2) theo tuần
 

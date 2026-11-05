@@ -21,17 +21,17 @@
 
 ## Khái niệm trong 5 phút
 
-Hãy nghĩ bạn sắp khai trương quán. Bài [Domain, bảo mật và vận hành](07-domain-security-production.md) là khóa cửa, lắp điện nước. Bài này là phần "trước giờ mở cửa": treo biển cho đẹp, đặt chuông chống người phá rối, đặt máy đếm khách và chuẩn bị sổ sách dự phòng.
+Bài [Domain, bảo mật và vận hành](07-domain-security-production.md) đã trình bày phần hạ tầng cơ bản. Bài này xử lý các việc cuối trước khi mở cho người dùng thật: chống spam, hiển thị link chia sẻ, đo lượt truy cập và chuẩn bị bản sao dự phòng. SEO (Search Engine Optimization, tối ưu hóa công cụ tìm kiếm) là tập hợp các thiết lập giúp công cụ tìm kiếm hiểu và hiển thị trang web đúng nội dung.
 
-| Khái niệm | Ví dụ đời thường | Trong thực tế |
+| Khái niệm | Định nghĩa | Trong thực tế |
 | --- | --- | --- |
-| Honeypot ([thuật ngữ](../resources/glossary.md)) | Cái hộp "trống" mà chỉ kẻ gian mới thò tay vào | Ô nhập ẩn; người thật không thấy nên không điền, bot điền |
-| Captcha / Turnstile | Bảo vệ hỏi nhanh "bạn là người à?" | Widget của Cloudflare, người thật thường không phải giải đố |
-| Rate limit | Mỗi người chỉ được lấy số thứ tự vài lần mỗi phút | Giới hạn số request trên mỗi IP hoặc mỗi tài khoản |
-| Open Graph (OG) | Tấm danh thiếp in sẵn | Thẻ meta cho Zalo, Facebook biết hiện tiêu đề, ảnh gì |
-| Analytics | Máy đếm khách ở cửa | Số lượt xem trang, nguồn truy cập |
-| Backup | Photo sổ sách cất ở nhà khác | File xuất dữ liệu bạn cất ngoài dịch vụ |
-| Lighthouse | Phiếu khám sức khỏe tổng quát | Công cụ trong Chrome chấm tốc độ, truy cập, SEO |
+| Honeypot ([thuật ngữ](../resources/glossary.md)) | Bẫy chống bot: một ô nhập mà người thật không nhìn thấy nhưng bot tự động vẫn điền. | Ô nhập ẩn; người thật không thấy nên không điền, bot điền |
+| Captcha / Turnstile | Cơ chế xác minh người gửi form là người thật, không phải chương trình tự động. | Widget của Cloudflare, người thật thường không phải giải đố |
+| Rate limit | Giới hạn số lần một đối tượng được gửi request trong một khoảng thời gian. | Giới hạn số request trên mỗi IP hoặc mỗi tài khoản |
+| Open Graph (OG) | Chuẩn thẻ meta quy định tiêu đề, mô tả, ảnh hiển thị khi một link được chia sẻ. | Thẻ meta cho Zalo, Facebook biết hiện tiêu đề, ảnh gì |
+| Analytics | Công cụ thống kê lượt truy cập website. | Số lượt xem trang, nguồn truy cập |
+| Backup | Bản sao dữ liệu lưu ở nơi khác để khôi phục khi cần. | File xuất dữ liệu cất ngoài dịch vụ |
+| Lighthouse | Công cụ kiểm tra chất lượng trang web theo các tiêu chí hiệu năng, khả năng truy cập và SEO. | Công cụ trong Chrome chấm tốc độ, truy cập, SEO |
 
 ```mermaid
 flowchart LR
@@ -41,11 +41,11 @@ flowchart LR
   D --> E["Backup định kỳ"]
 ```
 
-Nguyên tắc xuyên suốt: mọi lớp chống spam ở trình duyệt chỉ là "biển báo". Lớp thật phải nằm ở server hoặc database, vì bot gọi thẳng API mà không qua giao diện của bạn.
+Nguyên tắc xuyên suốt: mọi lớp chống spam ở trình duyệt chỉ có tính cảnh báo. Lớp bảo vệ thật phải nằm ở server hoặc database, vì bot gọi thẳng API mà không qua giao diện của website.
 
 ## Thực hành từng bước
 
-Làm theo thứ tự các phần A đến D. Ví dụ dùng form đăng ký của CLB (xem [club-landing](../examples/vibe/club-landing/README.md)), nhưng cách làm áp dụng cho form liên hệ bất kỳ.
+Thực hiện theo thứ tự các phần A đến D. Ví dụ dùng form đăng ký của CLB (xem [club-landing](../examples/vibe/club-landing/README.md)), nhưng cách làm áp dụng cho form liên hệ bất kỳ.
 
 ### Phần A. Chống spam và bot cho form
 
@@ -73,12 +73,12 @@ if (body.website) {
 }
 ```
 
-Bạn sẽ thấy: gửi form bình thường vẫn lưu được; nếu tự điền ô `website` bằng DevTools rồi gửi, dữ liệu không xuất hiện trong database.
+Kết quả đúng: gửi form bình thường vẫn lưu được; nếu tự điền ô `website` bằng DevTools rồi gửi, dữ liệu không xuất hiện trong database.
 
-**Bước 2. Thêm Cloudflare Turnstile.** Turnstile là captcha thân thiện của Cloudflare, có thể dùng cả khi web của bạn không nằm trên Cloudflare. Theo tài liệu Cloudflare (kiểm tra 10/2026): mỗi widget có `sitekey` (công khai, để trong HTML) và `secret key` (bí mật, chỉ ở server); token sống 300 giây và chỉ kiểm tra được một lần.
+**Bước 2. Thêm Cloudflare Turnstile.** Turnstile là captcha thân thiện của Cloudflare, có thể dùng cả khi website không nằm trên Cloudflare. Theo tài liệu Cloudflare (kiểm tra 10/2026): mỗi widget có `sitekey` (công khai, để trong HTML) và `secret key` (bí mật, chỉ ở server); token sống 300 giây và chỉ kiểm tra được một lần.
 
-1. Vào dashboard Cloudflare, mục Turnstile, tạo một widget và nhập domain của bạn (bạn tự thao tác, giá và gói xem trang chính thức).
-2. Dán script và widget vào form (thay `SITEKEY_CUA_BAN` bằng sitekey công khai của bạn):
+1. Vào dashboard Cloudflare, mục Turnstile, tạo một widget và nhập domain của dự án (người học tự thao tác; giá và gói xem trang chính thức).
+2. Dán script và widget vào form (thay `SITEKEY_CUA_BAN` bằng sitekey công khai của widget):
 
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -110,13 +110,13 @@ async function verifyTurnstile(token, ip) {
 }
 ```
 
-Tài liệu Cloudflare có sẵn khóa thử nghiệm: sitekey `1x00000000000000000000AA` luôn qua, `2x00000000000000000000AB` luôn thất bại; secret `1x0000000000000000000000000000000AA` luôn qua. Dùng chúng để thử luồng trên máy mình. Trước khi public, thay bằng khóa thật của widget (khóa thử nghiệm không bảo vệ gì cả).
+Tài liệu Cloudflare có sẵn khóa thử nghiệm: sitekey `1x00000000000000000000AA` luôn qua, `2x00000000000000000000AB` luôn thất bại; secret `1x0000000000000000000000000000000AA` luôn qua. Dùng chúng để thử luồng trên máy cá nhân. Trước khi public, thay bằng khóa thật của widget (khóa thử nghiệm không bảo vệ gì cả).
 
-Bạn sẽ thấy: widget hiện ô "Verify you are human" (hoặc tự xác minh); gửi form với token trống hoặc sai bị server từ chối.
+Kết quả đúng: widget hiện ô "Verify you are human" (hoặc tự xác minh); gửi form với token trống hoặc sai bị server từ chối.
 
-Nếu form của bạn gửi thẳng vào Supabase Auth (đăng ký, đăng nhập), Supabase có sẵn tùy chọn bật captcha trong phần Auth, xem [tài liệu Supabase Auth Captcha](https://supabase.com/docs/guides/auth/auth-captcha). Với form ghi thẳng vào bảng, hãy cho form đi qua một function (Vercel, Netlify, Cloudflare hoặc Supabase Edge Function) để có chỗ kiểm tra token.
+Nếu form gửi thẳng vào Supabase Auth (đăng ký, đăng nhập), Supabase có sẵn tùy chọn bật captcha trong phần Auth, xem [tài liệu Supabase Auth Captcha](https://supabase.com/docs/guides/auth/auth-captcha). Với form ghi thẳng vào bảng, cần cho form đi qua một function (Vercel, Netlify, Cloudflare hoặc Supabase Edge Function) để có chỗ kiểm tra token.
 
-**Bước 3. Rate limit ở mức nền tảng.** Bạn không cần tự viết thuật toán. Hãy tìm công cụ có sẵn:
+**Bước 3. Rate limit ở mức nền tảng.** Không cần tự viết thuật toán; nên dùng công cụ có sẵn:
 
 | Nơi | Việc có thể làm | Ghi chú |
 | --- | --- | --- |
@@ -127,7 +127,7 @@ Nếu form của bạn gửi thẳng vào Supabase Auth (đăng ký, đăng nh�
 
 Nếu chỉ làm được một việc: ràng buộc `unique` trên cột email trong database, để một email không thể đăng ký 1000 lần.
 
-**Bước 4. Giới hạn độ dài và kiểm tra ở server hoặc database.** Đừng chỉ tin `maxlength` của HTML. Ví dụ ràng buộc cho Supabase (chạy trong SQL Editor):
+**Bước 4. Giới hạn độ dài và kiểm tra ở server hoặc database.** Không chỉ dựa vào `maxlength` của HTML. Ví dụ ràng buộc cho Supabase (chạy trong SQL Editor):
 
 ```sql
 alter table public.members
@@ -137,11 +137,11 @@ alter table public.members
 
 Và trong function: kiểm tra kiểu dữ liệu, cắt khoảng trắng, từ chối khi quá dài, giới hạn kích thước body (ví dụ không nhận quá vài KB cho form chữ).
 
-Bạn sẽ thấy: gửi một tên dài 500 ký tự bằng công cụ như `curl` bị database hoặc function từ chối.
+Kết quả đúng: gửi một tên dài 500 ký tự bằng công cụ như `curl` bị database hoặc function từ chối.
 
 ### Phần B. SEO và chia sẻ link tối thiểu
 
-**Bước 5. Thẻ meta cho tiêu đề, mô tả, Open Graph và Twitter card.** Đặt trong phần `head` của trang chủ (thay nội dung và domain thật của bạn):
+**Bước 5. Thẻ meta cho tiêu đề, mô tả, Open Graph và Twitter card.** Thẻ meta là các dòng khai báo trong phần `head` của trang HTML, cung cấp thông tin mô tả trang cho trình duyệt, công cụ tìm kiếm và mạng xã hội. Đặt trong phần `head` của trang chủ (thay nội dung và domain thật của dự án):
 
 ```html
 <title>CLB Lập trình Ví dụ | Đăng ký thành viên</title>
@@ -160,7 +160,7 @@ Bạn sẽ thấy: gửi một tên dài 500 ký tự bằng công cụ như `cu
 <meta name="twitter:image" content="https://ten-mien-cua-ban.vn/og-image.png" />
 ```
 
-Mẹo: ảnh `og-image.png` cỡ khoảng 1200 x 630 pixel, dùng địa chỉ đầy đủ bắt đầu bằng `https://`, dung lượng nhẹ (dưới vài trăm KB). Title nên dưới khoảng 60 ký tự, description khoảng 120-160 ký tự.
+Khuyến nghị: ảnh `og-image.png` cỡ khoảng 1200 x 630 pixel, dùng địa chỉ đầy đủ bắt đầu bằng `https://`, dung lượng nhẹ (dưới vài trăm KB). Title nên dưới khoảng 60 ký tự, description khoảng 120-160 ký tự.
 
 **Bước 6. Favicon, sitemap và robots.** Ba thứ này nằm ở [trang nâng cao](11-launch-polish-advanced.md#favicon-sitemap-robots): một thẻ `link` cho favicon, file `robots.txt` và `sitemap.xml` ở thư mục gốc.
 
@@ -168,17 +168,17 @@ Mẹo: ảnh `og-image.png` cỡ khoảng 1200 x 630 pixel, dùng địa chỉ �
 
 1. Mở [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/), dán link, bấm Debug. Nếu vừa sửa thẻ, bấm "Scrape Again" để xóa bản nhớ cũ.
 2. Với Zalo: gửi link vào chat "Cloud của tôi" (nhắn cho chính mình) và xem thẻ hiển thị. Zalo cũng đọc thẻ Open Graph nhưng giữ bản nhớ đệm (cache); nếu còn thấy hình cũ, đổi tên file ảnh (ví dụ `og-image-v2.png`) rồi gửi lại.
-3. Thử cả Messenger và một ứng dụng khác để chắc chắn.
+3. Thử thêm Messenger và một ứng dụng khác để đối chiếu.
 
-Bạn sẽ thấy: thẻ có đúng ảnh, tiêu đề và mô tả. Nếu chỉ hiện đường link trần, thường do thiếu `og:image` hoặc ảnh dùng địa chỉ tương đối.
+Kết quả đúng: thẻ có đúng ảnh, tiêu đề và mô tả. Nếu chỉ hiện đường link trần, thường do thiếu `og:image` hoặc ảnh dùng địa chỉ tương đối.
 
 ### Phần C. Đọc thêm: analytics, thanh toán, backup, Lighthouse
 
-Bốn chủ đề này nằm ở trang [Hoàn thiện và ra mắt: nâng cao](11-launch-polish-advanced.md): analytics thân thiện riêng tư và cookie, vì sao thanh toán nằm ngoài phạm vi, sao lưu dữ liệu ở mức thực hành, và đo hiệu năng bằng Lighthouse (kèm prompt cho agent). Các mục 14, 15, 19, 20 của checklist go-live ở cuối bài cần trang đó.
+Bốn chủ đề này nằm ở trang [Hoàn thiện và ra mắt: nâng cao](11-launch-polish-advanced.md): analytics thân thiện riêng tư và cookie, lý do thanh toán nằm ngoài phạm vi, sao lưu dữ liệu ở mức thực hành, và đo hiệu năng bằng Lighthouse (kèm prompt cho agent). Các mục 14, 15, 19, 20 của checklist go-live ở cuối bài cần trang đó.
 
 ### Phần D. Checklist go-live 20 mục
 
-Đây là danh sách để bạn tự tick trước khi gửi link rộng rãi (phiên bản có thể sao chép nằm ở phần Checklist hoàn thành cuối bài). Mỗi nhóm có phần việc đã nói ở trên hoặc ở bài [07](07-domain-security-production.md).
+Go-live là thời điểm chính thức mở website cho người dùng thật. Danh sách dưới đây dùng để tự kiểm tra trước khi gửi link rộng rãi (phiên bản có thể sao chép nằm ở phần Checklist hoàn thành cuối bài). Mỗi nhóm tương ứng với phần việc đã nêu ở trên hoặc ở bài [07](07-domain-security-production.md).
 
 | Nhóm | Mục |
 | --- | --- |
@@ -191,7 +191,7 @@ Bốn chủ đề này nằm ở trang [Hoàn thiện và ra mắt: nâng cao](1
 
 ## Nhờ AI agent làm giúp
 
-Dưới đây là prompt cụ thể cho từng phần. Dán vào agent trong thư mục dự án của bạn. Agent đọc và sửa code; bạn giữ phần tài khoản, khóa và tiền.
+Dưới đây là prompt cụ thể cho từng phần. Dán vào agent trong thư mục dự án. Agent đọc và sửa code; người học giữ phần tài khoản, khóa và tiền.
 
 **Prompt 1: honeypot và kiểm tra phía server.**
 
@@ -225,7 +225,7 @@ Hãy thêm vào trang chủ: title, meta description, canonical, Open Graph, Twi
 Rà soát dự án theo checklist go-live 20 mục (tôi dán bên dưới). Với mỗi mục hãy trả lời Đạt, Chưa đạt hoặc Không xác định được từ code, kèm file bằng chứng. Chỉ báo cáo, không sửa file.
 ```
 
-Việc bạn phải tự kiểm tra:
+Phần người học phải tự kiểm tra:
 
 - Tự gửi form bằng cửa sổ ẩn danh, thử nhập liệu xấu (rất dài, trống, ký tự lạ).
 - Tự gửi link vào Zalo, Messenger và xem thẻ hiển thị.
@@ -257,15 +257,15 @@ Xem thêm [Troubleshooting tổng hợp](08-troubleshooting.md) cho cách đọc
 1. Vì sao ràng buộc độ dài chỉ ở `maxlength` của HTML là chưa đủ?
 2. Honeypot hoạt động dựa trên ý tưởng gì, và vì sao server nên vẫn trả về "thành công" khi bắt được bot?
 3. Trong Turnstile, khóa nào được đặt trong HTML, khóa nào chỉ ở server?
-4. Bạn nhận được yêu cầu "thêm thanh toán thẻ ngay vào form". Bạn nên làm gì và không nên làm gì?
+4. Có yêu cầu "thêm thanh toán thẻ ngay vào form". Nên làm gì và không nên làm gì?
 5. Backup của Supabase gói Free có tự động không, và backup có gồm file trong Storage không?
-6. Link đã sửa ảnh chia sẻ nhưng Zalo vẫn hiện ảnh cũ. Bạn thử gì?
+6. Link đã sửa ảnh chia sẻ nhưng Zalo vẫn hiện ảnh cũ. Cần thử cách nào?
 7. Điểm Lighthouse 100 có phải điều bắt buộc không?
 
 <details><summary>Đáp án</summary>
 
-1. Bot và người dùng kỹ thuật có thể gọi thẳng API, bỏ qua trang web của bạn nên `maxlength` không có tác dụng. Phải kiểm tra ở function và ràng buộc `check` trong database.
-2. Người thật không thấy ô ẩn nên không điền, còn bot điền mọi ô. Trả về "thành công" để bot không biết bị phát hiện và không đổi cách tấn công, trong khi bạn không lưu gì.
+1. Bot và người dùng kỹ thuật có thể gọi thẳng API, bỏ qua trang web nên `maxlength` không có tác dụng. Phải kiểm tra ở function và ràng buộc `check` trong database.
+2. Người thật không thấy ô ẩn nên không điền, còn bot điền mọi ô. Trả về "thành công" để bot không biết bị phát hiện và không đổi cách tấn công, trong khi server không lưu gì.
 3. `sitekey` công khai, đặt trong HTML. `secret key` bí mật, chỉ ở server (biến môi trường), dùng để gọi siteverify.
 4. Dùng link thanh toán dựng sẵn của nhà cung cấp (như Stripe Payment Links) hoặc cổng nội địa có trang thanh toán; tự tạo tài khoản và link. Không tự code xử lý thẻ, không lưu số thẻ, không dán khóa thanh toán vào prompt.
 5. Theo tài liệu Supabase, backup hằng ngày dành cho gói trả phí; gói Free nên tự xuất dữ liệu định kỳ. Backup không gồm file lưu qua Storage, chỉ có thông tin mô tả, nên cần tải file riêng.
@@ -282,7 +282,7 @@ Go-live 20 mục:
 - [ ] 2. Frontend chỉ dùng khóa publishable hoặc anon, không dùng secret hay service_role
 - [ ] 3. RLS hoặc Security Rules đã thử bằng cửa sổ ẩn danh
 - [ ] 4. Đã bật 2FA cho GitHub, nền tảng deploy, database và nhà đăng ký domain
-- [ ] 5. CORS chỉ cho phép domain của bạn
+- [ ] 5. CORS chỉ cho phép domain của dự án
 - [ ] 6. Form có honeypot
 - [ ] 7. Form có Turnstile và server kiểm tra token bằng khóa thật
 - [ ] 8. Có giới hạn độ dài, kiểm tra ở server và ràng buộc database
@@ -293,7 +293,7 @@ Go-live 20 mục:
 - [ ] 13. Có `sitemap.xml` và `robots.txt` mở được
 - [ ] 14. Analytics đã bật và thấy số liệu
 - [ ] 15. Có trang quyền riêng tư ngắn, form nói rõ mục đích thu dữ liệu
-- [ ] 16. Có uptime check gửi email cho bạn
+- [ ] 16. Có uptime check gửi email thông báo
 - [ ] 17. Đã đặt cảnh báo chi phí hoặc lịch kiểm tra Usage hằng tuần
 - [ ] 18. Đã thử rollback hoặc biết chính xác cách rollback
 - [ ] 19. Đã backup dữ liệu một lần, thử mở file, đã đặt lịch nhắc
@@ -301,7 +301,7 @@ Go-live 20 mục:
 
 ## Tiếp theo và tài liệu chính thức
 
-**Tiếp theo:** bạn đã đi hết lộ trình. Gửi link cho người dùng thật, rồi quay lại xem [trang nâng cao](11-launch-polish-advanced.md) khi cần analytics, backup hay Lighthouse.
+**Tiếp theo:** lộ trình đến đây là hoàn tất. Gửi link cho người dùng thật, rồi quay lại xem [trang nâng cao](11-launch-polish-advanced.md) khi cần analytics, backup hay Lighthouse.
 
 Tra cứu:
 

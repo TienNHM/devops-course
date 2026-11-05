@@ -1,8 +1,8 @@
 # Đánh giá
 
-> **Tóm tắt:** Điểm khóa gồm 6 thành phần với trọng số cố định. Bạn hoàn thành khóa khi Final Project từ 60/100, làm ít nhất 80% lab bắt buộc và Technical Assessment từ 50/100.
+> **Tóm tắt:** Điểm khóa gồm 6 thành phần với trọng số cố định. Người học hoàn thành khóa khi Final Project từ 60/100, làm ít nhất 80% lab bắt buộc và Technical Assessment từ 50/100.
 
-Bạn cần biết ba điều: mỗi thành phần chiếm bao nhiêu phần trăm, điều kiện để hoàn thành khóa, và nộp trễ hay khiếu nại điểm thì làm thế nào. Cách mentor tính điểm chi tiết nằm ở cuối trang, bạn đọc để biết điểm của mình đến từ đâu.
+Trang này trình bày ba nội dung: trọng số của từng thành phần, điều kiện hoàn thành khóa, và quy trình nộp trễ hoặc khiếu nại điểm. Cách mentor tính điểm chi tiết nằm ở cuối trang, giúp người học hiểu điểm của mình được hình thành như thế nào.
 
 
 
@@ -85,12 +85,12 @@ Hai điều kiện hoàn thành ở phần trên vẫn giữ nguyên. Bổ sung:
 2. Cách gửi: tạo issue hoặc gửi form do mentor cung cấp, nêu rõ tiêu chí cho rằng chấm sai và kèm bằng chứng (lệnh, log, commit).
 3. Xem xét: một mentor khác (không phải người chấm lần đầu) chấm lại phần bị khiếu nại, trả lời trong 5 ngày làm việc.
 4. Kết quả: điểm có thể tăng, giữ nguyên hoặc giảm nếu phát hiện lỗi chấm khác. Quyết định của lần xem xét này là cuối cùng.
-5. Không khiếu nại về những phần không nêu rõ tiêu chí; hãy hỏi mentor về cách chấm trước khi nộp bài.
+5. Không khiếu nại về những phần không nêu rõ tiêu chí; cần hỏi mentor về cách chấm trước khi nộp bài.
 
 ## Dành cho mentor: cách chấm và ví dụ tính điểm
 
 ::: warning Dành cho mentor
-Phần dưới đây dành cho người chấm. Học viên không cần đọc, nhưng đọc cũng không sao: đây là cách điểm của bạn được tính.
+Phần dưới đây dành cho người chấm. Học viên không bắt buộc đọc, nhưng có thể đọc để biết điểm của mình được tính như thế nào.
 :::
 
 ### Chấm lab
