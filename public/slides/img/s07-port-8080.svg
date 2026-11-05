@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">-p 8080:80 nối cổng máy bạn vào cổng container</text>
+<rect x="40" y="85" width="880" height="285" rx="14" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="60" y="113" font-size="20" fill="#475569" font-weight="700">Máy của bạn (WSL)</text>
+<rect x="60" y="165" width="220" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="170" y="205" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">curl / trình duyệt</text>
+<text x="170" y="245" font-size="20" text-anchor="middle" fill="#475569">localhost:8080</text>
+<rect x="470" y="125" width="430" height="225" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="490" y="152" font-size="20" fill="#16a34a" font-weight="700">Container club-web</text>
+<rect x="640" y="175" width="230" height="110" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="755" y="215" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">nginx</text>
+<text x="755" y="250" font-size="20" text-anchor="middle" fill="#475569">lắng nghe cổng 80</text>
+<line x1="285" y1="220" x2="636" y2="230" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="460" y="205" font-size="22" text-anchor="middle" fill="#1d63ed" font-weight="700">8080 : 80</text>
+<text x="60" y="320" font-size="20" fill="#475569">Số trái là cổng máy bạn, số phải là cổng trong container.</text>
+</svg>

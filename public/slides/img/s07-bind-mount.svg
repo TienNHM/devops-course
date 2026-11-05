@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="400" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="58" font-size="30" font-weight="700" fill="#0f172a">Bind mount: container đọc thư mục của bạn</text>
+<rect x="40" y="85" width="880" height="285" rx="14" fill="#ffffff" stroke="#475569" stroke-width="2.5" stroke-dasharray="10 6"/>
+<text x="60" y="113" font-size="20" fill="#475569" font-weight="700">Máy của bạn (WSL)</text>
+<rect x="60" y="165" width="300" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="210" y="205" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">club/frontend</text>
+<text x="210" y="245" font-size="20" text-anchor="middle" fill="#475569">index.html của bạn</text>
+<rect x="470" y="125" width="430" height="225" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="490" y="152" font-size="20" fill="#16a34a" font-weight="700">Container club-web</text>
+<rect x="520" y="175" width="340" height="110" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="690" y="215" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">/usr/share/nginx/html</text>
+<text x="690" y="250" font-size="20" text-anchor="middle" fill="#475569">nginx đọc ở đây (chỉ đọc)</text>
+<line x1="365" y1="220" x2="516" y2="230" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="440" y="200" font-size="20" text-anchor="middle" fill="#1d63ed" font-weight="700">-v ...:ro</text>
+<text x="60" y="320" font-size="20" fill="#475569">Sửa file trên máy: container thấy ngay, không cần chạy lại.</text>
+</svg>

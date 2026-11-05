@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, withBase } from 'vitepress'
-import { parseSlide, sessionLink } from './progress'
+import { parseSlide, sessionLink, trackOfSession } from './progress'
 
 const route = useRoute()
 const isSlidePage = computed(() => /\/slides\/[^/]+\/session-\d+(\.html)?$/.test(route.path))
@@ -9,7 +9,8 @@ const isSlidePage = computed(() => /\/slides\/[^/]+\/session-\d+(\.html)?$/.test
 // Slide cuối: gợi ý sang lab của buổi này
 const labHref = computed(() => {
   const n = parseSlide(route.path)
-  return n ? withBase(sessionLink(n)) : null
+  // Các ngày của lộ trình Cơ bản chỉ học bằng slide, không có lab
+  return n && trackOfSession(n) === 'advanced' ? withBase(sessionLink(n)) : null
 })
 
 const open = ref(false)

@@ -1,5 +1,9 @@
 # Ngày 10 – Publish Club API lên GHCR
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 10](../../slides/04-cicd/session-18.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 10/10 · khoảng 2 giờ
 
 [Slide Ngày 10](../../slides/04-cicd/session-18.md) · [Thử thách thêm](session-18-challenge.md)

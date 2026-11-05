@@ -1,5 +1,9 @@
 # Ngày 8 – Docker Compose chạy cả Club
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 8](../../slides/03-compose/session-13.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 8/10 · khoảng 2 giờ
 
 [Slide Ngày 8](../../slides/03-compose/session-13.md) · [Thử thách thêm](session-13-challenge.md)

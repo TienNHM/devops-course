@@ -2,7 +2,7 @@
 
 Khóa này dạy bạn đưa một ứng dụng web từ máy tính của mình lên chạy ổn định, theo cách các đội kỹ thuật làm thật: dùng Linux, Git, Docker và tự động hóa bằng GitHub Actions. Bạn không cần biết DevOps trước, chỉ cần dùng máy tính thoải mái và sẵn sàng gõ lệnh. Bạn học bằng cách **làm một dự án thật**, không phải đọc lý thuyết.
 
-> **Tóm tắt:** Lộ trình Cơ bản kéo dài 14 ngày, mỗi ngày khoảng 2 giờ. Việc cần làm trước Ngày 1 mất khoảng 20 phút, gồm 4 việc bên dưới. Mỗi ngày đi theo thứ tự xem slide, làm lab, nộp bài.
+> **Tóm tắt:** Lộ trình Cơ bản kéo dài 14 ngày, mỗi ngày khoảng 2 giờ. Việc cần làm trước Ngày 1 mất khoảng 20 phút, gồm 4 việc bên dưới. Mỗi ngày là một bộ slide: xem, gõ lệnh làm theo, kiểm tra kết quả.
 
 ## Trước Ngày 1: 4 việc, khoảng 20 phút
 
@@ -31,20 +31,20 @@ flowchart TD
 
 - **Người mới:** bắt đầu từ [Lộ trình Cơ bản](basic.md): 14 ngày, mỗi ngày khoảng 2 giờ, làm một dự án xuyên suốt.
 - **Đã dùng được Docker, Compose và CI:** vào [Lộ trình Nâng cao](advanced.md), nhớ tự kiểm tra điều kiện ở đầu trang đó.
-- **Đã biết lập trình:** vẫn học theo lộ trình, làm thêm các thử thách L2 ở cuối mỗi bài.
+- **Đã biết lập trình:** vẫn học theo lộ trình, làm nhanh hơn và tự thêm tính năng cho Club app khi xong sớm.
 - **Chỉ muốn lên mạng nhanh:** [Vibe Deploy](../vibe/index.md), một lộ trình riêng, ngắn hơn, không cần Kubernetes.
 - **Muốn xem toàn cảnh trước:** [Lộ trình đầy đủ](syllabus.md).
 
 ## Xong 4 việc? Vào học
 
-**[Vào Ngày 1: xem slide trước](../slides/01-foundation/session-02.md)**, rồi làm [lab Ngày 1](../labs/week-01/session-02.md). Muốn xem cả 14 ngày trước: [Kế hoạch 14 ngày](basic.md).
+**[Vào Ngày 1](../slides/01-foundation/session-02.md)** và bấm **Trình chiếu** để học từng slide. Muốn xem cả 14 ngày trước: [Kế hoạch 14 ngày](basic.md).
 
 ## Cần tra cứu sau này
 
 Trang [Cách học khóa này](how-to-learn.md) gom những thứ bạn sẽ tra dần, không cần đọc trước:
 
-- Git trong 10 phút và cách nộp bài bằng branch, Pull Request.
-- Cách học một ngày, hai mức L1 và L2, tình huống lỗi.
+- Git trong 10 phút và cách làm việc bằng branch, Pull Request.
+- Cách học một ngày và các tình huống lỗi thường gặp.
 - Cấu trúc repo `devops-labs`, theo dõi tiến độ bằng Issues và Projects.
 - Mẫu câu hỏi khi cần giúp, mentor và kênh hỏi.
 - Quy tắc dùng AI và trung thực học thuật.

@@ -5,7 +5,7 @@
 <rect x="40" y="90" width="380" height="220" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
 <text x="230" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#16a34a">Linux (ext4)</text>
 <text x="230" y="175" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">~ = /home/ten-ban</text>
-<text x="230" y="225" font-size="22" text-anchor="middle" fill="#475569">✓ mã nguồn, mọi lab</text>
+<text x="230" y="225" font-size="22" text-anchor="middle" fill="#475569">✓ mã nguồn, mọi lệnh</text>
 <text x="230" y="262" font-size="22" text-anchor="middle" fill="#475569">✓ nhanh, chmod đúng</text>
 <rect x="540" y="90" width="380" height="220" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
 <text x="730" y="130" font-size="26" font-weight="700" text-anchor="middle" fill="#dc2626">Ổ đĩa Windows</text>

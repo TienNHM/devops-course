@@ -1,5 +1,9 @@
 # Ngày 4 – Chạy trang Club bằng container
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 4](../../slides/02-docker/session-07.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 4/10 · khoảng 2 giờ
 
 [Slide Ngày 4](../../slides/02-docker/session-07.md) · [Thử thách thêm](session-07-challenge.md)

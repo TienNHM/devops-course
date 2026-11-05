@@ -1,5 +1,9 @@
 # Ngày 5 – Vận hành và sửa lỗi container
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 5](../../slides/02-docker/session-08.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 5/10 · khoảng 2 giờ
 
 [Slide Ngày 5](../../slides/02-docker/session-08.md) · [Thử thách thêm](session-08-challenge.md)

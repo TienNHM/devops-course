@@ -1,0 +1,33 @@
+<svg viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="960" height="420" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+
+  <rect x="30" y="30" width="420" height="360" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="50" y="68" font-size="22" font-weight="700" fill="#dc2626">Sai: đứng ở club/</text>
+  <text x="50" y="100" font-size="19" fill="#0f172a">docker build -t club-api:day6 .</text>
+  <rect x="50" y="120" width="380" height="150" rx="10" fill="#ffffff" stroke="#dc2626" stroke-dasharray="6 4"/>
+  <text x="66" y="150" font-size="19" fill="#475569">context = club/</text>
+  <text x="66" y="182" font-size="19" fill="#0f172a">frontend/</text>
+  <text x="66" y="214" font-size="19" fill="#0f172a">backend/Dockerfile</text>
+  <text x="66" y="246" font-size="19" fill="#dc2626">không có Dockerfile ở gốc context</text>
+  <text x="50" y="310" font-size="19" font-weight="700" fill="#dc2626">failed to read dockerfile:</text>
+  <text x="50" y="340" font-size="19" fill="#dc2626">no such file or directory</text>
+
+  <rect x="510" y="30" width="420" height="360" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="530" y="68" font-size="22" font-weight="700" fill="#16a34a">Đúng: đứng ở club/backend</text>
+  <text x="530" y="100" font-size="19" fill="#0f172a">docker build -t club-api:day6 .</text>
+  <rect x="530" y="120" width="380" height="150" rx="10" fill="#ffffff" stroke="#16a34a" stroke-dasharray="6 4"/>
+  <text x="546" y="150" font-size="19" fill="#475569">context = club/backend/</text>
+  <text x="546" y="182" font-size="19" fill="#0f172a">Dockerfile</text>
+  <text x="546" y="214" font-size="19" fill="#0f172a">package.json, package-lock.json</text>
+  <text x="546" y="246" font-size="19" fill="#0f172a">server.js, app.js, db.js</text>
+  <text x="530" y="310" font-size="19" font-weight="700" fill="#16a34a">COPY thấy mọi file trong context</text>
+  <text x="530" y="340" font-size="19" fill="#16a34a">build thành công</text>
+
+  <line x1="450" y1="210" x2="508" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="456" y="196" font-size="18" fill="#475569">cd</text>
+</svg>

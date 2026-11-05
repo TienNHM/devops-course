@@ -1,5 +1,9 @@
 # Ngày 6 – Dockerfile cho Club API
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 6](../../slides/02-docker/session-09.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 6/10 · khoảng 2 giờ
 
 [Slide Ngày 6](../../slides/02-docker/session-09.md) · [Thử thách thêm](session-09-challenge.md)

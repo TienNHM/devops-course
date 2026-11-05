@@ -110,10 +110,11 @@ export function sessionLink(n: number): string {
 
 // Phân tích đường dẫn bài học: /labs/week-07/session-13
 export function parseLesson(path: string): { week: number; session: number } | null {
-  const m = path.match(/\/labs\/week-(\d{2})\/session-(\d{2})(?:\.html)?\/?$/)
+  // Trang lab (/labs/week-07/session-13) hoặc trang slide (/slides/03-compose/session-13) của cùng một buổi
+  const m = path.match(/\/(?:labs\/week-(\d{2})|slides\/\d{2}-[a-z]+)\/session-(\d{2})(?:\.html)?\/?$/)
   if (!m) return null
-  const week = Number(m[1])
   const session = Number(m[2])
+  const week = m[1] ? Number(m[1]) : Math.ceil(session / 2)
   if (!week || !session) return null
   return { week, session }
 }

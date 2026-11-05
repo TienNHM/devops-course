@@ -63,7 +63,9 @@ function learningSidebar(track?: TrackId): Item[] {
   )
   // Mỗi ngày/buổi là một nhóm gập; bấm tên đi thẳng vào slide, bên trong có Slide rồi Lab.
   const lessonItem = (l: Lesson): Item | null =>
-    group(l.label, [page('Xem slide', l.slide), page('Làm lab', l.lab)], { collapsed: true, link: l.slide })
+    l.day
+      ? page(l.label, l.slide) // Cơ bản: chỉ học bằng slide
+      : group(l.label, [page('Xem slide', l.slide), page('Làm lab', l.lab)], { collapsed: true, link: l.slide })
   const stagesOf = (t: (typeof tracks)[number]) =>
     t.stages.map((st, i) =>
       group(track ? st.title : `${trackName[t.id]} · ${st.title}`, st.lessons.map(lessonItem), track ? {} : { collapsed: i > 0 }),

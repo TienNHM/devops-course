@@ -51,7 +51,7 @@ onMounted(loadProgress)
 
 <template>
   <!-- Thanh 3 bước trên trang slide và trang lab -->
-  <nav v-if="props.mode === 'steps' && session && kind" class="steps" aria-label="Đường học của buổi này">
+  <nav v-if="props.mode === 'steps' && session && kind && !isBasic" class="steps" aria-label="Đường học của buổi này">
     <a class="step" :class="{ on: kind === 'slide' }" :href="withBase(slideLink(session))">
       <b>1</b><span>Xem slide</span>
     </a>
@@ -88,7 +88,7 @@ onMounted(loadProgress)
   </section>
 
   <!-- Cuối trang slide: sang lab -->
-  <section v-else-if="props.mode === 'next' && slide" class="next">
+  <section v-else-if="props.mode === 'next' && slide && !isBasic" class="next">
     <strong>Xong slide {{ unitName(slide) }}?</strong>
     <a class="btn primary" :href="withBase(sessionLink(slide))">Làm lab {{ unitName(slide) }} &rarr;</a>
   </section>

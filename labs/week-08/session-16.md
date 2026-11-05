@@ -1,5 +1,9 @@
 # Ngày 9 – GitHub Actions CI cho Club API
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 9](../../slides/04-cicd/session-16.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 9/10 · khoảng 2 giờ
 
 [Slide Ngày 9](../../slides/04-cicd/session-16.md) · [Thử thách thêm](session-16-challenge.md)

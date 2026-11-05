@@ -1,5 +1,9 @@
 # Ngày 1 – Môi trường Linux và repo devops-labs
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 1](../../slides/01-foundation/session-02.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 1/10 · khoảng 2 giờ
 
 [Slide Ngày 1](../../slides/01-foundation/session-02.md) · [Thử thách thêm](session-02-challenge.md)

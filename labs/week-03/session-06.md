@@ -1,5 +1,9 @@
 # Ngày 3 – Đưa dự án Club vào Git bằng Pull Request
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 3](../../slides/01-foundation/session-06.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 3/10 · khoảng 2 giờ
 
 [Slide Ngày 3](../../slides/01-foundation/session-06.md) · [Thử thách thêm](session-06-challenge.md)

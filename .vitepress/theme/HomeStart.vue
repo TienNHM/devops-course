@@ -82,19 +82,19 @@ function reset() {
         <li>
           <span class="n">2</span>
           <div>
-            <strong>Xem slide, rồi làm lab</strong>
-            <p>Slide giúp hiểu khái niệm. Lab là phần tự tay làm, mỗi phần có bước tự kiểm tra.</p>
+            <strong>Học theo slide</strong>
+            <p>Mỗi ngày một bộ slide: xem, gõ lệnh làm theo, rồi kiểm tra kết quả.</p>
           </div>
         </li>
         <li>
           <span class="n">3</span>
           <div>
-            <strong>Nộp bài lên GitHub</strong>
-            <p>Nộp lại bằng chứng của lab, không có việc mới.</p>
+            <strong>Ôn và demo</strong>
+            <p>Ngày 11–14: sửa lỗi, hoàn thiện dự án và demo 10 phút.</p>
           </div>
         </li>
       </ol>
-      <a class="button" :href="withBase(slideLink(2))">Bắt đầu Ngày 1: xem slide</a>
+      <a class="button" :href="withBase(slideLink(2))">Bắt đầu Ngày 1</a>
     </section>
 
     <section class="block progress">

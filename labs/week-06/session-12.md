@@ -1,5 +1,9 @@
 # Ngày 7 – Postgres giữ dữ liệu bằng volume
 
+::: warning Bản lưu trữ
+Nội dung bài này đã chuyển vào [slide Ngày 7](../../slides/02-docker/session-12.md). Lộ trình Cơ bản chỉ học bằng slide, trang này giữ lại để tham khảo và không còn là đường học chính.
+:::
+
 Lộ trình Cơ bản · Ngày 7/10 · khoảng 2 giờ
 
 [Slide Ngày 7](../../slides/02-docker/session-12.md) · [Thử thách thêm](session-12-challenge.md)
