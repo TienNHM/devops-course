@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học trình bày cách dùng Service (ClusterIP, NodePort, LoadBalancer) và DNS nội bộ của Kubernetes để nối Frontend với Backend, sau đó chẩn đoán Service có Endpoints rỗng. Lệnh lab: [Buổi 24 – Kubernetes Services](../../labs/week-12/session-24.md).
 
-## Slide 1: Mục tiêu của buổi 24
+## Mục tiêu của buổi 24
 
 ![Ba mục tiêu: địa chỉ ổn định, chọn đúng loại, chẩn đoán Endpoints rỗng](/slides/img/s24-goals.svg)
 
@@ -14,7 +14,7 @@
 
 ---
 
-## Slide 2: Vấn đề: IP của Pod thay đổi
+## Vấn đề: IP của Pod thay đổi
 
 ![Frontend gọi IP Pod cũ sau rolling update thì nhận 502](/slides/img/s24-pod-ip.svg)
 
@@ -26,20 +26,23 @@
 
 ---
 
-## Slide 3: Khái niệm: Label và selector
+## Khái niệm: Label và selector
 
-- **Label** là cặp khóa-giá trị gắn vào một object, ví dụ `app: club-api`. **Selector** là điều kiện dùng để chọn các object theo label.
+- **Label** là cặp khóa-giá trị gắn vào object, ví dụ `app: club-api`; **selector** chọn các object theo label.
+- Ví dụ trong dự án: Pod API mang label `app=club-api`, còn Pod `club-web` mang label khác.
+
+::: details Ghi chú cho mentor
+- Selector là điều kiện dùng để chọn các object theo label.
 - Cơ chế này cho phép một object (như Service) chọn nhóm Pod mà không cần biết tên hay IP của từng Pod.
-- Ví dụ trong dự án: Pod của API mang label `app=club-api`, còn Pod `club-web` mang label khác.
+:::
 
 ---
 
-## Slide 4: Khái niệm: Service
+## Khái niệm: Service
 
 ![Service backend chọn Pod có label app=club-api, bỏ qua Pod club-web](/slides/img/s24-service-concept.svg)
 
-- **Service** là một object cung cấp địa chỉ mạng ổn định cho một nhóm Pod, được chọn bằng selector.
-- Service không chạy tiến trình; `kube-proxy` trên mỗi node chuyển traffic tới Pod đang Ready, khớp label và cùng namespace.
+- **Service** là object cung cấp địa chỉ mạng ổn định cho một nhóm Pod, được chọn bằng selector.
 - Ví dụ trong dự án: Service `backend` chọn các Pod có label `app=club-api`.
 
 ::: details Ghi chú cho mentor
@@ -50,7 +53,7 @@
 
 ---
 
-## Slide 5: Manifest Service của backend
+## Manifest Service của backend
 
 ```yaml
 spec:
@@ -70,7 +73,7 @@ Nếu selector gõ nhầm thành `club-apii` thì không Pod nào khớp.
 
 ---
 
-## Slide 6: Ba loại Service
+## Ba loại Service
 
 ![ClusterIP, NodePort, LoadBalancer và hành vi của từng loại trong kind](/slides/img/s24-types.svg)
 
@@ -82,7 +85,7 @@ Nếu selector gõ nhầm thành `club-apii` thì không Pod nào khớp.
 
 ---
 
-## Slide 7: Bốn loại cổng dễ nhầm
+## Bốn loại cổng dễ nhầm
 
 ![Client gọi port của Service, chuyển tới targetPort trên Pod; nodePort mở trên node](/slides/img/s24-ports.svg)
 
@@ -93,23 +96,22 @@ Nếu selector gõ nhầm thành `club-apii` thì không Pod nào khớp.
 
 ---
 
-## Slide 8: Khái niệm: DNS nội bộ và CoreDNS
+## Khái niệm: DNS nội bộ và CoreDNS
 
 ![resolv.conf có search domain, CoreDNS trả ClusterIP; ba kiểu tên backend](/slides/img/s24-dns.svg)
 
-- **CoreDNS** là máy chủ DNS của cluster: máy chủ này tạo bản ghi dạng `ten-service.namespace.svc.cluster.local` cho mỗi Service.
-- Tên ngắn như `backend` hoạt động nhờ `search` domain trong `/etc/resolv.conf` của Pod, nên Pod cùng namespace gọi Service bằng tên.
+- **CoreDNS** là máy chủ DNS của cluster, tạo bản ghi `ten-service.namespace.svc.cluster.local` cho mỗi Service.
 - Ví dụ trong dự án: Nginx dùng `proxy_pass http://backend:3000` khi cùng namespace `club`.
 
 ::: details Ghi chú cho mentor
 - CoreDNS tạo bản ghi `ten-service.namespace.svc.cluster.local`.
-- Tên ngắn hoạt động nhờ `search` domain trong `/etc/resolv.conf` của Pod.
+- Tên ngắn như `backend` hoạt động nhờ `search` domain trong `/etc/resolv.conf` của Pod, nên Pod cùng namespace gọi Service bằng tên.
 - Vì vậy `proxy_pass http://backend:3000` chạy được khi cùng namespace `club`.
 :::
 
 ---
 
-## Slide 9: Đường đi của một request
+## Đường đi của một request
 
 ![Trình duyệt qua Service club-web, Nginx, Service backend, hai Pod API, Service postgres](/slides/img/s24-request-path.svg)
 
@@ -120,23 +122,23 @@ Nếu selector gõ nhầm thành `club-apii` thì không Pod nào khớp.
 
 ---
 
-## Slide 10: Khái niệm: Endpoints
+## Khái niệm: Endpoints
 
 ![Pod fail readiness bị loại khỏi Endpoints nhưng không bị restart](/slides/img/s24-endpoints.svg)
 
 - **Endpoints** là danh sách địa chỉ `IP:port` của các Pod khớp selector của Service và đang ở trạng thái Ready.
-- Khi danh sách rỗng, Service không có nơi nào để gửi traffic; Pod không đạt readiness bị loại khỏi danh sách nhưng không bị restart.
-- Ví dụ trong dự án: Service `backend` có hai địa chỉ `10.244.x.x:3000`, trùng IP của hai Pod API.
+- Ví dụ trong dự án: Service `backend` có hai địa chỉ `10.244.x.x:3000`, trùng IP hai Pod API.
 
 ::: details Ghi chú cho mentor
 - Endpoints là danh sách `IP:port` của các Pod khớp selector và đang Ready.
 - Endpoints rỗng nghĩa là Service không có nơi nào để gửi traffic.
+- Pod không đạt readiness bị loại khỏi danh sách nhưng không bị restart.
 - Từ Kubernetes 1.33, `kubectl get endpoints` in cảnh báo deprecated (không phải lỗi); lệnh tương đương là `kubectl get endpointslices`.
 :::
 
 ---
 
-## Slide 11: Minh họa: Service và Endpoints
+## Minh họa: Service và Endpoints
 
 ```bash
 kubectl get svc backend -o yaml
@@ -154,7 +156,7 @@ nslookup backend
 
 ---
 
-## Slide 12: Phá lỗi: Endpoints rỗng
+## Phá lỗi: Endpoints rỗng
 
 ![Selector app=club-apii khác label app=club-api nên Endpoints là none](/slides/img/s24-empty-endpoints.svg)
 
@@ -167,18 +169,25 @@ nslookup backend
 
 ---
 
-## Slide 13: Lỗi thường gặp
+## Lỗi thường gặp
 
 | Triệu chứng | Nguyên nhân | Xử lý |
 | --- | --- | --- |
-| Endpoints `<none>` | Selector sai hoặc Pod chưa Ready | So sánh `describe svc` với `--show-labels` |
-| `Connection refused` | `targetPort` sai | Sửa về cổng ứng dụng |
-| `bad address 'backend'` | Pod khác namespace | Dùng `backend.club` |
-| Nginx trả 502 | Backend không có Endpoints | `get endpoints backend`, đọc log API |
+| Endpoints `<none>` | Selector sai | `--show-labels` |
+| `Connection refused` | `targetPort` sai | Sửa cổng |
+| `bad address` | Khác namespace | `backend.club` |
+| Nginx 502 | Không Endpoints | `get endpoints` |
+
+::: details Ghi chú cho mentor
+- Endpoints `<none>`: selector sai hoặc Pod chưa Ready; so sánh `describe svc` với `--show-labels`.
+- `Connection refused`: sửa `targetPort` về cổng ứng dụng.
+- `bad address 'backend'`: Pod khác namespace.
+- Nginx trả 502: Backend không có Endpoints; chạy `get endpoints backend` và đọc log API.
+:::
 
 ---
 
-## Slide 14: Lab: nối frontend với backend
+## Lab: nối frontend với backend
 
 ```bash
 kubectl apply -f k8s/frontend.yaml
@@ -195,7 +204,7 @@ Lệnh và kết quả mong đợi: [Buổi 24 – Kubernetes Services](../../la
 
 ---
 
-## Slide 15: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: địa chỉ cố định, selector và Ready, xem Endpoints trước](/slides/img/s24-recap.svg)
 
@@ -203,7 +212,7 @@ Buổi sau: [Slide buổi 25 – Configuration Management](session-25.md).
 
 ---
 
-## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Service](https://kubernetes.io/docs/concepts/services-networking/service/): địa chỉ cố định cho một nhóm Pod.
 - **Tài liệu chính thức:** [DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/): gọi Service bằng tên thay vì IP.

@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học phân biệt Continuous Integration, Continuous Delivery và Continuous Deployment, trình bày các thành phần của pipeline, sau đó thiết kế và chạy thử pipeline Test, Build, Publish, Deploy cho Club API bằng một shell script.
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: phân biệt CI/CD, thiết kế pipeline, chặn lỗi](/slides/img/s15-goals.svg)
 
@@ -14,7 +14,7 @@
 
 ---
 
-## Slide 2: Bài toán: "máy tôi chạy được" nhưng API trả 500
+## Bài toán: "máy tôi chạy được" nhưng API trả 500
 
 ![Thành viên A sửa API, thành viên B build trên laptop, sáng hôm sau API lỗi 500](/slides/img/s15-works-on-my-machine.svg)
 
@@ -25,7 +25,7 @@
 
 ---
 
-## Slide 3: Thay thao tác thủ công bằng quy trình tự động
+## Thay thao tác thủ công bằng quy trình tự động
 
 ![So sánh làm tay trên laptop với pipeline tự động trên runner sạch](/slides/img/s15-manual-vs-auto.svg)
 
@@ -37,20 +37,21 @@
 
 ---
 
-## Slide 4: Khái niệm: Continuous Integration, Delivery và Deployment
+## Khái niệm: Continuous Integration, Delivery và Deployment
 
-- **Continuous Integration (CI, tích hợp liên tục)** là thực hành tích hợp thay đổi vào nhánh chung thường xuyên, mỗi lần tích hợp được build và test tự động.
-- **Continuous Delivery** giữ cho mọi bản đã qua CI luôn sẵn sàng phát hành, nhưng một người quyết định bấm nút đưa lên production. **Continuous Deployment** bỏ bước duyệt tay đó.
-- Ví dụ trong dự án: một câu lạc bộ nhỏ như Club API nên bắt đầu với Continuous Delivery.
+- **Continuous Integration (CI)** là thực hành tích hợp thay đổi vào nhánh chung thường xuyên, mỗi lần đều build và test tự động.
+- Ví dụ trong dự án: Club API nên bắt đầu với Continuous Delivery.
 
 ::: details Ghi chú cho mentor
+- CI nghĩa là tích hợp liên tục. Club API là một câu lạc bộ nhỏ.
+- **Continuous Delivery** giữ cho mọi bản đã qua CI luôn sẵn sàng phát hành, nhưng một người quyết định bấm nút đưa lên production. **Continuous Deployment** bỏ bước duyệt tay đó.
 - Ba khái niệm khác nhau ở đúng một điểm: có cổng duyệt bằng tay trước production hay không.
 - Ví dụ so sánh: Delivery là xe đã sẵn sàng chờ người bấm khởi động; Deployment là xe tự chạy.
 :::
 
 ---
 
-## Slide 5: CI, Delivery, Deployment: ai thực hiện bước cuối?
+## CI, Delivery, Deployment: ai thực hiện bước cuối?
 
 ![Ba hàng pipeline cho thấy CI dừng ở build, Delivery có bước duyệt, Deployment tự động](/slides/img/s15-ci-cd-cd.svg)
 
@@ -61,35 +62,41 @@
 
 ---
 
-## Slide 6: Khái niệm: Pipeline
+## Khái niệm: Pipeline
 
 - **Pipeline** là chuỗi các stage (giai đoạn) chạy theo thứ tự, đưa một thay đổi mã nguồn từ commit đến bản phát hành.
-- Mỗi stage có input, output và điều kiện dừng; khi một stage thất bại, các stage sau không chạy.
 - Ví dụ trong dự án: pipeline của Club API gồm Test, Build, Publish và Deploy.
+
+::: details Ghi chú cho mentor
+- Mỗi stage có input, output và điều kiện dừng; khi một stage thất bại, các stage sau không chạy.
+:::
 
 ---
 
-## Slide 7: Khái niệm: Artifact
+## Khái niệm: Artifact
 
 - **Artifact** là thành phẩm do một stage tạo ra và được giữ lại để các stage sau sử dụng. Với container, artifact là image.
-- Lưu ý: artifact khác cache. Artifact là thành phẩm cần giữ; cache chỉ giúp tăng tốc, và mất cache thì pipeline vẫn cho kết quả đúng.
-- Ví dụ trong dự án: image `club-api` do stage Build tạo ra và stage Publish đẩy lên registry.
+- Ví dụ trong dự án: image `club-api` do stage Build tạo, stage Publish đẩy lên registry.
 
 ::: details Ghi chú cho mentor
+- Artifact khác cache: artifact là thành phẩm cần giữ; cache chỉ giúp tăng tốc, và mất cache thì pipeline vẫn cho kết quả đúng.
 - Mỗi job chạy trên một runner riêng nên dữ liệu giữa các job đi qua artifact, cache hoặc registry.
 :::
 
 ---
 
-## Slide 8: Khái niệm: Gate
+## Khái niệm: Gate
 
-- **Gate** (cổng kiểm soát) là điều kiện mà pipeline phải thỏa mãn trước khi chuyển sang stage tiếp theo, ví dụ test pass hoặc có người duyệt.
+- **Gate** (cổng kiểm soát) là điều kiện pipeline phải thỏa mãn trước khi sang stage tiếp theo, ví dụ test pass hoặc có người duyệt.
+- Ví dụ trong dự án: test pass để build; approval để deploy lên production.
+
+::: details Ghi chú cho mentor
 - Gate ngăn một thay đổi chưa đạt yêu cầu đi tiếp, nhờ đó lỗi được phát hiện ở stage sớm và rẻ nhất.
-- Ví dụ trong dự án: test pass là điều kiện để build; approval là điều kiện để deploy lên production.
+:::
 
 ---
 
-## Slide 9: Pipeline gồm năm thành phần
+## Pipeline gồm năm thành phần
 
 ![Trigger, runner chứa job và step, artifact, gate](/slides/img/s15-components.svg)
 
@@ -99,11 +106,13 @@
 | Runner, Job, Step | `ubuntu-latest`, `npm ci`, `npm test` |
 | Artifact, Gate | image `club-api`, test pass |
 
-Trigger (event), runner, job và step đã được giới thiệu ở lộ trình Basic, buổi GitHub Actions CI.
+::: details Ghi chú cho mentor
+- Trigger (event), runner, job và step đã được giới thiệu ở lộ trình Basic, buổi GitHub Actions CI.
+:::
 
 ---
 
-## Slide 10: Năm nguyên tắc thiết kế
+## Năm nguyên tắc thiết kế
 
 ![Fail fast, build once, tag theo SHA, secret ngoài code, pipeline là code](/slides/img/s15-principles.svg)
 
@@ -115,7 +124,7 @@ Trigger (event), runner, job và step đã được giới thiệu ở lộ trì
 
 ---
 
-## Slide 11: Pipeline mục tiêu của Club API
+## Pipeline mục tiêu của Club API
 
 ![Trigger, Test, Build, Publish, Deploy dev, Approval, Production, với nhánh dừng khi test fail](/slides/img/s15-pipeline.svg)
 
@@ -126,7 +135,7 @@ Trigger (event), runner, job và step đã được giới thiệu ở lộ trì
 
 ---
 
-## Slide 12: Mỗi job chạy trên một runner riêng
+## Mỗi job chạy trên một runner riêng
 
 ![Hai runner không chung ổ đĩa, dữ liệu đi qua artifact hoặc registry](/slides/img/s15-runners.svg)
 
@@ -137,7 +146,7 @@ Trigger (event), runner, job và step đã được giới thiệu ở lộ trì
 
 ---
 
-## Slide 13: Demo 1: quan sát một pipeline thật
+## Demo 1: quan sát một pipeline thật
 
 - Mở tab Actions của repository giáo trình, chọn một run của workflow `CI`.
 - Sự kiện kích hoạt workflow: push lên `main` hoặc `master`, và mọi pull request.
@@ -150,7 +159,7 @@ Trigger (event), runner, job và step đã được giới thiệu ở lộ trì
 
 ---
 
-## Slide 14: Demo 2: test pass trên máy local đã đủ chưa?
+## Demo 2: test pass trên máy local đã đủ chưa?
 
 ```text
 $ cd backend && npm ci && npm test
@@ -167,20 +176,25 @@ Còn thiếu: chưa chắc cùng phiên bản Node, chưa build image, chưa có
 
 ---
 
-## Slide 15: Lab: bốn phần trong 60 phút
+## Lab: bốn phần trong 60 phút
 
 | Phần | Việc làm | Mốc xong |
 | --- | --- | --- |
-| 1 | Vẽ pipeline 4 stage + nhánh dừng | `pipeline.png` |
-| 2 | Đặc tả stage trong `pipeline-spec.md` | Không ô trống |
+| 1 | Vẽ pipeline 4 stage | `pipeline.png` |
+| 2 | Đặc tả stage | Không ô trống |
 | 3 | Chạy `run-pipeline.sh` | `PIPELINE OK` |
 | 4 | Làm test đỏ | Không có stage build |
 
-Lệnh đầy đủ: [Buổi 15 – CI/CD Fundamentals](../../labs/week-08/session-15.md).
+[Buổi 15 – CI/CD Fundamentals](../../labs/week-08/session-15.md).
+
+::: details Ghi chú cho mentor
+- Phần 1 vẽ thêm nhánh dừng; phần 2 đặc tả stage trong `pipeline-spec.md`.
+- Trang bài lab có lệnh đầy đủ.
+:::
 
 ---
 
-## Slide 16: Chạy xanh: log mong đợi
+## Chạy xanh: log mong đợi
 
 ```text
 === STAGE: test ===
@@ -201,7 +215,7 @@ Kiểm tra: kết quả đúng khi có `# fail 0`, có tag cụ thể (không ch
 
 ---
 
-## Slide 17: Chạy đỏ: pipeline phải dừng trước build
+## Chạy đỏ: pipeline phải dừng trước build
 
 ```text
 === STAGE: test ===
@@ -219,7 +233,7 @@ Log không có dòng `=== STAGE: build ===`. Mã thoát được lấy bằng `P
 
 ---
 
-## Slide 18: Debug: pipeline xanh nhưng bản deploy lỗi
+## Debug: pipeline xanh nhưng bản deploy lỗi
 
 ![Mã thoát bị nuốt bởi || true nên gate mở dù test đỏ](/slides/img/s15-swallowed-exit.svg)
 
@@ -231,22 +245,23 @@ Log không có dòng `=== STAGE: build ===`. Mã thoát được lấy bằng `P
 
 ---
 
-## Slide 19: Lỗi thường gặp
+## Lỗi thường gặp
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
 | Một job gộp mọi thứ | Tách test, build, publish, deploy |
 | Không biết image từ commit nào | Tag theo SHA hoặc phiên bản |
-| Stage sau không thấy file stage trước | Truyền qua artifact hoặc registry |
+| Stage sau không thấy file | Truyền qua artifact hoặc registry |
 
 ::: details Ghi chú cho mentor
+- Triệu chứng đầy đủ: stage sau không thấy file của stage trước.
 - Thử thách L2: 3 môi trường dev, staging, production; production chỉ nhận image đã chạy ổn ở staging.
 - Gợi ý: tag bất biến, smoke test sau deploy, gate approval.
 :::
 
 ---
 
-## Slide 20: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: cổng duyệt, pipeline có gate, đừng tắt gate](/slides/img/s15-recap.svg)
 
@@ -254,7 +269,7 @@ Buổi tiếp theo: [Buổi 16 – GitHub Actions Basics](session-16.md).
 
 ---
 
-## Slide 21: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Understanding GitHub Actions](https://docs.github.com/en/actions/get-started/understanding-github-actions): khái niệm cơ bản về workflow và job.
 - **Tài liệu chính thức:** [npm ci](https://docs.npmjs.com/cli/commands/npm-ci): cài dependency sạch và lặp lại được trong CI.

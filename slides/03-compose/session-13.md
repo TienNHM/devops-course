@@ -2,14 +2,14 @@
 
 > **Tóm tắt:** Một lệnh `docker compose up -d --build` chạy cả Club (frontend, backend, Postgres) với healthcheck, `depends_on: service_healthy`, dữ liệu bền vững và mật khẩu nằm trong `.env`.
 
-## Slide 1: Hôm nay làm ra gì
+## Hôm nay làm ra gì
 
 - Cả Club chạy từ `~/devops-labs/club` bằng **một lệnh**, truy cập được tại `http://localhost:8080`.
 - Dữ liệu còn lại sau `down`, và file `.env` không bị commit.
-- Điều kiện: Ngày 7 hoàn thành, Docker Desktop đang chạy, thư mục `~/devops-labs/club` có `compose.yaml`.
 - Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ::: details Ghi chú cho mentor
+- Điều kiện: Ngày 7 hoàn thành, Docker Desktop đang chạy, thư mục `~/devops-labs/club` có `compose.yaml`.
 - Trình bày nhanh, không đọc từng dòng.
 - Câu hỏi mở đầu: người học nào từng quên một cờ `-e` khi chạy `docker run`?
 - Dùng `docker compose` (có dấu cách), không dùng `docker-compose` bản v1.
@@ -17,7 +17,7 @@
 
 ---
 
-## Slide 2: Chuỗi lệnh docker run dễ sai sót
+## Chuỗi lệnh docker run dễ sai sót
 
 ![Trước: nhiều lệnh docker run; sau: một file compose.yaml và một lệnh](/slides/img/s13-pain.svg)
 
@@ -29,20 +29,20 @@
 
 ---
 
-## Slide 3: Khái niệm: Docker Compose và compose.yaml
+## Khái niệm: Docker Compose và compose.yaml
 
 - **Docker Compose** là công cụ định nghĩa và chạy ứng dụng gồm nhiều container, dựa trên một file cấu hình YAML.
-- File `compose.yaml` mô tả các thành phần của hệ thống; một lệnh `docker compose up` tạo mọi thành phần đó theo mô tả.
-- Ví dụ trong dự án: `compose.yaml` của Club khai báo frontend, backend và Postgres, cùng volume và network liên quan.
+- Ví dụ trong dự án: `compose.yaml` của Club khai báo frontend, backend, Postgres, volume và network.
 
 ::: details Ghi chú cho mentor
+- File `compose.yaml` mô tả các thành phần của hệ thống; một lệnh `docker compose up` tạo mọi thành phần đó theo mô tả.
 - Compose mô tả trạng thái mong muốn, rồi tạo hoặc cập nhật container, network, volume cho khớp.
 - Tên project mặc định lấy theo thư mục chứa `compose.yaml` (ở đây là `club`).
 :::
 
 ---
 
-## Slide 4: Compose khai báo một lần, cả hệ thống được dựng
+## Compose khai báo một lần, cả hệ thống được dựng
 
 ![compose.yaml được docker compose biến thành network, volume và 3 container](/slides/img/s13-compose-flow.svg)
 
@@ -53,20 +53,21 @@
 
 ---
 
-## Slide 5: Khái niệm: Service
+## Khái niệm: Service
 
 - **Service** là một thành phần của ứng dụng trong `compose.yaml`, được định nghĩa bởi image hoặc cách build, cùng cấu hình chạy.
-- Mỗi service tạo ra một hoặc nhiều container, và có tên riêng để các service khác tham chiếu.
-- Ví dụ trong dự án: Club có ba service là `frontend`, `backend` và `postgres`; lệnh `docker compose logs backend` dùng tên service.
+- Ví dụ trong dự án: Club có ba service là `frontend`, `backend` và `postgres`.
 
 ::: details Ghi chú cho mentor
+- Mỗi service tạo ra một hoặc nhiều container, và có tên riêng để các service khác tham chiếu.
+- Lệnh `docker compose logs backend` dùng tên service.
 - Phân biệt: service là khai báo trong YAML, container là thể hiện đang chạy của service.
 - Tên container có dạng `club-backend-1`: tiền tố là tên project, tiếp theo là tên service và số thứ tự.
 :::
 
 ---
 
-## Slide 6: Bước 1 (10 phút): Dọn container của ngày trước
+## Bước 1 (10 phút): Dọn container của ngày trước
 
 Cổng 8080 và 3000 có thể còn bị container cũ chiếm.
 
@@ -86,20 +87,20 @@ docker rm -f <tên-container-cũ>
 
 ---
 
-## Slide 7: Khái niệm: Network và phân giải tên service
+## Khái niệm: Network và phân giải tên service
 
 - **Docker network** là mạng ảo cho phép các container liên lạc với nhau; Compose tạo một network mặc định cho mỗi project.
-- Trong network này, DNS nội bộ của Docker phân giải tên service thành địa chỉ IP của container tương ứng.
-- Lưu ý: bên trong một container, `localhost` luôn trỏ về chính container đó, không trỏ về container khác.
-
+- Ví dụ trong dự án: backend gọi Postgres bằng tên service `postgres`, không dùng `localhost`.
 ::: details Ghi chú cho mentor
+- Trong network này, DNS nội bộ của Docker phân giải tên service thành địa chỉ IP của container tương ứng.
+- Bên trong một container, `localhost` luôn trỏ về chính container đó, không trỏ về container khác.
 - Trong network của project, các service gọi nhau bằng tên: backend gọi `postgres:5432`, nginx gọi `backend:3000`.
 - Vì vậy `DB_HOST` có giá trị `postgres`, không phải `localhost`.
 :::
 
 ---
 
-## Slide 8: Bước 2 (10 phút): Trong container, localhost là chính nó
+## Bước 2 (10 phút): Trong container, localhost là chính nó
 
 ![DB_HOST localhost trỏ về chính backend, DB_HOST postgres được DNS đổi thành IP](/slides/img/s13-dns.svg)
 
@@ -112,33 +113,33 @@ Trong `compose.yaml`, backend có `DB_HOST: postgres`, nghĩa là gọi Postgres
 
 ---
 
-## Slide 9: Khái niệm: Healthcheck
+## Khái niệm: Healthcheck
 
 - **Healthcheck** là lệnh mà Docker chạy định kỳ bên trong container để xác định ứng dụng có hoạt động đúng hay không.
-- Kết quả được thể hiện bằng trạng thái `starting`, `healthy` hoặc `unhealthy`; container đang chạy chưa chắc đã `healthy`.
 - Ví dụ trong dự án: Postgres dùng `pg_isready -U club -d clubdb` để báo đã nhận kết nối.
 
 ::: details Ghi chú cho mentor
+- Kết quả được thể hiện bằng trạng thái `starting`, `healthy` hoặc `unhealthy`; container đang chạy chưa chắc đã `healthy`.
 - Trạng thái `Up` chỉ cho biết tiến trình đang chạy; `(healthy)` cho biết healthcheck đã thành công.
 - Postgres cần thời gian khởi tạo và chạy `init.sql` trước khi nhận kết nối.
 :::
 
 ---
 
-## Slide 10: Khái niệm: depends_on
+## Khái niệm: depends_on
 
 - **`depends_on`** là khóa trong `compose.yaml` khai báo rằng một service phụ thuộc vào service khác khi khởi động.
-- Mặc định, nó chỉ bảo đảm thứ tự khởi động; với `condition: service_healthy`, service phụ thuộc chờ đến khi healthcheck báo `healthy`.
 - Ví dụ trong dự án: `backend` chỉ khởi động sau khi `postgres` đạt trạng thái `healthy`.
 
 ::: details Ghi chú cho mentor
+- Mặc định, nó chỉ bảo đảm thứ tự khởi động; với `condition: service_healthy`, service phụ thuộc chờ đến khi healthcheck báo `healthy`.
 - `depends_on` mặc định chỉ đảm bảo thứ tự start. `condition: service_healthy` chờ healthcheck báo healthy.
 - Điều kiện này cần service được phụ thuộc có khai báo `healthcheck`.
 :::
 
 ---
 
-## Slide 11: Bước 2: Đọc compose.yaml, chờ Postgres thật sự sẵn sàng
+## Bước 2: Đọc compose.yaml, chờ Postgres thật sự sẵn sàng
 
 ```bash
 cat compose.yaml
@@ -164,7 +165,7 @@ Tìm đoạn sau trong `backend` và `postgres`:
 
 ---
 
-## Slide 12: depends_on mặc định chưa bảo đảm sẵn sàng
+## depends_on mặc định chưa bảo đảm sẵn sàng
 
 ![Postgres còn chạy init.sql, backend mặc định start ngay và lỗi; với service_healthy thì chờ](/slides/img/s13-depends.svg)
 
@@ -176,20 +177,21 @@ Tìm đoạn sau trong `backend` và `postgres`:
 
 ---
 
-## Slide 13: Khái niệm: Biến môi trường và file .env
+## Khái niệm: Biến môi trường và file .env
 
 - **Biến môi trường** (environment variable) là cặp tên và giá trị dùng để cấu hình ứng dụng mà không sửa mã nguồn.
-- File **`.env`** đặt cạnh `compose.yaml`; Compose đọc file này để thay thế các biến dạng `${...}` trong `compose.yaml`.
-- Ví dụ trong dự án: `DB_PASSWORD` nằm trong `.env`, còn Git chỉ lưu mẫu `.env.example` để mật khẩu không bị commit.
+- Ví dụ trong dự án: `DB_PASSWORD` nằm trong `.env`; Git chỉ lưu mẫu `.env.example`.
 
 ::: details Ghi chú cho mentor
+- File `.env` đặt cạnh `compose.yaml`; Compose đọc file này để thay thế các biến dạng `${...}` trong `compose.yaml`.
+- Nhờ vậy mật khẩu không bị commit.
 - `.env` phải nằm trong `.gitignore`; chỉ commit `.env.example`.
 - Biến môi trường cũng đã được dùng ở Ngày 7 qua cờ `-e POSTGRES_PASSWORD=...`.
 :::
 
 ---
 
-## Slide 14: Bước 3 (15 phút): Mật khẩu nằm ở .env, không nằm trong Git
+## Bước 3 (15 phút): Mật khẩu nằm ở .env, không nằm trong Git
 
 ![Chỉ commit .env.example; thiếu .env thì Compose dừng và in thông báo](/slides/img/s13-env.svg)
 
@@ -201,7 +203,7 @@ Tìm đoạn sau trong `backend` và `postgres`:
 
 ---
 
-## Slide 15: Bước 3: Chạy khi thiếu .env để thấy Compose từ chối
+## Bước 3: Chạy khi thiếu .env để thấy Compose từ chối
 
 ```bash
 docker compose up -d
@@ -219,7 +221,7 @@ required variable DB_PASSWORD is missing a value: Set DB_PASSWORD in .env
 
 ---
 
-## Slide 16: Bước 3: Tạo .env từ mẫu
+## Bước 3: Tạo .env từ mẫu
 
 ```bash
 cp .env.example .env
@@ -240,7 +242,7 @@ docker compose config | head -30
 
 ---
 
-## Slide 17: Bước 4 (20 phút): Chạy cả Club bằng một lệnh
+## Bước 4 (20 phút): Chạy cả Club bằng một lệnh
 
 ```bash
 docker compose up -d --build
@@ -263,7 +265,7 @@ club-frontend-1   Up             0.0.0.0:8080->80/tcp
 
 ---
 
-## Slide 18: Bước 4: Đọc log để biết hệ thống đang làm gì
+## Bước 4: Đọc log để biết hệ thống đang làm gì
 
 ```bash
 docker compose logs --tail=20 postgres
@@ -280,7 +282,7 @@ Log của postgres có `running /docker-entrypoint-initdb.d/init.sql`; log của
 
 ---
 
-## Slide 19: Bước 5 (15 phút): Kiểm thử qua mạng
+## Bước 5 (15 phút): Kiểm thử qua mạng
 
 ```bash
 curl -s http://localhost:8080/api/members
@@ -300,7 +302,7 @@ Kết quả mong đợi: JSON có Alice và Bob, `{"status":"healthy","service":
 
 ---
 
-## Slide 20: Bước 6 (15 phút): down giữ dữ liệu, down -v xóa dữ liệu
+## Bước 6 (15 phút): down giữ dữ liệu, down -v xóa dữ liệu
 
 ![Sau down còn Carol; sau down -v mất Carol vì volume bị xóa](/slides/img/s13-volume.svg)
 
@@ -313,7 +315,7 @@ Nhắc lại: named volume `postgres-data` lưu dữ liệu Postgres độc lậ
 
 ---
 
-## Slide 21: Bước 6: Thêm Carol, `down`, rồi `up` lại
+## Bước 6: Thêm Carol, `down`, rồi `up` lại
 
 ```bash
 docker compose exec postgres psql -U club -d clubdb \
@@ -333,7 +335,7 @@ curl -s http://localhost:8080/api/members
 
 ---
 
-## Slide 22: Bước 6: `down -v` xóa cả dữ liệu
+## Bước 6: `down -v` xóa cả dữ liệu
 
 **Cảnh báo:** `docker compose down -v` xóa volume `postgres-data`. Chỉ chạy trong `~/devops-labs/club`.
 
@@ -352,46 +354,54 @@ curl -s http://localhost:8080/api/members
 
 ---
 
-## Slide 23: Lỗi 1: thiếu biến hoặc cổng bận
+## Lỗi 1: thiếu biến hoặc cổng bận
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `required variable DB_PASSWORD is missing a value` | Chưa có `.env` hoặc biến trống | `cp .env.example .env`, điền `DB_PASSWORD` |
-| `port is already allocated` | Cổng 8080 bị chiếm | `docker rm -f` container cũ, hoặc `WEB_PORT=8081` trong `.env` |
+| `required variable DB_PASSWORD is missing a value` | Chưa có `.env` | `cp .env.example .env`, điền `DB_PASSWORD` |
+| `port is already allocated` | Cổng 8080 bị chiếm | `docker rm -f`, hoặc `WEB_PORT=8081` |
 
 ::: details Ghi chú cho mentor
+- Nguyên nhân thứ nhất có thể là `.env` thiếu hoặc biến trống.
+- Cách sửa thứ hai: `docker rm -f` container cũ, hoặc đặt `WEB_PORT=8081` trong `.env`.
 - Cách chẩn đoán: `docker compose config` để xem biến đã được thay, `docker ps` để xem container nào giữ cổng.
 :::
 
 ---
 
-## Slide 24: Lỗi 2: YAML sai và backend không kết nối được DB
+## Lỗi 2: YAML sai và backend không kết nối được DB
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `yaml: ... mapping values are not allowed` | Thụt lề sai, dùng Tab | Dùng 2 dấu cách; `docker compose config` chỉ ra dòng lỗi |
-| Backend `ECONNREFUSED` hoặc `ENOTFOUND` tới DB | `DB_HOST` sai (ví dụ `localhost`) | Đặt `DB_HOST: postgres` |
+| `yaml: ... mapping values are not allowed` | Thụt lề sai, dùng Tab | Dùng 2 dấu cách |
+| Backend `ECONNREFUSED` hoặc `ENOTFOUND` | `DB_HOST` sai | Đặt `DB_HOST: postgres` |
 
 ::: details Ghi chú cho mentor
+- `docker compose config` chỉ ra dòng YAML lỗi.
+- `DB_HOST` sai thường là giá trị `localhost`; lỗi kết nối xuất hiện ở backend khi tới DB.
 - Nhắc lại slide về `localhost` trong container.
 :::
 
 ---
 
-## Slide 25: Lỗi 3: API 500 dù mọi container `Up`
+## Lỗi 3: API 500 dù mọi container `Up`
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `/api/members` 500, bảng `members` không tồn tại | Volume cũ đã có dữ liệu nên `init.sql` không chạy lại | `docker compose down -v` rồi `up -d` |
-| Đổi `DB_PASSWORD`, API trả 500 | Volume giữ mật khẩu cũ; `POSTGRES_PASSWORD` chỉ dùng lúc khởi tạo | Trả lại mật khẩu cũ, hoặc `ALTER USER` |
+| API 500, thiếu bảng `members` | `init.sql` không chạy lại | `down -v` rồi `up -d` |
+| Đổi `DB_PASSWORD`, API 500 | Volume giữ mật khẩu cũ | Trả mật khẩu cũ, hoặc `ALTER USER` |
 
 ::: details Ghi chú cho mentor
+- Volume cũ đã có dữ liệu nên `init.sql` không chạy lại.
+- Triệu chứng đầy đủ: `/api/members` trả 500; sau khi đổi `DB_PASSWORD` thì API trả 500.
+- Lệnh đầy đủ: `docker compose down -v` rồi `up -d`.
+- `POSTGRES_PASSWORD` chỉ dùng lúc khởi tạo, nên volume giữ mật khẩu cũ.
 - Cả hai lỗi đều do dữ liệu cũ trong volume. Lệnh `down -v` chỉ dùng khi chấp nhận mất dữ liệu.
 :::
 
 ---
 
-## Slide 26: Tự kiểm tra
+## Tự kiểm tra
 
 1. Vì sao backend dùng `DB_HOST: postgres` mà không phải `localhost`?
 2. `depends_on` với `condition: service_healthy` khác gì `depends_on` mặc định?
@@ -405,7 +415,7 @@ curl -s http://localhost:8080/api/members
 
 ---
 
-## Slide 27: Tiếp theo
+## Tiếp theo
 
 ![Ba điều cần nhớ: một file, gọi bằng tên, volume giữ dữ liệu](/slides/img/s13-recap.svg)
 
@@ -413,7 +423,7 @@ Ngày 9: [GitHub Actions CI](../04-cicd/session-16.md).
 
 ---
 
-## Slide 28: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Compose file reference](https://docs.docker.com/reference/compose-file/): tra cứu mọi khóa trong compose.yaml.
 - **Tài liệu chính thức:** [Compose services](https://docs.docker.com/reference/compose-file/services/): cách khai báo service, port, volume.

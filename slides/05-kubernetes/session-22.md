@@ -4,7 +4,7 @@
 
 Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md)
 
-## Slide 1: Mục tiêu của buổi 22
+## Mục tiêu của buổi 22
 
 ![Ba mục tiêu: deploy bằng Deployment, rolling update và rollback, chẩn đoán ImagePullBackOff](/slides/img/s22-goals.svg)
 
@@ -14,7 +14,7 @@ Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md)
 
 ---
 
-## Slide 2: Bài toán thực tế: Compose trên một laptop
+## Bài toán thực tế: Compose trên một laptop
 
 ![Container chết không ai biết, muốn 2 bản phải tự sửa, cập nhật làm API sập](/slides/img/s22-problem.svg)
 
@@ -25,22 +25,22 @@ Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md)
 
 ---
 
-## Slide 3: Khái niệm: Pod
+## Khái niệm: Pod
 
 ![Pod gồm container chung IP gọi nhau qua localhost; Pod bị xóa thì Pod mới có IP khác](/slides/img/s22-pod.svg)
 
 - **Pod** là đơn vị nhỏ nhất có thể triển khai trong Kubernetes, gồm một hoặc nhiều container dùng chung địa chỉ IP.
-- Pod có tính tạm thời: khi bị xóa, Pod thay thế là một đối tượng mới với IP khác.
 - Ví dụ trong dự án: mỗi Pod `club-api` thường chứa một container chính chạy image `club-api:1.0.0`.
 
 ::: details Ghi chú cho mentor
 - Pod là đơn vị nhỏ nhất được triển khai: một hoặc nhiều container chung IP. Thông thường mỗi Pod có một container chính.
+- Pod có tính tạm thời: khi bị xóa, Pod thay thế là một đối tượng mới với IP khác.
 - Ví dụ so sánh: Pod giống một ca làm việc, khi ca kết thúc thì không tiếp tục.
 :::
 
 ---
 
-## Slide 4: Phase của Pod
+## Phase của Pod
 
 ![Pending, Running, rồi Succeeded hoặc Failed; Unknown khi mất liên lạc node](/slides/img/s22-lifecycle.svg)
 
@@ -52,46 +52,46 @@ Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md)
 
 ---
 
-## Slide 5: Khái niệm: ReplicaSet và Deployment
+## Khái niệm: ReplicaSet và Deployment
 
 ![Deployment quản lý ReplicaSet, ReplicaSet giữ 2 Pod, Service chọn Pod theo label](/slides/img/s22-ownership.svg)
 
-- **ReplicaSet** là controller giữ đúng số Pod khớp một selector. **Deployment** quản lý ReplicaSet và bổ sung rolling update cùng rollback.
-- Khi đổi image, Deployment tạo ReplicaSet mới và giữ ReplicaSet cũ với 0 Pod để có thể rollback.
-- Ví dụ trong dự án: Deployment `club-api` giữ 2 Pod thông qua một ReplicaSet.
+- **ReplicaSet** giữ đúng số Pod khớp một selector; **Deployment** quản lý ReplicaSet, bổ sung rolling update và rollback.
+- Ví dụ trong dự án: Deployment `club-api` giữ 2 Pod qua một ReplicaSet.
 
 ::: details Ghi chú cho mentor
 - ReplicaSet giữ đúng N Pod khớp một selector; thiếu thì tạo, thừa thì xóa. Deployment bổ sung rolling update và rollback.
+- Khi đổi image, Deployment tạo ReplicaSet mới và giữ ReplicaSet cũ với 0 Pod để có thể rollback.
 - Pod trần: không tự tạo lại, không rolling update, không rollback. ReplicaSet: tự tạo lại nhưng không rolling update. Deployment: có cả ba khả năng.
 - Ví dụ so sánh: ReplicaSet giống tổ trưởng giữ đủ nhân sự, Deployment giống quản lý ca.
 :::
 
 ---
 
-## Slide 6: Khái niệm: Label và selector
+## Khái niệm: Label và selector
 
 ![Selector khớp label của Pod thì chạy, lệch thì API Server từ chối](/slides/img/s22-labels.svg)
 
 - **Label** là cặp `key=value` gắn lên một đối tượng, còn **selector** chọn các đối tượng theo label.
-- Kubernetes dùng cơ chế này để nối các đối tượng với nhau, ví dụ Deployment với Pod và Service với Pod.
-- Ví dụ trong dự án: `spec.selector.matchLabels` phải khớp `spec.template.metadata.labels`, nếu không API Server từ chối manifest.
+- Ví dụ trong dự án: `spec.selector.matchLabels` phải khớp `spec.template.metadata.labels`, nếu không manifest bị từ chối.
 
 ::: details Ghi chú cho mentor
-- Label là cặp key=value gắn lên đối tượng; selector chọn đối tượng theo label. Đây là cách Kubernetes nối các đối tượng với nhau.
+- Label là cặp key=value gắn lên đối tượng; selector chọn đối tượng theo label. Đây là cách Kubernetes nối các đối tượng với nhau, ví dụ Deployment với Pod và Service với Pod.
+- Nếu hai trường trên không khớp, API Server từ chối manifest.
 - `spec.selector.matchLabels` phải khớp `spec.template.metadata.labels`; selector của Deployment không sửa được sau khi tạo.
 :::
 
 ---
 
-## Slide 7: Khái niệm: Rolling update và readiness probe
+## Khái niệm: Rolling update và readiness probe
 
 ![Bốn bước thay 2 Pod 1.0.0 bằng 2 Pod 1.0.1, luôn có 2 Pod Ready](/slides/img/s22-rolling.svg)
 
-- **Rolling update** là chiến lược thay các Pod phiên bản cũ bằng Pod phiên bản mới theo từng bước, nhờ đó ứng dụng không ngừng phục vụ.
-- **Readiness probe** là kiểm tra định kỳ để Kubernetes biết Pod đã sẵn sàng nhận traffic hay chưa.
-- Ví dụ trong dự án: với 2 replicas, quá trình thay 1.0.0 bằng 1.0.1 luôn giữ 2 Pod Ready.
+- **Rolling update** thay Pod cũ bằng Pod mới theo từng bước; **readiness probe** cho biết Pod sẵn sàng nhận traffic.
+- Ví dụ trong dự án: với 2 replicas, thay 1.0.0 bằng 1.0.1 luôn giữ 2 Pod Ready.
 
 ::: details Ghi chú cho mentor
+- Rolling update thay Pod cũ theo từng bước nên ứng dụng không ngừng phục vụ; readiness probe là kiểm tra định kỳ để Kubernetes biết Pod sẵn sàng nhận traffic.
 - Mặc định `maxSurge: 25%`, `maxUnavailable: 25%`. Với 2 replicas: surge làm tròn lên thành 1, unavailable làm tròn xuống thành 0.
 - Tối đa 3 Pod tồn tại, tối thiểu 2 Pod Ready.
 - Nếu không có readiness probe thì Pod được coi là Ready ngay khi container khởi động.
@@ -99,7 +99,7 @@ Bài học: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md)
 
 ---
 
-## Slide 8: Ba lệnh cập nhật và quay lui
+## Ba lệnh cập nhật và quay lui
 
 ```text
 $ kubectl set image deployment/club-api api=club-api:1.0.1 -n club
@@ -117,7 +117,7 @@ Lệnh `undo` dùng lại ReplicaSet cũ, không tạo ReplicaSet mới.
 
 ---
 
-## Slide 9: kind không thấy image của Docker Desktop
+## kind không thấy image của Docker Desktop
 
 ![kind load docker-image nạp club-api:1.0.0 vào node club-control-plane](/slides/img/s22-kind-image.svg)
 
@@ -129,7 +129,7 @@ Lệnh `undo` dùng lại ReplicaSet cũ, không tạo ReplicaSet mới.
 
 ---
 
-## Slide 10: Minh họa: Pod trần và Deployment
+## Minh họa: Pod trần và Deployment
 
 ```text
 $ kubectl delete pod <pod-tran>
@@ -149,19 +149,24 @@ Pod trần không có controller sở hữu, do đó không có thành phần n�
 
 ---
 
-## Slide 11: Lab: bốn phần chính
+## Lab: bốn phần chính
 
-| Phần | Việc làm | Mốc hoàn thành |
+| Phần | Việc | Mốc |
 | --- | --- | --- |
-| 1 và 2 | Build, nạp image; dựng namespace, Postgres | `postgres-0` `1/1 Running` |
-| 3 | Deploy Club API, `port-forward` | Deployment READY 2/2 |
-| 4 | Rolling update lên 1.0.1, rồi rollback | Hai ReplicaSet; image trở về 1.0.0 |
+| 1, 2 | Build, nạp | `postgres-0` Running |
+| 3 | Deploy | READY 2/2 |
+| 4 | Update, rollback | Image 1.0.0 |
 
 Lệnh chi tiết và bảng lỗi: [Buổi 22 – Pods & Deployments](../../labs/week-11/session-22.md).
 
+::: details Ghi chú cho mentor
+- Phần 1 và 2: build, nạp image; dựng namespace và Postgres; mốc là `postgres-0` ở trạng thái `1/1 Running`. Phần 3: Deploy Club API và dùng `port-forward`.
+- Phần 4: rolling update lên 1.0.1, rồi rollback; mốc hoàn thành là hai ReplicaSet và image trở về 1.0.0.
+:::
+
 ---
 
-## Slide 12: Tình huống lỗi: ImagePullBackOff
+## Tình huống lỗi: ImagePullBackOff
 
 ![Pod mới ImagePullBackOff, hai Pod cũ vẫn Running; điều tra bằng describe và crictl rồi rollout undo](/slides/img/s22-imagepull.svg)
 
@@ -173,22 +178,26 @@ Lệnh chi tiết và bảng lỗi: [Buổi 22 – Pods & Deployments](../../lab
 
 ---
 
-## Slide 13: Lỗi thường gặp
+## Lỗi thường gặp
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| `selector does not match template labels` | Sửa cho khớp; nếu Deployment đã tồn tại thì xóa và tạo lại |
-| Pod `0/1 Running` không Ready | `kubectl logs`, kiểm tra Postgres và Secret `club-secrets` |
-| `/api/members` trả 500 | Chạy `init.sql` bằng `kubectl exec` vào `postgres-0` |
-| `connection refused` tới kubectl | Sai context hoặc container node đã dừng |
+| `selector does not match template labels` | Sửa cho khớp |
+| Pod `0/1 Running` | `kubectl logs`, kiểm tra Postgres |
+| `/api/members` trả 500 | Chạy `init.sql` |
+| `connection refused` | Sai context hoặc node đã dừng |
 
 ::: details Ghi chú cho mentor
+- Nếu Deployment đã tồn tại thì xóa và tạo lại sau khi sửa selector.
+- Pod không Ready: kiểm tra thêm Secret `club-secrets`.
+- Lỗi 500: chạy `init.sql` bằng `kubectl exec` vào `postgres-0`.
+- `connection refused` tới kubectl: sai context hoặc container node đã dừng.
 - Lỗi `CreateContainerConfigError`: tạo Secret hoặc apply ConfigMap còn thiếu.
 :::
 
 ---
 
-## Slide 14: Tổng kết và nộp bài
+## Tổng kết và nộp bài
 
 ![Ba điều cần nhớ: Deployment và labels, rolling update, nạp image vào kind](/slides/img/s22-recap.svg)
 
@@ -201,7 +210,7 @@ Nộp `lab-22/`: `README.md`, manifest trong `source/`, evidence, ảnh hai Repl
 
 ---
 
-## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Pods](https://kubernetes.io/docs/concepts/workloads/pods/): Pod là đơn vị nhỏ nhất và tạm thời.
 - **Tài liệu chính thức:** [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/): scale, rolling update và rollback.

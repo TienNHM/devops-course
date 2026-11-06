@@ -4,7 +4,7 @@
 
 Bài lab: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/session-19.md). Các lệnh của lab nằm trong bài lab, không chép lại ở slide.
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: chọn chiến lược, deploy theo tag, rollback](/slides/img/s19-goals.svg)
 
@@ -16,7 +16,7 @@ Bài lab: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/session-
 
 ---
 
-## Slide 2: Bài toán: deploy thủ công không có kiểm soát
+## Bài toán: deploy thủ công không có kiểm soát
 
 ![SSH vào máy demo, build lại tại chỗ, API chết đúng lúc ban chủ nhiệm xem](/slides/img/s19-ssh-pray.svg)
 
@@ -27,31 +27,37 @@ Bài lab: [Buổi 19 – CD & Deployment Strategies](../../labs/week-10/session-
 
 ---
 
-## Slide 3: Continuous Delivery và Continuous Deployment
+## Continuous Delivery và Continuous Deployment
 
-| Thuật ngữ | Ý nghĩa | Ai quyết định |
+| Thuật ngữ | Ý nghĩa | Quyết định |
 | --- | --- | --- |
-| Continuous Integration | Mỗi thay đổi được build và test | Không liên quan |
-| Continuous Delivery | Mọi bản qua CI sẵn sàng deploy | Con người bấm nút |
-| Continuous Deployment | Bản qua CI tự lên môi trường | Pipeline |
+| Continuous Integration | Build, test | Không có |
+| Continuous Delivery | Sẵn sàng deploy | Con người |
+| Continuous Deployment | Tự lên môi trường | Pipeline |
 
 Khóa này dùng Continuous Delivery.
 
 ::: details Ghi chú cho mentor
+- Continuous Integration: mỗi thay đổi được build và test. Continuous Delivery: mọi bản qua CI đều sẵn sàng deploy, con người bấm nút. Continuous Deployment: bản qua CI tự lên môi trường, do pipeline quyết định.
 - Máy của người học không expose ra Internet nên GitHub không thể đẩy (push) vào máy đó; vì vậy khóa này dùng mô hình kéo (pull).
 :::
 
 ---
 
-## Slide 4: Khái niệm: Artifact bất biến
+## Khái niệm: Artifact bất biến
 
-- **Artifact bất biến** là artifact không bao giờ thay đổi nội dung sau khi được tạo ra; với container, artifact là image và được nhận diện bằng tag cố định.
-- Nhờ vậy cùng một artifact đi qua staging đến production, và có thể quay lại đúng bản cũ khi cần.
-- Ví dụ trong dự án: tag `sha-abc1234` luôn trỏ tới một image; tag `latest` thì đổi nội dung theo thời gian.
+- **Artifact bất biến** là artifact không bao giờ thay đổi nội dung sau khi được tạo ra, được nhận diện bằng tag cố định.
+- Ví dụ trong dự án: tag `sha-abc1234` luôn trỏ tới một image.
+
+::: details Ghi chú cho mentor
+- Với container, artifact là image.
+- Nhờ tính bất biến, cùng một artifact đi qua staging đến production, và có thể quay lại đúng bản cũ khi cần.
+- Ngược lại, tag `latest` đổi nội dung theo thời gian.
+:::
 
 ---
 
-## Slide 5: Tag nào được dùng để deploy?
+## Tag nào được dùng để deploy?
 
 | Cách đặt tag | Ví dụ | Dùng để deploy? |
 | --- | --- | --- |
@@ -67,15 +73,20 @@ Khóa này dùng Continuous Delivery.
 
 ---
 
-## Slide 6: Khái niệm: Environment, secret và approval
+## Khái niệm: Environment, secret và approval
 
-- **Environment** là tên của nơi triển khai (ví dụ `local`); job khai báo `environment: local`. **Secret** là giá trị nhạy cảm như mật khẩu, được lưu ngoài repository.
-- **Approval** là bước duyệt: environment có thể yêu cầu reviewer duyệt trước khi job chạy.
-- Ví dụ trong dự án: job deploy dùng `environment: local`; mật khẩu database nằm trong GitHub Secrets hoặc `.env` trên máy đích.
+- **Environment** là tên nơi triển khai; **secret** là giá trị nhạy cảm lưu ngoài repository; **approval** là bước reviewer duyệt trước khi job chạy.
+- Ví dụ trong dự án: job deploy dùng `environment: local`; mật khẩu nằm trong GitHub Secrets.
+
+::: details Ghi chú cho mentor
+- Job khai báo `environment: local`.
+- Secret là giá trị nhạy cảm như mật khẩu; mật khẩu database có thể nằm trong GitHub Secrets hoặc `.env` trên máy đích.
+- Environment có thể yêu cầu reviewer duyệt trước khi job chạy.
+:::
 
 ---
 
-## Slide 7: Environment, secret, approval trong workflow
+## Environment, secret, approval trong workflow
 
 ![Workflow chạy qua environment local, job deploy, secrets nằm ngoài repo](/slides/img/s19-environment.svg)
 
@@ -87,15 +98,18 @@ Khóa này dùng Continuous Delivery.
 
 ---
 
-## Slide 8: Khái niệm: Deployment strategy
+## Khái niệm: Deployment strategy
 
 - **Deployment strategy** (chiến lược triển khai) là cách thay bản đang chạy bằng bản mới: Recreate, Rolling, Blue/Green hoặc Canary.
+- Ví dụ trong dự án: Compose trên một máy là Recreate; Kubernetes Deployment mặc định là Rolling.
+
+::: details Ghi chú cho mentor
 - Mỗi chiến lược đánh đổi giữa thời gian gián đoạn, chi phí tài nguyên và độ phức tạp.
-- Ví dụ trong dự án: Compose trên một máy tương ứng với Recreate; Kubernetes Deployment mặc định dùng Rolling.
+:::
 
 ---
 
-## Slide 9: Bốn chiến lược deploy
+## Bốn chiến lược deploy
 
 ![Recreate, Rolling, Blue/Green, Canary với sơ đồ nhỏ cho từng loại](/slides/img/s19-strategies.svg)
 
@@ -107,15 +121,19 @@ Khóa này dùng Continuous Delivery.
 
 ---
 
-## Slide 10: Khái niệm: Rollback
+## Khái niệm: Rollback
 
 - **Rollback** là thao tác đưa hệ thống trở về phiên bản đã chạy ổn định trước đó.
-- Rollback cần biết tag đang chạy và tag trước đó, và image của bản cũ phải còn trên registry. Lưu ý: rollback code không rollback database.
-- Ví dụ trong dự án: `ROLLBACK=1` gán lại `TAG` bằng `previous` rồi đi qua cùng luồng deploy.
+- Ví dụ trong dự án: `ROLLBACK=1` gán lại `TAG` bằng `previous`.
+- Lưu ý: rollback code không rollback database.
+
+::: details Ghi chú cho mentor
+- Rollback cần biết tag đang chạy và tag trước đó, và image của bản cũ phải còn trên registry.
+:::
 
 ---
 
-## Slide 11: Rollback là thao tác đơn giản và dự đoán được
+## Rollback là thao tác đơn giản và dự đoán được
 
 ![Ba trạng thái của current-tag và previous-tag qua hai lần deploy và một lần rollback](/slides/img/s19-rollback-state.svg)
 
@@ -127,21 +145,24 @@ Khóa này dùng Continuous Delivery.
 
 ---
 
-## Slide 12: Kiến trúc deploy local
+## Kiến trúc deploy local
 
 ![Push, CI, publish lên GHCR; deploy-local.sh pull image, compose up, health check, ghi tag hoặc rollback](/slides/img/s19-deploy-flow.svg)
 
 ---
 
-## Slide 13: Khái niệm: Self-hosted runner
+## Khái niệm: Self-hosted runner
 
-- **Self-hosted runner** là runner do người dùng tự cài trên máy của mình để thực thi job của GitHub Actions, thay cho runner do GitHub cung cấp.
+- **Self-hosted runner** là runner do người dùng tự cài trên máy mình để thực thi job của GitHub Actions, thay cho runner của GitHub.
+- Ví dụ trong dự án: runner trên máy người học nhận job và chạy `deploy-local.sh`.
+
+::: details Ghi chú cho mentor
 - Runner chủ động kết nối ra GitHub qua HTTPS để nhận job, nên máy không cần mở cổng cho kết nối đi vào.
-- Ví dụ trong dự án: runner trên máy của người học nhận job và chạy `deploy-local.sh`.
+:::
 
 ---
 
-## Slide 14: Self-hosted runner kết nối ra ngoài
+## Self-hosted runner kết nối ra ngoài
 
 ![Runner trên máy bạn gọi ra GitHub qua HTTPS; không có kết nối đi vào](/slides/img/s19-runner-outbound.svg)
 
@@ -153,15 +174,19 @@ Khóa này dùng Continuous Delivery.
 
 ---
 
-## Slide 15: Khái niệm: Health check
+## Khái niệm: Health check
 
-- **Health check** (kiểm tra sức khỏe) là yêu cầu tự động gửi tới ứng dụng để xác nhận nó sẵn sàng phục vụ, ví dụ gọi endpoint `/ready`.
+- **Health check** (kiểm tra sức khỏe) là yêu cầu tự động gửi tới ứng dụng để xác nhận nó sẵn sàng phục vụ.
+- Ví dụ trong dự án: script hỏi `/ready` tối đa 20 lần; đạt thì ghi `current-tag`.
+
+::: details Ghi chú cho mentor
 - Kết quả health check quyết định bản deploy được giữ lại hay bị rollback.
-- Ví dụ trong dự án: script hỏi `/ready` tối đa 20 lần; đạt thì ghi `current-tag`, thất bại thì in log và rollback.
+- Ví dụ endpoint là `/ready`. Khi thất bại, script in log rồi rollback.
+:::
 
 ---
 
-## Slide 16: Health check và file trạng thái
+## Health check và file trạng thái
 
 ![Vòng hỏi /ready tối đa 20 lần; đạt thì ghi current-tag, fail thì in log và rollback](/slides/img/s19-health-state.svg)
 
@@ -172,7 +197,7 @@ Khóa này dùng Continuous Delivery.
 
 ---
 
-## Slide 17: Demo: deploy thành công rồi deploy thất bại
+## Demo: deploy thành công rồi deploy thất bại
 
 ```text
 $ OWNER=ten-ban TAG=sha-abc1234 ./deploy-local.sh
@@ -191,39 +216,42 @@ Sau khoảng 60 giây script báo `health FAIL`; `current-tag` vẫn là bản k
 
 ---
 
-## Slide 18: Lab: ba chặng
+## Lab: ba chặng
 
 | Chặng | Việc làm | Mốc xong |
 | --- | --- | --- |
-| 1 | `compose.deploy.yaml` chạy image từ GHCR | `config` thấy tag đúng |
-| 2 | Viết `deploy-local.sh`, deploy một tag | `health OK` |
-| 3 | Deploy bản hai, rồi `ROLLBACK=1` | `compose ps` đúng tag cũ |
+| 1 | `compose.deploy.yaml` | `config` đúng tag |
+| 2 | `deploy-local.sh` | `health OK` |
+| 3 | Deploy bản hai, `ROLLBACK=1` | `compose ps` tag cũ |
 
 Lệnh chi tiết: [Buổi 19](../../labs/week-10/session-19.md) và [Thử thách L2](../../labs/week-10/session-19-challenge.md).
 
 ::: details Ghi chú cho mentor
+- Chặng 1: `compose.deploy.yaml` chạy image từ GHCR; chặng 2: viết `deploy-local.sh` và deploy một tag; chặng 3: deploy bản hai rồi `ROLLBACK=1`.
 - Tùy chọn: chặn tag không tồn tại, nối vào `workflow_dispatch` (input `tag` đi qua `env`).
 :::
 
 ---
 
-## Slide 19: Lỗi thường gặp
+## Lỗi thường gặp
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| `unauthorized` hoặc `denied` khi pull | Package Public hoặc `docker login ghcr.io` |
-| `manifest unknown` | Kiểm tra tag, owner viết thường |
-| `health FAIL` sau khi đổi mật khẩu | Trả lại mật khẩu cũ, không xóa volume |
-| Workflow Queued mãi | Không có runner online khớp label |
+| `unauthorized` | `docker login` |
+| `manifest unknown` | Kiểm tra tag |
+| `health FAIL` | Trả lại mật khẩu cũ |
+| Workflow Queued mãi | Không có runner online |
 
 ::: details Ghi chú cho mentor
+- `unauthorized` hoặc `denied` khi pull: đặt package Public hoặc `docker login ghcr.io`. `manifest unknown`: owner phải viết thường.
+- Với `health FAIL` sau khi đổi mật khẩu: không xóa volume. Với Queued: không có runner online khớp label.
 - Thiếu `DB_PASSWORD`: tạo `.env` cạnh `compose.yaml`. Mật khẩu database được cố định tại thời điểm tạo volume.
 - Mở cổng của máy ra Internet là hiểu nhầm về mô hình; dùng runner kết nối ra ngoài.
 :::
 
 ---
 
-## Slide 20: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: build một lần, cổng sức khỏe, rollback dễ](/slides/img/s19-recap.svg)
 
@@ -231,7 +259,7 @@ Buổi sau: [Buổi 20 – Pipeline Security](session-20.md).
 
 ---
 
-## Slide 21: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Managing environments for deployment](https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-deployments/managing-environments-for-deployment): duyệt tay trước khi deploy.
 - **Tài liệu chính thức:** [Deployments (rolling update)](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment): Kubernetes cập nhật dần, không gián đoạn.

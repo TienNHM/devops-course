@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học trình bày DevOps như một văn hóa và một quy trình phối hợp, vẽ đường đi của mã nguồn từ laptop đến server bằng Mermaid, xác định các điểm nghẽn thủ công và cách khắc phục bằng CI/CD và IaC. Bài lab tương ứng: [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md).
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: hiểu DevOps, vẽ quy trình, tìm điểm nghẽn](/slides/img/s01-goals.svg)
 
@@ -14,7 +14,7 @@
 
 ---
 
-## Slide 2: Bài toán thực tế: "chạy được trên máy tôi"
+## Bài toán thực tế: "chạy được trên máy tôi"
 
 ![Nam gửi zip qua Zalo, Lan chạy trên server và gặp lỗi](/slides/img/s01-works-on-my-machine.svg)
 
@@ -26,21 +26,23 @@
 
 ---
 
-## Slide 3: Khái niệm: SDLC
+## Khái niệm: SDLC
 
 ![Plan, Code, Build, Test, Release, Deploy, Operate rồi phản hồi quay lại Plan](/slides/img/s01-sdlc-loop.svg)
 
-- **SDLC** (Software Development Life Cycle, vòng đời phát triển phần mềm) là chuỗi giai đoạn mà một phần mềm đi qua, từ lập kế hoạch đến vận hành.
-- Phản hồi từ giai đoạn vận hành quay lại giai đoạn lập kế hoạch, nên các giai đoạn tạo thành một vòng lặp.
+- **SDLC** (vòng đời phát triển phần mềm) là chuỗi giai đoạn của một phần mềm, từ lập kế hoạch đến vận hành.
+- Ví dụ trong dự án: ứng dụng CLB đi từ Plan đến Operate với endpoint `GET /api/members`.
 
 ::: details Ghi chú cho mentor
-- Ví dụ với ứng dụng CLB: Plan (ban chủ nhiệm cần danh sách thành viên), Code (endpoint `GET /api/members`), Build (cài dependency, đóng gói image), Test (test `GET /health`), Release (tag `1.0.0`), Deploy (server của CLB), Operate (xem log, kiểm tra `/ready`).
+- SDLC viết đầy đủ là Software Development Life Cycle.
+- Phản hồi từ giai đoạn vận hành quay lại giai đoạn lập kế hoạch, nên các giai đoạn tạo thành một vòng lặp.
+- Chi tiết ví dụ với ứng dụng CLB: Plan (ban chủ nhiệm cần danh sách thành viên), Code (endpoint `GET /api/members`), Build (cài dependency, đóng gói image), Test (test `GET /health`), Release (tag `1.0.0`), Deploy (server của CLB), Operate (xem log, kiểm tra `/ready`).
 - So sánh: mô hình waterfall là dây chuyền một chiều; quy trình hiện đại là vòng lặp có phản hồi.
 :::
 
 ---
 
-## Slide 4: Dev và Ops có hai mục tiêu đối lập
+## Dev và Ops có hai mục tiêu đối lập
 
 ![Dev muốn ra tính năng nhanh, Ops muốn ổn định, code bị ném qua tường](/slides/img/s01-dev-ops-wall.svg)
 
@@ -52,29 +54,33 @@
 
 ---
 
-## Slide 5: Khái niệm: DevOps
+## Khái niệm: DevOps
 
 ![Cộng tác, tự động hóa, đo lường, phản hồi nhanh](/slides/img/s01-principles.svg)
 
-- **DevOps** là văn hóa và tập hợp thực hành giúp nhóm phát triển (Dev) và nhóm vận hành (Ops) cùng chịu trách nhiệm đưa phần mềm đến người dùng.
-- Bốn nguyên tắc: cộng tác, tự động hóa, đo lường, phản hồi nhanh.
-- Lưu ý: Docker và Kubernetes là công cụ, không phải bản thân DevOps; DevOps cũng không phải vai trò của một người làm mọi việc.
+- **DevOps** là văn hóa và thực hành giúp nhóm Dev và Ops cùng chịu trách nhiệm đưa phần mềm đến người dùng.
+- Ví dụ trong dự án: Dev và Ops của CLB cùng phụ trách một bản phát hành.
 
 ::: details Ghi chú cho mentor
+- Lưu ý: Docker và Kubernetes là công cụ, không phải bản thân DevOps.
+- Bốn nguyên tắc: cộng tác, tự động hóa, đo lường, phản hồi nhanh.
+- DevOps cũng không phải vai trò của một người làm mọi việc.
 - Ví dụ so sánh: nhóm bếp và nhóm phục vụ cùng chịu trách nhiệm về bữa ăn.
 - Hiểu nhầm thường gặp: "DevOps là Docker/Kubernetes" (đó là công cụ), "DevOps là một người làm tất cả" (đó là cách làm việc của cả đội).
 :::
 
 ---
 
-## Slide 6: Khái niệm: CI, Continuous Delivery và Continuous Deployment
+## Khái niệm: CI, Continuous Delivery và Continuous Deployment
 
 ![CI chỉ build và test; Delivery cần người duyệt; Deployment tự deploy](/slides/img/s01-ci-cd-levels.svg)
 
 - **CI** (Continuous Integration) là thực hành tự động build và test mã nguồn mỗi khi có thay đổi được push.
-- **Continuous Delivery** giữ mọi bản đã qua kiểm thử ở trạng thái sẵn sàng phát hành, và một người duyệt quyết định thời điểm deploy. **Continuous Deployment** tự động deploy bản đó, không cần thao tác thủ công.
+- Ví dụ trong dự án: GitHub Actions tự build và test mỗi lần push.
 
 ::: details Ghi chú cho mentor
+- **Continuous Delivery** giữ mọi bản đã qua kiểm thử ở trạng thái sẵn sàng phát hành, và một người duyệt quyết định thời điểm deploy.
+- **Continuous Deployment** tự động deploy bản đó, không cần thao tác thủ công.
 - CI: mỗi lần push, hệ thống tự build và test. Delivery: bản qua test luôn sẵn sàng, người duyệt bấm nút cuối. Deployment: bản qua test tự deploy, không ai bấm.
 - Khóa học dùng GitHub Actions cho CI và GHCR để lưu image. Việc deploy vào máy cá nhân dùng script, không đưa ra Internet.
 - Câu hỏi: với ứng dụng ngân hàng, nên chọn mức nào và vì sao?
@@ -82,22 +88,23 @@
 
 ---
 
-## Slide 7: Khái niệm: IaC
+## Khái niệm: IaC
 
 ![compose.yaml mô tả frontend, backend, postgres và chạy giống nhau ở mọi máy](/slides/img/s01-iac.svg)
 
 - **IaC** (Infrastructure as Code) là cách mô tả hạ tầng và môi trường chạy bằng tệp văn bản được quản lý trong Git.
-- Vì cấu hình được viết thành tệp, hạ tầng có thể tái lập, review như mã nguồn và khôi phục nhanh.
-- Ví dụ trong dự án: `compose.yaml` mô tả frontend, backend và postgres; thư mục `k8s/` mô tả cùng hệ thống trên Kubernetes.
+- Ví dụ trong dự án: `compose.yaml` mô tả frontend, backend và postgres.
 
 ::: details Ghi chú cho mentor
+- Vì cấu hình được viết thành tệp, hạ tầng có thể tái lập, review như mã nguồn và khôi phục nhanh.
+- Thư mục `k8s/` mô tả cùng hệ thống trên Kubernetes.
 - Ví dụ so sánh: công thức được viết ra giấy thay vì nằm trong trí nhớ của một người.
 - Lợi ích: tái lập được, review như mã nguồn, khôi phục nhanh.
 :::
 
 ---
 
-## Slide 8: Quy trình thủ công và vòng lặp lỗi
+## Quy trình thủ công và vòng lặp lỗi
 
 ![Dev nén gửi, Ops cài và chạy, lỗi thì hỏi lại dev, lặp lại](/slides/img/s01-manual-flow.svg)
 
@@ -108,15 +115,20 @@
 
 ---
 
-## Slide 9: Khái niệm: Pipeline, registry và health check
+## Khái niệm: Pipeline, registry và health check
 
-- **Pipeline** là chuỗi bước tự động chạy theo thứ tự (build, test, đóng gói, deploy); nếu một bước thất bại, các bước sau không chạy.
-- **Registry** là nơi lưu các artifact (ở đây là image) có phiên bản; **health check** là yêu cầu kiểm tra rằng ứng dụng đã chạy thật.
-- Ví dụ trong dự án: GitHub Actions là pipeline, GHCR là registry, `/health` và `/ready` là các điểm kiểm tra.
+- **Pipeline** là chuỗi bước tự động chạy theo thứ tự (build, test, đóng gói, deploy); bước thất bại thì các bước sau dừng.
+- Ví dụ trong dự án: GitHub Actions là pipeline, GHCR là registry.
+
+::: details Ghi chú cho mentor
+- Health check trong dự án là `/health`.
+- **Registry** là nơi lưu các artifact (ở đây là image) có phiên bản.
+- **Health check** là yêu cầu kiểm tra rằng ứng dụng đã chạy thật; dự án dùng `/health` và `/ready`.
+:::
 
 ---
 
-## Slide 10: Quy trình tự động: cổng test chặn lỗi
+## Quy trình tự động: cổng test chặn lỗi
 
 ![Push, CI build và test, đạt thì đóng gói, registry, deploy, health check](/slides/img/s01-auto-flow.svg)
 
@@ -130,7 +142,7 @@
 
 ---
 
-## Slide 11: Demo: sơ đồ dạng văn bản và `git diff`
+## Demo: sơ đồ dạng văn bản và `git diff`
 
 ```diff
  flowchart LR
@@ -148,32 +160,35 @@ Sơ đồ Mermaid là văn bản nằm trong Git: sau khi commit, lệnh `git di
 
 ---
 
-## Slide 12: Lab buổi 01
+## Lab buổi 01
 
-| Mức | Việc làm | Mốc xong |
+| Mức | Việc | Mốc |
 | --- | --- | --- |
-| L1, 60 phút | Bảng 9 bước, 2 sơ đồ, 3 điểm nghẽn | `lab-01/` đủ tệp, 2 ảnh, evidence |
-| L2, ở nhà | Đề xuất workflow cho dự án CLB thật | `proposal.md` |
+| L1, 60 phút | Bảng 9 bước, 2 sơ đồ | `lab-01/` |
+| L2, ở nhà | Đề xuất workflow | `proposal.md` |
 
-Thực hiện theo bài lab [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md); bài tập thử thách: [Buổi 01 – Thử thách thêm](../../labs/week-01/session-01-challenge.md).
+Lab: [Buổi 01 – DevOps Introduction](../../labs/week-01/session-01.md); thử thách: [Buổi 01 – Thử thách thêm](../../labs/week-01/session-01-challenge.md).
 
 ::: details Ghi chú cho mentor
+- L1 gồm bảng 9 bước, 2 sơ đồ và 3 điểm nghẽn; mốc xong là `lab-01/` đủ tệp, 2 ảnh, evidence. L2 là đề xuất workflow cho dự án CLB thật.
 - L1: bảng 9 bước (người thực hiện, đầu vào, đầu ra), sơ đồ thủ công, 3 điểm nghẽn, sơ đồ tự động, bằng chứng.
 - L2: có số liệu ước lượng, rủi ro và 2 chỉ số đo.
 :::
 
 ---
 
-## Slide 13: Lỗi thường gặp
+## Lỗi thường gặp
 
 | Triệu chứng | Cách sửa |
 | --- | --- |
-| Mermaid báo `Syntax error` | Đặt mọi nhãn trong dấu nháy kép |
-| Sơ đồ chỉ có hộp, không rõ ai thực hiện | Thêm `Dev:` hoặc `Ops:` vào nhãn |
-| Người cùng nhóm hỏi "lệnh nào, Node bản mấy" | Ghi vào README, `compose.yaml`, `.env.example` |
-| Terminal hiện `>` liên tục, không chạy tiếp | Nhập `EOF` rồi nhấn Enter, hoặc nhấn Ctrl+C |
+| `Syntax error` | Nhãn trong dấu nháy kép |
+| Không rõ người làm | Thêm `Dev:` hoặc `Ops:` |
+| Hỏi "Node bản mấy" | Ghi vào README |
+| Terminal hiện `>` | Nhập `EOF` hoặc Ctrl+C |
 
 ::: details Ghi chú cho mentor
+- Mermaid báo `Syntax error` khi nhãn chưa đặt trong dấu nháy kép; sơ đồ chỉ có hộp mà không rõ ai thực hiện thì thêm `Dev:` hoặc `Ops:` vào nhãn.
+- Đầy đủ: người cùng nhóm hỏi "lệnh nào, Node bản mấy" thì ghi vào README, `compose.yaml`, `.env.example`; terminal hiện `>` thì nhập `EOF` rồi nhấn Enter, hoặc nhấn Ctrl+C.
 - Nhãn có dấu ngoặc mà không đặt trong dấu nháy kép sẽ bị parser hiểu là ký hiệu hình dạng nút.
 - Mỗi câu hỏi của người cùng nhóm là một thông tin ngầm chưa được viết ra (tribal knowledge).
 - Dấu `>` ở đầu dòng nghĩa là heredoc đang chờ dòng `EOF`.
@@ -181,7 +196,7 @@ Thực hiện theo bài lab [Buổi 01 – DevOps Introduction](../../labs/week-
 
 ---
 
-## Slide 14: Thử thách tính chi phí
+## Thử thách tính chi phí
 
 Nhóm push 15 lần mỗi ngày, mỗi lần deploy thủ công mất 10 phút.
 
@@ -194,7 +209,7 @@ Câu hỏi: chi phí mỗi tuần (5 ngày) là bao nhiêu, và bước nào nê
 
 ---
 
-## Slide 15: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: văn hóa, CI/CD và IaC, điểm nghẽn trước](/slides/img/s01-recap.svg)
 
@@ -207,7 +222,7 @@ Buổi tiếp theo: dựng WSL2, Git và SSH key ([Slide buổi 02](session-02.m
 
 ---
 
-## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [What is DevOps? (Microsoft Learn)](https://learn.microsoft.com/en-us/devops/what-is-devops): giải thích DevOps dễ hiểu cho người mới.
 - **Tài liệu chính thức:** [DevOps Roadmap](https://roadmap.sh/devops): bản đồ kỹ năng để biết mình học đến đâu.

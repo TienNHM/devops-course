@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Nhóm Capstone xác định requirement, vẽ kiến trúc, tạo repository từ starter-project, dựng GitHub Projects với backlog có tiêu chí hoàn thành và viết ba ADR đầu tiên. Bài lab đầy đủ và các lệnh: [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md).
 
-## Slide 1: Sản phẩm của buổi 29
+## Sản phẩm của buổi 29
 
 ![Ba sản phẩm: requirement, kiến trúc cùng repo, backlog cùng ADR](/slides/img/s29-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Ôn tập trước khi bắt đầu
+## Ôn tập trước khi bắt đầu
 
 - Compose: `docker compose down` giữ volume, `down -v` xóa volume.
 - CI trên Pull Request: chạy test, kiểm tra cấu hình, build thử image.
@@ -26,7 +26,7 @@
 
 ---
 
-## Slide 3: Hệ quả của việc viết mã khi chưa có kế hoạch
+## Hệ quả của việc viết mã khi chưa có kế hoạch
 
 ![Từ code ngay đến ba kiểu API, .env lên GitHub, ngày demo không có manifest](/slides/img/s29-chaos.svg)
 
@@ -37,15 +37,20 @@
 
 ---
 
-## Slide 4: Khái niệm: Requirement kiểm chứng được
+## Khái niệm: Requirement kiểm chứng được
 
-- **Requirement** (yêu cầu) là mô tả điều hệ thống phải làm hoặc phải đáp ứng; requirement kiểm chứng được là requirement có thể xác nhận đúng hoặc sai bằng một phép kiểm tra cụ thể.
+- **Requirement kiểm chứng được** là yêu cầu có thể xác nhận đúng hoặc sai bằng một phép kiểm tra cụ thể.
+- Ví dụ trong dự án: `GET /api/members/999` trả 404, kiểm chứng bằng `curl`.
+
+::: details Ghi chú cho mentor
+- Requirement (yêu cầu) là mô tả điều hệ thống phải làm hoặc phải đáp ứng.
 - Một requirement mơ hồ không có tiêu chí chấm, nên nhóm không thể xác định khi nào công việc đã xong.
-- Ví dụ trong dự án: "`GET /api/members/999` trả về 404" kiểm chứng được bằng `curl`; "API chạy tốt" thì không.
+- "`GET /api/members/999` trả về 404" kiểm chứng được bằng `curl`; "API chạy tốt" thì không.
+:::
 
 ---
 
-## Slide 5: Requirement phải kiểm chứng được
+## Requirement phải kiểm chứng được
 
 ![So sánh "API chạy tốt" mơ hồ với GET /api/members/999 trả 404 kiểm chứng bằng curl](/slides/img/s29-requirement.svg)
 
@@ -56,22 +61,25 @@
 
 ---
 
-## Slide 6: Ba loại requirement
+## Ba loại requirement
 
 | Loại | Ví dụ | Kiểm chứng |
 | --- | --- | --- |
-| Chức năng | `POST /api/members` trả 201, dữ liệu sai trả 400 | `curl`, test tự động |
-| Phi chức năng | Dữ liệu còn sau khi recreate | `down` rồi `up`, GET lại |
-| Bảo mật | Không có secret trong Git | `git log -p`, rà soát |
+| Chức năng | `POST` trả 201, sai trả 400 | `curl` |
+| Phi chức năng | Dữ liệu còn | `down`, `up` |
+| Bảo mật | Không lộ secret | `git log -p` |
 
 ::: details Ghi chú cho mentor
+- Chức năng: `POST /api/members` trả 201, dữ liệu sai trả 400; kiểm chứng bằng `curl` và test tự động.
+- Phi chức năng: dữ liệu còn sau khi recreate; kiểm chứng bằng `down` rồi `up`, GET lại.
+- Bảo mật: không có secret trong Git; kiểm chứng bằng `git log -p` và rà soát.
 - Nhóm điền đủ F1-F8 trong `docs/requirements.md` và thêm ít nhất 3 dòng phi chức năng (secret, CI chặn merge, scale từ 2 lên 3).
 - Không dòng nào dùng từ "tốt", "nhanh" mà thiếu số liệu.
 :::
 
 ---
 
-## Slide 7: Kiến trúc trả lời bốn câu hỏi
+## Kiến trúc trả lời bốn câu hỏi
 
 ![Bốn câu hỏi: thành phần, kết nối, dữ liệu, đường đi của code](/slides/img/s29-four-questions.svg)
 
@@ -83,31 +91,37 @@
 
 ---
 
-## Slide 8: Starter-project cung cấp sẵn những gì
+## Starter-project cung cấp sẵn những gì
 
 | Thành phần | Thực tế trong repository |
 | --- | --- |
 | Frontend | Nginx tĩnh, proxy `/api/` sang `backend:3000`, `club-web:1.0.0` |
-| Backend | Node.js 22, Express 5, pg, Deployment `club-api` 2 replicas |
+| Backend | Node.js 22, Express 5, Deployment `club-api` 2 replicas |
 | Database | PostgreSQL, `database/init.sql`, volume `postgres-data` |
 | Cấu hình | `.env`, ConfigMap `club-config`, Secret `club-secrets` |
 
 ::: details Ghi chú cho mentor
+- Backend dùng thư viện `pg`.
 - Đọc `compose.yaml` và `k8s/backend.yaml` để vẽ sơ đồ chính xác, không suy đoán; mentor sẽ đối chiếu.
 - Schema `members`: `id`, `name`, `email` (UNIQUE), `created_at`.
 :::
 
 ---
 
-## Slide 9: Khái niệm: Lát cắt dọc (vertical slice)
+## Khái niệm: Lát cắt dọc (vertical slice)
 
-- **Lát cắt dọc** là một phần việc đi xuyên qua mọi tầng của hệ thống (API, test, frontend, tài liệu) để tạo ra một kết quả hoàn chỉnh, có thể review và demo.
+- **Lát cắt dọc** là phần việc đi xuyên mọi tầng hệ thống để tạo ra kết quả hoàn chỉnh, có thể review và demo.
+- Ví dụ trong dự án: Issue "Add DELETE" gồm route, test, nút Delete và README.
+
+::: details Ghi chú cho mentor
+- Các tầng mà lát cắt đi qua gồm API, test, frontend và tài liệu.
 - Ngược lại, chia việc theo công cụ khiến các phần chỉ ghép được vào cuối, nên lỗi tích hợp xuất hiện muộn.
-- Ví dụ trong dự án: Issue "Add DELETE /api/members/:id" gồm route, test, nút Delete trên giao diện và cập nhật README.
+- Issue "Add DELETE /api/members/:id" gồm route, test, nút Delete trên giao diện và cập nhật README.
+:::
 
 ---
 
-## Slide 10: Chia việc theo lát cắt dọc
+## Chia việc theo lát cắt dọc
 
 ![So sánh chia theo công cụ (ghép muộn) và chia theo kết quả (mỗi lát gồm API, test, frontend, README)](/slides/img/s29-slices.svg)
 
@@ -119,15 +133,19 @@
 
 ---
 
-## Slide 11: Khái niệm: Acceptance criteria
+## Khái niệm: Acceptance criteria
 
-- **Acceptance criteria** (tiêu chí chấp nhận) là danh sách điều kiện cụ thể mà một Issue phải thỏa mãn để được coi là hoàn thành.
+- **Acceptance criteria** (tiêu chí chấp nhận) là danh sách điều kiện cụ thể mà một Issue phải thỏa mãn để coi là hoàn thành.
+- Ví dụ trong dự án: `DELETE /api/members/1` trả 204; id không tồn tại trả 404.
+
+::: details Ghi chú cho mentor
 - Tiêu chí được viết dưới dạng checklist trong Issue, nên người review có căn cứ khách quan để chấp nhận hoặc trả lại công việc.
-- Ví dụ trong dự án: Issue "Add DELETE" có tiêu chí "`DELETE /api/members/1` trả 204" và "id không tồn tại trả 404".
+- Ví dụ trên thuộc Issue "Add DELETE".
+:::
 
 ---
 
-## Slide 12: Một Issue đạt chuẩn
+## Một Issue đạt chuẩn
 
 ![Issue Add DELETE với owner, size, milestone và checklist tiêu chí hoàn thành](/slides/img/s29-issue-card.svg)
 
@@ -139,23 +157,31 @@
 
 ---
 
-## Slide 13: Khái niệm: Definition of Done
+## Khái niệm: Definition of Done
 
 - **Definition of Done (DoD)** là tập điều kiện chung mà mọi hạng mục công việc phải đạt trước khi được đánh dấu `Done`.
+- Ví dụ trong dự án: DoD của nhóm gồm bốn điều kiện, áp dụng qua PR template.
+
+::: details Ghi chú cho mentor
 - Khác với acceptance criteria (riêng cho từng Issue), DoD áp dụng thống nhất cho cả nhóm, ví dụ qua PR template.
-- Ví dụ trong dự án: DoD của nhóm gồm bốn điều kiện và được áp dụng qua PR template cho mọi Issue.
+- DoD của nhóm được áp dụng cho mọi Issue.
+:::
 
 ---
 
-## Slide 14: Khái niệm: Architecture Decision Record (ADR)
+## Khái niệm: Architecture Decision Record (ADR)
 
-- **ADR** là một tài liệu ngắn ghi lại một quyết định kiến trúc, gồm bối cảnh, các lựa chọn, quyết định và hệ quả.
+- **ADR** là tài liệu ngắn ghi lại một quyết định kiến trúc, gồm bối cảnh, các lựa chọn, quyết định và hệ quả.
+- Ví dụ trong dự án: ADR về chiến lược tag image so sánh các cách đặt tag.
+
+::: details Ghi chú cho mentor
 - Tài liệu này lưu lý do của quyết định, nên các thành viên sau này hiểu được vì sao hệ thống được thiết kế như vậy.
-- Ví dụ trong dự án: ADR về chiến lược tag image so sánh các cách đặt tag và nêu rõ điều gì trở nên khó hơn sau quyết định.
+- ADR về chiến lược tag image còn nêu rõ điều gì trở nên khó hơn sau quyết định.
+:::
 
 ---
 
-## Slide 15: Definition of Done và ADR
+## Definition of Done và ADR
 
 ![DoD gồm bốn điều kiện; ADR gồm bối cảnh, lựa chọn, quyết định, hệ quả](/slides/img/s29-dod-adr.svg)
 
@@ -167,7 +193,7 @@
 
 ---
 
-## Slide 16: Kiến trúc mục tiêu
+## Kiến trúc mục tiêu
 
 ![Developer push lên GitHub, Actions build image lên GHCR, kind cluster chạy Ingress, web, API, Postgres](/slides/img/s29-architecture.svg)
 
@@ -179,7 +205,7 @@
 
 ---
 
-## Slide 17: Demo: repository nhóm sạch
+## Demo: repository nhóm sạch
 
 ```bash
 cp -a ~/devops-course/starter-project/. ~/club-management/
@@ -200,18 +226,19 @@ Việc `.env` bị chặn được chứng minh bằng kết quả lệnh, khôn
 
 ---
 
-## Slide 18: Lab: năm phần trong 60 phút
+## Lab: năm phần trong 60 phút
 
-| Phần | Nội dung | Phút |
-| --- | --- | --- |
-| 1-2 | Requirement, repository nhóm từ starter-project | 22 |
-| 3 | Kiến trúc và phân vai | 12 |
-| 4 | GitHub Projects và backlog | 14 |
-| 5 | ADR | 12 |
+| Phần | Nội dung |
+| --- | --- |
+| 1-2 (22 phút) | Requirement, repository nhóm |
+| 3 (12 phút) | Kiến trúc, phân vai |
+| 4 (14 phút) | GitHub Projects, backlog |
+| 5 (12 phút) | ADR |
 
 Lệnh từng bước: [Buổi 29 – Architecture & Planning](../../labs/week-15/session-29.md).
 
 ::: details Ghi chú cho mentor
+- Phần 1-2 gồm requirement và repository nhóm tạo từ starter-project; phần 3 là kiến trúc và phân vai; phần 4 là GitHub Projects và backlog; phần 5 là ADR.
 - Phần 1: 10 phút, phần 2: 12 phút.
 - L1: repository sạch, PR đầu tiên, branch protection, 12 Issue, requirement F1-F8, README có sơ đồ và bảng phân vai.
 - L2: ADR thứ tư về chiến lược test, sơ đồ phụ thuộc và đường găng, bảng rủi ro.
@@ -219,7 +246,7 @@ Lệnh từng bước: [Buổi 29 – Architecture & Planning](../../labs/week-1
 
 ---
 
-## Slide 19: Phá lỗi: secret bị commit
+## Phá lỗi: secret bị commit
 
 ![Commit C1 chứa .env; xóa ở C2 vẫn còn trong lịch sử; làm đúng: rotate, git rm cached, gitignore](/slides/img/s29-secret.svg)
 
@@ -233,22 +260,26 @@ Kịch bản đầy đủ: [Buổi 29 – Thử thách thêm](../../labs/week-15
 
 ---
 
-## Slide 20: Lỗi thường gặp
+## Lỗi thường gặp
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| Backlog chỉ có "Làm Docker" | Viết lại theo kết quả, kèm checklist |
-| Issue không có tiêu chí hoàn thành | Thêm checklist, áp dụng DoD ở PR template |
-| `.env` xuất hiện trong `git status` | `cp -a` giữ tệp ẩn, kiểm tra bằng `check-ignore` |
-| PR không tự đóng Issue | Thêm `Closes #12` vào mô tả PR |
+| Backlog chỉ có "Làm Docker" | Viết theo kết quả |
+| Issue thiếu tiêu chí | Thêm checklist |
+| `.env` trong `git status` | `cp -a`, `check-ignore` |
+| PR không đóng Issue | Thêm `Closes #12` |
 
 ::: details Ghi chú cho mentor
+- Backlog chỉ có "Làm Docker": viết lại theo kết quả, kèm checklist.
+- Issue không có tiêu chí hoàn thành: thêm checklist và áp dụng DoD ở PR template.
+- `.env` xuất hiện trong `git status`: `cp -a` giữ tệp ẩn, kiểm tra bằng `check-ignore`.
+- PR không tự đóng Issue: thêm `Closes #12` vào mô tả PR.
 - Mermaid không hiển thị: đặt nhãn trong ngoặc kép, rút ngắn nhãn.
 :::
 
 ---
 
-## Slide 21: Tổng kết và nộp bài
+## Tổng kết và nộp bài
 
 ![Ba điều cần nhớ: kiểm chứng được, chia theo kết quả, ADR và rotate](/slides/img/s29-recap.svg)
 
@@ -261,7 +292,7 @@ Nộp bài thư mục `lab-29/`: `evidence/command-output.txt`, `report.md`, `so
 
 ---
 
-## Slide 22: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Architectural Decision Records](https://adr.github.io/): cách ghi lại quyết định kiến trúc.
 - **Tài liệu chính thức:** [Kubernetes Concepts](https://kubernetes.io/docs/concepts/): bản đồ các khái niệm để thiết kế hệ thống.

@@ -2,26 +2,24 @@
 
 > **Tóm tắt:** Khi merge vào `main`, GitHub Actions tự build image club-api, gắn tag theo SHA và đẩy lên GHCR bằng GITHUB_TOKEN. Sau đó người học pull và chạy image đã publish.
 
-## Slide 1: Mục tiêu của Ngày 10
+## Mục tiêu của Ngày 10
 
-**Sản phẩm cuối ngày:** workflow `.github/workflows/club-publish.yml` và một image công khai `ghcr.io/<tên-tài-khoản>/club-api:sha-xxxxxxx`. Đây là mốc "ship it" của Lộ trình Cơ bản.
+**Sản phẩm cuối ngày:** workflow `.github/workflows/club-publish.yml` và một image công khai `ghcr.io/<tên-tài-khoản>/club-api:sha-xxxxxxx`.
 
-Điều kiện cần:
-
-- Đã xong Ngày 9: `club-ci.yml` nằm trên `main` của `devops-labs`.
-- Repository `devops-labs` để **public** (GHCR miễn phí cho package public).
-- Docker Desktop đang chạy trong WSL.
-
-Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng kết.
+Điều kiện cần: đã xong Ngày 9, repository `devops-labs` để **public**, Docker Desktop chạy trong WSL.
 
 ::: details Ghi chú cho mentor
+- Đây là mốc "ship it" của Lộ trình Cơ bản.
+- Đã xong Ngày 9 nghĩa là `club-ci.yml` nằm trên `main` của `devops-labs`.
+- Repository để public vì GHCR miễn phí cho package public.
+- Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng kết.
 - Ba việc: workflow publish, tag `sha-` khớp commit, pull và chạy lại image.
 - Mọi lệnh chạy trong WSL, thư mục `~/devops-labs`. Thay `OWNER` bằng tên tài khoản GitHub, viết thường.
 :::
 
 ---
 
-## Slide 2: Bài toán thật: build trên laptop, cùng commit ra hai image
+## Bài toán thật: build trên laptop, cùng commit ra hai image
 
 ![Hai laptop cho hai image khác nhau, runner sạch cho một image truy vết được](/slides/img/s18-laptop-build.svg)
 
@@ -33,33 +31,34 @@ Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng k�
 
 ---
 
-## Slide 3: Khái niệm: Registry và GHCR
+## Khái niệm: Registry và GHCR
 
-- **Registry** là dịch vụ lưu trữ và phân phối image, cho phép nhiều máy cùng `docker push` và `docker pull`.
-- **GHCR** (GitHub Container Registry) là registry của GitHub, địa chỉ `ghcr.io`, gắn với tài khoản và repository GitHub.
+- **Registry** là dịch vụ lưu trữ và phân phối image; **GHCR** (GitHub Container Registry) là registry của GitHub, địa chỉ `ghcr.io`.
 - Ví dụ trong dự án: image `club-api` được đẩy lên `ghcr.io/OWNER/club-api`.
 
 ::: details Ghi chú cho mentor
+- Registry cho phép nhiều máy cùng `docker push` và `docker pull`.
+- GHCR gắn với tài khoản và repository GitHub.
 - GHCR miễn phí cho package public. Tên image phải viết thường.
 - Docker Hub là registry mặc định của Docker; hôm nay chỉ dùng GHCR.
 :::
 
 ---
 
-## Slide 4: Khái niệm: Tag
+## Khái niệm: Tag
 
 - **Tag** là nhãn do con người đặt, trỏ tới một phiên bản của image trong repository, ví dụ `sha-3f2a1bc`.
-- Một tag có thể bị gán lại sang image khác, vì vậy tên tag nên truy vết được nguồn gốc của image.
 - Ví dụ trong dự án: tag `sha-` cộng 7 ký tự đầu của commit cho biết image build từ commit nào.
 
 ::: details Ghi chú cho mentor
+- Một tag có thể bị gán lại sang image khác, vì vậy tên tag nên truy vết được nguồn gốc của image.
 - Luôn có tag SHA; không dùng `latest` để deploy.
 - Không bàn chiến lược tag (học ở Lộ trình Nâng cao).
 :::
 
 ---
 
-## Slide 5: Khái niệm: Digest
+## Khái niệm: Digest
 
 ![Một repository trên ghcr.io: tag trỏ tới digest, latest có thể đổi sang digest khác](/slides/img/s18-tag-digest.svg)
 
@@ -72,7 +71,7 @@ Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng k�
 
 ---
 
-## Slide 6: Khái niệm: GITHUB_TOKEN
+## Khái niệm: GITHUB_TOKEN
 
 ![Token tạm của mỗi lần chạy; workflow chỉ contents read, job publish thêm packages write](/slides/img/s18-token.svg)
 
@@ -86,20 +85,21 @@ Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng k�
 
 ---
 
-## Slide 7: Khái niệm: Permissions và quyền tối thiểu
+## Khái niệm: Permissions và quyền tối thiểu
 
-- **Permissions** là khóa trong workflow quy định GITHUB_TOKEN được làm gì, ví dụ `contents: read` hoặc `packages: write`.
-- **Quyền tối thiểu** (least privilege) là nguyên tắc chỉ cấp đúng quyền cần thiết, để token bị lộ cũng gây thiệt hại nhỏ.
-- Ví dụ trong dự án: cấp workflow chỉ có `contents: read`; riêng job `publish` được thêm `packages: write`.
+- **Permissions** là khóa quy định GITHUB_TOKEN được làm gì; **quyền tối thiểu** là nguyên tắc chỉ cấp đúng quyền cần thiết.
+- Ví dụ trong dự án: workflow chỉ có `contents: read`; job `publish` được thêm `packages: write`.
 
 ::: details Ghi chú cho mentor
+- Ví dụ giá trị của `permissions`: `contents: read` hoặc `packages: write`.
+- Quyền tối thiểu giúp token bị lộ cũng chỉ gây thiệt hại nhỏ.
 - Khai báo `permissions` ở cấp job ghi đè cấp workflow.
 - Nâng quyền chỉ ở job thật sự cần.
 :::
 
 ---
 
-## Slide 8: Bước 1 (10 phút): Build tay trước khi lên CI
+## Bước 1 (10 phút): Build tay trước khi lên CI
 
 Khi build tay lỗi thì CI chắc chắn lỗi.
 
@@ -119,7 +119,7 @@ docker images | grep club-api
 
 ---
 
-## Slide 9: Bước 2 (25 phút): Tạo nhánh và file workflow
+## Bước 2 (25 phút): Tạo nhánh và file workflow
 
 Làm trên nhánh riêng. Workflow nằm ở gốc repository, cạnh `club-ci.yml`.
 
@@ -137,7 +137,7 @@ Tạo `.github/workflows/club-publish.yml` và dán code của 3 slide tiếp th
 
 ---
 
-## Slide 10: Bước 2: club-publish.yml (phần 1/3)
+## Bước 2: club-publish.yml (phần 1/3)
 
 ```yaml
 name: Club Publish
@@ -168,7 +168,7 @@ jobs:
 
 ---
 
-## Slide 11: Bước 2: club-publish.yml (phần 2/3)
+## Bước 2: club-publish.yml (phần 2/3)
 
 ```yaml
       - uses: docker/login-action@v3
@@ -194,7 +194,7 @@ jobs:
 
 ---
 
-## Slide 12: Bước 2: club-publish.yml (phần 3/3)
+## Bước 2: club-publish.yml (phần 3/3)
 
 ```yaml
       - uses: docker/build-push-action@v6
@@ -215,7 +215,7 @@ jobs:
 
 ---
 
-## Slide 13: Bước 3 (15 phút): Đẩy lên, mở PR, merge
+## Bước 3 (15 phút): Đẩy lên, mở PR, merge
 
 Workflow này chỉ chạy khi code vào `main`, nên cần merge PR.
 
@@ -233,7 +233,7 @@ Trên GitHub mở PR vào `main`. Check `Club CI` của Ngày 9 phải xanh, sau
 
 ---
 
-## Slide 14: Bước 3: Xem run Club Publish
+## Bước 3: Xem run Club Publish
 
 Mở tab **Actions**, chọn run **Club Publish**, mở step `build-push-action`:
 
@@ -249,7 +249,7 @@ pushing manifest for ghcr.io/owner/club-api:sha-xxxxxxx
 
 ---
 
-## Slide 15: Bước 4 (15 phút): Tag khớp commit
+## Bước 4 (15 phút): Tag khớp commit
 
 Cập nhật `main` và lấy 7 ký tự đầu của commit:
 
@@ -269,7 +269,7 @@ Trên trang repository, cột bên phải, mục **Packages**, mở `club-api`.
 
 ---
 
-## Slide 16: Bước 4: Đổi package sang Public
+## Bước 4: Đổi package sang Public
 
 ![Trang package club-api với tag sha-3f2a1bc khớp git rev-parse --short=7 HEAD](/slides/img/s18-ghcr-package.svg)
 
@@ -284,7 +284,7 @@ Vào **Package settings**, kéo xuống Danger Zone, đổi visibility sang **Pu
 
 ---
 
-## Slide 17: Bước 5 (20 phút): Pull image đã publish
+## Bước 5 (20 phút): Pull image đã publish
 
 Xóa image local để bảo đảm image được lấy từ registry. Thay `OWNER` và tag bằng giá trị thật.
 
@@ -301,7 +301,7 @@ docker pull ghcr.io/OWNER/club-api:sha-3f2a1bc
 
 ---
 
-## Slide 18: Bước 5: Chạy image và đọc digest
+## Bước 5: Chạy image và đọc digest
 
 ```bash
 docker run --rm -d --name club-api-ghcr -p 3100:3000 ghcr.io/OWNER/club-api:sha-3f2a1bc
@@ -323,7 +323,7 @@ docker rm -f club-api-ghcr
 
 ---
 
-## Slide 19: Lỗi thường gặp 1: thiếu packages: write
+## Lỗi thường gặp 1: thiếu packages: write
 
 ![Login xanh nhưng Build and push đỏ với denied hoặc 403](/slides/img/s18-denied-push.svg)
 
@@ -336,7 +336,7 @@ Thêm `packages: write` vào job `publish`, sau đó chạy lại.
 
 ---
 
-## Slide 20: Lỗi thường gặp 2: pull bị từ chối
+## Lỗi thường gặp 2: pull bị từ chối
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
@@ -350,7 +350,7 @@ Thêm `packages: write` vào job `publish`, sau đó chạy lại.
 
 ---
 
-## Slide 21: Lỗi thường gặp 3: tên image và Dockerfile
+## Lỗi thường gặp 3: tên image và Dockerfile
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
@@ -363,7 +363,7 @@ Thêm `packages: write` vào job `publish`, sau đó chạy lại.
 
 ---
 
-## Slide 22: Tự kiểm tra
+## Tự kiểm tra
 
 1. Vì sao image build trong CI đáng tin hơn image build trên laptop?
 2. Step login xanh nhưng step push báo `denied`. Cần kiểm tra điều gì đầu tiên?
@@ -377,13 +377,13 @@ Thêm `packages: write` vào job `publish`, sau đó chạy lại.
 
 ---
 
-## Slide 23: Tiếp theo
+## Tiếp theo
 
 Người học đã đi hết đường từ code đến image công khai. Ngày 11-14 là phần hoàn thiện và demo: xem [Kế hoạch Ngày 11–14](../../curriculum/basic-wrapup.md).
 
 ---
 
-## Slide 24: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Docker Build with GitHub Actions](https://docs.docker.com/build/ci/github-actions/): build và push image trong pipeline.
 - **Tài liệu chính thức:** [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry): đẩy image lên GHCR.

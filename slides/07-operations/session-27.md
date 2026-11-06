@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học sử dụng PV, PVC và StorageClass để PostgreSQL giữ được dữ liệu khi Pod bị xóa, đồng thời dùng ingress-nginx trên kind để truy cập ứng dụng qua host club.localhost. Bài lab đầy đủ: [Buổi 27](../../labs/week-14/session-27.md).
 
-## Slide 1: Mục tiêu của buổi 27
+## Mục tiêu của buổi 27
 
 ![Ba mục tiêu: giữ dữ liệu, một cổng vào, tự chẩn đoán](/slides/img/s27-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Bài toán thực tế: xóa Pod làm mất danh sách thành viên
+## Bài toán thực tế: xóa Pod làm mất danh sách thành viên
 
 ![Pod postgres bị xóa, Pod mới khởi động với bảng members rỗng](/slides/img/s27-data-loss.svg)
 
@@ -24,23 +24,30 @@
 
 ---
 
-## Slide 3: Khái niệm: PV và PVC
+## Khái niệm: PV và PVC
 
-- **PersistentVolume (PV)** là phần dung lượng lưu trữ thật trong cluster. **PersistentVolumeClaim (PVC)** là yêu cầu cấp dung lượng và access mode do người dùng tạo.
+- **PV** là phần lưu trữ thật trong cluster; **PVC** là yêu cầu cấp dung lượng do người dùng tạo.
+- Ví dụ trong dự án: Pod `postgres-0` dùng một PVC, gắn với một PV chứa dữ liệu database.
+
+::: details Ghi chú cho mentor
+- PersistentVolume (PV) là phần dung lượng lưu trữ thật trong cluster; PersistentVolumeClaim (PVC) là yêu cầu cấp dung lượng và access mode do người dùng tạo.
 - Vòng đời của PV độc lập với Pod, nên dữ liệu trong PV còn lại khi Pod bị xóa; Pod chỉ cần tham chiếu tới PVC.
-- Ví dụ trong dự án: Pod `postgres-0` dùng một PVC, và PVC được gắn với một PV chứa dữ liệu database.
+:::
 
 ---
 
-## Slide 4: Khái niệm: StorageClass
+## Khái niệm: StorageClass
 
-- **StorageClass** là đối tượng mô tả một loại lưu trữ và cách Kubernetes tạo PV tự động (dynamic provisioning) cho loại đó.
-- Nhờ StorageClass, người dùng chỉ cần tạo PVC và PV được tạo theo yêu cầu, không cần quản trị viên tạo thủ công.
+- **StorageClass** là đối tượng mô tả một loại lưu trữ và cách Kubernetes tạo PV tự động (dynamic provisioning).
 - Ví dụ trong dự án: kind có StorageClass mặc định `standard`, với policy `Delete` và chế độ `WaitForFirstConsumer`.
 
+::: details Ghi chú cho mentor
+- Nhờ StorageClass, người dùng chỉ cần tạo PVC và PV được tạo theo yêu cầu, không cần quản trị viên tạo thủ công.
+:::
+
 ---
 
-## Slide 5: Quan hệ giữa Pod, PVC, PV và StorageClass
+## Quan hệ giữa Pod, PVC, PV và StorageClass
 
 ![Pod gọi PVC, PVC gắn với PV, StorageClass tự tạo PV](/slides/img/s27-pv-pvc-sc.svg)
 
@@ -52,15 +59,18 @@
 
 ---
 
-## Slide 6: Khái niệm: reclaimPolicy
+## Khái niệm: reclaimPolicy
 
-- **`reclaimPolicy`** là chính sách quy định việc xử lý PV (và dữ liệu bên trong) sau khi PVC liên kết với nó bị xóa; hai giá trị thường dùng là `Delete` và `Retain`.
-- Với `Delete`, PV và dữ liệu bị xóa theo PVC. Với `Retain`, PV chuyển sang trạng thái `Released` và dữ liệu được giữ lại.
+- **`reclaimPolicy`** quy định cách xử lý PV và dữ liệu bên trong sau khi PVC liên kết bị xóa: `Delete` hoặc `Retain`.
 - Ví dụ trong dự án: StorageClass `standard` của kind dùng `Delete`, nên xóa PVC làm database rỗng.
+
+::: details Ghi chú cho mentor
+- Với `Delete`, PV và dữ liệu bị xóa theo PVC. Với `Retain`, PV chuyển sang trạng thái `Released` và dữ liệu được giữ lại.
+:::
 
 ---
 
-## Slide 7: Xóa PVC thì dữ liệu đi đâu
+## Xóa PVC thì dữ liệu đi đâu
 
 ![So sánh reclaimPolicy Delete (mất dữ liệu) và Retain (PV Released, còn dữ liệu)](/slides/img/s27-reclaim.svg)
 
@@ -72,15 +82,18 @@
 
 ---
 
-## Slide 8: Khái niệm: StatefulSet
+## Khái niệm: StatefulSet
 
 - **StatefulSet** là workload dành cho ứng dụng có trạng thái: mỗi Pod có tên ổn định và có thể gắn với storage riêng.
-- Khi Pod bị xóa, StatefulSet tạo lại Pod cùng tên và gắn lại đúng storage cũ, nên dữ liệu được giữ nguyên.
 - Ví dụ trong dự án: `postgres-0` là Pod do StatefulSet `postgres` quản lý.
+
+::: details Ghi chú cho mentor
+- Khi Pod bị xóa, StatefulSet tạo lại Pod cùng tên và gắn lại đúng storage cũ, nên dữ liệu được giữ nguyên.
+:::
 
 ---
 
-## Slide 9: Database dùng StatefulSet
+## Database dùng StatefulSet
 
 ![Pod postgres-0 bị xóa, StatefulSet tạo lại cùng tên và mount lại đúng PVC](/slides/img/s27-statefulset.svg)
 
@@ -93,7 +106,7 @@
 
 ---
 
-## Slide 10: Vòng đời PVC khi tạo Pod
+## Vòng đời PVC khi tạo Pod
 
 ![Bốn bước: PVC Pending, tạo Pod, PV tự tạo và Bound, xóa Pod mà dữ liệu còn](/slides/img/s27-pvc-lifecycle.svg)
 
@@ -104,7 +117,7 @@
 
 ---
 
-## Slide 11: Demo 1: PVC ở trạng thái Pending không phải lỗi
+## Demo 1: PVC ở trạng thái Pending không phải lỗi
 
 ```text
 $ kubectl get pvc -n club demo-pvc
@@ -124,7 +137,7 @@ Chưa có Pod sử dụng PVC nên kind chưa tạo PV.
 
 ---
 
-## Slide 12: Demo 2: dữ liệu còn lại sau khi xóa Pod
+## Demo 2: dữ liệu còn lại sau khi xóa Pod
 
 ```text
 $ kubectl exec -n club postgres-0 -- psql -U club -d clubdb -c "SELECT count(*) FROM members;"   # 3
@@ -142,7 +155,7 @@ Khi xóa PVC (policy `Delete`), PV biến mất và database rỗng.
 
 ---
 
-## Slide 13: Bài toán thực tế: nhiều cổng port-forward, một tên miền
+## Bài toán thực tế: nhiều cổng port-forward, một tên miền
 
 ![Trước: mỗi Service một cổng port-forward. Sau: một tên miền club.localhost](/slides/img/s27-portforward-vs-ingress.svg)
 
@@ -154,15 +167,18 @@ Khi xóa PVC (policy `Delete`), PV biến mất và database rỗng.
 
 ---
 
-## Slide 14: Khái niệm: Ingress và ingress controller
+## Khái niệm: Ingress và ingress controller
 
-- **Ingress** là đối tượng khai báo luật định tuyến HTTP (host, path) tới các Service. **Ingress controller** là thành phần đọc các luật đó và thực thi.
-- Ingress chỉ là luật, nên nếu cluster chưa cài controller thì Ingress không có tác dụng.
+- **Ingress** là luật định tuyến HTTP (host, path) tới các Service; **ingress controller** là thành phần đọc và thực thi các luật đó.
 - Ví dụ trong dự án: ingress-nginx chuyển `/api` tới Service `backend` và `/` tới `club-web`.
+
+::: details Ghi chú cho mentor
+- Ingress chỉ là luật, nên nếu cluster chưa cài controller thì Ingress không có tác dụng.
+:::
 
 ---
 
-## Slide 15: Request đi qua Ingress
+## Request đi qua Ingress
 
 ![Trình duyệt vào ingress-nginx, /api tới backend, / tới club-web](/slides/img/s27-ingress-flow.svg)
 
@@ -175,7 +191,7 @@ Khi xóa PVC (policy `Delete`), PV biến mất và database rỗng.
 
 ---
 
-## Slide 16: Gọi qua Ingress: 200 và 404
+## Gọi qua Ingress: 200 và 404
 
 ```text
 $ curl -s -o /dev/null -w "%{http_code}\n" -H "Host: club.localhost" http://127.0.0.1/
@@ -193,24 +209,25 @@ Ingress chọn luật theo header Host. Khi thiếu Host đúng, kết quả là
 
 ---
 
-## Slide 17: Lab L1: năm phần
+## Lab L1: năm phần
 
 | Phần | Việc làm | Mốc hoàn thành |
 | --- | --- | --- |
-| 1 | Làm sạch namespace, nạp image | PVC `Pending` |
-| 2-3 | Postgres + PVC, xóa `postgres-0` | `count` trước và sau bằng nhau |
-| 4-5 | Backend, frontend, ingress-nginx | `club.localhost` trả về `200` |
+| 1 | Làm sạch | PVC `Pending` |
+| 2-3 | Xóa `postgres-0` | `count` không đổi |
+| 4-5 | Ingress | `club.localhost` `200` |
 
 Lệnh từng bước: [Buổi 27 – Storage & Ingress](../../labs/week-14/session-27.md).
 
 ::: details Ghi chú cho mentor
+- Phần 1: làm sạch namespace và nạp image; Phần 2-3: Postgres cùng PVC, xóa `postgres-0`, `count` trước và sau phải bằng nhau; Phần 4-5: backend, frontend và ingress-nginx.
 - Lỗi thường gặp: port 80 bị chiếm, quên nạp image bằng `kind load docker-image`, gọi curl thiếu header Host.
 - Phần 2: Kubernetes không tự chạy `init.sql`, cần nạp thủ công.
 :::
 
 ---
 
-## Slide 18: Debug theo lớp
+## Debug theo lớp
 
 ![Năm lớp: PVC, Pod, Service, Ingress, Controller kèm lệnh kiểm tra](/slides/img/s27-debug-layers.svg)
 
@@ -221,23 +238,25 @@ Lệnh từng bước: [Buổi 27 – Storage & Ingress](../../labs/week-14/sess
 
 ---
 
-## Slide 19: Bốn triệu chứng thường gặp
+## Bốn triệu chứng thường gặp
 
 | Triệu chứng | Nguyên nhân | Kiểm tra |
 | --- | --- | --- |
-| PVC `Pending` mãi | `storageClassName` sai | `describe pvc` |
-| `404` | Thiếu Host đúng hoặc `ingressClassName` | `get ingressclass` |
-| `503` | Service sai hoặc không có Pod Ready | `get svc,endpoints` |
-| `Connection refused` | Thiếu `extraPortMappings` | `docker ps` |
+| PVC `Pending` | `storageClassName` | `describe pvc` |
+| `404` | Thiếu Host | `get ingressclass` |
+| `503` | Không có Pod Ready | `get svc,endpoints` |
+| `Connection refused` | `extraPortMappings` | `docker ps` |
 
 ::: details Ghi chú cho mentor
+- PVC `Pending` mãi do `storageClassName` sai; `Connection refused` do thiếu `extraPortMappings`.
+- Mã 404 do thiếu Host đúng hoặc `ingressClassName`; mã 503 do Service sai hoặc không có Pod Ready.
 - Khi `storageClassName` sai (ví dụ `fast-ssd`), không có provisioner phù hợp; cần xóa PVC và tạo lại, không sửa tại chỗ được.
 - `404`: dùng `curl -H "Host: club.localhost"` và `kubectl get ingressclass`. `503`: `describe ingress`. `Connection refused`: kiểm tra cột PORTS có `80->80`.
 :::
 
 ---
 
-## Slide 20: Thử thách L2
+## Thử thách L2
 
 - Dự đoán rồi kiểm chứng vòng đời PV/PVC.
 - Chuyển PV sang `Retain`, quan sát trạng thái `Released`, phục hồi bằng `claimRef`.
@@ -252,7 +271,7 @@ Chi tiết: [Buổi 27 – Thử thách nâng cao](../../labs/week-14/session-27
 
 ---
 
-## Slide 21: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: PVC giữ dữ liệu, Ingress là luật, debug theo lớp](/slides/img/s27-recap.svg)
 
@@ -265,7 +284,7 @@ Buổi tiếp theo: [Buổi 28 – Kubernetes Operations](session-28.md).
 
 ---
 
-## Slide 22: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/): hiểu PV, PVC và vòng đời lưu trữ.
 - **Tài liệu chính thức:** [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/): định tuyến HTTP vào Service trong cluster.

@@ -4,7 +4,7 @@
 
 Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md)
 
-## Slide 1: Mục tiêu của buổi 21
+## Mục tiêu của buổi 21
 
 ![Ba mục tiêu: gọi tên thành phần, dựng cluster, chẩn đoán kubectl](/slides/img/s21-goals.svg)
 
@@ -14,7 +14,7 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 2: Bài toán thực tế: Compose chạy tốt trên một máy, nhưng chưa đủ
+## Bài toán thực tế: Compose chạy tốt trên một máy, nhưng chưa đủ
 
 ![Một máy chạy Compose, nhưng cần nhiều bản sao, tự phục hồi, nhiều máy](/slides/img/s21-compose-limit.svg)
 
@@ -25,24 +25,30 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 3: Khái niệm: Orchestration
+## Khái niệm: Orchestration
 
-- **Orchestration** là việc tự động hóa vòng đời của container ở quy mô nhiều bản sao và nhiều máy: lên lịch chạy, tự phục hồi, mở rộng, cập nhật, cấu hình và mạng.
+- **Orchestration** là việc tự động hóa vòng đời của container ở quy mô nhiều bản sao và nhiều máy.
+- Ví dụ trong dự án: backend của Club cần 2 bản sao luôn chạy; Kubernetes tạo lại bản bị mất.
+
+::: details Ghi chú cho mentor
+- Vòng đời gồm: lên lịch chạy, tự phục hồi, mở rộng, cập nhật, cấu hình và mạng.
 - **Kubernetes** (K8s) là hệ thống orchestration mã nguồn mở được dùng phổ biến cho nhu cầu này.
-- Ví dụ trong dự án: backend của Club cần 2 bản sao luôn chạy, và Kubernetes tạo lại bản nào bị mất.
+:::
 
 ---
 
-## Slide 4: Compose và Kubernetes
+## Compose và Kubernetes
 
-| Nhu cầu | Compose (1 host) | Kubernetes |
+| Nhu cầu | Compose | Kubernetes |
 | --- | --- | --- |
-| Nhiều bản sao | Thủ công | Khai báo `replicas` |
-| Container chết | Restart trên cùng máy | Tạo lại, có thể sang node khác |
-| Cập nhật | Tự thực hiện | Rolling update, rollback |
+| Nhiều bản sao | Thủ công | `replicas` |
+| Container chết | Restart cùng máy | Tạo lại, có thể sang node khác |
 | Nhiều máy | Không hỗ trợ | Mục đích thiết kế |
 
 ::: details Ghi chú cho mentor
+- Compose chạy trên một host. Về cập nhật: Compose do người dùng tự thực hiện, Kubernetes có rolling update.
+- Số bản sao được khai báo bằng `replicas`.
+- Kubernetes còn hỗ trợ rollback khi cập nhật.
 - Orchestration: tự động hóa vòng đời container ở quy mô nhiều bản sao, nhiều máy (lên lịch, tự phục hồi, scale, cập nhật, cấu hình, mạng).
 - Stack nhỏ chạy trên một máy vẫn nên dùng Compose.
 - Ví dụ so sánh: Compose phù hợp một quán nhỏ do một người quản lý, còn Kubernetes phù hợp bộ máy điều hành cả chuỗi quán.
@@ -50,15 +56,19 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 5: Khái niệm: Declarative và reconciliation loop
+## Khái niệm: Declarative và reconciliation loop
 
-- **Declarative** (khai báo) là cách mô tả trạng thái mong muốn (ví dụ "luôn có 2 bản `club-api`") bằng YAML, thay vì mô tả từng bước thực hiện.
-- **Reconciliation loop** là vòng lặp trong đó controller so sánh trạng thái mong muốn với trạng thái thực tế rồi sửa chênh lệch.
-- Ví dụ trong dự án: nếu chỉ còn 1 Pod `club-api` trong khi mong muốn là 2, controller tạo thêm 1 Pod.
+- **Declarative** (khai báo) là mô tả trạng thái mong muốn bằng YAML; **reconciliation loop** là vòng lặp so sánh và sửa chênh lệch.
+- Ví dụ trong dự án: còn 1 Pod `club-api` thay vì 2, controller tạo thêm 1.
+
+::: details Ghi chú cho mentor
+- Trong vòng lặp, controller so sánh rồi sửa chênh lệch giữa hai trạng thái.
+- Ví dụ trạng thái mong muốn: "luôn có 2 bản `club-api`", mô tả bằng YAML thay vì từng bước thực hiện.
+:::
 
 ---
 
-## Slide 6: Reconciliation loop: so sánh rồi sửa
+## Reconciliation loop: so sánh rồi sửa
 
 ![Controller so sánh mong muốn với thực tế rồi tạo thêm Pod, lặp mãi](/slides/img/s21-reconcile.svg)
 
@@ -69,15 +79,18 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 7: Khái niệm: Cluster, control plane và node
+## Khái niệm: Cluster, control plane và node
 
-- **Cluster** là tập hợp các máy chạy Kubernetes. **Control plane** là nhóm thành phần ra quyết định cho cluster, còn **worker node** là máy chạy các Pod.
-- Control plane gồm kube-apiserver, etcd, kube-scheduler và kube-controller-manager; mỗi node chạy kubelet, kube-proxy và container runtime.
+- **Cluster** là tập hợp các máy chạy Kubernetes; **control plane** là nhóm thành phần ra quyết định, **worker node** là máy chạy các Pod.
 - Ví dụ trong dự án: cluster `club` có node `club-control-plane`.
+
+::: details Ghi chú cho mentor
+- Control plane gồm kube-apiserver, etcd, kube-scheduler và kube-controller-manager; mỗi node chạy kubelet, kube-proxy và container runtime.
+:::
 
 ---
 
-## Slide 8: Control plane quyết định, node chạy Pod
+## Control plane quyết định, node chạy Pod
 
 ![Control plane gồm apiserver, etcd, scheduler, controller-manager; node gồm kubelet, kube-proxy, containerd](/slides/img/s21-components.svg)
 
@@ -89,15 +102,18 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 9: Khái niệm: API Server
+## Khái niệm: API Server
 
-- **API Server** (`kube-apiserver`) là thành phần của control plane cung cấp API của Kubernetes; mọi thành phần khác giao tiếp với cluster thông qua nó.
+- **API Server** (`kube-apiserver`) là thành phần của control plane cung cấp API của Kubernetes; mọi thành phần khác giao tiếp qua nó.
+- Ví dụ trong dự án: `kubectl get pods` hỏi API Server, không đọc trực tiếp etcd.
+
+::: details Ghi chú cho mentor
 - Thành phần này tập trung việc xác thực, phân quyền và kiểm tra tính hợp lệ, và chỉ nó đọc ghi dữ liệu trong etcd.
-- Ví dụ trong dự án: lệnh `kubectl get pods` gửi yêu cầu tới API Server, không đọc trực tiếp từ etcd.
+:::
 
 ---
 
-## Slide 10: Mọi thứ đi qua API Server
+## Mọi thứ đi qua API Server
 
 ![API Server ở giữa; kubectl, scheduler, controller-manager, kubelet đều nói chuyện qua nó; chỉ nó nói với etcd](/slides/img/s21-hub.svg)
 
@@ -108,7 +124,7 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 11: Một yêu cầu đi từ kubectl tới container
+## Một yêu cầu đi từ kubectl tới container
 
 ![Năm bước từ kubectl apply tới kubelet báo Running](/slides/img/s21-flow.svg)
 
@@ -119,15 +135,19 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 12: Khái niệm: kubeconfig và context
+## Khái niệm: kubeconfig và context
 
-- **kubeconfig** là tệp cấu hình cho `kubectl` biết cluster nào cần kết nối và dùng thông tin xác thực nào; mặc định nằm ở `~/.kube/config`.
-- **Context** là một bộ gồm cluster, user và namespace; `kubectl` chỉ gửi lệnh tới context đang được chọn.
+- **kubeconfig** là tệp cấu hình cho `kubectl` biết cluster nào cần kết nối; **context** là bộ gồm cluster, user và namespace.
 - Ví dụ trong dự án: context `kind-club` trỏ tới cluster `club`; kiểm tra bằng `kubectl config current-context`.
+
+::: details Ghi chú cho mentor
+- kubeconfig cũng chứa thông tin xác thực; mặc định nằm ở `~/.kube/config`.
+- `kubectl` chỉ gửi lệnh tới context đang được chọn.
+:::
 
 ---
 
-## Slide 13: kubectl chỉ giao tiếp với context hiện tại
+## kubectl chỉ giao tiếp với context hiện tại
 
 ![kubectl đọc kubeconfig, context kind-club trỏ tới cluster club](/slides/img/s21-context.svg)
 
@@ -139,15 +159,19 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 14: Khái niệm: kind
+## Khái niệm: kind
 
-- **kind** (Kubernetes IN Docker) là công cụ tạo cluster Kubernetes cục bộ, trong đó mỗi node là một container Docker.
-- Cluster chạy hoàn toàn trên máy người học và phù hợp cho học tập và CI; công cụ này không dành cho production.
+- **kind** (Kubernetes IN Docker) là công cụ tạo cluster Kubernetes cục bộ, mỗi node là một container Docker.
 - Ví dụ trong dự án: `kind create cluster --name club` tạo container `club-control-plane` và context `kind-club`.
+
+::: details Ghi chú cho mentor
+- Công cụ này không dành cho production.
+- Cluster chạy hoàn toàn trên máy người học và phù hợp cho học tập và CI.
+:::
 
 ---
 
-## Slide 15: kind: mỗi node là một container Docker
+## kind: mỗi node là một container Docker
 
 ![Container club-control-plane chứa Kubernetes; docker ps và kubectl get nodes thấy cùng một thứ](/slides/img/s21-kind.svg)
 
@@ -159,7 +183,7 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ---
 
-## Slide 16: Minh họa: dựng và quan sát cluster
+## Minh họa: dựng và quan sát cluster
 
 ```text
 $ kind create cluster --name club --config starter-project/k8s/kind-config.yaml
@@ -179,19 +203,25 @@ Node trong `kubectl get nodes` cũng là container trong `docker ps`.
 
 ---
 
-## Slide 17: Lab: ba phần
+## Lab: ba phần
 
 | Phần | Việc làm | Mốc hoàn thành |
 | --- | --- | --- |
-| 1 | Tạo cluster `club` từ `kind-config.yaml` | Node `Ready`, context `kind-club` |
-| 2 | Quan sát bên trong cluster, lập bảng thành phần | Chỉ ra Pod `etcd-` và `kube-apiserver-` |
-| 3 | Dừng control plane rồi khôi phục | Node `Ready` trở lại |
+| 1 | Tạo cluster | Node `Ready` |
+| 2 | Quan sát cluster | Pod `etcd-` |
+| 3 | Dừng control plane | Node `Ready` lại |
 
-Lệnh, kết quả mong đợi và bảng lỗi: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md).
+Lệnh và bảng lỗi: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-21.md).
+
+::: details Ghi chú cho mentor
+- Phần 1: tạo cluster `club` từ `kind-config.yaml`; mốc xong là node `Ready` và context `kind-club`.
+- Phần 2: quan sát bên trong cluster, lập bảng thành phần, chỉ ra Pod `etcd-` và `kube-apiserver-`.
+- Phần 3: dừng control plane rồi khôi phục; node `Ready` trở lại.
+:::
 
 ---
 
-## Slide 18: Tình huống lỗi: dừng control plane
+## Tình huống lỗi: dừng control plane
 
 ![docker stop club-control-plane làm kubectl bị từ chối kết nối; điều tra theo 3 bước rồi docker start](/slides/img/s21-break.svg)
 
@@ -203,7 +233,7 @@ Lệnh, kết quả mong đợi và bảng lỗi: [Buổi 21 – Kubernetes Intr
 
 ---
 
-## Slide 19: Tổng kết và nộp bài
+## Tổng kết và nộp bài
 
 ![Ba điều cần nhớ: khai báo, qua API Server, kind và context](/slides/img/s21-recap.svg)
 
@@ -216,7 +246,7 @@ Nộp `lab-21/`: `README.md`, `evidence/command-output.txt`, `report.md`. Giữ 
 
 ---
 
-## Slide 20: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/): Kubernetes là gì và giải quyết vấn đề nào.
 - **Tài liệu chính thức:** [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/): API Server, etcd, kubelet làm gì.

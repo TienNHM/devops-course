@@ -2,15 +2,16 @@
 
 > **Tóm tắt:** Ngày 1 thiết lập môi trường Linux thật trên Windows 11 bằng WSL2 Ubuntu, VS Code, Git và SSH key GitHub. Sau đó clone repository `devops-labs` và push file đầu tiên để xác nhận SSH key hoạt động.
 
-## Slide 1: Hôm nay làm ra gì
+## Hôm nay làm ra gì
 
-**Cuối ngày:** Ubuntu chạy trên WSL2, VS Code mở trực tiếp trong Ubuntu, SSH key xác thực được với GitHub, và `~/devops-labs` có một commit của người học trên GitHub.
+**Cuối ngày:** Ubuntu chạy trên WSL2, SSH key xác thực được với GitHub, và `~/devops-labs` có một commit của người học.
 
-**Cần có:** Windows 11, quyền Administrator, 20 GB ổ đĩa trống, VS Code, tài khoản GitHub và repository `devops-labs` ở chế độ Public ([hướng dẫn](../../resources/setup-github.md)).
-
-**Thời gian:** 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng kết và hỏi đáp.
+**Cần có:** Windows 11, quyền Administrator, 20 GB ổ đĩa trống, tài khoản GitHub ([hướng dẫn](../../resources/setup-github.md)).
 
 ::: details Ghi chú cho mentor
+- Cuối ngày, VS Code cũng mở trực tiếp trong Ubuntu.
+- Cần có thêm: VS Code, và repository `devops-labs` ở chế độ Public.
+- Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng kết và hỏi đáp.
 - Cài WSL2 lần đầu kèm khởi động lại mất khoảng 30 phút, nên yêu cầu người học cài trước giờ học nếu có thể.
 - Khảo sát nhanh hệ điều hành đang dùng: Windows 10, Windows 11 hay macOS. Máy macOS làm theo hướng dẫn riêng trong setup-guide.
 - Cài đặt chi tiết từng màn hình nằm ở [Hướng dẫn cài đặt môi trường](../../resources/setup-guide.md).
@@ -18,7 +19,7 @@
 
 ---
 
-## Slide 2: Bài toán thật: 20 máy, 20 môi trường
+## Bài toán thật: 20 máy, 20 môi trường
 
 ![Cùng lệnh docker compose up, ba máy cho ba kết quả khác nhau](/slides/img/s02-problem.svg)
 
@@ -33,7 +34,7 @@
 
 ---
 
-## Slide 3: Đường đi của code trong 10 ngày
+## Đường đi của code trong 10 ngày
 
 ![Quy trình tự động: push, build và test, đóng gói image, registry, deploy, kiểm tra](/slides/img/s01-auto-flow.svg)
 
@@ -47,72 +48,79 @@
 
 ---
 
-## Slide 4: Mỗi ngày làm ra một phần của hệ thống
+## Mỗi ngày làm ra một phần của hệ thống
 
-- **Ngày 1 đến 3:** Linux, Git, đưa project Club vào repository của người học.
-- **Ngày 4 đến 8:** chạy ứng dụng bằng container Docker và Compose.
-- **Ngày 9 và 10:** CI tự động kiểm thử mỗi lần push, sau đó tự động publish image.
-- DevOps là việc tự động hóa toàn bộ quy trình này để kết quả lặp lại được.
+- **Ngày 1 đến 3:** Linux, Git, project Club vào repository.
+- **Ngày 4 đến 8:** container Docker và Compose.
+- **Ngày 9 và 10:** CI tự động kiểm thử mỗi lần push, rồi publish image.
 
 ::: details Ghi chú cho mentor
+- Ngày 1 đến 3: đưa project Club vào repository của người học.
+- Ngày 4 đến 8: chạy ứng dụng bằng container Docker và Compose.
+- Ngày 9 và 10: sau khi kiểm thử, CI tự động publish image.
+- DevOps là việc tự động hóa toàn bộ quy trình này để kết quả lặp lại được.
 - Một slide, tối đa 1 phút.
 - Nhấn mạnh: một project duy nhất (Club) được dùng xuyên suốt 10 ngày.
 :::
 
 ---
 
-## Slide 5: Khái niệm: WSL
+## Khái niệm: WSL
 
-- **WSL** (Windows Subsystem for Linux) là tính năng của Windows cho phép chạy môi trường Linux trực tiếp trên Windows, không cần máy tính riêng.
-- WSL2 chạy một nhân Linux thật trong máy ảo nhẹ, nên các công cụ Linux hoạt động đúng như trên server.
-- Ví dụ trong dự án: Docker, Git và các script của project Club đều chạy trong WSL2 ở những ngày sau.
+- **WSL** (Windows Subsystem for Linux) là tính năng của Windows cho phép chạy môi trường Linux trực tiếp trên Windows.
+- Ví dụ trong dự án: Docker, Git và script của project Club chạy trong WSL2.
 
 ::: details Ghi chú cho mentor
+- WSL không cần máy tính riêng.
+- WSL2 chạy một nhân Linux thật trong máy ảo nhẹ, nên các công cụ Linux hoạt động đúng như trên server.
 - Không cần giải thích kiến trúc ảo hóa. Chỉ cần người học hiểu rằng đây là Linux thật, không phải trình giả lập.
 :::
 
 ---
 
-## Slide 6: Khái niệm: Distribution và Ubuntu
+## Khái niệm: Distribution và Ubuntu
 
-- **Distribution** (bản phân phối) là một bản Linux hoàn chỉnh gồm nhân Linux, công cụ hệ thống và trình quản lý gói.
-- Có nhiều distribution khác nhau, và WSL cho phép cài một hoặc nhiều bản song song.
-- Ví dụ trong dự án: khóa học dùng distribution **Ubuntu 24.04 LTS**, tên trong WSL là `Ubuntu-24.04`.
+- **Distribution** là một bản Linux hoàn chỉnh gồm nhân Linux, công cụ hệ thống và trình quản lý gói.
+- Ví dụ trong dự án: **Ubuntu 24.04 LTS**, tên trong WSL là `Ubuntu-24.04`.
 
 ::: details Ghi chú cho mentor
+- Distribution còn được gọi là bản phân phối.
+- Có nhiều distribution khác nhau, và WSL cho phép cài một hoặc nhiều bản song song.
 - LTS là phiên bản hỗ trợ dài hạn. Chỉ cần nêu một câu, không so sánh các distribution.
 :::
 
 ---
 
-## Slide 7: Bước 1 (30 phút): Cài WSL2 và Ubuntu
+## Bước 1 (30 phút): Cài WSL2 và Ubuntu
 
-- WSL2 cung cấp một môi trường Linux thật chạy ngay trong Windows.
 - Làm theo mục 2 (Bật ảo hóa) và mục 3 (WSL2 và Ubuntu 24.04) của [Hướng dẫn cài đặt](../../resources/setup-guide.md).
 - Sau khi cài xong, khởi động lại Windows. Cửa sổ Ubuntu tự mở để tạo tài khoản Linux.
 
-Username viết thường, không dấu. Khi nhập mật khẩu, terminal không hiện ký tự nào: đây là hành vi bình thường.
+Username viết thường, không dấu.
 
 ::: details Ghi chú cho mentor
+- WSL2 cung cấp một môi trường Linux thật chạy ngay trong Windows.
+- Khi nhập mật khẩu, terminal không hiện ký tự nào: đây là hành vi bình thường.
 - Lỗi thường gặp nhất ở bước này là ảo hóa chưa bật trong BIOS, xem slide lỗi thường gặp.
 - Người học cài xong sớm hỗ trợ người bên cạnh.
 :::
 
 ---
 
-## Slide 8: Khái niệm: Terminal và shell
+## Khái niệm: Terminal và shell
 
-- **Terminal** là cửa sổ nhập lệnh dạng văn bản. **Shell** là chương trình chạy bên trong terminal, đọc lệnh và thực thi chúng.
-- Trên server, thao tác chủ yếu thực hiện bằng shell vì thường không có giao diện đồ họa.
-- Ví dụ trong dự án: Ubuntu trên WSL2 dùng shell `bash`, và các lệnh `wsl`, `lsb_release`, `git` đều được gõ vào shell.
+- **Terminal** là cửa sổ nhập lệnh dạng văn bản; **shell** là chương trình bên trong terminal, đọc và thực thi lệnh.
+- Ví dụ trong dự án: Ubuntu trên WSL2 dùng shell `bash`.
 
 ::: details Ghi chú cho mentor
+- Trên server, thao tác chủ yếu thực hiện bằng shell vì thường không có giao diện đồ họa.
+- Các lệnh `wsl`, `lsb_release`, `git` đều được gõ vào shell.
 - PowerShell và bash là hai shell khác nhau: lệnh `wsl` gõ trong PowerShell, các lệnh còn lại gõ trong Ubuntu.
 :::
 
 ---
 
-## Slide 9: Bước 1: Kiểm tra WSL2 và Ubuntu
+## Bước 1: Kiểm tra WSL2 và Ubuntu
 
 Trong PowerShell:
 
@@ -139,7 +147,7 @@ lsb_release -a
 
 ---
 
-## Slide 10: Bước 2 (10 phút): Mã nguồn nằm trong ~
+## Bước 2 (10 phút): Mã nguồn nằm trong ~
 
 ![Linux ext4 trong ~ nhanh; ổ Windows dưới /mnt/c chậm và hay lỗi](/slides/img/s02-filesystems.svg)
 
@@ -152,7 +160,7 @@ Quy tắc áp dụng cả khóa: code luôn nằm trong `~` (ổ Linux), không 
 
 ---
 
-## Slide 11: Bước 2: Mở VS Code trong Ubuntu
+## Bước 2: Mở VS Code trong Ubuntu
 
 Cài extension "WSL" của Microsoft trong VS Code, sau đó chạy trong Ubuntu:
 
@@ -174,19 +182,20 @@ uname -a
 
 ---
 
-## Slide 12: Khái niệm: Git, commit và repository
+## Khái niệm: Git, commit và repository
 
-- **Git** là hệ thống quản lý phiên bản: nó lưu lịch sử thay đổi của mã nguồn dưới dạng các **commit**. **Repository** (kho mã nguồn) là nơi chứa mã nguồn cùng lịch sử đó.
-- Mỗi commit ghi lại tên và email của tác giả, nên thông tin này phải được khai báo trước.
-- Ví dụ trong dự án: repository `devops-labs` chứa toàn bộ project Club mà người học làm trong 10 ngày.
+- **Git** là hệ thống quản lý phiên bản, lưu lịch sử thay đổi của mã nguồn dưới dạng các **commit** trong một **repository**.
+- Ví dụ trong dự án: repository `devops-labs` chứa project Club của người học.
 
 ::: details Ghi chú cho mentor
+- Repository (kho mã nguồn) là nơi chứa mã nguồn cùng lịch sử đó; `devops-labs` chứa toàn bộ project Club mà người học làm trong 10 ngày.
+- Mỗi commit ghi lại tên và email của tác giả, nên thông tin này phải được khai báo trước.
 - Ngày 3 mới học Git bài bản. Hôm nay chỉ cần nắm ba thuật ngữ: Git, commit, repository.
 :::
 
 ---
 
-## Slide 13: Bước 3 (10 phút): Cấu hình Git
+## Bước 3 (10 phút): Cấu hình Git
 
 - Cấu hình tên và email trước, vì Git gắn hai thông tin này vào mỗi commit.
 - Dùng đúng email đã đăng ký GitHub.
@@ -199,7 +208,7 @@ uname -a
 
 ---
 
-## Slide 14: Bước 3: Lệnh cấu hình Git
+## Bước 3: Lệnh cấu hình Git
 
 ```bash
 sudo apt update
@@ -219,19 +228,21 @@ git config --global --list
 
 ---
 
-## Slide 15: Khái niệm: SSH key
+## Khái niệm: SSH key
 
-- **SSH key** là cặp khóa mã hóa gồm **private key** (khóa riêng) và **public key** (khóa công khai), dùng để xác thực với một máy từ xa mà không cần mật khẩu.
-- Public key được đăng ký trên GitHub. Private key luôn ở lại máy và không bao giờ được chia sẻ.
-- Ví dụ trong dự án: sau khi cấu hình, lệnh `git push` đến GitHub không yêu cầu nhập mật khẩu.
+- **SSH key** là cặp khóa gồm **private key** và **public key**, dùng để xác thực với máy từ xa mà không cần mật khẩu.
+- Ví dụ trong dự án: `git push` đến GitHub không hỏi mật khẩu.
 
 ::: details Ghi chú cho mentor
+- Private key không bao giờ được chia sẻ.
+- Private key là khóa riêng, public key là khóa công khai.
+- Public key được đăng ký trên GitHub. Private key luôn ở lại máy.
 - Nhấn mạnh sự khác biệt: file `.pub` chia sẻ được, file không có đuôi `.pub` thì không.
 :::
 
 ---
 
-## Slide 16: Bước 4 (15 phút): Cơ chế của SSH key
+## Bước 4 (15 phút): Cơ chế của SSH key
 
 ![Private key ở lại máy, public key dán lên GitHub](/slides/img/s02-ssh-keys.svg)
 
@@ -244,7 +255,7 @@ GitHub dùng public key để kiểm tra rằng người gửi nắm giữ priva
 
 ---
 
-## Slide 17: Bước 4: Tạo SSH key
+## Bước 4: Tạo SSH key
 
 ```bash
 ssh-keygen -t ed25519 -C "email-github@example.com"
@@ -263,7 +274,7 @@ Nhấn Enter để nhận đường dẫn mặc định. Kết quả: `Identity 
 
 ---
 
-## Slide 18: Bước 4: Dán public key lên GitHub
+## Bước 4: Dán public key lên GitHub
 
 1. GitHub, **Settings**, **SSH and GPG keys**, **New SSH key**.
 2. Title: `WSL2 laptop`. Loại: **Authentication Key**.
@@ -276,7 +287,7 @@ Nhấn Enter để nhận đường dẫn mặc định. Kết quả: `Identity 
 
 ---
 
-## Slide 19: Bước 4: Thử kết nối GitHub
+## Bước 4: Thử kết nối GitHub
 
 ```bash
 ssh -T git@github.com
@@ -298,19 +309,20 @@ but GitHub does not provide shell access.
 
 ---
 
-## Slide 20: Khái niệm: Remote và clone
+## Khái niệm: Remote và clone
 
-- **Remote** là bản sao của repository đặt trên máy chủ, ở đây là GitHub. **Clone** là thao tác tạo bản sao đầy đủ của remote trên máy cục bộ.
-- Nhờ clone, mã nguồn và lịch sử có sẵn trên máy để làm việc, và có thể đồng bộ lại với remote bằng `git push` và `git pull`.
-- Ví dụ trong dự án: clone `devops-labs` (repository cá nhân) và `devops-course` (chứa `starter-project/`).
+- **Remote** là bản sao repository trên máy chủ (ở đây là GitHub); **clone** là tạo bản sao đầy đủ của remote trên máy cục bộ.
+- Ví dụ trong dự án: clone `devops-labs` và `devops-course`.
 
 ::: details Ghi chú cho mentor
+- `devops-labs` là repository cá nhân, `devops-course` chứa `starter-project/`.
+- Nhờ clone, mã nguồn và lịch sử có sẵn trên máy để làm việc, và có thể đồng bộ lại với remote bằng `git push` và `git pull`.
 - Remote mặc định tên `origin`. Slide kiểm tra sau đó sẽ cho thấy tên này.
 :::
 
 ---
 
-## Slide 21: Bước 5 (5 phút): Clone devops-labs
+## Bước 5 (5 phút): Clone devops-labs
 
 `devops-labs` là repository cá nhân của người học. Repository giáo trình chứa `starter-project/` (app Club) và script kiểm tra máy.
 
@@ -330,7 +342,7 @@ Thay `TEN_GITHUB` bằng username GitHub của người học.
 
 ---
 
-## Slide 22: Bước 5: Kiểm tra bản clone
+## Bước 5: Kiểm tra bản clone
 
 ```bash
 cd ~/devops-labs
@@ -350,7 +362,7 @@ origin  git@github.com:TEN_GITHUB/devops-labs.git (push)
 
 ---
 
-## Slide 23: Bước 6 (5 phút): Chạy script check-env
+## Bước 6 (5 phút): Chạy script check-env
 
 Script chỉ đọc thông tin máy, không cài đặt hay sửa đổi gì. Số `2` là tham số của script và được giữ nguyên.
 
@@ -370,7 +382,7 @@ cat ~/check-env.txt
 
 ---
 
-## Slide 24: Bước 7 (10 phút): Push commit đầu tiên
+## Bước 7 (10 phút): Push commit đầu tiên
 
 Thêm một dòng vào `README.md` của repository `devops-labs`, sau đó đẩy lên GitHub. Nếu lệnh push thành công, SSH key đang hoạt động đúng.
 
@@ -389,7 +401,7 @@ git push -u origin HEAD
 
 ---
 
-## Slide 25: Bước 7: Kiểm tra trên GitHub
+## Bước 7: Kiểm tra trên GitHub
 
 ```text
 main -> main
@@ -406,22 +418,23 @@ Mở `https://github.com/TEN_GITHUB/devops-labs` trên trình duyệt.
 
 ---
 
-## Slide 26: Lỗi thường gặp: cài WSL
+## Lỗi thường gặp: cài WSL
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| `0x80370102` khi `wsl --install` | Bật Intel VT-x hoặc AMD SVM trong BIOS, khởi động lại |
-| VERSION là 1 trong `wsl --list --verbose` | `wsl --set-version Ubuntu-24.04 2` |
-| `code: command not found` | Cài VS Code (chọn Add to PATH), `wsl --shutdown`, mở lại Ubuntu |
+| `0x80370102` | Bật VT-x hoặc SVM trong BIOS |
+| VERSION là 1 | `wsl --set-version Ubuntu-24.04 2` |
+| `code: command not found` | Cài VS Code (Add to PATH), `wsl --shutdown` |
 
 ::: details Ghi chú cho mentor
+- `0x80370102` xuất hiện khi `wsl --install`: bật Intel VT-x hoặc AMD SVM trong BIOS rồi khởi động lại. VERSION là 1 trong `wsl --list --verbose` thì chạy lệnh nêu trên. Với `code: command not found`: cài VS Code (chọn Add to PATH), chạy `wsl --shutdown`, mở lại Ubuntu.
 - Kiểm tra ảo hóa: Task Manager, tab Performance, CPU, dòng Virtualization. Nếu là Disabled thì vào BIOS/UEFI để bật.
 - `wsl --shutdown` tắt mọi distribution và làm mất thay đổi chưa lưu: cần lưu file và đóng VS Code trước khi chạy.
 :::
 
 ---
 
-## Slide 27: Lỗi thường gặp: Permission denied (publickey)
+## Lỗi thường gặp: Permission denied (publickey)
 
 `ssh -T git@github.com` báo `Permission denied (publickey)`.
 
@@ -436,7 +449,7 @@ Mở `https://github.com/TEN_GITHUB/devops-labs` trên trình duyệt.
 
 ---
 
-## Slide 28: Lỗi thường gặp: ký tự \r trong script
+## Lỗi thường gặp: ký tự \r trong script
 
 `bash\r: No such file or directory` hoặc `\r: command not found`.
 
@@ -449,7 +462,7 @@ Mở `https://github.com/TEN_GITHUB/devops-labs` trên trình duyệt.
 
 ---
 
-## Slide 29: Tự kiểm tra
+## Tự kiểm tra
 
 1. Vì sao code nên nằm trong `~` thay vì `/mnt/c/Users/...`?
 2. Public key và private key khác nhau thế nào, khóa nào được chia sẻ?
@@ -463,13 +476,13 @@ Mở `https://github.com/TEN_GITHUB/devops-labs` trên trình duyệt.
 
 ---
 
-## Slide 30: Tiếp theo
+## Tiếp theo
 
 Ngày 2: dùng Linux CLI để đọc project Club và một file log: [Slide Ngày 02](session-03.md).
 
 ---
 
-## Slide 31: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [WSL documentation](https://learn.microsoft.com/en-us/windows/wsl/): cài và dùng Linux trên Windows.
 - **Tài liệu chính thức:** [VS Code Remote với WSL](https://code.visualstudio.com/docs/remote/wsl): viết code trong WSL bằng VS Code.

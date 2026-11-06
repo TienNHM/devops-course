@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học trình bày cách tạo user và group, phân quyền thư mục dùng chung bằng chmod, chown và setgid, quản lý process và biến môi trường, và chạy một systemd service trên WSL2 Ubuntu. Bài học: [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md).
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: phân quyền, quản lý process, biến môi trường](/slides/img/s04-goals.svg)
 
@@ -14,7 +14,7 @@
 
 ---
 
-## Slide 2: Bài toán thực tế: một tài khoản chung và `chmod 777`
+## Bài toán thực tế: một tài khoản chung và `chmod 777`
 
 ![Cả nhóm dùng chung tài khoản, chmod 777, mất .env không truy vết được](/slides/img/s04-problem.svg)
 
@@ -26,7 +26,7 @@
 
 ---
 
-## Slide 3: Khái niệm: User, group, UID và GID
+## Khái niệm: User, group, UID và GID
 
 ```text
 $ id
@@ -34,29 +34,31 @@ uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)
 ```
 
 - **UID** và **GID** là số định danh của user và của group; Linux so sánh các số này, còn tên chỉ là nhãn.
-- UID 0 là root, user thông thường bắt đầu từ 1000. Mỗi user có một group chính và có thể có nhiều group phụ.
+- Ví dụ trong dự án: `id clb-guest` không liệt kê group `clbdev`.
 
 ::: details Ghi chú cho mentor
+- UID 0 là root, user thông thường bắt đầu từ 1000. Mỗi user có một group chính và có thể có nhiều group phụ.
 - Ví dụ so sánh: UID giống số căn cước, group giống tổ công tác.
 - Tệp chính: `/etc/passwd`, `/etc/group`, `/etc/shadow` (chỉ root đọc). Xem group bằng `getent group tên`.
 :::
 
 ---
 
-## Slide 4: Khái niệm: Chuỗi quyền `drwxrws---`
+## Khái niệm: Chuỗi quyền `drwxrws---`
 
 ![Chuỗi quyền gồm loại, owner, group, other và giá trị r 4, w 2, x 1](/slides/img/s04-perm-string.svg)
 
 - **Chuỗi quyền** là 10 ký tự do `ls -l` hiển thị: loại tệp, rồi ba nhóm quyền r, w, x cho owner, group và other.
-- Với thư mục, r cho phép liệt kê, w cho phép tạo hoặc xóa tệp, x cho phép đi vào. Ví dụ `chmod 750` nghĩa là `rwx`, `r-x`, `---`.
+- Ví dụ trong dự án: `drwxrws---` trên `/srv/club-shared`.
 
 ::: details Ghi chú cho mentor
+- Với thư mục, r cho phép liệt kê, w cho phép tạo hoặc xóa tệp, x cho phép đi vào. Ví dụ `chmod 750` nghĩa là `rwx`, `r-x`, `---`.
 - Hay nhầm: xóa tệp cần quyền w trên thư mục chứa nó, không phải quyền w trên tệp.
 :::
 
 ---
 
-## Slide 5: Kernel chỉ chọn một nhóm quyền
+## Kernel chỉ chọn một nhóm quyền
 
 ![Kernel kiểm tra UID owner, rồi GID group, còn lại là other](/slides/img/s04-kernel-pick.svg)
 
@@ -68,14 +70,15 @@ uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)
 
 ---
 
-## Slide 6: Khái niệm: setgid và umask
+## Khái niệm: setgid và umask
 
 ![Thư mục có setgid cho file mới group clbdev, không có thì group cá nhân](/slides/img/s04-setgid.svg)
 
 - **setgid** trên thư mục khiến tệp mới tạo bên trong thuộc group của thư mục, thay vì group chính của người tạo.
-- **umask** là mặt nạ quyền bị loại khi tạo tệp mới; ví dụ umask 007 cho tệp mới có quyền `rw-rw----`.
+- Ví dụ trong dự án: `/srv/club-shared` dùng `chmod 2770`, tệp mới thuộc `clbdev`.
 
 ::: details Ghi chú cho mentor
+- **umask** là mặt nạ quyền bị loại khi tạo tệp mới; ví dụ umask 007 cho tệp mới có quyền `rw-rw----`.
 - Công thức thư mục chung: group sở hữu + `2770` + umask 007 hoặc 002.
 - umask là quyền bị trừ khi tạo tệp: 022 cho tệp 644, 007 cho tệp 660.
 - Sticky bit (`+t`): chỉ owner của tệp được xóa tệp trong thư mục, như `/tmp`.
@@ -83,7 +86,7 @@ uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)
 
 ---
 
-## Slide 7: Demo 1: đọc quyền thực tế
+## Demo 1: đọc quyền thực tế
 
 ```bash
 id
@@ -104,7 +107,7 @@ cat: /etc/shadow: Permission denied
 
 ---
 
-## Slide 8: Thư mục chung: dev1 ghi, dev2 đọc, guest bị chặn
+## Thư mục chung: dev1 ghi, dev2 đọc, guest bị chặn
 
 ```bash
 sudo chmod 2770 /srv/club-shared
@@ -125,14 +128,16 @@ Dòng cuối là kết quả khi `clb-guest` chạy `ls`.
 
 ---
 
-## Slide 9: Khái niệm: Process, PID và tín hiệu
+## Khái niệm: Process, PID và tín hiệu
 
 ![kill gửi SIGTERM để process tự dọn; kill -9 gửi SIGKILL giết ngay](/slides/img/s04-signals.svg)
 
-- **Process** là một chương trình đang chạy, được nhận diện bằng PID; mỗi process có UID và PPID (PID của process cha).
-- **Tín hiệu** (signal) là thông điệp gửi tới process. `kill` gửi SIGTERM để process tự dọn dẹp; `kill -9` gửi SIGKILL để dừng ngay.
+- **Process** là một chương trình đang chạy, được nhận diện bằng PID; **tín hiệu** (signal) là thông điệp gửi tới process.
+- Ví dụ trong dự án: `sleep 600 &` rồi `kill %1`, sau đó `kill -9`.
 
 ::: details Ghi chú cho mentor
+- Mỗi process có UID và PPID (PID của process cha).
+- `kill` gửi SIGTERM để process tự dọn dẹp; `kill -9` gửi SIGKILL để dừng ngay.
 - Tìm process bằng `ps aux`, `pgrep -a tên`; `jobs` liệt kê job của shell.
 - Lab: `sleep 600 &`, `kill %1`; process chạy `trap "" TERM` bỏ qua SIGTERM nên cần `pkill -9`.
 - Không dùng `pkill sleep` vì lệnh này dừng mọi process tên `sleep` của người dùng.
@@ -140,7 +145,7 @@ Dòng cuối là kết quả khi `clb-guest` chạy `ls`.
 
 ---
 
-## Slide 10: Khái niệm: Biến môi trường và `export`
+## Khái niệm: Biến môi trường và `export`
 
 ![Biến shell không sang process con, biến export thì có](/slides/img/s04-env.svg)
 
@@ -154,7 +159,7 @@ Dòng cuối là kết quả khi `clb-guest` chạy `ls`.
 
 ---
 
-## Slide 11: Demo 2: biến `export`
+## Demo 2: biến `export`
 
 ```bash
 CLUB=dsc
@@ -172,7 +177,7 @@ Câu hỏi: nếu quên `export`, ứng dụng đọc `DB_PASSWORD` sẽ nhận 
 
 ---
 
-## Slide 12: Debug: đã thêm vào group nhưng vẫn `Permission denied`
+## Debug: đã thêm vào group nhưng vẫn `Permission denied`
 
 ![Phiên cũ giữ danh sách group cũ nên vẫn bị từ chối, đăng nhập lại thì được](/slides/img/s04-stale-group.svg)
 
@@ -190,25 +195,25 @@ Câu hỏi: nếu quên `export`, ứng dụng đọc `DB_PASSWORD` sẽ nhận 
 
 ---
 
-## Slide 13: Lab: bốn phần trong 60 phút
+## Lab: bốn phần trong 60 phút
 
-| Phần | Việc làm | Mốc xong |
-| --- | --- | --- |
-| 1 | Group `clbdev` và ba user, `usermod -aG` | `id clb-guest` không có `clbdev` |
-| 2 | Thư mục `chmod 2770`, so với không setgid | guest bị `Permission denied` |
-| 3 | `sleep` nền, `kill`, `kill -9` | lệnh cuối in `sach` |
-| 4 | Biến shell và biến `export` | `[trong]` rồi `[doi-mat-khau-that]` |
+1. Group `clbdev`, ba user: `clb-guest` ngoài `clbdev`.
+2. `chmod 2770`: guest bị chặn.
+3. `kill`, `kill -9`: in `sach`.
+4. `export`: `[doi-mat-khau-that]`.
 
 Lệnh đầy đủ: [Buổi 04 – Linux Administration](../../labs/week-02/session-04.md).
 
 ::: details Ghi chú cho mentor
+- Mốc phần 1: `id clb-guest` không có `clbdev`; mốc phần 2: guest bị `Permission denied`; mốc phần 4: `[trong]` rồi `[doi-mat-khau-that]`.
+- Phần 1 dùng `usermod -aG`; phần 2 so sánh thư mục có và không có setgid; phần 3 dùng `sleep` nền với `kill` rồi `kill -9`; phần 4 so sánh biến shell với biến `export`.
 - Nhắc tùy chọn `-a` trong `usermod -aG`. Dọn user, group, thư mục thử nghiệm rồi nộp `lab-04/`.
 - Thận trọng với `sudo rm -rf`: chỉ chạy trên đúng hai thư mục của lab.
 :::
 
 ---
 
-## Slide 14: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: một nhóm quyền, SIGTERM trước, phải export](/slides/img/s04-recap.svg)
 
@@ -216,7 +221,7 @@ Buổi tiếp theo: [Buổi 05 – Networking Fundamentals](session-05.md).
 
 ---
 
-## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [credentials(7): user, group, process](https://man7.org/linux/man-pages/man7/credentials.7.html): hiểu UID, GID và quyền của tiến trình.
 - **Tài liệu chính thức:** [The Linux Command Line](https://linuxcommand.org/tlcl.php): các chương về quyền, tiến trình, gói phần mềm.

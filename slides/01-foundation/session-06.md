@@ -2,16 +2,15 @@
 
 > **Tóm tắt:** Ngày 3 đưa dự án Club vào repository `devops-labs` bằng feature branch và Pull Request, chặn tệp `.env` bằng `.gitignore`, rồi tạo và gỡ một merge conflict có chủ đích.
 
-## Slide 1: Mục tiêu và sản phẩm cuối ngày
+## Mục tiêu và sản phẩm cuối ngày
 
 **Mốc cuối ngày:** thư mục `club/` nằm trên `main` của `devops-labs` thông qua một Pull Request đã merge, và một conflict thật đã được gỡ.
-
-- Điều kiện: đã hoàn thành Ngày 2; repository `devops-labs` được clone ở `~/devops-labs`; đã đăng nhập GitHub bằng SSH key.
-- Thư mục `~/devops-course/starter-project` còn nguyên.
 
 Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ::: details Ghi chú cho mentor
+- Điều kiện: đã hoàn thành Ngày 2 và đăng nhập GitHub bằng SSH key.
+- Repository `devops-labs` được clone ở `~/devops-labs`; thư mục `~/devops-course/starter-project` còn nguyên.
 - Thực hành trong WSL, tại `~/` (không dùng `/mnt/c`).
 - Phân bổ 85 phút: Bước 1 (5), Bước 2 (10), Bước 3 (10), Bước 4 (10), Bước 5 (15), Bước 6 (5), Bước 7 (30).
 - Nhắc: không dán token hay password vào lệnh, tệp hoặc tin nhắn.
@@ -20,7 +19,7 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 2: Vấn đề: nhiều người cùng push thẳng lên main
+## Vấn đề: nhiều người cùng push thẳng lên main
 
 ![Push thẳng main dẫn tới lộ .env, mất commit, demo hỏng](/slides/img/s06-chaos.svg)
 
@@ -32,15 +31,18 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 3: Khái niệm: Git và repository
+## Khái niệm: Git và repository
 
-- **Git** là hệ thống quản lý phiên bản (version control system): nó lưu lịch sử thay đổi của mã nguồn.
-- **Repository** (kho mã nguồn) là nơi Git lưu toàn bộ tệp của dự án cùng lịch sử thay đổi của chúng.
-- Ví dụ trong dự án: `~/devops-labs` là một repository, và `club/` sẽ trở thành một thư mục trong đó.
+- **Git** là hệ thống quản lý phiên bản (version control system) lưu lịch sử thay đổi của mã nguồn trong **repository**.
+- Ví dụ trong dự án: `~/devops-labs` là một repository, và `club/` sẽ trở thành thư mục trong đó.
+
+::: details Ghi chú cho mentor
+- Repository (kho mã nguồn) là nơi Git lưu toàn bộ tệp của dự án cùng lịch sử thay đổi của chúng.
+:::
 
 ---
 
-## Slide 4: Bốn vùng của Git
+## Bốn vùng của Git
 
 ![Working directory, staging, local repository, remote và lệnh giữa các vùng](/slides/img/s06-four-areas.svg)
 
@@ -51,31 +53,43 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 5: Khái niệm: Commit
+## Khái niệm: Commit
 
 - **Commit** là một bản ghi (snapshot) trạng thái các tệp tại một thời điểm, kèm thông điệp mô tả thay đổi.
+- Ví dụ trong dự án: `git commit -m "Add Club project"` tạo commit chứa `club/`.
+
+::: details Ghi chú cho mentor
 - Các commit nối tiếp nhau tạo thành lịch sử của repository, nên có thể xem lại hoặc quay về từng thời điểm.
-- Ví dụ trong dự án: ở Bước 4, lệnh `git commit -m "Add Club project"` tạo commit đầu tiên chứa thư mục `club/`.
+- Commit đầu tiên chứa thư mục `club/` được tạo ở Bước 4.
+:::
 
 ---
 
-## Slide 6: Khái niệm: Branch
+## Khái niệm: Branch
 
 - **Branch** (nhánh) là một dòng lịch sử commit riêng, tách ra từ một điểm của nhánh khác.
+- Ví dụ trong dự án: `feature/add-club` chứa việc thêm `club/`.
+
+::: details Ghi chú cho mentor
 - Công việc trên branch không ảnh hưởng đến `main` cho đến khi branch được merge.
-- Ví dụ trong dự án: branch `feature/add-club` chứa việc thêm `club/`; `main` giữ nguyên cho đến khi Pull Request được merge.
+- `main` giữ nguyên cho đến khi Pull Request được merge.
+:::
 
 ---
 
-## Slide 7: Khái niệm: Remote và push
+## Khái niệm: Remote và push
 
-- **Remote** là phiên bản của repository đặt trên máy chủ, ở đây là GitHub; tên mặc định của remote là `origin`.
-- **Push** gửi các commit từ repository trên máy lên remote; **pull** lấy commit mới từ remote về máy.
+- **Remote** là phiên bản của repository đặt trên máy chủ, ở đây là GitHub; **push** gửi commit từ máy lên remote.
 - Ví dụ trong dự án: `git push -u origin feature/add-club` gửi branch lên GitHub.
 
+::: details Ghi chú cho mentor
+- Tên mặc định của remote là `origin`.
+- Pull lấy commit mới từ remote về máy.
+:::
+
 ---
 
-## Slide 8: Bước 1 (5 phút): Kiểm tra Git và cập nhật main
+## Bước 1 (5 phút): Kiểm tra Git và cập nhật main
 
 Git cần biết danh tính của người commit, và `main` trên máy phải là bản mới nhất.
 
@@ -99,7 +113,7 @@ Khi thiếu tên hoặc email, đặt bằng lệnh: `git config --global user.n
 
 ---
 
-## Slide 9: Bước 2 (10 phút): Tạo branch và copy dự án Club
+## Bước 2 (10 phút): Tạo branch và copy dự án Club
 
 Branch là một dòng lịch sử riêng, do đó `main` không bị ảnh hưởng cho đến khi Pull Request được merge.
 
@@ -121,15 +135,20 @@ Kết quả: `ls -a club` liệt kê `backend`, `frontend`, `database`, `compose
 
 ---
 
-## Slide 10: Khái niệm: .gitignore
+## Khái niệm: .gitignore
 
-- **`.gitignore`** là tệp liệt kê các mẫu tên tệp mà Git phải bỏ qua, không đưa vào commit.
-- Tệp chứa bí mật như `.env` (mật khẩu, khóa) cần được liệt kê ở đây để không bị đẩy lên repository công khai.
-- Lưu ý: `.gitignore` chỉ có tác dụng với tệp Git chưa theo dõi; tệp đã được commit trước đó vẫn tiếp tục bị theo dõi.
+- **`.gitignore`** là tệp liệt kê các mẫu tên tệp mà Git phải bỏ qua.
+- Ví dụ trong dự án: `.env` được liệt kê để không bị push.
+- Lưu ý: tệp đã commit vẫn bị theo dõi.
+
+::: details Ghi chú cho mentor
+- Git bỏ qua tệp khỏi commit. Tệp chứa bí mật như `.env` (mật khẩu, khóa) cần được liệt kê ở đây để không bị đẩy lên repository công khai.
+- `.gitignore` chỉ có tác dụng với tệp Git chưa theo dõi.
+:::
 
 ---
 
-## Slide 11: Bước 3 (10 phút): .gitignore phải có trước git add
+## Bước 3 (10 phút): .gitignore phải có trước git add
 
 ![Add trước khi có .gitignore làm .env vào staging; có .gitignore thì không](/slides/img/s06-gitignore.svg)
 
@@ -140,7 +159,7 @@ Kết quả: `ls -a club` liệt kê `backend`, `frontend`, `database`, `compose
 
 ---
 
-## Slide 12: Bước 3: Chứng minh .env bị chặn
+## Bước 3: Chứng minh .env bị chặn
 
 Tạo một `.env` giả từ tệp mẫu, rồi kiểm tra Git có bỏ qua tệp đó hay không.
 
@@ -163,7 +182,7 @@ Kết quả: `check-ignore` in một dòng có `.gitignore:1:.env`; `git status 
 
 ---
 
-## Slide 13: Bước 4 (10 phút): Commit đúng thư mục club
+## Bước 4 (10 phút): Commit đúng thư mục club
 
 Chỉ add thư mục `club/`. Không dùng `git add .` khi chưa chắc `.gitignore` đã đầy đủ.
 
@@ -186,7 +205,7 @@ Kết quả: commit báo `N files changed`, dòng cuối là `OK: khong co file 
 
 ---
 
-## Slide 14: Bước 5 (15 phút): Push branch lên GitHub
+## Bước 5 (15 phút): Push branch lên GitHub
 
 Tùy chọn `-u` ghi nhớ upstream, vì vậy các lần sau chỉ cần chạy `git push`.
 
@@ -204,15 +223,19 @@ Kết quả: dòng cuối là `branch 'feature/add-club' set up to track 'origin
 
 ---
 
-## Slide 15: Khái niệm: Pull Request và merge
+## Khái niệm: Pull Request và merge
 
-- **Pull Request** (PR) là yêu cầu của GitHub để đưa các commit của một branch vào branch khác, kèm không gian xem xét (review) thay đổi.
-- **Merge** là thao tác Git hợp nhất lịch sử của hai branch; PR được merge khi nội dung đã được xem xét.
-- Ví dụ trong dự án: PR từ `feature/add-club` vào `main`, rồi nút "Merge pull request" đưa `club/` vào `main`.
+- **Pull Request** (PR) là yêu cầu của GitHub để đưa commit của một branch vào branch khác, kèm không gian xem xét (review).
+- Ví dụ trong dự án: PR từ `feature/add-club` vào `main`, rồi "Merge pull request".
+
+::: details Ghi chú cho mentor
+- Merge là thao tác Git hợp nhất lịch sử của hai branch; PR được merge khi nội dung đã được xem xét.
+- Nút "Merge pull request" đưa `club/` vào `main`.
+:::
 
 ---
 
-## Slide 16: Bước 5: Mở Pull Request và tự review
+## Bước 5: Mở Pull Request và tự review
 
 ![Dev A push, mở PR, reviewer approve, merge, rồi git pull](/slides/img/s06-pr-flow.svg)
 
@@ -227,7 +250,7 @@ Chọn "Compare & pull request": base là `main`, compare là `feature/add-club`
 
 ---
 
-## Slide 17: Bước 6 (5 phút): Merge và cập nhật main local
+## Bước 6 (5 phút): Merge và cập nhật main local
 
 Sau khi merge trên GitHub, kéo `main` mới về máy rồi xóa branch đã xong việc.
 
@@ -249,15 +272,19 @@ Kết quả: `Deleted branch feature/add-club`; `git log` có commit `Add Club p
 
 ---
 
-## Slide 18: Khái niệm: Merge conflict
+## Khái niệm: Merge conflict
 
 - **Merge conflict** (xung đột merge) xảy ra khi hai branch cùng sửa một vị trí trong một tệp và Git không thể tự chọn kết quả.
+- Ví dụ trong dự án: hai branch cùng sửa dòng 1 của `club/README.md`.
+
+::: details Ghi chú cho mentor
 - Git chỉ đánh dấu các đoạn khác nhau trong tệp; việc quyết định nội dung cuối cùng thuộc về con người.
-- Ví dụ trong dự án: ở Bước 7, hai branch cùng sửa dòng 1 của `club/README.md`.
+- Tình huống này được tạo ở Bước 7.
+:::
 
 ---
 
-## Slide 19: Bước 7 (30 phút): Người merge sau là người gỡ conflict
+## Bước 7 (30 phút): Người merge sau là người gỡ conflict
 
 ![Hai nhánh cùng sửa dòng 1: PR P merge trước, PR Q báo conflict rồi được gỡ](/slides/img/s06-conflict-flow.svg)
 
@@ -268,7 +295,7 @@ Kết quả: `Deleted branch feature/add-club`; `git log` có commit `Add Club p
 
 ---
 
-## Slide 20: Bước 7: Hai branch cùng sửa dòng 1 (phần 1/2)
+## Bước 7: Hai branch cùng sửa dòng 1 (phần 1/2)
 
 Branch `title-a` đi ra từ `main` và sửa dòng 1 của `club/README.md`.
 
@@ -284,7 +311,7 @@ git push -u origin feature/title-a
 
 ---
 
-## Slide 21: Bước 7: Hai branch cùng sửa dòng 1 (phần 2/2)
+## Bước 7: Hai branch cùng sửa dòng 1 (phần 2/2)
 
 Branch `title-b` cũng đi ra từ `main` và sửa đúng dòng 1 đó.
 
@@ -300,7 +327,7 @@ git push -u origin feature/title-b
 
 ---
 
-## Slide 22: Bước 7: Merge A trước, rồi gặp conflict ở B
+## Bước 7: Merge A trước, rồi gặp conflict ở B
 
 Trên GitHub, mở PR cho cả hai branch và merge PR của `title-a` trước. PR của `title-b` khi đó báo: `This branch has conflicts that must be resolved`.
 
@@ -324,7 +351,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 ---
 
-## Slide 23: Bước 7: Đọc dấu conflict
+## Bước 7: Đọc dấu conflict
 
 Mở tệp bằng lệnh `code club/README.md`. Nội dung có dạng:
 
@@ -345,7 +372,7 @@ Phần phía trên `=======` là nội dung của branch hiện tại, phần ph
 
 ---
 
-## Slide 24: Bước 7: Kiểm tra, commit, push
+## Bước 7: Kiểm tra, commit, push
 
 ```bash
 grep -n '^<<<<<<<\|^=======\|^>>>>>>>' club/README.md || echo "Khong con conflict marker"
@@ -362,7 +389,7 @@ git push
 
 ---
 
-## Slide 25: Bước 7: Merge B và dọn dẹp
+## Bước 7: Merge B và dọn dẹp
 
 Quay lại GitHub: PR của `title-b` đã hết conflict, chọn Merge. Sau đó dọn dẹp:
 
@@ -382,7 +409,7 @@ head -1 club/README.md
 
 ---
 
-## Slide 26: Lỗi thường gặp: push bị từ chối
+## Lỗi thường gặp: push bị từ chối
 
 ```text
 ! [rejected]  main -> main (fetch first)
@@ -397,34 +424,34 @@ Remote có commit mới mà repository trên máy chưa có. Chạy `git pull`, 
 
 ---
 
-## Slide 27: Lỗi thường gặp: Permission denied và .env
+## Lỗi thường gặp: Permission denied và .env
 
-| Triệu chứng | Nguyên nhân | Cách sửa |
-| --- | --- | --- |
-| `Permission denied (publickey)` khi push | SSH key chưa thêm vào GitHub | `ssh -T git@github.com`, rồi làm lại phần SSH của Ngày 1 |
-| `.env` xuất hiện trong `git status` | `.gitignore` thiếu dòng `.env`, hoặc file đã bị theo dõi | Thêm `.env` vào `.gitignore`; đã tracked thì `git rm --cached club/.env` rồi commit |
+- `Permission denied (publickey)` khi push: chạy `ssh -T git@github.com`.
+- `.env` xuất hiện trong `git status`: thêm `.env` vào `.gitignore`; đã tracked thì `git rm --cached club/.env`.
 
 ::: details Ghi chú cho mentor
+- Nguyên nhân lỗi publickey: SSH key chưa thêm vào GitHub; sửa bằng cách làm lại phần SSH của Ngày 1, rồi commit lại nếu cần.
+- Nguyên nhân `.env` xuất hiện: `.gitignore` thiếu dòng `.env`, hoặc tệp đã bị theo dõi; sau `git rm --cached` cần commit.
 - Khi secret thật đã được push lên GitHub, phải đổi secret đó; chỉ xóa tệp là chưa đủ.
 :::
 
 ---
 
-## Slide 28: Lỗi thường gặp: club đã tồn tại, marker còn sót
+## Lỗi thường gặp: club đã tồn tại, marker còn sót
 
-| Triệu chứng | Nguyên nhân | Cách sửa |
-| --- | --- | --- |
-| `cp: cannot create directory ... File exists` | `club/` đã có từ lần thử trước | `ls ~/devops-labs/club`; nếu chỉ là bản thử thì `rm -rf ~/devops-labs/club` rồi copy lại |
-| `<<<<<<<` còn trong file sau commit | Quên xóa ba dòng dấu hiệu | Chạy `grep` ở Bước 7, sửa, commit lại |
-| Merge xong nhưng `main` local chưa có `club/` | Quên `git pull` | `git switch main` rồi `git pull` |
+- `cp: cannot create directory ... File exists`: `club/` đã có; kiểm tra bằng `ls`.
+- `<<<<<<<` còn trong tệp sau commit: chạy `grep` ở Bước 7, sửa, commit lại.
+- `main` local chưa có `club/`: `git switch main` rồi `git pull`.
 
 ::: details Ghi chú cho mentor
+- `cp ... File exists`: `club/` đã có từ lần thử trước; nếu chỉ là bản thử thì `rm -rf ~/devops-labs/club` rồi copy lại.
+- Marker còn sót do quên xóa ba dòng dấu hiệu; `main` local thiếu `club/` do quên `git pull`.
 - Cảnh báo về `rm -rf`: chỉ xóa khi chắc chắn đó là bản thử, và kiểm tra đường dẫn hai lần.
 :::
 
 ---
 
-## Slide 29: Tự kiểm tra
+## Tự kiểm tra
 
 1. Tệp `.env` đã được thêm vào `.gitignore` nhưng `git status` vẫn báo `.env` thay đổi. Nguyên nhân là gì?
 2. Vì sao người merge sau là người phải gỡ conflict?
@@ -438,13 +465,13 @@ Remote có commit mới mà repository trên máy chưa có. Chạy `git pull`, 
 
 ---
 
-## Slide 30: Tiếp theo
+## Tiếp theo
 
 Ngày 4 chạy trang Club bằng container: [Ngày 4 – Chạy trang Club bằng container](../02-docker/session-07.md).
 
 ---
 
-## Slide 31: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Pro Git book](https://git-scm.com/book/en/v2): sách Git chính thức, miễn phí.
 - **Tài liệu chính thức:** [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow): quy trình branch, PR, merge đơn giản.

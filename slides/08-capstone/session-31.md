@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Nhóm kiểm thử hệ thống capstone từ máy sạch, cố ý gây lỗi có kiểm soát bằng failure injection, đọc trạng thái, events và log để xác định nguyên nhân gốc, rồi ghi lại thành troubleshooting log và runbook. Lệnh lab: [Buổi 31](../../labs/week-16/session-31.md).
 
-## Slide 1: Mục tiêu: gây lỗi có kiểm soát
+## Mục tiêu: gây lỗi có kiểm soát
 
 ![Ba mục tiêu: test máy sạch, failure injection, tìm nguyên nhân](/slides/img/s31-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Chạy được trên máy người viết, lỗi trên máy khác
+## Chạy được trên máy người viết, lỗi trên máy khác
 
 ![Máy người viết có sẵn image, .env, volume; máy khác thiếu DB_PASSWORD và bị ImagePullBackOff](/slides/img/s31-my-machine.svg)
 
@@ -24,15 +24,19 @@
 
 ---
 
-## Slide 3: Khái niệm: Smoke test
+## Khái niệm: Smoke test
 
-- **Smoke test** là bước kiểm tra nhanh nhằm xác nhận các chức năng thiết yếu của hệ thống đang hoạt động sau khi triển khai.
-- Bước này phát hiện sớm các lỗi lớn, nên được chạy trước khi thực hiện những kiểm thử tốn thời gian hơn.
+- **Smoke test** là bước kiểm tra nhanh xác nhận các chức năng thiết yếu hoạt động sau khi triển khai.
 - Ví dụ trong dự án: `curl /health`, `curl /ready` và `curl /api/members` sau khi `docker compose up`.
+
+::: details Ghi chú cho mentor
+- Bước này phát hiện sớm các lỗi lớn, nên được chạy trước khi thực hiện những kiểm thử tốn thời gian hơn.
+- Smoke test xác nhận hệ thống đang hoạt động ở mức cơ bản trước khi triển khai.
+:::
 
 ---
 
-## Slide 4: Kiểm thử không chỉ là npm test
+## Kiểm thử không chỉ là npm test
 
 ![Năm tầng kiểm thử từ unit tới clean-machine](/slides/img/s31-test-layers.svg)
 
@@ -43,15 +47,19 @@
 
 ---
 
-## Slide 5: Khái niệm: Failure injection
+## Khái niệm: Failure injection
 
-- **Failure injection** (gây lỗi có chủ đích) là kỹ thuật cố ý tạo ra một sự cố trong hệ thống để quan sát cách hệ thống phản ứng.
+- **Failure injection** (gây lỗi có chủ đích) là kỹ thuật cố ý tạo sự cố để quan sát phản ứng của hệ thống.
+- Ví dụ trong dự án: `kubectl delete pod` xóa Pod `club-api`, Pod mới thay thế.
+
+::: details Ghi chú cho mentor
+- Kỹ thuật này tạo ra một sự cố có kiểm soát để quan sát phản ứng của hệ thống.
 - Kỹ thuật này kiểm chứng rằng hệ thống tự phục hồi và người vận hành nhận ra được tín hiệu lỗi, trước khi sự cố thật xảy ra.
-- Ví dụ trong dự án: xóa một Pod `club-api` bằng `kubectl delete pod` rồi quan sát Pod mới thay thế.
+:::
 
 ---
 
-## Slide 6: Failure injection: một lỗi, có đường lui
+## Failure injection: một lỗi, có đường lui
 
 ![Vòng dự đoán, phá, quan sát, hoàn tác](/slides/img/s31-injection-loop.svg)
 
@@ -63,7 +71,7 @@
 
 ---
 
-## Slide 7: Chẩn đoán từ ngoài vào trong
+## Chẩn đoán từ ngoài vào trong
 
 ![Năm bước: trạng thái, sự kiện, log, cấu hình, kết nối](/slides/img/s31-diagnose.svg)
 
@@ -74,7 +82,7 @@
 
 ---
 
-## Slide 8: Hệ thống đang kiểm thử
+## Hệ thống đang kiểm thử
 
 ![Tester qua Ingress, club-web, hai Pod api, postgres và các điểm có thể phá](/slides/img/s31-arch.svg)
 
@@ -85,15 +93,19 @@
 
 ---
 
-## Slide 9: Khái niệm: Readiness probe và liveness probe
+## Khái niệm: Readiness probe và liveness probe
 
-- **Readiness probe** kiểm tra Pod đã sẵn sàng nhận traffic chưa; **liveness probe** kiểm tra tiến trình còn sống để Kubernetes quyết định có restart container hay không.
-- Hai probe trả lời hai câu hỏi khác nhau, nên một Pod có thể không Ready mà vẫn không bị restart.
+- **Readiness probe** kiểm tra Pod sẵn sàng nhận traffic; **liveness probe** kiểm tra tiến trình còn sống để quyết định restart.
 - Ví dụ trong dự án: `/ready` chạy `SELECT 1` tới PostgreSQL; `/health` chỉ báo tiến trình còn sống.
+
+::: details Ghi chú cho mentor
+- Liveness probe giúp Kubernetes quyết định có restart container hay không.
+- Hai probe trả lời hai câu hỏi khác nhau, nên một Pod có thể không Ready mà vẫn không bị restart.
+:::
 
 ---
 
-## Slide 10: Readiness nhận traffic, liveness restart
+## Readiness nhận traffic, liveness restart
 
 ![Readiness /ready chạy SELECT 1; liveness /health chỉ báo tiến trình sống](/slides/img/s31-probes.svg)
 
@@ -105,7 +117,7 @@
 
 ---
 
-## Slide 11: Demo: dự đoán, gây lỗi, quan sát
+## Demo: dự đoán, gây lỗi, quan sát
 
 ```text
 $ kubectl delete pod POD_BACKEND -n club
@@ -124,7 +136,7 @@ Mã `200` vẫn liên tục vì còn Pod thứ hai.
 
 ---
 
-## Slide 12: Sai tag image: Pod mới lỗi, Pod cũ vẫn chạy
+## Sai tag image: Pod mới lỗi, Pod cũ vẫn chạy
 
 ![Đổi sang tag không tồn tại: Pod mới ImagePullBackOff, Pod cũ vẫn phục vụ, rollout undo](/slides/img/s31-badtag.svg)
 
@@ -135,7 +147,7 @@ Mã `200` vẫn liên tục vì còn Pod thứ hai.
 
 ---
 
-## Slide 13: Sai mật khẩu DB: Pod mới 0/1
+## Sai mật khẩu DB: Pod mới 0/1
 
 ![Secret sai, Pod mới khởi động, SELECT 1 lỗi xác thực nên 0/1](/slides/img/s31-bad-password.svg)
 
@@ -146,7 +158,7 @@ Mã `200` vẫn liên tục vì còn Pod thứ hai.
 
 ---
 
-## Slide 14: Lab Phần 1 và 2: clean clone, kind
+## Lab Phần 1 và 2: clean clone, kind
 
 | Phần | Việc làm | Mong đợi |
 | --- | --- | --- |
@@ -154,36 +166,44 @@ Mã `200` vẫn liên tục vì còn Pod thứ hai.
 | 1 | `down` rồi `up` | Dữ liệu còn |
 | 2 | `kind load`, `apply`, nạp schema | Mọi Pod Ready |
 
-Nếu thiếu `.env.example` thì ghi vào danh sách lỗi README.
-
 ::: details Ghi chú cho mentor
+- Nếu thiếu `.env.example` thì ghi vào danh sách lỗi README.
 - Phần 1: smoke test `/health`, `/ready`, `/api/members`.
 - Phần 2: build image có tag phiên bản, `kind load`, tạo Secret bằng lệnh, `apply`, nạp schema vào `postgres-0`, đo 5 lần bằng `curl -w`.
 :::
 
 ---
 
-## Slide 15: Lab Phần 3: ba sự cố bắt buộc
+## Lab Phần 3: ba sự cố bắt buộc
 
 | Sự cố | Triệu chứng |
 | --- | --- |
-| A Xóa Pod backend | `200` liên tục, Pod mới thay thế |
-| B Sai tag image | `ImagePullBackOff`, `Failed to pull image` |
-| C Sai mật khẩu DB | Pod mới `0/1`, lỗi xác thực |
+| A Xóa Pod | `200` liên tục |
+| B Sai tag image | `ImagePullBackOff` |
+| C Sai mật khẩu DB | Pod mới `0/1` |
 
-Chụp trạng thái trước, trong và sau sự cố; hoàn tác từng sự cố trước khi chuyển sang sự cố tiếp theo.
+::: details Ghi chú cho mentor
+- Sự cố A: Pod backend bị xóa, `200` liên tục và Pod mới thay thế.
+- Sự cố B: events có dòng `Failed to pull image`.
+- Sự cố C: Pod mới `0/1` kèm lỗi xác thực.
+- Chụp trạng thái trước, trong và sau sự cố; hoàn tác từng sự cố trước khi chuyển sang sự cố tiếp theo.
+:::
 
 ---
 
-## Slide 16: Khái niệm: Runbook
+## Khái niệm: Runbook
 
-- **Runbook** là tài liệu ngắn mô tả các bước vận hành cụ thể để xử lý một tình huống đã biết, như đọc log, xem events, restart, rollback hoặc scale.
+- **Runbook** là tài liệu ngắn mô tả các bước vận hành cụ thể để xử lý một tình huống đã biết.
+- Ví dụ trong dự án: runbook liệt kê `kubectl logs`, `kubectl rollout undo` và `kubectl scale`.
+
+::: details Ghi chú cho mentor
+- Các bước thường gặp gồm đọc log, xem events, restart, rollback hoặc scale.
 - Tài liệu này cho phép người khác xử lý sự cố đúng thứ tự mà không phụ thuộc vào trí nhớ của người đã gặp sự cố trước đó.
-- Ví dụ trong dự án: runbook của nhóm liệt kê lệnh `kubectl logs`, `kubectl rollout undo` và `kubectl scale`.
+:::
 
 ---
 
-## Slide 17: Lab Phần 4 và 5: bảo mật và ghi nhận
+## Lab Phần 4 và 5: bảo mật và ghi nhận
 
 | Việc | Mốc xong |
 | --- | --- |
@@ -199,7 +219,7 @@ Chụp trạng thái trước, trong và sau sự cố; hoàn tác từng sự c
 
 ---
 
-## Slide 18: Phá lỗi: rollout treo mãi
+## Phá lỗi: rollout treo mãi
 
 Triệu chứng: `kubectl rollout status` không kết thúc, một Pod backend mới ở `0/1`, web vẫn dùng được.
 
@@ -219,7 +239,7 @@ Hướng điều tra đầy đủ: [Buổi 31 – Thử thách nâng cao](../../
 
 ---
 
-## Slide 19: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: test nhiều tầng, chẩn đoán ngoài vào trong, ghi lại sự cố](/slides/img/s31-recap.svg)
 
@@ -227,7 +247,7 @@ Mỗi sự cố cần ghi: triệu chứng, nguyên nhân gốc, cách xác minh
 
 ---
 
-## Slide 20: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Debug Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/): tìm nguyên nhân Pod lỗi từng bước.
 - **Tài liệu chính thức:** [Debug Running Pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/): dùng exec và logs để xem Pod đang chạy.

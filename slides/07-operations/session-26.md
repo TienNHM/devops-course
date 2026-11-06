@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học khai báo requests, limits và ba loại probe cho backend club-api, mô phỏng lỗi OOMKilled và readiness probe thất bại, sau đó chẩn đoán bằng `describe`, events và logs. Bài lab đầy đủ: [Buổi 26 – Resource & Health](../../labs/week-13/session-26.md).
 
-## Slide 1: Mục tiêu của buổi 26
+## Mục tiêu của buổi 26
 
 ![Ba mục tiêu: requests và limits, ba loại probe, đọc lỗi Pod](/slides/img/s26-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Bài toán thực tế: chạy ổn ở máy dev, lỗi trên cluster
+## Bài toán thực tế: chạy ổn ở máy dev, lỗi trên cluster
 
 ![Ba triệu chứng: Pod chết lặp lại, Running nhưng 0/1, Pending](/slides/img/s26-problems.svg)
 
@@ -26,15 +26,18 @@
 
 ---
 
-## Slide 3: Khái niệm: requests và limits
+## Khái niệm: requests và limits
 
-- **`requests`** là lượng CPU và memory tối thiểu mà container yêu cầu; **`limits`** là mức tối đa container được phép dùng.
-- Scheduler dựa vào `requests` để chọn Node cho Pod; kubelet và kernel cưỡng chế `limits` khi Pod đang chạy.
+- **`requests`** là lượng CPU và memory tối thiểu container yêu cầu; **`limits`** là mức tối đa được phép dùng.
 - Ví dụ trong dự án: club-api khai báo `requests` 100m CPU và 128Mi memory, `limits` 500m CPU và 256Mi memory.
+
+::: details Ghi chú cho mentor
+- Scheduler dựa vào `requests` để chọn Node cho Pod; kubelet và kernel cưỡng chế `limits` khi Pod đang chạy.
+:::
 
 ---
 
-## Slide 4: Hành vi khi vượt giới hạn
+## Hành vi khi vượt giới hạn
 
 ![Memory và CPU: dưới requests được đảm bảo, vượt limit memory thì OOMKilled, vượt limit CPU thì throttle](/slides/img/s26-req-limits.svg)
 
@@ -46,15 +49,18 @@
 
 ---
 
-## Slide 5: Khái niệm: QoS class
+## Khái niệm: QoS class
 
-- **QoS class** (Quality of Service) là nhóm ưu tiên mà Kubernetes gán cho Pod dựa trên cách khai báo `requests` và `limits`; có ba nhóm: Guaranteed, Burstable và BestEffort.
-- Khi Node thiếu tài nguyên, Pod thuộc nhóm ưu tiên thấp hơn bị loại bỏ (evict) trước.
+- **QoS class** là nhóm ưu tiên Kubernetes gán cho Pod dựa trên `requests` và `limits`: Guaranteed, Burstable hoặc BestEffort.
 - Ví dụ trong dự án: club-api (100m/128Mi và 500m/256Mi) thuộc nhóm Burstable.
+
+::: details Ghi chú cho mentor
+- QoS là viết tắt của Quality of Service. Khi Node thiếu tài nguyên, Pod thuộc nhóm ưu tiên thấp hơn bị loại bỏ (evict) trước.
+:::
 
 ---
 
-## Slide 6: Thứ tự bị loại bỏ theo QoS class
+## Thứ tự bị loại bỏ theo QoS class
 
 ![BestEffort bị đuổi trước, rồi Burstable, cuối cùng Guaranteed](/slides/img/s26-qos.svg)
 
@@ -66,15 +72,18 @@
 
 ---
 
-## Slide 7: Khái niệm: Probe
+## Khái niệm: Probe
 
 - **Probe** là phép kiểm tra định kỳ do kubelet thực hiện trên container, bằng `httpGet`, `tcpSocket` hoặc `exec`.
-- Kubernetes có ba loại: startup (ứng dụng đã khởi động xong chưa), readiness (có nhận traffic được không), liveness (có cần khởi động lại không).
 - Ví dụ trong dự án: club-api có hai endpoint, `/health` và `/ready`, phục vụ ba probe này.
+
+::: details Ghi chú cho mentor
+- Kubernetes có ba loại probe: startup (ứng dụng đã khởi động xong chưa), readiness (có nhận traffic được không), liveness (có cần khởi động lại không).
+:::
 
 ---
 
-## Slide 8: Ba probe, ba câu hỏi
+## Ba probe, ba câu hỏi
 
 ![startup, readiness, liveness: câu hỏi và hậu quả khi fail](/slides/img/s26-probes.svg)
 
@@ -86,7 +95,7 @@
 
 ---
 
-## Slide 9: Hai endpoint của club-api
+## Hai endpoint của club-api
 
 ![kubelet gọi /health cho liveness và startup, /ready cho readiness và chạm DB](/slides/img/s26-endpoints.svg)
 
@@ -98,7 +107,7 @@
 
 ---
 
-## Slide 10: Diễn biến khi cơ sở dữ liệu ngừng hoạt động
+## Diễn biến khi cơ sở dữ liệu ngừng hoạt động
 
 ![Bảng diễn biến: readiness 503, liveness 200, Endpoints rỗng, Pod 0/1 không restart](/slides/img/s26-db-down.svg)
 
@@ -110,7 +119,7 @@
 
 ---
 
-## Slide 11: Demo: tắt rồi bật lại database
+## Demo: tắt rồi bật lại database
 
 ```bash
 kubectl -n club scale statefulset postgres --replicas=0
@@ -130,7 +139,7 @@ Câu hỏi thảo luận: nếu liveness probe trỏ tới `/ready`, kết quả
 
 ---
 
-## Slide 12: Lab: thêm probe vào manifest
+## Lab: thêm probe vào manifest
 
 ```yaml
 startupProbe:
@@ -153,15 +162,18 @@ Startup probe cho phép tối đa 2 x 15 = 30 giây. Hướng dẫn đầy đủ
 
 ---
 
-## Slide 13: Khái niệm: OOMKilled
+## Khái niệm: OOMKilled
 
 - **OOMKilled** là trạng thái của container bị kernel kết thúc vì vượt memory limit (OOM: out of memory).
+- Ví dụ trong lab: Pod `oom-demo` có limit memory `64Mi` và cấp phát bộ nhớ liên tục đến khi bị kết thúc.
+
+::: details Ghi chú cho mentor
 - Tiến trình nhận tín hiệu SIGKILL nên không kịp ghi log, và `describe` hiển thị exit code 137.
-- Ví dụ trong lab: Pod `oom-demo` có limit memory `64Mi` và cấp phát bộ nhớ liên tục cho đến khi bị kết thúc.
+:::
 
 ---
 
-## Slide 14: Lab: OOMKilled
+## Lab: OOMKilled
 
 ![Log dừng đột ngột, describe báo OOMKilled exit code 137 vì SIGKILL](/slides/img/s26-oom.svg)
 
@@ -174,7 +186,7 @@ Startup probe cho phép tối đa 2 x 15 = 30 giây. Hướng dẫn đầy đủ
 
 ---
 
-## Slide 15: Lab: readiness thất bại (Tình huống 10)
+## Lab: readiness thất bại (Tình huống 10)
 
 ![Pod mới 0/1, Pod cũ vẫn 1/1, rollout treo vì path readiness sai](/slides/img/s26-readiness.svg)
 
@@ -187,35 +199,45 @@ Startup probe cho phép tối đa 2 x 15 = 30 giây. Hướng dẫn đầy đủ
 
 ---
 
-## Slide 16: Đọc mã trong Events
+## Đọc mã trong Events
 
 | Mã | Ý nghĩa | Hướng xử lý |
 | --- | --- | --- |
-| 404 | Sai path | Sửa path trong probe |
-| 503 | Ứng dụng báo chưa sẵn sàng (thường do DB) | Kiểm tra DB và cấu hình |
-| `connection refused` | Sai cổng hoặc ứng dụng chưa lắng nghe | Kiểm tra port và quá trình khởi động |
+| 404 | Sai path | Sửa path |
+| 503 | Chưa sẵn sàng | Kiểm tra DB |
+| `connection refused` | Sai cổng | Kiểm tra port |
+
+::: details Ghi chú cho mentor
+- Mã 503: ứng dụng báo chưa sẵn sàng, thường do cơ sở dữ liệu; kiểm tra cơ sở dữ liệu và cấu hình.
+- `connection refused`: sai cổng hoặc ứng dụng chưa lắng nghe; kiểm tra port và quá trình khởi động.
+:::
 
 ---
 
-## Slide 17: Lỗi thường gặp và thử thách L2
+## Lỗi thường gặp và thử thách L2
 
 | Triệu chứng | Nguyên nhân | Xử lý |
 | --- | --- | --- |
-| `Running` nhưng `0/1` | Readiness thất bại | `describe`, đọc Events |
-| RESTARTS tăng, log không có lỗi | OOMKilled | `describe`, xem Last State |
-| Mọi Pod restart khi DB ngừng | Liveness gọi DB | Liveness chỉ dùng `/health` |
-| `Pending`, `Insufficient memory` | `requests` quá lớn | Giảm `requests` |
-
-Thử thách L2: [Buổi 26 – Thử thách nâng cao](../../labs/week-13/session-26-challenge.md).
+| `0/1` | Readiness | `describe` |
+| RESTARTS tăng | OOMKilled | Last State |
+| Restart khi DB ngừng | Liveness gọi DB | `/health` |
+| `Pending` | `requests` lớn | Giảm `requests` |
 
 ::: details Ghi chú cho mentor
-- Thử thách L2: A. Guaranteed QoS; B. liveness phụ thuộc DB gây restart dây chuyền; C. startupProbe sai cổng.
+- Chi tiết các dòng: `Running` nhưng `0/1` do readiness thất bại, xử lý bằng `describe` và đọc Events; RESTARTS tăng mà log không có lỗi là OOMKilled, xem Last State trong `describe`; mọi Pod restart khi DB ngừng do liveness gọi DB, nên liveness chỉ dùng `/health`; `Pending` kèm `Insufficient memory` do `requests` quá lớn.
+- Thử thách L2 (slide kế tiếp): A. Guaranteed QoS; B. liveness phụ thuộc DB gây restart dây chuyền; C. startupProbe sai cổng.
 - Với trạng thái `Pending`, xem Allocatable của Node trong `describe node`.
 :::
 
 ---
 
-## Slide 18: Tổng kết
+## Thử thách L2
+
+Chi tiết: [Buổi 26 – Thử thách nâng cao](../../labs/week-13/session-26-challenge.md).
+
+---
+
+## Tổng kết
 
 ![Ba điều cần nhớ: requests xếp và limits cưỡng chế, probe đúng việc, 0/1 thì describe](/slides/img/s26-recap.svg)
 
@@ -227,7 +249,7 @@ Thử thách L2: [Buổi 26 – Thử thách nâng cao](../../labs/week-13/sessi
 
 ---
 
-## Slide 19: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/): giải thích requests và limits.
 - **Tài liệu chính thức:** [Liveness, Readiness và Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/): hướng dẫn cấu hình probe.

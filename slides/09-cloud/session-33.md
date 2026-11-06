@@ -2,13 +2,13 @@
 
 > **Tóm tắt:** Buổi tùy chọn của Lộ trình Nâng cao. Người học chạy floci (bộ giả lập AWS miễn phí) bằng Docker Compose, cấu hình AWS CLI trỏ vào `http://localhost:4566`, rồi tạo S3 bucket và bảng DynamoDB mà không cần tài khoản AWS.
 
-## Slide 1: Mục tiêu của buổi 33
+## Mục tiêu của buổi 33
 
-- Sản phẩm: thư mục `~/devops-labs/cloud/` có `compose.yaml` chạy floci; bucket `club-assets` chứa `members.csv`; bảng `club-events` chứa một item; dữ liệu còn nguyên sau khi khởi động lại container.
-- Điều kiện: đã học Buổi 15-20 (CI/CD), Docker và Docker Compose chạy được, đã cài hoặc sẵn sàng cài AWS CLI v2. Buổi này không đụng vào thư mục `club/`.
-- Thời gian: khoảng 2 giờ gồm trình bày và thực hành theo từng bước.
+- Sản phẩm: `~/devops-labs/cloud/` có `compose.yaml` chạy floci; bucket `club-assets` chứa `members.csv`; bảng `club-events` chứa một item; dữ liệu còn sau khi khởi động lại.
+- Thời gian: khoảng 2 giờ gồm trình bày và thực hành.
 
 ::: details Ghi chú cho mentor
+- Điều kiện: đã học Buổi 15-20 (CI/CD), Docker và Docker Compose chạy được, đã cài hoặc sẵn sàng cài AWS CLI v2. Buổi này không đụng vào thư mục `club/`.
 - Buổi tùy chọn: không có trang lab và không có bài nộp; slide là bài giảng, người học gõ lệnh cùng giảng viên.
 - Kiểm tra trước giờ học: `docker --version`, `docker compose version`, `aws --version`. Docker cần từ 23.0 trở lên theo tài liệu cài đặt floci.
 - Phân bổ gợi ý: khái niệm 25 phút, thực hành 85 phút, tổng kết 10 phút.
@@ -16,66 +16,78 @@
 
 ---
 
-## Slide 2: Bài toán thực tế: học cloud mà không muốn trả tiền hay chịu rủi ro
+## Bài toán thực tế: học cloud mà không muốn trả tiền hay chịu rủi ro
 
-| Vấn đề khi học trực tiếp trên AWS | Hệ quả |
+| Vấn đề khi học trên AWS | Hệ quả |
 | --- | --- |
-| Cần tài khoản và thẻ thanh toán | Rào cản đăng ký, nhất là với sinh viên |
-| Tài nguyên quên xóa vẫn tính phí | Hóa đơn ngoài dự kiến |
-| Sai cấu hình có thể làm lộ dữ liệu thật | Rủi ro bảo mật khi mới học |
-| Mỗi lệnh gọi qua Internet | Chậm, khó chạy trong CI cho mọi commit |
+| Cần tài khoản và thẻ | Rào cản với sinh viên |
+| Quên xóa tài nguyên | Hóa đơn ngoài dự kiến |
+| Sai cấu hình | Lộ dữ liệu thật |
 
 ::: details Ghi chú cho mentor
+- Cần tài khoản và thẻ thanh toán là rào cản đăng ký, nhất là với sinh viên; tài nguyên quên xóa vẫn tính phí; sai cấu hình có thể làm lộ dữ liệu thật, gây rủi ro bảo mật khi mới học.
+- Mỗi lệnh gọi qua Internet nên chậm và khó chạy trong CI cho mọi commit.
 - Cách dẫn: nhóm CLB muốn thử lưu tệp thành viên lên S3 và ghi sự kiện vào DynamoDB, nhưng chưa có tài khoản AWS.
 - Giải pháp của buổi: một bộ giả lập chạy trên máy cá nhân, dùng cùng lệnh `aws` như AWS thật.
 :::
 
 ---
 
-## Slide 3: Khái niệm: Cloud emulator
+## Khái niệm: Cloud emulator
 
-- **Cloud emulator** (bộ giả lập đám mây) là phần mềm chạy trên máy cục bộ và trả lời các lời gọi API giống một dịch vụ cloud thật.
+- **Cloud emulator** là phần mềm chạy cục bộ, trả lời các lời gọi API giống một dịch vụ cloud thật.
+- Ví dụ trong dự án: floci là bộ giả lập AWS mã nguồn mở, chạy trong container Docker.
+
+::: details Ghi chú cho mentor
 - Ứng dụng và công cụ dòng lệnh dùng cùng giao thức, nên có thể phát triển và kiểm thử mà không cần tài khoản cloud.
-- Ví dụ trong dự án: floci là bộ giả lập AWS mã nguồn mở (giấy phép MIT), chạy trong một container Docker.
+- Floci có giấy phép MIT.
+:::
 
 ---
 
-## Slide 4: Floci là bộ giả lập, không phải AWS
+## Floci là bộ giả lập, không phải AWS
 
-- Floci mô phỏng API của AWS; đây không phải hạ tầng AWS, nên hành vi có thể khác AWS thật ở chi tiết, giới hạn hoặc thông báo lỗi.
-- Một số chức năng chỉ là bản giả lập tối thiểu. Ví dụ theo tài liệu của floci: `RestoreObject` của S3 chỉ trả về `202 Accepted`, và cấu hình replication chỉ được lưu chứ không sao chép object.
-- Vì vậy, kết quả chạy đúng trên floci chưa bảo đảm chạy đúng trên AWS thật: cần kiểm thử lại trước khi dùng cho hệ thống thật.
+- Floci mô phỏng API của AWS, không phải hạ tầng AWS; hành vi có thể khác AWS thật.
+- Kết quả đúng trên floci chưa bảo đảm đúng trên AWS thật: cần kiểm thử lại trước khi dùng cho hệ thống thật.
 
 ::: details Ghi chú cho mentor
+- Khác biệt có thể nằm ở chi tiết, giới hạn hoặc thông báo lỗi.
+- Một số chức năng chỉ là bản giả lập tối thiểu. Ví dụ theo tài liệu của floci: `RestoreObject` của S3 chỉ trả về `202 Accepted`, và cấu hình replication chỉ được lưu chứ không sao chép object.
 - Nhấn mạnh phạm vi: floci dùng để học, phát triển và kiểm thử tự động; không dùng để kết luận về chi phí, hiệu năng, giới hạn dịch vụ hay quyền IAM trên AWS thật.
 - Danh sách dịch vụ được hỗ trợ nằm trong README của floci; tài liệu dịch vụ ghi rõ thao tác nào là stub.
 :::
 
 ---
 
-## Slide 5: Khái niệm: Endpoint
+## Khái niệm: Endpoint
 
 ![Cùng lệnh aws gửi tới localhost:4566 (floci) hoặc tới AWS thật](/slides/img/s33-endpoint.svg)
 
 - **Endpoint** là địa chỉ URL mà công cụ gọi API (AWS CLI, SDK, Terraform) gửi yêu cầu tới.
+- Ví dụ trong dự án: `AWS_ENDPOINT_URL` hoặc `--endpoint-url` đặt endpoint cho AWS CLI.
+
+::: details Ghi chú cho mentor
 - Mặc định endpoint là địa chỉ của AWS; đổi endpoint sang `http://localhost:4566` thì cùng lệnh được floci xử lý.
-- Ví dụ trong dự án: biến môi trường `AWS_ENDPOINT_URL` hoặc tùy chọn `--endpoint-url` đặt endpoint cho AWS CLI.
+:::
 
 ---
 
-## Slide 6: Khái niệm: Thông tin xác thực và region
+## Khái niệm: Thông tin xác thực và region
 
-- **Credentials** (thông tin xác thực) gồm `AWS_ACCESS_KEY_ID` và `AWS_SECRET_ACCESS_KEY`; **region** là vùng địa lý của dịch vụ, ví dụ `us-east-1`.
-- AWS CLI luôn yêu cầu hai giá trị này; floci chấp nhận bất kỳ giá trị không rỗng nào, nên có thể dùng `test`.
-- Lưu ý: đây là giá trị giả; tuyệt đối không nhập khóa AWS thật vào môi trường học.
+- **Credentials** gồm `AWS_ACCESS_KEY_ID` và `AWS_SECRET_ACCESS_KEY`; **region** là vùng của dịch vụ.
+- Ví dụ trong dự án: floci chấp nhận mọi giá trị không rỗng, nên dùng `test`.
+- Lưu ý: không nhập khóa AWS thật.
 
 ::: details Ghi chú cho mentor
+- Credentials là thông tin xác thực; region là vùng địa lý của dịch vụ. AWS CLI luôn yêu cầu hai giá trị này.
+- Ví dụ region: `us-east-1`.
+- Đây là giá trị giả; tuyệt đối không nhập khóa AWS thật vào môi trường học.
 - Tài liệu floci: credentials có thể là bất kỳ giá trị không rỗng; khóa gồm đúng 12 chữ số sẽ được dùng làm account ID (tính năng cách ly nhiều tài khoản), không cần giới thiệu trong buổi này.
 :::
 
 ---
 
-## Slide 7: Bước 1 (10 phút): Chuẩn bị thư mục và kiểm tra công cụ
+## Bước 1 (10 phút): Chuẩn bị thư mục và kiểm tra công cụ
 
 ```bash
 mkdir -p ~/devops-labs/cloud
@@ -96,7 +108,7 @@ Nếu `aws` chưa có, cài AWS CLI v2 theo [hướng dẫn chính thức](https
 
 ---
 
-## Slide 8: Bước 2 (10 phút): Viết compose.yaml cho floci
+## Bước 2 (10 phút): Viết compose.yaml cho floci
 
 Tạo tệp `~/devops-labs/cloud/compose.yaml`:
 
@@ -119,7 +131,7 @@ Image được ghim vào phiên bản `2.4.0`, không dùng `latest`, để mọ
 
 ---
 
-## Slide 9: Bước 2: Giải thích tệp compose
+## Bước 2: Giải thích tệp compose
 
 ![Máy chủ gọi localhost:4566, Docker chuyển tới container floci cung cấp S3 và DynamoDB](/slides/img/s33-compose-ports.svg)
 
@@ -128,7 +140,7 @@ Image được ghim vào phiên bản `2.4.0`, không dùng `latest`, để mọ
 
 ---
 
-## Slide 10: Bước 3 (5 phút): Khởi động floci
+## Bước 3 (5 phút): Khởi động floci
 
 ```bash
 cd ~/devops-labs/cloud
@@ -147,7 +159,7 @@ Kết quả mong đợi: Docker tải image lần đầu (khoảng 90 MB), sau �
 
 ---
 
-## Slide 11: Bước 4 (10 phút): Cấu hình AWS CLI cho endpoint cục bộ
+## Bước 4 (10 phút): Cấu hình AWS CLI cho endpoint cục bộ
 
 Tạo tệp `~/devops-labs/cloud/floci-env.sh` rồi nạp vào shell hiện tại:
 
@@ -172,17 +184,21 @@ aws s3 ls
 
 ---
 
-## Slide 12: Khái niệm: S3 bucket và object
+## Khái niệm: S3 bucket và object
 
 ![Bucket club-assets chứa các object, mỗi object có một key](/slides/img/s33-s3-model.svg)
 
-- **Amazon S3** là dịch vụ lưu trữ đối tượng. **Bucket** là nơi chứa có tên duy nhất; **object** là một tệp cùng metadata, được xác định bằng **key** (tên đầy đủ).
-- S3 không có thư mục thật: dấu `/` trong key chỉ là một phần của tên.
+- **Amazon S3** là dịch vụ lưu trữ đối tượng: **bucket** chứa các **object**, mỗi object được xác định bằng **key**.
 - Ví dụ trong dự án: bucket `club-assets` chứa object có key `members.csv`.
+
+::: details Ghi chú cho mentor
+- Bucket là nơi chứa có tên duy nhất; object là một tệp cùng metadata; key là tên đầy đủ của object.
+- S3 không có thư mục thật: dấu `/` trong key chỉ là một phần của tên.
+:::
 
 ---
 
-## Slide 13: Bước 5 (10 phút): Tạo S3 bucket
+## Bước 5 (10 phút): Tạo S3 bucket
 
 ```bash
 aws s3 mb s3://club-assets
@@ -199,7 +215,7 @@ Kết quả mong đợi: dòng `make_bucket: club-assets`, sau đó `aws s3 ls` 
 
 ---
 
-## Slide 14: Bước 6 (10 phút): Tạo và tải lên members.csv
+## Bước 6 (10 phút): Tạo và tải lên members.csv
 
 ```bash
 cat > members.csv <<'EOF'
@@ -220,7 +236,7 @@ aws s3 ls s3://club-assets
 
 ---
 
-## Slide 15: Bước 7 (5 phút): Đọc lại object
+## Bước 7 (5 phút): Đọc lại object
 
 ```bash
 aws s3 cp s3://club-assets/members.csv downloaded.csv
@@ -234,17 +250,20 @@ Lệnh cuối ghi nội dung object ra màn hình (dấu `-` nghĩa là đầu r
 
 ---
 
-## Slide 16: Khái niệm: DynamoDB table và partition key
+## Khái niệm: DynamoDB table và partition key
 
 ![Bảng club-events, mỗi dòng là một item, event_id là khóa](/slides/img/s33-dynamodb-table.svg)
 
-- **Amazon DynamoDB** là cơ sở dữ liệu NoSQL dạng khóa-giá trị. **Table** chứa các **item**; **partition key** là thuộc tính định danh duy nhất mỗi item.
-- Khi tạo bảng chỉ cần khai báo thuộc tính khóa; các thuộc tính khác của item tự do, không cần khai trước.
+- **Amazon DynamoDB** là cơ sở dữ liệu NoSQL khóa-giá trị: **table** chứa các **item**, **partition key** định danh duy nhất mỗi item.
 - Ví dụ trong dự án: bảng `club-events` dùng `event_id` kiểu chuỗi làm partition key.
+
+::: details Ghi chú cho mentor
+- Khi tạo bảng chỉ cần khai báo thuộc tính khóa; các thuộc tính khác của item tự do, không cần khai trước.
+:::
 
 ---
 
-## Slide 17: Bước 8 (10 phút): Tạo bảng club-events
+## Bước 8 (10 phút): Tạo bảng club-events
 
 ```bash
 aws dynamodb create-table \
@@ -264,7 +283,7 @@ aws dynamodb list-tables
 
 ---
 
-## Slide 18: Bước 9 (10 phút): Ghi và đọc một item
+## Bước 9 (10 phút): Ghi và đọc một item
 
 ```bash
 aws dynamodb put-item --table-name club-events \
@@ -282,7 +301,7 @@ aws dynamodb get-item --table-name club-events \
 
 ---
 
-## Slide 19: Bước 10 (5 phút): Xem log của floci
+## Bước 10 (5 phút): Xem log của floci
 
 ```bash
 docker compose logs floci
@@ -300,17 +319,21 @@ Nhật ký ghi lại quá trình khởi động và các yêu cầu đã xử l�
 
 ---
 
-## Slide 20: Khái niệm: Storage mode (chế độ lưu trữ)
+## Khái niệm: Storage mode (chế độ lưu trữ)
 
 ![Chế độ memory mất dữ liệu khi khởi động lại, chế độ persistent ghi vào thư mục data](/slides/img/s33-persistence.svg)
 
-- **Storage mode** là cách floci lưu trạng thái: `memory` giữ trong RAM, còn `persistent`, `hybrid`, `wal` ghi xuống đĩa.
+- **Storage mode** là cách floci lưu trạng thái: `memory` giữ trong RAM, `persistent` ghi xuống đĩa.
+- Ví dụ trong dự án: `FLOCI_STORAGE_MODE=persistent` cùng thư mục `./data` giữ lại bucket và bảng.
+
+::: details Ghi chú cho mentor
+- Ngoài `persistent`, các chế độ `hybrid` và `wal` cũng ghi xuống đĩa.
 - Image mặc định chạy chế độ `memory`, nên dữ liệu mất khi container dừng; chế độ `persistent` giữ dữ liệu qua các lần khởi động lại.
-- Ví dụ trong dự án: biến `FLOCI_STORAGE_MODE=persistent` cùng thư mục `./data` giữ lại bucket và bảng.
+:::
 
 ---
 
-## Slide 21: Bước 11 (5 phút): Quan sát dữ liệu mất khi khởi động lại
+## Bước 11 (5 phút): Quan sát dữ liệu mất khi khởi động lại
 
 ```bash
 docker compose down
@@ -328,7 +351,7 @@ aws dynamodb list-tables
 
 ---
 
-## Slide 22: Bước 12 (10 phút): Bật chế độ persistent
+## Bước 12 (10 phút): Bật chế độ persistent
 
 Sửa `compose.yaml` thành:
 
@@ -365,44 +388,54 @@ aws s3 ls s3://club-assets
 
 ---
 
-## Slide 23: Lưu ý bảo mật khi dùng floci
+## Lưu ý bảo mật khi dùng floci
 
-- Chỉ dịch vụ cần chạy container con (Lambda, RDS, ElastiCache và tương tự) mới cần gắn Docker socket `/var/run/docker.sock`, và README còn dùng `-u root` cho trường hợp đó.
-- Quyền truy cập Docker socket tương đương quyền quản trị máy chủ Docker; S3 và DynamoDB không cần socket, nên buổi này không gắn.
-- Floci không phải ranh giới bảo mật: không mở cổng 4566 ra mạng chung, chỉ dùng trên máy cá nhân và không nhập khóa AWS thật.
+- Docker socket tương đương quyền quản trị máy chủ Docker; S3 và DynamoDB không cần socket, nên buổi này không gắn.
+- Floci không phải ranh giới bảo mật: không mở cổng 4566 ra mạng chung, không nhập khóa AWS thật.
 
 ::: details Ghi chú cho mentor
+- Chỉ dịch vụ cần chạy container con (Lambda, RDS, ElastiCache và tương tự) mới cần gắn Docker socket `/var/run/docker.sock`, và README còn dùng `-u root` cho trường hợp đó.
+- Chỉ dùng floci trên máy cá nhân.
 - Tài liệu floci cảnh báo: Lambda, ElastiCache, RDS, OpenSearch và MSK cần Docker socket; nếu không dùng thì nên bỏ volume này.
 - Cổng `4566:4566` trong compose mặc định công bố trên mọi giao diện mạng của máy. Nên nhắc người học dùng máy cá nhân và mạng tin cậy.
 :::
 
 ---
 
-## Slide 24: Lỗi thường gặp (1/2)
+## Lỗi thường gặp (1/2)
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `port is already allocated` hoặc `address already in use` khi `up` | Cổng 4566 đang bị tiến trình khác dùng | `docker ps`, dừng container cũ hoặc đổi vế trái, ví dụ `4567:4566` và đặt lại endpoint |
-| `Could not connect to the endpoint URL: "http://localhost:4566/"` | Floci chưa chạy hoặc endpoint sai cổng | `docker compose ps`, `docker compose logs floci`, kiểm tra `AWS_ENDPOINT_URL` |
-| `InvalidAccessKeyId` | Lệnh đang gọi AWS thật vì thiếu endpoint | `echo $AWS_ENDPOINT_URL`; chạy lại `source floci-env.sh` |
+| `port is already allocated` | Cổng bị chiếm | `docker ps` |
+| `Could not connect` | Floci chưa chạy | `docker compose ps` |
+| `InvalidAccessKeyId` | Thiếu endpoint | `source floci-env.sh` |
+
+::: details Ghi chú cho mentor
+- `port is already allocated` hoặc `address already in use` khi `up`: có thể đổi vế trái của cổng, ví dụ `4567:4566`, và đặt lại endpoint.
+- `Could not connect to the endpoint URL: "http://localhost:4566/"`: floci chưa chạy hoặc endpoint sai cổng; dùng thêm `docker compose logs floci` và kiểm tra `AWS_ENDPOINT_URL`.
+- `InvalidAccessKeyId`: lệnh đang gọi AWS thật vì thiếu endpoint; kiểm tra bằng `echo $AWS_ENDPOINT_URL`.
+:::
 
 ---
 
-## Slide 25: Lỗi thường gặp (2/2)
+## Lỗi thường gặp (2/2)
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `You must specify a region` | Chưa đặt `AWS_DEFAULT_REGION` | Chạy `source floci-env.sh` trong terminal mới |
-| `Unable to locate credentials` | Chưa đặt hai biến khóa | Đặt `AWS_ACCESS_KEY_ID` và `AWS_SECRET_ACCESS_KEY` bằng `test` |
-| Bucket và bảng biến mất sau khi chạy lại | Đang ở chế độ `memory` mặc định | Dùng `FLOCI_STORAGE_MODE=persistent` kèm volume |
+| `You must specify a region` | Chưa đặt region | `source floci-env.sh` |
+| `Unable to locate credentials` | Thiếu hai biến khóa | Đặt bằng `test` |
+| Dữ liệu biến mất | Chế độ `memory` | `persistent` |
 
 ::: details Ghi chú cho mentor
+- `You must specify a region`: chưa đặt `AWS_DEFAULT_REGION`; chạy `source floci-env.sh` trong terminal mới.
+- `Unable to locate credentials`: đặt `AWS_ACCESS_KEY_ID` và `AWS_SECRET_ACCESS_KEY` bằng `test`.
+- Bucket và bảng biến mất sau khi chạy lại: đang ở chế độ `memory` mặc định; dùng `FLOCI_STORAGE_MODE=persistent` kèm volume.
 - Gợi ý minh họa: cố ý chạy `unset AWS_ENDPOINT_URL` rồi `aws s3 ls` để học viên thấy lỗi `InvalidAccessKeyId` (gọi tới AWS thật bằng khóa giả).
 :::
 
 ---
 
-## Slide 26: Tự kiểm tra
+## Tự kiểm tra
 
 1. Vì sao kết quả chạy đúng trên floci chưa bảo đảm chạy đúng trên AWS thật?
 2. Đổi một biến nào để cùng lệnh `aws s3 ls` chuyển từ AWS thật sang floci?
@@ -416,16 +449,22 @@ aws s3 ls s3://club-assets
 
 ---
 
-## Slide 27: Tổng kết và tiếp theo
+## Tổng kết và tiếp theo
 
-- Floci là bộ giả lập AWS chạy bằng Docker; công cụ chỉ cần đổi endpoint sang `http://localhost:4566`.
-- Đã tạo bucket S3 và bảng DynamoDB, ghi rồi đọc lại dữ liệu, và so sánh chế độ lưu `memory` với `persistent`.
-- Hạn chế cần nhớ: đây là bộ giả lập, cần cẩn trọng với Docker socket và không dùng khóa thật.
-- Tiếp theo: [Buổi 34 – Infrastructure as Code với Terraform trên floci](session-34.md) mô tả hạ tầng bằng mã và kiểm thử trong CI.
+- Floci là bộ giả lập AWS chạy bằng Docker; chỉ cần đổi endpoint sang `http://localhost:4566`.
+- Đã tạo bucket S3 và bảng DynamoDB; so sánh chế độ `memory` với `persistent`.
+- Hạn chế: chỉ là bộ giả lập.
+- Tiếp theo: [Buổi 34 – Infrastructure as Code với Terraform trên floci](session-34.md).
+
+::: details Ghi chú cho mentor
+- Buổi 34 mô tả hạ tầng bằng mã và kiểm thử trong CI.
+- Đã ghi, rồi đọc lại dữ liệu trong bucket và bảng.
+- Cần cẩn trọng với Docker socket và không dùng khóa AWS thật.
+:::
 
 ---
 
-## Slide 28: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Floci trên GitHub](https://github.com/floci-io/floci): README, danh sách dịch vụ và phiên bản.
 - **Tài liệu chính thức:** [Tài liệu floci](https://floci.io/floci/): cấu hình, chế độ lưu trữ và cổng.

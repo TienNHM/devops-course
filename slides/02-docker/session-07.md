@@ -2,16 +2,15 @@
 
 > **Tóm tắt:** Ngày 4 cài Docker Desktop, chạy container Nginx và phục vụ trang web của dự án Club từ container tại `localhost:8080`; cơ chế cổng được làm rõ bằng cách tạo lỗi `port is already allocated`.
 
-## Slide 1: Mục tiêu và sản phẩm cuối ngày
+## Mục tiêu và sản phẩm cuối ngày
 
 **Mốc cuối ngày:** trang Club Members (`club/frontend`) chạy trong container Nginx, truy cập được tại `http://localhost:8080`; khi sửa `index.html` thì trang thay đổi theo.
-
-- Điều kiện: đã hoàn thành Ngày 3, tức là có `~/devops-labs/club/` trên `main`.
-- Docker Desktop đã được cài (chọn WSL 2) và đang chạy.
 
 Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ::: details Ghi chú cho mentor
+- Điều kiện: đã hoàn thành Ngày 3, tức là có `~/devops-labs/club/` trên `main`.
+- Docker Desktop đã được cài (chọn WSL 2) và đang chạy.
 - Thực hành trong WSL, tại `~/` (không dùng `/mnt/c`).
 - Kiểm tra nhanh môi trường: `bash ~/devops-course/resources/check-env.sh 7`.
 - Phân bổ 85 phút: Bước 1 (10), Bước 2 (15), Bước 3 (15), Bước 4 (20), Bước 5 (15), Bước 6 (10).
@@ -20,7 +19,7 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 2: Vấn đề: "Máy tôi chạy được mà"
+## Vấn đề: "Máy tôi chạy được mà"
 
 ![Cùng mã nguồn: máy A chạy tốt, máy B và máy chung bị lỗi](/slides/img/s07-works-on-my-machine.svg)
 
@@ -32,31 +31,43 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 3: Khái niệm: Container
+## Khái niệm: Container
 
-- **Container** là một tiến trình (hoặc nhóm tiến trình) chạy cô lập với phần còn lại của máy, cùng các tệp và thư viện mà ứng dụng cần.
-- Cơ chế cô lập này cho phép cùng một ứng dụng chạy giống nhau trên các máy khác nhau, miễn là máy có Docker.
+- **Container** là một tiến trình chạy cô lập với phần còn lại của máy, cùng các tệp và thư viện mà ứng dụng cần.
 - Ví dụ trong dự án: Nginx phục vụ trang Club bên trong một container tên `club-web`.
 
+::: details Ghi chú cho mentor
+- Container có thể là một nhóm tiến trình.
+- Cơ chế cô lập này cho phép cùng một ứng dụng chạy giống nhau trên các máy khác nhau, miễn là máy có Docker.
+:::
+
 ---
 
-## Slide 4: Khái niệm: Image
+## Khái niệm: Image
 
 - **Image** là gói chỉ đọc chứa các tệp, thư viện và chỉ dẫn cần thiết để tạo ra container.
+- Ví dụ trong dự án: image `nginx:1.27-alpine` chứa máy chủ web Nginx, là nguồn tạo container `club-web`.
+
+::: details Ghi chú cho mentor
 - Một image có thể tạo ra nhiều container; mỗi container là một lần chạy riêng của image đó.
-- Ví dụ trong dự án: image `nginx:1.27-alpine` chứa máy chủ web Nginx và là nguồn tạo container `club-web`.
+:::
 
 ---
 
-## Slide 5: Khái niệm: Registry và tag
+## Khái niệm: Registry và tag
 
-- **Registry** là dịch vụ lưu trữ và phân phối image; Docker Hub và GHCR là hai registry phổ biến.
-- **Tag** là nhãn gắn vào image để phân biệt phiên bản, ví dụ `1.27-alpine`.
-- Lưu ý: nên ghim một tag cụ thể thay vì `latest`, vì `latest` có thể trỏ tới phiên bản khác theo thời gian.
+- **Registry** là dịch vụ lưu trữ và phân phối image.
+- **Tag** là nhãn gắn vào image để phân biệt phiên bản.
+- Ví dụ trong dự án: `nginx:1.27-alpine` lấy từ Docker Hub.
+
+::: details Ghi chú cho mentor
+- Docker Hub và GHCR là hai registry phổ biến; ví dụ tag: `1.27-alpine`.
+- Nên ghim một tag cụ thể thay vì `latest`, vì `latest` có thể trỏ tới phiên bản khác theo thời gian.
+:::
 
 ---
 
-## Slide 6: Quan hệ giữa image, container và registry
+## Quan hệ giữa image, container và registry
 
 ![Registry lưu image, image chạy thành nhiều container](/slides/img/s07-image-container-registry.svg)
 
@@ -67,15 +78,18 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 7: Khái niệm: Docker, client và daemon
+## Khái niệm: Docker, client và daemon
 
 - **Docker** là nền tảng để xây dựng, phân phối và chạy container.
-- Lệnh `docker` là client: nó chỉ gửi yêu cầu qua API tới daemon `dockerd`, và daemon mới là thành phần quản lý image và container.
 - Ví dụ trong dự án: lệnh `docker run` ở Bước 2 được client gửi tới daemon để tạo và khởi động container.
+
+::: details Ghi chú cho mentor
+- Lệnh `docker` là client: nó chỉ gửi yêu cầu qua API tới daemon `dockerd`, và daemon mới là thành phần quản lý image và container.
+:::
 
 ---
 
-## Slide 8: Bước 1 (10 phút): Client gửi lệnh, daemon thực thi
+## Bước 1 (10 phút): Client gửi lệnh, daemon thực thi
 
 ![docker CLI gửi API tới dockerd; dockerd điều khiển containerd, image store, registry](/slides/img/s07-docker-architecture.svg)
 
@@ -86,7 +100,7 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ---
 
-## Slide 9: Bước 1: Kiểm tra Docker
+## Bước 1: Kiểm tra Docker
 
 ```bash
 docker version
@@ -105,15 +119,19 @@ Kết quả: `docker version` có cả khối `Client:` và `Server:`; `hello-wo
 
 ---
 
-## Slide 10: Khái niệm: Port mapping (ánh xạ cổng)
+## Khái niệm: Port mapping (ánh xạ cổng)
 
+- **Port mapping** chuyển các kết nối đến một cổng của máy tới một cổng bên trong container, bằng tùy chọn `-p HOST:CONTAINER`.
+- Ví dụ trong dự án: `-p 8080:80` chuyển cổng cổng 8080 của máy tới cổng 80 của Nginx.
+
+::: details Ghi chú cho mentor
 - **Cổng** (port) là số định danh giúp một máy phân biệt các dịch vụ mạng; một cổng của máy chỉ do một tiến trình sử dụng.
-- **Port mapping** chuyển các kết nối đến một cổng của máy tới một cổng bên trong container; tùy chọn `-p HOST:CONTAINER` thiết lập việc này.
-- Ví dụ trong dự án: `-p 8080:80` đưa truy cập vào cổng 8080 của máy tới cổng 80, nơi Nginx lắng nghe trong container.
+- Trong container, Nginx lắng nghe ở cổng 80.
+:::
 
 ---
 
-## Slide 11: Bước 2 (15 phút): Chạy Nginx lần đầu
+## Bước 2 (15 phút): Chạy Nginx lần đầu
 
 Tải image, chạy nền và đặt tên cho container. Tag `1.27-alpine` được ghim để mọi máy dùng cùng một phiên bản.
 
@@ -132,7 +150,7 @@ Kết quả: HTML có `Welcome to nginx!`.
 
 ---
 
-## Slide 12: Bước 2: Cổng -p HOST:CONTAINER
+## Bước 2: Cổng -p HOST:CONTAINER
 
 ![curl vào cổng 8080 của máy, đi tới nginx cổng 80 trong container](/slides/img/s07-port-8080.svg)
 
@@ -143,7 +161,7 @@ Kết quả: HTML có `Welcome to nginx!`.
 
 ---
 
-## Slide 13: Bước 2: Xem container đang chạy
+## Bước 2: Xem container đang chạy
 
 ```bash
 docker ps
@@ -158,7 +176,7 @@ a1b2c3d4e5f6   nginx:1.27-alpine   ...   0.0.0.0:8080->80/tcp   club-web
 
 ---
 
-## Slide 14: Bước 3 (15 phút): Tạo lỗi cổng
+## Bước 3 (15 phút): Tạo lỗi cổng
 
 Một cổng của máy chỉ một tiến trình sử dụng được. Chạy container thứ hai trên cùng cổng 8080:
 
@@ -178,7 +196,7 @@ failed: port is already allocated.
 
 ---
 
-## Slide 15: Bước 3: Đổi sang cổng 8081
+## Bước 3: Đổi sang cổng 8081
 
 Xóa container lỗi, rồi chạy lại ở cổng khác. Cổng trong container vẫn là 80.
 
@@ -196,15 +214,19 @@ Kết quả: `8080 -> 200` và `8081 -> 200`.
 
 ---
 
-## Slide 16: Khái niệm: Bind mount
+## Khái niệm: Bind mount
 
-- **Bind mount** gắn một thư mục của máy vào một đường dẫn bên trong container; tùy chọn `-v` thiết lập việc này.
-- Container đọc trực tiếp các tệp trên máy, nên thay đổi ở máy có hiệu lực ngay trong container; hậu tố `:ro` làm cho container chỉ có quyền đọc.
-- Ví dụ trong dự án: thư mục `club/frontend` được gắn vào `/usr/share/nginx/html`, nơi Nginx đọc trang web.
+- **Bind mount** gắn một thư mục của máy vào một đường dẫn bên trong container, bằng tùy chọn `-v`.
+- Ví dụ trong dự án: `club/frontend` được gắn vào `/usr/share/nginx/html`, nơi Nginx đọc trang web.
+
+::: details Ghi chú cho mentor
+- Container đọc trực tiếp các tệp trên máy, nên thay đổi ở máy có hiệu lực ngay trong container.
+- Hậu tố `:ro` làm cho container chỉ có quyền đọc.
+:::
 
 ---
 
-## Slide 17: Bước 4 (20 phút): Bind mount thư mục Club
+## Bước 4 (20 phút): Bind mount thư mục Club
 
 ![Thư mục club/frontend của máy được gắn chỉ đọc vào /usr/share/nginx/html của container](/slides/img/s07-bind-mount.svg)
 
@@ -215,7 +237,7 @@ Kết quả: `8080 -> 200` và `8081 -> 200`.
 
 ---
 
-## Slide 18: Bước 4: Phục vụ trang Club
+## Bước 4: Phục vụ trang Club
 
 Container cũ đang giữ cổng 8080 nên cần xóa trước. Chạy các lệnh từ `~/devops-labs`.
 
@@ -234,7 +256,7 @@ Kết quả: `<title>Club Management</title>`.
 
 ---
 
-## Slide 19: Bước 4: Mở trang Club trên trình duyệt
+## Bước 4: Mở trang Club trên trình duyệt
 
 Mở `http://localhost:8080`. Trang hiển thị tiêu đề "Club Members" và dòng `Cannot load members: HTTP 404`.
 
@@ -246,7 +268,7 @@ Dòng này là kết quả đúng: trang cần API `/api/members` nhưng backend
 
 ---
 
-## Slide 20: Bước 5 (15 phút): Sửa tệp, trang thay đổi theo
+## Bước 5 (15 phút): Sửa tệp, trang thay đổi theo
 
 Thư mục được gắn vào container, do đó sửa tệp trên máy thì container thấy ngay. Đổi tiêu đề thành tên của người học:
 
@@ -265,7 +287,7 @@ Kết quả: `<h1>Club Members - TEN BAN</h1>`. Tải lại trình duyệt để
 
 ---
 
-## Slide 21: Bước 5: Xem container đang làm gì
+## Bước 5: Xem container đang làm gì
 
 ```bash
 docker ps
@@ -278,7 +300,7 @@ Kết quả: `STATUS` có dạng `Up ... minutes`; log có các dòng `"GET / HT
 
 ---
 
-## Slide 22: Bước 6 (10 phút): Dừng, xóa, dọn
+## Bước 6 (10 phút): Dừng, xóa, dọn
 
 Lệnh `stop` dừng container nhưng giữ lại container; lệnh `rm` xóa container (image vẫn còn).
 
@@ -300,40 +322,53 @@ Kết quả: sau `stop`, `docker ps` không còn `club-web` nhưng `docker ps -a
 
 ---
 
-## Slide 23: Lỗi thường gặp: Docker không chạy
+## Lỗi thường gặp: Docker không chạy
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `docker: command not found` trong WSL | Chưa bật WSL integration | Docker Desktop, Settings, Resources, WSL integration, bật Ubuntu, Apply; mở lại terminal |
-| `Cannot connect to the Docker daemon` | Docker Desktop chưa chạy hoặc đang khởi động | Mở Docker Desktop, đợi báo Running, thử lại `docker version` |
-| Docker Desktop báo lỗi WSL hoặc ảo hóa | Chưa bật Virtualization hoặc WSL cũ | Bật Virtualization trong BIOS/UEFI, chạy `wsl --update` trong PowerShell |
+| `command not found` | Thiếu tích hợp WSL | Bật Ubuntu |
+| `Cannot connect to the Docker daemon` | Chưa chạy | Mở Docker |
+| Lỗi WSL | Thiếu Virtualization | Bật trong BIOS |
+
+::: details Ghi chú cho mentor
+- Lỗi `docker: command not found` xảy ra trong WSL. Mở lại terminal sau khi bật.
+- Lỗi WSL: Docker Desktop báo lỗi WSL hoặc ảo hóa; sau khi bật Virtualization chạy `wsl --update`.
+- Đường dẫn bật WSL integration: Docker Desktop, Settings, Resources, WSL integration, bật Ubuntu, Apply; sau đó mở lại terminal.
+- Với lỗi daemon: mở Docker Desktop, đợi báo Running, thử lại `docker version`.
+- Lỗi WSL hoặc ảo hóa còn có thể do WSL cũ: chạy `wsl --update` trong PowerShell; Virtualization bật trong BIOS/UEFI.
+:::
 
 ---
 
-## Slide 24: Lỗi thường gặp: cổng và tên trùng
+## Lỗi thường gặp: cổng và tên trùng
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| `port is already allocated` | Cổng đã có container hoặc process khác giữ | `docker ps` xem ai giữ cổng; `docker rm -f` container cũ hoặc đổi cổng trái (ví dụ `-p 8083:80`) |
-| `name is already in use` | Container cũ cùng tên còn tồn tại, kể cả đã dừng | `docker rm -f club-web` rồi chạy lại |
+| `port is already allocated` | Cổng đã bị giữ | `docker ps`; xóa hoặc đổi cổng |
+| `name is already in use` | Container cũ cùng tên | `docker rm -f club-web` |
 
 ::: details Ghi chú cho mentor
+- Cổng có thể do container hoặc process khác giữ; ví dụ đổi cổng trái: `-p 8083:80`.
+- Container cũ cùng tên vẫn tồn tại kể cả khi đã dừng.
 - Khi không có container nào giữ cổng, một tiến trình khác của máy đang giữ cổng đó.
 :::
 
 ---
 
-## Slide 25: Lỗi thường gặp: trang 403 hoặc 404
+## Lỗi thường gặp: trang 403 hoặc 404
 
 | Triệu chứng | Nguyên nhân | Cách sửa |
 | --- | --- | --- |
-| Trang hiện 403 hoặc 404 | Bind mount sai đường dẫn nên thư mục rỗng | Chạy `docker run` từ `~/devops-labs`, kiểm tra `ls club/frontend`, dùng `"$PWD/club/frontend"` |
+| Trang hiện 403 hoặc 404 | Bind mount sai đường dẫn | Chạy từ `~/devops-labs`; `ls club/frontend` |
 
-Dòng `Cannot load members: HTTP 404` trên trang Club là bình thường khi chưa có backend.
+::: details Ghi chú cho mentor
+- Thư mục gắn vào bị rỗng; dùng `"$PWD/club/frontend"` trong `docker run`.
+- Dòng `Cannot load members: HTTP 404` trên trang Club là bình thường khi chưa có backend.
+:::
 
 ---
 
-## Slide 26: Tự kiểm tra
+## Tự kiểm tra
 
 1. Vì sao `-p 8080:80` có hai số? Số nào là cổng của máy?
 2. Khi gặp `port is already allocated`, cần điều tra như thế nào?
@@ -347,13 +382,13 @@ Dòng `Cannot load members: HTTP 404` trên trang Club là bình thường khi c
 
 ---
 
-## Slide 27: Tiếp theo
+## Tiếp theo
 
 Ngày 5 vận hành và gỡ lỗi container: [Ngày 5 – Vận hành và gỡ lỗi container](session-08.md).
 
 ---
 
-## Slide 28: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Docker overview](https://docs.docker.com/get-started/docker-overview/): Docker là gì và dùng để làm gì.
 - **Tài liệu chính thức:** [Containers (Kubernetes docs)](https://kubernetes.io/docs/concepts/containers/): container và image nhìn từ góc độ chuẩn chung.

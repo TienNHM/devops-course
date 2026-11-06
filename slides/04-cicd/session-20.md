@@ -4,7 +4,7 @@
 
 Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-20.md). Lệnh lab nằm trong bài học, slide không chép lại.
 
-## Slide 1: Mục tiêu của buổi 20
+## Mục tiêu của buổi 20
 
 ![Ba mục tiêu: quyền tối thiểu, giữ secret, quét image](/slides/img/s20-goals.svg)
 
@@ -16,7 +16,7 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 2: Bài toán thực tế: action lạ cộng write-all
+## Bài toán thực tế: action lạ cộng write-all
 
 ![Copy action từ blog, tag v1 bị đổi sang mã độc, token ghi repo bị lạm dụng](/slides/img/s20-supply-chain.svg)
 
@@ -27,23 +27,27 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 3: Khái niệm: GITHUB_TOKEN
+## Khái niệm: GITHUB_TOKEN
 
-- **`GITHUB_TOKEN`** là token xác thực mà GitHub tạo tự động cho mỗi lần chạy workflow, dùng để workflow gọi API của GitHub.
+- **`GITHUB_TOKEN`** là token xác thực mà GitHub tạo tự động cho mỗi lần chạy workflow, dùng để gọi API của GitHub.
+- Ví dụ trong dự án: job đẩy image lên GHCR cần `packages: write`, job kiểm thử thì không.
+
+::: details Ghi chú cho mentor
 - Quyền của token được khai báo bằng khóa `permissions:` trong workflow hoặc trong từng job.
-- Ví dụ trong dự án: job đẩy image lên GHCR cần quyền `packages: write`, còn job kiểm thử thì không.
+:::
 
 ---
 
-## Slide 4: Khái niệm: Least privilege
+## Khái niệm: Least privilege
 
 ![Khối permissions contents read và bảng quyền: contents read, các quyền khác none](/slides/img/s20-permissions.svg)
 
 - **Least privilege** (đặc quyền tối thiểu) là nguyên tắc mỗi thành phần chỉ được cấp đúng quyền cần thiết cho công việc của nó.
-- Quyền nào không được khai báo thì đặt là `none`, nên mã độc chạy trong job đó không thể lạm dụng quyền thừa.
-- Ví dụ trong dự án: workflow khai báo `contents: read` ở cấp workflow, job nào cần thêm quyền mới tự nâng ở cấp job.
+- Ví dụ trong dự án: workflow khai báo `contents: read` cho mọi job.
 
 ::: details Ghi chú cho mentor
+- Quyền cấp ở workflow là mức sàn cho mọi job; job cần thêm quyền thì nâng ở cấp job.
+- Quyền nào không được khai báo thì đặt là `none`, nên mã độc chạy trong job đó không thể lạm dụng quyền thừa.
 - Mỗi thành phần chỉ có quyền đủ để làm việc, trong thời gian đủ để làm việc.
 - Quyền mặc định của token phụ thuộc cài đặt của repository, vì vậy cần khai báo `permissions:` tường minh.
 - Quyền cấp ở workflow là mức sàn cho mọi job; job chỉ nâng quyền khi thật sự cần.
@@ -51,7 +55,7 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 5: Ba quyền hay gặp
+## Ba quyền hay gặp
 
 | Quyền | Khi nào cần |
 | --- | --- |
@@ -61,30 +65,37 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 6: Khái niệm: Secret
+## Khái niệm: Secret
 
-- **Secret** là giá trị nhạy cảm (mật khẩu, token, khóa API) mà workflow cần dùng nhưng không được xuất hiện trong mã nguồn.
+- **Secret** là giá trị nhạy cảm (mật khẩu, token, khóa API) mà workflow cần dùng nhưng không được nằm trong mã nguồn.
+- Ví dụ trong dự án: mật khẩu cơ sở dữ liệu không được ghi vào YAML hay Dockerfile.
+
+::: details Ghi chú cho mentor
+- Mật khẩu cũng không được ghi vào `compose.yaml`.
 - GitHub lưu secret mã hóa trong Settings, Secrets and variables, Actions; workflow nhận giá trị lúc chạy.
-- Ví dụ trong dự án: mật khẩu cơ sở dữ liệu không được ghi vào YAML, Dockerfile hay `compose.yaml`.
+:::
 
 ---
 
-## Slide 7: Secret: nên và không nên
+## Secret: nên và không nên
 
 | Nên làm | Không nên làm |
 | --- | --- |
-| Lưu ở Settings, Secrets and variables, Actions | Ghi secret vào YAML, Dockerfile, `compose.yaml` |
-| Truyền qua biến môi trường của đúng bước | Truyền qua tham số dòng lệnh |
-| Xoay (đổi) secret ngay khi nghi ngờ bị lộ | Cho rằng xóa commit là đủ để gỡ secret |
+| Lưu ở Secrets and variables | Ghi vào YAML hoặc Dockerfile |
+| Truyền qua biến môi trường | Truyền qua tham số dòng lệnh |
+| Xoay secret khi nghi bị lộ | Cho rằng xóa commit là đủ |
 
 ::: details Ghi chú cho mentor
+- Nơi lưu: Settings, Secrets and variables, Actions; không ghi secret vào YAML, Dockerfile, `compose.yaml`.
+- Truyền qua biến môi trường của đúng bước, không qua tham số dòng lệnh.
+- Xoay (đổi) secret ngay khi nghi ngờ bị lộ; xóa commit không đủ để gỡ secret.
 - Với repository cục bộ: dùng `.env` và đưa `.env` vào `.gitignore`.
 - Không dùng `echo` để in secret, không in toàn bộ `env`.
 :::
 
 ---
 
-## Slide 8: Che log có giới hạn
+## Che log có giới hạn
 
 ![In secret thô thì bị che, in dạng base64 thì lộ chuỗi thật](/slides/img/s20-masking.svg)
 
@@ -95,22 +106,22 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 9: Khái niệm: Script injection
+## Khái niệm: Script injection
 
 ![Tiêu đề PR chứa lệnh bị nhúng vào run: so với đi qua biến môi trường](/slides/img/s20-injection.svg)
 
-- **Script injection** là lỗ hổng trong đó dữ liệu do người dùng kiểm soát (tiêu đề PR, tên nhánh, nội dung issue) được nhúng vào lệnh shell và bị thực thi như lệnh.
-- Biểu thức `${{ ... }}` được thay bằng chuỗi trước khi shell chạy, nên dữ liệu có thể chèn thêm lệnh vào `run:`.
-- Ví dụ trong dự án: tiêu đề PR chứa lệnh sẽ chạy trong job nếu được nhúng trực tiếp vào bước `run:`.
+- **Script injection** là lỗ hổng trong đó dữ liệu do người dùng kiểm soát được nhúng vào lệnh shell và bị thực thi.
+- Ví dụ trong dự án: tiêu đề PR chứa lệnh sẽ chạy nếu nhúng thẳng vào `run:`.
 
 ::: details Ghi chú cho mentor
+- Bị thực thi như lệnh. Dữ liệu do người dùng kiểm soát gồm tiêu đề PR, tên nhánh, nội dung issue.
 - `${{ ... }}` được thay bằng chuỗi trước khi shell chạy. Dữ liệu do người dùng kiểm soát nhúng vào `run:` có thể chèn lệnh.
 - Cách an toàn: gán dữ liệu vào biến môi trường rồi dùng `"$BIEN"`.
 :::
 
 ---
 
-## Slide 10: Cách viết an toàn
+## Cách viết an toàn
 
 ```yaml
 # Nguy hiểm
@@ -124,30 +135,35 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 11: Pin action theo SHA (nâng cao)
+## Pin action theo SHA (nâng cao)
 
 | Cách tham chiếu | Bất biến | Khuyến nghị |
 | --- | --- | --- |
 | `@main` | Không | Không dùng |
-| `@v4` | Không, tag di chuyển được | Chấp nhận với action chính thức |
+| `@v4` | Không | Chấp nhận với action chính thức |
 | `@` kèm SHA 40 ký tự | Có | Dùng cho bên thứ ba |
 
 ::: details Ghi chú cho mentor
+- Tag `@v4` có thể bị di chuyển sang mã khác nên không bất biến.
 - Ghi chú phiên bản trong comment; Dependabot có thể tự cập nhật SHA đã pin.
 - Nhược điểm: khó đọc và khó cập nhật thủ công.
 :::
 
 ---
 
-## Slide 12: Khái niệm: CVE và SBOM (nâng cao)
+## Khái niệm: CVE và SBOM (nâng cao)
 
-- **CVE** là mã định danh công khai cho một lỗ hổng bảo mật đã được công bố. **SBOM** (software bill of materials) là danh sách các thành phần có trong một phần mềm hoặc image.
+- **CVE** là mã định danh công khai của một lỗ hổng đã công bố; **SBOM** là danh sách thành phần trong một image.
+- Ví dụ trong dự án: SBOM của `club-api` có gói bị ảnh hưởng, `club-web` thì không.
+
+::: details Ghi chú cho mentor
+- SBOM là viết tắt của software bill of materials.
 - Khi có CVE mới, việc tra SBOM cho biết image nào chứa gói bị ảnh hưởng mà không cần quét lại từng image.
-- Ví dụ trong dự án: SBOM của `club-api` liệt kê gói bị ảnh hưởng, còn SBOM của `club-web` thì không.
+:::
 
 ---
 
-## Slide 13: SBOM: tra CVE mới trong vài phút (nâng cao)
+## SBOM: tra CVE mới trong vài phút (nâng cao)
 
 ![CVE mới được tra trên SBOM của từng image: club-api có gói, club-web không](/slides/img/s20-sbom.svg)
 
@@ -158,15 +174,18 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 14: Khái niệm: Trivy và quét lỗ hổng
+## Khái niệm: Trivy và quét lỗ hổng
 
 - **Trivy** là công cụ mã nguồn mở quét lỗ hổng bảo mật trong image, hệ tệp và mã nguồn.
-- Công cụ đối chiếu các gói trong image với cơ sở dữ liệu CVE, rồi xếp mỗi lỗ hổng theo mức nghiêm trọng (severity) như HIGH hoặc CRITICAL.
 - Ví dụ trong dự án: Trivy quét image `club-api:1.0.0` và báo số lỗ hổng ở dòng `Total`.
+
+::: details Ghi chú cho mentor
+- Công cụ đối chiếu các gói trong image với cơ sở dữ liệu CVE, rồi xếp mỗi lỗ hổng theo mức nghiêm trọng (severity) như HIGH hoặc CRITICAL.
+:::
 
 ---
 
-## Slide 15: Quét image bằng tệp tar
+## Quét image bằng tệp tar
 
 ![docker save ra file tar cho Trivy đọc; không mount docker.sock](/slides/img/s20-scan-tar.svg)
 
@@ -178,13 +197,13 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ---
 
-## Slide 16: Pipeline an toàn
+## Pipeline an toàn
 
 ![Dependency review, test, build, scan, rồi mới push GHCR; chỉ job publish có packages write](/slides/img/s20-pipeline.svg)
 
 ---
 
-## Slide 17: Minh họa: đọc kết quả quét
+## Minh họa: đọc kết quả quét
 
 ```text
 club-api.tar (alpine 3.xx)
@@ -204,7 +223,7 @@ Mỗi loại thành phần có một khối `Total`. Số này thay đổi theo 
 
 ---
 
-## Slide 18: Lỗi: security gate chặn pipeline
+## Lỗi: security gate chặn pipeline
 
 ```text
 job image-scan: đỏ
@@ -222,25 +241,29 @@ Pipeline hoạt động đúng thiết kế. Nâng base image; nếu bắt buộ
 
 ---
 
-## Slide 19: Lab: ba phần
+## Lab: ba phần
 
 | Phần | Việc làm | Mốc hoàn thành |
 | --- | --- | --- |
-| 1 | Rà soát `permissions` của mọi workflow | Bảng trong `report.md` |
-| 2 | Quét `club-api:1.0.0` bằng Trivy | Khối `Total:` kèm ngày giờ |
-| 3 | `git grep` tìm secret lỡ commit | Mỗi dòng đã được phân loại |
+| 1 | Rà soát `permissions` | `report.md` |
+| 2 | Quét `club-api:1.0.0` | Khối `Total:` |
+| 3 | `git grep` tìm secret | Đã phân loại |
 
 Lệnh đầy đủ: [Buổi 20 – Pipeline Security](../../labs/week-10/session-20.md).
 
+::: details Ghi chú cho mentor
+- Phần 1: rà soát `permissions` của mọi workflow. Phần 2: quét bằng Trivy, kết quả kèm ngày giờ. Phần 3: `git grep` tìm secret lỡ commit, mỗi dòng đều được phân loại. Bảng của phần 1 nằm trong `report.md`.
+:::
+
 ---
 
-## Slide 20: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: quyền nhỏ, dữ liệu qua biến môi trường, giữ gate](/slides/img/s20-recap.svg)
 
 ---
 
-## Slide 21: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Controlling permissions for GITHUB_TOKEN](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token): đặt quyền tối thiểu cho token.
 - **Tài liệu chính thức:** [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions): lưu và dùng secret an toàn.

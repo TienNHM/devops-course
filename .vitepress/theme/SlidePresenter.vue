@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, withBase } from 'vitepress'
 import { parseSlide, sessionLink, slideOnly } from './progress'
 
@@ -15,13 +15,19 @@ const labHref = computed(() => {
 
 const open = ref(false)
 const slides = ref<string[]>([])
+const notes = ref<string[]>([]) // ghi chú cho mentor của từng slide (phím N để xem)
+const showNotes = ref(false)
 const index = ref(0)
 const stage = ref<HTMLElement | null>(null)
+const slideEl = ref<HTMLElement | null>(null)
 const current = computed(() => slides.value[index.value] ?? '')
+const currentNotes = computed(() => notes.value[index.value] ?? '')
+// Slide "Khái niệm": câu định nghĩa đầu tiên được nhấn mạnh, các ý còn lại nhỏ hơn
+const isConcept = computed(() => /<h2[^>]*>[^<]*Khái niệm:/.test(current.value))
 const progress = computed(() => (slides.value.length > 1 ? (index.value / (slides.value.length - 1)) * 100 : 100))
 
 // Chia nội dung trang tại các đường kẻ `---` (được render thành <hr>).
-function collectSlides(): string[] {
+function collectSlides(): { html: string; notes: string }[] {
   const root = document.querySelector('.vp-doc > div')
   if (!root) return []
   const groups: Element[][] = [[]]
@@ -34,20 +40,45 @@ function collectSlides(): string[] {
     .map((g) => {
       const box = document.createElement('div')
       for (const el of g) box.appendChild(el.cloneNode(true))
-      // Ghi chú cho mentor (::: details) chỉ hiện ở chế độ đọc, không hiện khi chiếu.
-      box.querySelectorAll('.header-anchor, button.copy, .lang, details').forEach((n) => n.remove())
+      // Ghi chú cho mentor (::: details) không nằm trên slide; lấy riêng để xem bằng phím N.
+      const noteBox = document.createElement('div')
+      box.querySelectorAll('details').forEach((d) => {
+        // Lấy nội dung bên trong (bỏ tiêu đề "Ghi chú cho mentor") để không bị gập lại.
+        Array.from(d.children).forEach((child) => {
+          if (child.tagName !== 'SUMMARY') noteBox.appendChild(child)
+        })
+        d.remove()
+      })
+      box.querySelectorAll('.header-anchor, button.copy, .lang').forEach((n) => n.remove())
       // Giữ id của SVG: style của mermaid được gắn theo id đó.
       box.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach((n) => n.removeAttribute('id'))
-      return box.innerHTML
+      return { html: box.innerHTML, notes: noteBox.innerHTML }
     })
 }
 
 function start(at = 0) {
-  slides.value = collectSlides()
+  const collected = collectSlides()
+  slides.value = collected.map((c) => c.html)
+  notes.value = collected.map((c) => c.notes)
+  showNotes.value = false
   if (!slides.value.length) return
   index.value = Math.min(at, slides.value.length - 1)
   open.value = true
 }
+
+// Thu nhỏ vừa khít chiều cao khung chiếu để slide không bị tràn và không phải cuộn.
+// Dùng `zoom` (thay đổi cả bố cục) và không nhỏ hơn 50%.
+function fit() {
+  const el = slideEl.value
+  const st = stage.value
+  if (!el || !st) return
+  el.style.zoom = '1'
+  const avail = st.clientHeight
+  const need = el.offsetHeight
+  el.style.zoom = need > avail ? String(Math.max(0.5, avail / need)) : '1'
+}
+
+let resizeObserver: ResizeObserver | null = null
 
 function go(delta: number) {
   index.value = Math.max(0, Math.min(slides.value.length - 1, index.value + delta))
@@ -93,6 +124,10 @@ function onKey(e: KeyboardEvent) {
     case 'F':
       toggleFullscreen()
       return
+    case 'n':
+    case 'N':
+      if (currentNotes.value) showNotes.value = !showNotes.value
+      return
     case 'Escape':
       close()
       return
@@ -115,12 +150,22 @@ watch(open, (v) => {
   document.documentElement.style.overflow = v ? 'hidden' : ''
   if (v) {
     window.addEventListener('keydown', onKey)
-    nextTick(() => stage.value?.focus())
+    nextTick(() => {
+      stage.value?.focus()
+      fit()
+      if (stage.value && 'ResizeObserver' in window) {
+        resizeObserver?.disconnect()
+        resizeObserver = new ResizeObserver(fit)
+        resizeObserver.observe(stage.value)
+      }
+    })
   } else {
     window.removeEventListener('keydown', onKey)
+    resizeObserver?.disconnect()
   }
 })
 watch(index, () => nextTick(() => stage.value?.scrollTo({ top: 0 })))
+watch([index, open], () => nextTick(fit), { flush: 'post' })
 watch(() => route.path, () => (open.value = false))
 
 onBeforeUnmount(() => {
@@ -132,7 +177,7 @@ onBeforeUnmount(() => {
 <template>
   <div v-if="isSlidePage" class="present-bar">
     <button type="button" class="present-btn" @click="start(0)">&#9654; Trình chiếu</button>
-    <span class="present-hint">Phím mũi tên để chuyển slide, F toàn màn hình, Esc để thoát.</span>
+    <span class="present-hint">Phím mũi tên để chuyển slide, N xem ghi chú mentor, F toàn màn hình, Esc để thoát.</span>
   </div>
 
   <Teleport to="body">
@@ -147,12 +192,23 @@ onBeforeUnmount(() => {
     >
       <div class="present-progress" aria-hidden="true"><span :style="{ width: progress + '%' }" /></div>
       <div ref="stage" class="present-stage" tabindex="-1">
-        <div class="present-slide vp-doc" :class="{ first: index === 0 }" v-html="current" />
+        <div
+          ref="slideEl"
+          class="present-slide vp-doc"
+          :class="{ first: index === 0, concept: isConcept }"
+          @load.capture="fit"
+          v-html="current"
+        />
       </div>
+      <aside v-if="showNotes && currentNotes" class="present-notes vp-doc" aria-label="Ghi chú cho mentor">
+        <p class="notes-title">Ghi chú cho mentor</p>
+        <div v-html="currentNotes" />
+      </aside>
       <div class="present-controls">
         <button type="button" :disabled="index === 0" aria-label="Slide trước" @click="go(-1)">&larr;</button>
-        <span class="present-count">{{ index + 1 }} / {{ slides.length }}</span>
+        <span class="present-count" aria-label="Số trang">{{ index + 1 }}</span>
         <button type="button" :disabled="index === slides.length - 1" aria-label="Slide sau" @click="go(1)">&rarr;</button>
+        <button type="button" class="notes-btn" :class="{ on: showNotes }" :disabled="!currentNotes" aria-label="Xem ghi chú cho mentor (phím N)" @click="showNotes = !showNotes">Ghi chú</button>
         <a v-if="labHref && index === slides.length - 1" class="to-lab" :href="labHref">Làm lab &rarr;</a>
         <button type="button" class="spacer" aria-label="Bật hoặc tắt toàn màn hình" @click="toggleFullscreen">&#x26F6;</button>
         <button type="button" aria-label="Thoát trình chiếu" @click="close">&#10005;</button>
@@ -184,7 +240,11 @@ onBeforeUnmount(() => {
 
 .present {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100dvh; /* trình duyệt di động: tránh thanh địa chỉ che thanh điều khiển */
   z-index: 2000;
   display: flex;
   flex-direction: column;
@@ -234,6 +294,30 @@ onBeforeUnmount(() => {
 .present-controls button:hover:not(:disabled) { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
 .present-controls button:disabled { opacity: 0.35; cursor: default; }
 .present-controls .spacer { margin-left: auto; }
+@media (pointer: coarse) {
+  .present-controls { gap: 8px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); }
+  .present-controls button { min-width: 48px; height: 46px; font-size: 18px; }
+  .present-controls .notes-btn { font-size: 15px; margin-left: 4px; }
+  .present-controls .to-lab { height: 46px; }
+  .present-count { min-width: 32px; }
+}
+@media (max-width: 480px) {
+  .present-slide { padding: 16px 16px 20px; }
+}
+.present-controls .notes-btn { font-size: 14px; margin-left: 12px; white-space: nowrap; }
+.present-controls .notes-btn.on { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
+.present-notes {
+  flex: none;
+  max-height: 42%;
+  overflow: auto;
+  padding: 12px clamp(16px, 4vw, 64px);
+  background: var(--vp-c-bg-soft);
+  border-top: 2px solid var(--vp-c-brand-1);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.present-notes .notes-title { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--vp-c-brand-1); }
+.present-notes :deep(ul) { margin: 0; padding-left: 1.2em; }
 .present-controls .to-lab {
   display: inline-flex;
   align-items: center;
@@ -248,7 +332,7 @@ onBeforeUnmount(() => {
   margin-left: 8px;
 }
 .present-controls .to-lab + .spacer { margin-left: 8px; }
-.present-count { font-size: 14px; color: var(--vp-c-text-2); min-width: 64px; text-align: center; }
+.present-count { font-size: 16px; font-weight: 600; color: var(--vp-c-text-2); min-width: 40px; text-align: center; }
 
 /* Nội dung slide: chữ lớn, thoáng, dễ đọc khi chiếu. */
 .present-slide :deep(h1) {
@@ -282,4 +366,19 @@ onBeforeUnmount(() => {
 .present-slide :deep(svg) { max-height: 62vh; }
 .present-slide :deep(.mermaid) { display: flex; justify-content: center; }
 .present-slide :deep(img) { display: block; margin: 0.4em auto; max-width: 100%; max-height: 66vh; border-radius: 14px; }
+/* Slide có cả hình lẫn chữ: hình không được chiếm quá một nửa chiều cao */
+.present-slide:has(ul, ol, table, pre) :deep(img) { max-height: 38vh; }
+
+/* Slide khái niệm: một thẻ định nghĩa nổi bật, các ý bổ sung nhỏ hơn */
+.present-slide.concept :deep(ul) { list-style: none; padding: 0; margin: 0.6em 0 0; }
+.present-slide.concept :deep(li) { margin: 0.4em 0; padding-left: 0; font-size: 0.85em; color: var(--vp-c-text-2); line-height: 1.5; }
+.present-slide.concept :deep(li:first-child) {
+  margin-top: 0;
+  padding: 0.6em 0.9em;
+  font-size: 1.05em;
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-brand-soft);
+  border-left: 6px solid var(--vp-c-brand-1);
+  border-radius: 10px;
+}
 </style>

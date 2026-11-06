@@ -4,7 +4,7 @@
 
 Bài học: [Buổi 11 – Container Networking](../../labs/week-06/session-11.md) · Bài tập: [Bài tập tuần 6](../../assignments/weekly/week-06.md)
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: gọi bằng tên, mở đúng cổng, tìm lỗi DB](/slides/img/s11-goals.svg)
 
@@ -15,7 +15,7 @@ Bài học: [Buổi 11 – Container Networking](../../labs/week-06/session-11.m
 
 ---
 
-## Slide 2: Chạy tốt trên máy chủ nhưng lỗi trong container
+## Chạy tốt trên máy chủ nhưng lỗi trong container
 
 ![API gọi localhost chạy được trên máy, trong container localhost là chính nó](/slides/img/s11-problem.svg)
 
@@ -27,20 +27,20 @@ Bài học: [Buổi 11 – Container Networking](../../labs/week-06/session-11.m
 
 ---
 
-## Slide 3: Khái niệm: Bridge network
+## Khái niệm: Bridge network
 
-- **Bridge network** là mạng ảo do Docker tạo trên máy chủ; các container gắn vào cùng một bridge có thể gửi gói tin cho nhau.
-- Docker cung cấp sẵn default bridge, và người dùng có thể tạo thêm user-defined bridge bằng `docker network create`.
+- **Bridge network** là mạng ảo do Docker tạo trên máy chủ; các container cùng bridge gửi được gói tin cho nhau.
 - Ví dụ trong dự án: network `club-net` chứa container API và container Postgres.
 
 ::: details Ghi chú cho mentor
+- Docker cung cấp sẵn default bridge, và người dùng có thể tạo thêm user-defined bridge bằng `docker network create`.
 - Tạo `club-net`: Docker cấp subnet riêng và một bridge ảo; mỗi container gắn vào nhận một IP trong subnet.
 - Khóa học chỉ dùng driver `bridge`.
 :::
 
 ---
 
-## Slide 4: Gọi bằng tên chỉ hoạt động trên network tự tạo
+## Gọi bằng tên chỉ hoạt động trên network tự tạo
 
 ![Default bridge báo bad address, network tự tạo gọi bằng tên thành công](/slides/img/s11-bridges.svg)
 
@@ -54,35 +54,37 @@ Bài học: [Buổi 11 – Container Networking](../../labs/week-06/session-11.m
 
 ---
 
-## Slide 5: Khái niệm: DNS nhúng của Docker
+## Khái niệm: DNS nhúng của Docker
 
 ![Bốn bước: hỏi DNS 127.0.0.11, nhận IP, gửi gói tin qua bridge](/slides/img/s11-dns.svg)
 
-- **DNS nhúng** là máy chủ phân giải tên có sẵn trong Docker, lắng nghe tại `127.0.0.11` bên trong container thuộc user-defined network.
-- Khi container gọi một tên, truy vấn đến DNS này và nhận về IP hiện tại của container tương ứng; vì vậy tên vẫn đúng khi IP thay đổi.
+- **DNS nhúng** là máy chủ phân giải tên có sẵn trong Docker, lắng nghe tại `127.0.0.11` trong container thuộc user-defined network.
 - Ví dụ trong dự án: `DB_HOST=postgres` hoạt động dù IP của container Postgres thay đổi.
 
 ::: details Ghi chú cho mentor
+- Khi container gọi một tên, truy vấn đến DNS này và nhận về IP hiện tại của container tương ứng; vì vậy tên vẫn đúng khi IP thay đổi.
 - API gọi `postgres:5432`: truy vấn DNS tới `127.0.0.11`, Docker trả IP hiện tại; gói tin đi qua bridge. IP trong hình chỉ là ví dụ và sẽ khác trên máy của người học.
 :::
 
 ---
 
-## Slide 6: Khái niệm: Publish cổng (-p)
+## Khái niệm: Publish cổng (-p)
 
 ![curl vào API qua cổng publish; API gọi Postgres thẳng trong network](/slides/img/s11-portmap.svg)
 
-- **Publish cổng** (`-p MÁY:CONTAINER`) là cơ chế ánh xạ một cổng của máy chủ tới một cổng của container, để truy cập từ bên ngoài network.
-- Container cùng network gọi thẳng cổng của container và không cần `-p`.
-- Lưu ý: `-p 127.0.0.1:...` chỉ mở trên localhost; `-p 13000:3000` mở trên mọi interface; `EXPOSE` chỉ có tác dụng làm tài liệu.
+- **Publish cổng** (`-p MÁY:CONTAINER`) ánh xạ một cổng của máy chủ tới một cổng của container, để truy cập từ ngoài network.
+- Ví dụ trong dự án: chỉ API được `-p`; Postgres không publish cổng.
 
 ::: details Ghi chú cho mentor
+- Container cùng network gọi thẳng cổng của container và không cần `-p`.
+- `-p 13000:3000` mở trên mọi interface.
+- `-p 127.0.0.1:...` chỉ mở trên localhost; `EXPOSE` chỉ có tác dụng làm tài liệu.
 - `-p MÁY:CONTAINER` chỉ cần cho truy cập từ ngoài network.
 :::
 
 ---
 
-## Slide 7: Bức tranh đầy đủ
+## Bức tranh đầy đủ
 
 ![club-net chứa API và Postgres, container ở other-net không thấy Postgres](/slides/img/s11-topology.svg)
 
@@ -93,7 +95,7 @@ Bài học: [Buổi 11 – Container Networking](../../labs/week-06/session-11.m
 
 ---
 
-## Slide 8: Demo: default bridge và network tự tạo
+## Demo: default bridge và network tự tạo
 
 ```text
 $ docker run --rm alpine:3.20 wget -qO- -T 3 http://lab-web
@@ -113,40 +115,41 @@ Cùng một lệnh gọi: khác network thì lỗi, cùng `lab-net` thì nhận 
 
 ---
 
-## Slide 9: Khái niệm: Network isolation
+## Khái niệm: Network isolation
 
 ![Trước connect tên và IP đều thất bại, sau connect gọi được](/slides/img/s11-isolation.svg)
 
-- **Network isolation** (cô lập network) nghĩa là container ở network này không có đường đi tới container ở network khác.
-- Lệnh `docker network connect` gắn thêm một container đang chạy vào network khác, nên một container có thể thuộc nhiều network.
-- Ví dụ trong dự án: `iso-b` ở `net-b` gọi `iso-a` ở `net-a` thất bại; sau `docker network connect net-a iso-b` thì gọi được.
+- **Network isolation** nghĩa là container ở network này không có đường đi tới container ở network khác.
+- Ví dụ trong dự án: `iso-b` gọi `iso-a` thất bại; sau `docker network connect net-a iso-b` thì gọi được.
 
 ::: details Ghi chú cho mentor
+- Lệnh `docker network connect` gắn thêm một container đang chạy vào network khác, nên một container có thể thuộc nhiều network.
+- `iso-b` ở `net-b`, `iso-a` ở `net-a`.
 - Trước khi connect: tên báo `bad address`, IP báo `download timed out`. Sau khi connect: nhận HTML.
 - Một container thuộc nhiều network là cách tạo cầu nối có kiểm soát.
 :::
 
 ---
 
-## Slide 10: Lab L1: 60 phút
+## Lab L1: 60 phút
 
 | Phần | Việc làm | Mốc xong |
 | --- | --- | --- |
-| 1-2 | Gọi bằng tên, `-p` | `bad address` rồi `200 OK` |
-| 3 | `club-api` và Postgres trên `club-net` | `{"status":"ready"}` |
-| 4 | Isolation, `network connect` | Thất bại rồi thành công |
-| 5 | Cố ý đặt sai `DB_HOST=localhost` | `/ready` 503 |
-
-Lệnh đầy đủ: [Buổi 11 – Container Networking](../../labs/week-06/session-11.md).
+| 1-2 | Gọi bằng tên, `-p` | `200 OK` |
+| 3 | `club-api` và Postgres | `"ready"` |
+| 4 | `network connect` | Gọi được |
+| 5 | Đặt sai `DB_HOST` | `/ready` 503 |
 
 ::: details Ghi chú cho mentor
+- Lệnh đầy đủ: [Buổi 11 – Container Networking](../../labs/week-06/session-11.md).
+- Mốc xong chi tiết: phần 1-2 `bad address` rồi `200 OK`; phần 3 `{"status":"ready"}` với `club-api` và Postgres trên `club-net`; phần 4 thất bại rồi thành công; phần 5 đặt `DB_HOST=localhost` cố ý.
 - Phần 3: Postgres không publish cổng nên `docker port lab-postgres` phải rỗng; `club-net` có đúng hai container.
 - Phần 5: hoàn tất bằng chứng ở Phần 3 trước khi tạo lỗi.
 :::
 
 ---
 
-## Slide 11: Debug: API chạy nhưng /ready trả 503
+## Debug: API chạy nhưng /ready trả 503
 
 ```text
 $ docker ps --filter name=lab-      → lab-api-bad  Up
@@ -164,7 +167,7 @@ Container đang chạy và `/health` trả về kết quả tốt, nhưng API kh
 
 ---
 
-## Slide 12: Điều tra theo thứ tự
+## Điều tra theo thứ tự
 
 ![Log, env, nslookup dẫn tới kết luận lỗi cấu hình DB_HOST](/slides/img/s11-debug-flow.svg)
 
@@ -176,18 +179,25 @@ Container đang chạy và `/health` trả về kết quả tốt, nhưng API kh
 
 ---
 
-## Slide 13: Lỗi thường gặp
+## Lỗi thường gặp
 
-| Triệu chứng | Nguyên nhân | Cách xử lý |
+| Lỗi | Nguyên nhân | Xử lý |
 | --- | --- | --- |
-| `ECONNREFUSED 127.0.0.1:5432` | `DB_HOST=localhost` | Đặt `DB_HOST` là tên Postgres |
-| `bad address`, `ENOTFOUND` | Default bridge, hoặc khác network | Dùng chung network tự tạo |
-| `port is already allocated` | Cổng máy chủ đã được dùng | Đổi cổng máy chủ |
-| `network rm` báo `active endpoints` | Còn container gắn vào network | `docker rm -f` các container trước |
+| `ECONNREFUSED` | `localhost` | Dùng tên Postgres |
+| `ENOTFOUND` | Default bridge | Network tự tạo |
+| `allocated` | Cổng đã dùng | Đổi cổng |
+| `active endpoints` | Còn container | `docker rm -f` |
+
+::: details Ghi chú cho mentor
+- `ECONNREFUSED 127.0.0.1:5432`: `DB_HOST=localhost`; đặt `DB_HOST` là tên Postgres.
+- `bad address`, `ENOTFOUND`: default bridge hoặc khác network; dùng chung network tự tạo.
+- `port is already allocated`: cổng máy chủ đã được dùng; đổi cổng máy chủ.
+- `network rm` báo `active endpoints`: còn container gắn vào network; `docker rm -f` các container trước.
+:::
 
 ---
 
-## Slide 14: Câu hỏi cuối buổi
+## Câu hỏi cuối buổi
 
 - Container ở network khác cần giao tiếp mà không phải tạo lại: dùng lệnh nào?
 - API có cần `-p 5432:5432` để kết nối database không? Giải thích.
@@ -200,7 +210,7 @@ Container đang chạy và `/health` trả về kết quả tốt, nhưng API kh
 
 ---
 
-## Slide 15: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: có tên là có DNS, -p chỉ để vào từ ngoài, localhost là chính nó](/slides/img/s11-recap.svg)
 
@@ -208,7 +218,7 @@ Buổi sau: [Buổi 12 – Persistent Storage](../../labs/week-06/session-12.md)
 
 ---
 
-## Slide 16: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Networking overview](https://docs.docker.com/engine/network/): tổng quan cách container nói chuyện với nhau.
 - **Tài liệu chính thức:** [Bridge network driver](https://docs.docker.com/engine/network/drivers/bridge/): vì sao gọi bằng tên chỉ chạy trên network tự tạo.

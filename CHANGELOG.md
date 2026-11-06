@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+- Cắt chữ trên slide: slide khái niệm chỉ giữ định nghĩa và ví dụ, phần giải thích thêm chuyển vào ghi chú mentor; trung vị còn 38 chữ mỗi slide (trước đó 47), slide khái niệm 45 chữ (trước đó 73). Trình chiếu thêm nút "Ghi chú" (phím N) để mentor xem ghi chú ngay khi chiếu.
+- Giao diện di động: trình chiếu dùng chiều cao động của màn hình (không bị thanh trình duyệt che), nút bấm 46 px trên màn hình cảm ứng; đã kiểm tra 19 trang ở 360 và 390 px, không tràn ngang.
+- Chế độ trình chiếu: tự thu nhỏ để slide vừa khít chiều cao (không còn tràn hay phải cuộn), hình bị giới hạn khi slide có cả chữ, slide khái niệm có thẻ định nghĩa nổi bật; chân trang chỉ hiện số trang.
+- Tiêu đề slide bỏ tiền tố "Slide N:" (741 tiêu đề ở 34 bộ slide).
 - Văn phong học thuật cho người mới: viết lại 32 bộ slide, các trang `curriculum`, `resources`, `vibe`, trang chủ; thêm slide "Khái niệm" trước mỗi thuật ngữ mới (định nghĩa một câu, ví dụ trong dự án). Quy tắc văn phong nằm trong ghi chú soạn bài của người biên soạn.
 - Thêm module tùy chọn "Phần 6 · Cloud và IaC" cho Lộ trình Nâng cao: buổi 33 (AWS cục bộ với floci) và buổi 34 (Terraform và kiểm thử tích hợp trên floci), chỉ học bằng slide.
 - Lộ trình Cơ bản học bằng slide: bỏ lab, bài tập và nộp bài khỏi đường học Ngày 1–10; 10 bộ slide viết lại thành bài học đầy đủ (bước làm, kiểm tra, lỗi thường gặp, tự kiểm tra). Các trang lab cũ của Cơ bản giữ làm bản lưu trữ, ẩn khỏi menu. Tiến độ ("Đánh dấu đã xong") chuyển sang trang slide.

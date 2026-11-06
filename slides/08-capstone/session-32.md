@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Mỗi nhóm demo hệ thống Club Management từ Compose, CI/CD tới Kubernetes, xử lý một sự cố có chủ đích, bảo vệ kỹ thuật, sau đó thực hiện peer review và rút ra bài học. Lệnh lab: [Buổi 32](../../labs/week-16/session-32.md).
 
-## Slide 1: Mục tiêu: demo và bảo vệ kỹ thuật
+## Mục tiêu: demo và bảo vệ kỹ thuật
 
 ![Ba mục tiêu: demo 10 phút, xử lý sự cố, bảo vệ kỹ thuật](/slides/img/s32-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Chạy được chưa phải là sẵn sàng bàn giao
+## Chạy được chưa phải là sẵn sàng bàn giao
 
 ![Nhóm bàn giao cho người nhận vận hành tiếp](/slides/img/s32-handover.svg)
 
@@ -24,15 +24,20 @@
 
 ---
 
-## Slide 3: Khái niệm: Demo script
+## Khái niệm: Demo script
 
-- **Demo script** (kịch bản demo) là tài liệu ghi thứ tự các bước trình diễn, lệnh cần chạy, kết quả mong đợi và người phụ trách từng đoạn.
+- **Demo script** (kịch bản demo) là tài liệu ghi thứ tự trình diễn, lệnh cần chạy và kết quả mong đợi.
+- Ví dụ trong dự án: kịch bản 10 phút từ kiến trúc, Compose, CI/CD tới Kubernetes.
+
+::: details Ghi chú cho mentor
+- Kịch bản cũng ghi người phụ trách từng đoạn.
+- Kịch bản 10 phút còn gồm sự cố và hỏi đáp.
 - Kịch bản giúp demo bám theo luồng của bài toán và giữ đúng thời gian, thay vì theo thứ tự các tệp trong repository.
-- Ví dụ trong dự án: kịch bản 10 phút gồm kiến trúc, Compose, CI/CD, Kubernetes, sự cố và hỏi đáp.
+:::
 
 ---
 
-## Slide 4: Demo hiệu quả: chạy thật và nêu rõ điều quan sát được
+## Demo hiệu quả: chạy thật và nêu rõ điều quan sát được
 
 ![So sánh demo kém và demo tốt](/slides/img/s32-demo-compare.svg)
 
@@ -43,7 +48,7 @@
 
 ---
 
-## Slide 5: Bảo vệ kỹ thuật: kết luận, lý do, bằng chứng
+## Bảo vệ kỹ thuật: kết luận, lý do, bằng chứng
 
 ![Ba bước trả lời hỏi đáp kèm ví dụ Pod tự phục hồi](/slides/img/s32-answer-steps.svg)
 
@@ -54,22 +59,26 @@
 
 ---
 
-## Slide 6: Mỗi phát biểu cần có bằng chứng
+## Mỗi phát biểu cần có bằng chứng
 
 | Phát biểu | Bằng chứng |
 | --- | --- |
-| Dữ liệu không mất | `down` rồi `up`, gọi lại `GET /api/members` |
-| Pipeline chặn mã lỗi | Một run thất bại trong tab Actions |
-| Pod tự phục hồi | `kubectl delete pod`, `get pods -w` |
-| Secret không nằm trong Git | `git ls-files` không có Secret thật |
+| Dữ liệu không mất | `down` rồi `up`, `GET /api/members` |
+| Pipeline chặn mã lỗi | Run thất bại |
+| Pod tự phục hồi | `kubectl delete pod` |
+| Secret không nằm trong Git | `git ls-files` |
 
 ::: details Ghi chú cho mentor
+- Dữ liệu không mất: sau `down` rồi `up`, gọi lại `GET /api/members`.
+- Pod tự phục hồi: dùng `get pods -w` để quan sát Pod mới.
+- Secret không nằm trong Git: `git ls-files` không có Secret thật.
+- Pipeline chặn mã lỗi: một run thất bại trong tab Actions.
 - Bổ sung: image truy ngược được về commit nhờ tag SHA hoặc phiên bản trên GHCR.
 :::
 
 ---
 
-## Slide 7: Luồng từ commit tới người dùng
+## Luồng từ commit tới người dùng
 
 ![Developer, GitHub, Actions, GHCR, kind và đường Compose](/slides/img/s32-pipeline.svg)
 
@@ -80,7 +89,7 @@
 
 ---
 
-## Slide 8: Kịch bản 10 phút
+## Kịch bản 10 phút
 
 ![Dòng thời gian: kiến trúc, Compose, CI/CD, Kubernetes, sự cố, hỏi đáp](/slides/img/s32-timeline.svg)
 
@@ -91,7 +100,7 @@
 
 ---
 
-## Slide 9: Demo: Compose rồi Kubernetes
+## Demo: Compose rồi Kubernetes
 
 ```text
 $ docker compose down && docker compose up -d
@@ -110,7 +119,7 @@ $ kubectl delete pod POD_BACKEND -n club
 
 ---
 
-## Slide 10: Lab Phần 1: preflight và phân vai
+## Lab Phần 1: preflight và phân vai
 
 ![Checklist kiểm tra máy và chuẩn bị dự phòng](/slides/img/s32-preflight.svg)
 
@@ -122,7 +131,7 @@ $ kubectl delete pod POD_BACKEND -n club
 
 ---
 
-## Slide 11: Lab Phần 2: sự cố do mentor chọn
+## Lab Phần 2: sự cố do mentor chọn
 
 ![Vòng sự cố, nói to, log và events, giả thuyết kiểm chứng](/slides/img/s32-incident-loop.svg)
 
@@ -133,23 +142,29 @@ $ kubectl delete pod POD_BACKEND -n club
 
 ---
 
-## Slide 12: Khái niệm: Postmortem và lessons learned
+## Khái niệm: Postmortem và lessons learned
 
-- **Postmortem** là bản ghi lại một sự cố sau khi xử lý xong, gồm tác động, nguyên nhân gốc, cách xử lý và các việc cần làm tiếp để ngăn tái diễn.
+- **Postmortem** là bản ghi một sự cố sau khi xử lý xong, gồm tác động, nguyên nhân gốc và cách xử lý.
+- Ví dụ trong dự án: lessons learned trong `report.md`.
+
+::: details Ghi chú cho mentor
+- Bản ghi còn nêu các việc cần làm tiếp nhằm ngăn sự cố tái diễn.
+- Lessons learned trong `report.md` nêu điều tốt, điều chưa tốt và điều sẽ làm khác.
 - Mục tiêu là học từ hệ thống và quy trình chứ không quy lỗi cho cá nhân, nên bản ghi tập trung vào sự kiện và bằng chứng.
-- Ví dụ trong dự án: phần lessons learned trong `report.md` nêu điều tốt, điều chưa tốt và điều sẽ làm khác.
+:::
 
 ---
 
-## Slide 13: Lab Phần 3 và 4: hỏi đáp, peer review
+## Lab Phần 3 và 4: hỏi đáp, peer review
 
 | Phần | Việc làm | Lưu ý |
 | --- | --- | --- |
-| 3 | Hỏi đáp 5 phút | Trả lời bằng bằng chứng |
-| 4 | Peer review từng thành viên | Kèm liên kết PR hoặc Issue |
+| 3 | Hỏi đáp 5 phút | Có bằng chứng |
+| 4 | Peer review từng thành viên | Kèm liên kết PR |
 | 4 | Lessons learned | Ghi vào `report.md` |
 
 ::: details Ghi chú cho mentor
+- Phần 3: trả lời bằng bằng chứng. Phần 4: liên kết kèm theo là PR hoặc Issue.
 - Câu hỏi mẫu: liveness và readiness khác nhau thế nào, `down` và `down -v` khác nhau ở đâu, Secret có thực sự bí mật không.
 - Không chia sẻ nội dung peer review giữa các thành viên.
 - Lessons learned: điều tốt, điều chưa tốt, điều sẽ làm khác.
@@ -157,7 +172,7 @@ $ kubectl delete pod POD_BACKEND -n club
 
 ---
 
-## Slide 14: Phá lỗi: mất dữ liệu trước demo
+## Phá lỗi: mất dữ liệu trước demo
 
 ![down giữ volume, down -v xóa volume](/slides/img/s32-down-v.svg)
 
@@ -171,7 +186,7 @@ Phòng tránh: chỉ dùng `down`, có script seed, sao lưu bằng `pg_dump`.
 
 ---
 
-## Slide 15: Challenge L2: failure injection tự chọn
+## Challenge L2: failure injection tự chọn
 
 | Yêu cầu | Chi tiết |
 | --- | --- |
@@ -186,7 +201,7 @@ Phòng tránh: chỉ dùng `down`, có script seed, sao lưu bằng `pg_dump`.
 
 ---
 
-## Slide 16: Tổng kết và nộp bài
+## Tổng kết và nộp bài
 
 ![Ba điều cần nhớ: chạy thật, có bằng chứng, cẩn thận down -v](/slides/img/s32-recap.svg)
 
@@ -200,7 +215,7 @@ Nộp bài thư mục `lab-32/`; peer review gửi riêng cho mentor.
 
 ---
 
-## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [kubectl Quick Reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/): tra lệnh nhanh khi demo.
 - **Tài liệu chính thức:** [About READMEs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes): viết README giúp người khác chạy được dự án.

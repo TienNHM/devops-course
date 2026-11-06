@@ -4,7 +4,7 @@
 
 Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fundamentals](../../labs/week-03/session-05.md).
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: đọc từng tầng, phân loại lỗi, hiểu bind và container](/slides/img/s05-goals.svg)
 
@@ -15,7 +15,7 @@ Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fu
 
 ---
 
-## Slide 2: Bài toán thực tế: "không vào được" có 5 nguyên nhân
+## Bài toán thực tế: "không vào được" có 5 nguyên nhân
 
 ![Năm nguyên nhân khác nhau cho cùng một câu không vào được](/slides/img/s05-five-causes.svg)
 
@@ -26,15 +26,16 @@ Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fu
 
 ---
 
-## Slide 3: Khái niệm: Địa chỉ IP và port
+## Khái niệm: Địa chỉ IP và port
 
 ![Gói tin tới địa chỉ IP rồi tới đúng port của chương trình](/slides/img/s05-ip-port.svg)
 
 - **Địa chỉ IP** xác định một máy trong mạng; **port** là số xác định một chương trình đang lắng nghe trên máy đó.
-- Gói tin đến địa chỉ IP trước, sau đó được chuyển tới chương trình đang dùng port tương ứng.
-- Port quen thuộc: 22 (SSH), 53 (DNS), 80 và 443 (HTTP và HTTPS).
+- Ví dụ trong dự án: Nginx cổng 8080, API cổng 3000, PostgreSQL cổng 5432.
 
 ::: details Ghi chú cho mentor
+- Gói tin đến địa chỉ IP trước, sau đó được chuyển tới chương trình đang dùng port tương ứng.
+- Port quen thuộc: 22 (SSH), 53 (DNS), 80 và 443 (HTTP và HTTPS).
 - Các máy cùng subnet giao tiếp trực tiếp, khác subnet thì đi qua gateway.
 - `127.0.0.0/8` là loopback. Dải private: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`; WSL2, Docker, kind đều dùng.
 - TCP bắt tay ba bước; UDP không thiết lập kết nối.
@@ -42,35 +43,37 @@ Lệnh chi tiết của lab nằm trong bài học: [Buổi 05 – Networking Fu
 
 ---
 
-## Slide 4: Khái niệm: DNS
+## Khái niệm: DNS
 
 ![Tra /etc/hosts trước, rồi hỏi resolver để ra địa chỉ IP](/slides/img/s05-dns.svg)
 
 - **DNS** (Domain Name System) là hệ thống chuyển tên miền thành địa chỉ IP.
-- Máy tra tệp `/etc/hosts` trước, sau đó hỏi resolver (máy chủ phân giải tên); kết quả được lưu đệm (cache) theo TTL.
-- Ví dụ: `localhost` trỏ về `127.0.0.1`; resolver trong WSL2 được khai báo ở `/etc/resolv.conf`.
+- Ví dụ trong dự án: `localhost` trỏ về `127.0.0.1`.
 
 ::: details Ghi chú cho mentor
+- Máy tra tệp `/etc/hosts` trước, sau đó hỏi resolver (máy chủ phân giải tên); kết quả được lưu đệm (cache) theo TTL.
+- Resolver trong WSL2 được khai báo ở `/etc/resolv.conf`.
 - Câu hỏi: dòng nào của `nslookup` cho biết resolver đang dùng? (dòng `Server`)
 :::
 
 ---
 
-## Slide 5: Khái niệm: Request đi qua bốn bước
+## Khái niệm: Request đi qua bốn bước
 
 ![DNS, TCP, TLS, HTTP và công cụ kiểm tra từng bước](/slides/img/s05-request-steps.svg)
 
-- **TCP** là giao thức thiết lập kết nối tin cậy giữa hai máy; **TLS** mã hóa kết nối; **HTTP** là giao thức trao đổi request và response giữa client và server.
-- Một request HTTPS đi theo thứ tự DNS, TCP, TLS, HTTP; lỗi ở bước nào thì chẩn đoán bằng công cụ của bước đó.
+- Một request HTTPS đi theo thứ tự **DNS**, **TCP**, **TLS**, **HTTP**; lỗi ở bước nào thì chẩn đoán bằng công cụ của bước đó.
+- Ví dụ trong dự án: `curl -v` cho thấy từng bước, từ DNS đến HTTP.
 
 ::: details Ghi chú cho mentor
+- TCP là giao thức thiết lập kết nối tin cậy giữa hai máy; TLS mã hóa kết nối; HTTP là giao thức trao đổi request và response giữa client và server.
 - Lỗi DNS ở bước 1, lỗi TCP ở bước 2, lỗi ứng dụng ở bước 4.
 - Với HTTPS, TLS handshake diễn ra sau khi TCP bắt tay xong.
 :::
 
 ---
 
-## Slide 6: Đọc kết quả `curl -v`: các dòng `*`, `>` và `<`
+## Đọc kết quả `curl -v`: các dòng `*`, `>` và `<`
 
 ```text
 $ curl -v https://example.com/ -o /dev/null
@@ -90,7 +93,7 @@ Câu hỏi: dòng nào chứng minh DNS thành công, và dòng nào chứng min
 
 ---
 
-## Slide 7: Chẩn đoán từ dưới lên
+## Chẩn đoán từ dưới lên
 
 ![Cây quyết định: DNS, TCP, HTTP và lỗi tương ứng](/slides/img/s05-diagnose.svg)
 
@@ -101,7 +104,7 @@ Câu hỏi: dòng nào chứng minh DNS thành công, và dòng nào chứng min
 
 ---
 
-## Slide 8: Ba loại lỗi kết nối của curl
+## Ba loại lỗi kết nối của curl
 
 ![curl 7 refused, 28 timeout, 6 không phân giải được tên](/slides/img/s05-three-errors.svg)
 
@@ -112,35 +115,38 @@ Câu hỏi: dòng nào chứng minh DNS thành công, và dòng nào chứng min
 
 ---
 
-## Slide 9: Khái niệm: Bind address
+## Khái niệm: Bind address
 
 ![bind 127.0.0.1 chỉ nhận từ chính máy, bind 0.0.0.0 nhận từ mọi card mạng](/slides/img/s05-bind.svg)
 
 - **Bind address** là địa chỉ IP mà server gắn vào để nhận kết nối; địa chỉ này quyết định ai được phép gọi tới server.
-- Bind `127.0.0.1` chỉ nhận kết nối từ chính máy; bind `0.0.0.0` nhận kết nối qua mọi card mạng.
+- Ví dụ trong dự án: `python3 -m http.server 9000 --bind 127.0.0.1`, rồi `0.0.0.0`.
 
 ::: details Ghi chú cho mentor
+- Bind `127.0.0.1` chỉ nhận kết nối từ chính máy; bind `0.0.0.0` nhận kết nối qua mọi card mạng.
 - Demo: `python3 -m http.server 9000 --bind 127.0.0.1` rồi `ss -ltnp`, sau đó `--bind 0.0.0.0` và so sánh cột Local Address.
 - Với service thật, bind `0.0.0.0` là quyết định có chủ đích.
 :::
 
 ---
 
-## Slide 10: Khái niệm: localhost trong container và reverse proxy
+## Khái niệm: localhost trong container và reverse proxy
 
 ![API trong container gọi postgres theo tên service, không dùng localhost](/slides/img/s05-container.svg)
 
-- Mỗi container có network namespace riêng, nên `localhost` trong container trỏ về chính container đó, không phải máy chủ hay container khác.
-- **Reverse proxy** là server nhận request thay cho các dịch vụ phía sau và chuyển tiếp chúng; do đó API gọi postgres bằng tên service.
-- Ví dụ trong dự án: Nginx phục vụ `/` là tệp tĩnh và chuyển `/api/` sang `http://backend:3000`.
+- **Reverse proxy** là server nhận request thay cho các dịch vụ phía sau và chuyển tiếp chúng.
+- Ví dụ trong dự án: Nginx chuyển `/api/` sang `http://backend:3000`.
+- Lưu ý: `localhost` trong container trỏ về chính container đó.
 
 ::: details Ghi chú cho mentor
+- Mỗi container có network namespace riêng, nên `localhost` trong container không trỏ về máy chủ hay container khác; do đó API gọi postgres bằng tên service.
+- Nginx phục vụ `/` là tệp tĩnh.
 - Gọi `/health` qua cổng 8080 sẽ nhận trang frontend vì đường dẫn không khớp `/api/`.
 :::
 
 ---
 
-## Slide 11: Port đã được sử dụng
+## Port đã được sử dụng
 
 ```text
 $ python3 -m http.server 9000 --bind 0.0.0.0
@@ -158,14 +164,12 @@ Khi đã có PID, chạy `ps -p PID` để xem process, sau đó dừng nhẹ nh
 
 ---
 
-## Slide 12: Lab: năm phần trong 60 phút
+## Lab: năm phần trong 60 phút
 
-| Phần | Việc làm | Mốc xong |
-| --- | --- | --- |
-| 1-2 | `ip`, `ping`, `nslookup` | `nameserver` trùng dòng `Server` |
-| 3 | `curl -v` | có dòng `>`, `<` và `200` |
-| 4 | Server Python và `ss -ltnp` | hai dòng `LISTEN` của port 9000 |
-| 5 | Port conflict, ba mã lỗi | có `(7)`, `(28)`, `(6)` |
+1. Phần 1-2: `ip`, `ping`, `nslookup`; `nameserver` trùng dòng `Server`.
+2. Phần 3: `curl -v`; có `>`, `<`, `200`.
+3. Phần 4: `ss -ltnp`; hai dòng `LISTEN`.
+4. Phần 5: port conflict; có `(7)`, `(28)`, `(6)`.
 
 Lệnh đầy đủ: [Buổi 05 – Networking Fundamentals](../../labs/week-03/session-05.md).
 
@@ -176,7 +180,7 @@ Lệnh đầy đủ: [Buổi 05 – Networking Fundamentals](../../labs/week-03/
 
 ---
 
-## Slide 13: Ping được chưa chắc web đang hoạt động
+## Ping được chưa chắc web đang hoạt động
 
 ```text
 $ ping -c 1 1.1.1.1
@@ -194,7 +198,7 @@ curl: (7) Failed to connect ... Connection refused
 
 ---
 
-## Slide 14: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: đi từng tầng, đọc mã lỗi, bind và localhost](/slides/img/s05-recap.svg)
 
@@ -202,7 +206,7 @@ Buổi tiếp theo: [Buổi 06 – Git & GitHub Workflow](session-06.md).
 
 ---
 
-## Slide 15: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Overview of HTTP (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview): HTTP hoạt động thế nào, giải thích rõ ràng.
 - **Tài liệu chính thức:** [HTTP response status codes (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status): tra mã 200, 404, 500 nghĩa là gì.

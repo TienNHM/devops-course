@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học trình bày cách tách cấu hình khỏi image bằng ConfigMap và Secret, nạp cấu hình qua biến môi trường hoặc tệp mount, và xác định thời điểm Pod nhận giá trị mới. Bài lab đầy đủ: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.md).
 
-## Slide 1: Mục tiêu của buổi 25
+## Mục tiêu của buổi 25
 
 ![Ba mục tiêu: tách cấu hình, nạp vào Pod, hiểu giới hạn](/slides/img/s25-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Vấn đề: mật khẩu nằm trong image
+## Vấn đề: mật khẩu nằm trong image
 
 ![So sánh viết cứng vào image với một image dùng nhiều cấu hình](/slides/img/s25-in-image.svg)
 
@@ -25,20 +25,22 @@
 
 ---
 
-## Slide 3: Khái niệm: ConfigMap
+## Khái niệm: ConfigMap
 
 - **ConfigMap** là object lưu dữ liệu cấu hình không bí mật dưới dạng cặp khóa-giá trị, tách rời khỏi image của ứng dụng.
-- Nhờ đó cùng một image chạy được ở nhiều môi trường với cấu hình khác nhau mà không cần build lại.
 - Ví dụ trong dự án: ConfigMap `club-config` chứa `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`.
+
+::: details Ghi chú cho mentor
+- Nhờ ConfigMap, cùng một image chạy được ở nhiều môi trường với cấu hình khác nhau mà không cần build lại.
+:::
 
 ---
 
-## Slide 4: Khái niệm: Secret
+## Khái niệm: Secret
 
 ![So sánh ConfigMap và Secret theo mục đích, describe, etcd, mount](/slides/img/s25-cm-vs-secret.svg)
 
-- **Secret** là object lưu một lượng nhỏ dữ liệu nhạy cảm như mật khẩu hoặc token; giá trị trong `data` được mã hóa base64, còn `stringData` nhận chuỗi thường.
-- Giới hạn kích thước của ConfigMap và Secret đều là 1 MiB.
+- **Secret** là object lưu lượng nhỏ dữ liệu nhạy cảm như mật khẩu hoặc token; `data` mã hóa base64, `stringData` nhận chuỗi thường.
 - Ví dụ trong dự án: Secret `club-secrets` giữ mật khẩu database ở key `db-password`.
 
 ::: details Ghi chú cho mentor
@@ -49,7 +51,7 @@
 
 ---
 
-## Slide 5: Base64 không phải là bảo mật
+## Base64 không phải là bảo mật
 
 ![describe ẩn giá trị Secret nhưng get cộng base64 -d lộ mật khẩu](/slides/img/s25-base64.svg)
 
@@ -62,7 +64,7 @@
 
 ---
 
-## Slide 6: Ba cách đưa cấu hình vào container
+## Ba cách đưa cấu hình vào container
 
 ![env, envFrom, volume và hành vi khi ConfigMap đổi](/slides/img/s25-inject-ways.svg)
 
@@ -75,7 +77,7 @@
 
 ---
 
-## Slide 7: Cấu hình của club-api
+## Cấu hình của club-api
 
 ![ConfigMap club-config và Secret club-secrets đi vào Pod club-api và postgres](/slides/img/s25-config-flow.svg)
 
@@ -87,7 +89,7 @@
 
 ---
 
-## Slide 8: Khi nào Pod nhận giá trị mới
+## Khi nào Pod nhận giá trị mới
 
 ![Biến env không đổi, file mount đổi có trễ, subPath không đổi cho tới khi restart](/slides/img/s25-update-timeline.svg)
 
@@ -100,7 +102,7 @@
 
 ---
 
-## Slide 9: Minh họa: tạo, đọc, giải mã
+## Minh họa: tạo, đọc, giải mã
 
 ```bash
 kubectl apply -f source/k8s/configmap.yaml
@@ -119,28 +121,36 @@ Dự đoán trước khi chạy: dòng cuối in ra nội dung gì.
 
 ---
 
-## Slide 10: Lab: năm phần trong 60 phút
+## Lab: năm phần trong 60 phút
 
 | Phần | Việc làm | Mốc hoàn thành |
 | --- | --- | --- |
-| 1 và 2 | ConfigMap bằng manifest, Secret bằng lệnh | Tự giải mã được |
-| 3 | Chạy Postgres và `club-api` | `/ready` trả `ready` |
-| 4 | File mount ở namespace `lab25` | File đổi, biến không đổi |
-| 5 | Cố ý làm sai `DB_HOST` | Chẩn đoán đúng |
+| 1-2 | ConfigMap, Secret | Giải mã được |
+| 3 | Chạy `club-api` | `/ready` ổn |
+| 4-5 | Mount; sai `DB_HOST` | Chẩn đoán |
 
-Lệnh và kết quả: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.md#hands-on-lab).
+Lệnh: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.md#hands-on-lab).
+
+::: details Ghi chú cho mentor
+- Phần 1 và 2: tạo ConfigMap bằng manifest, tạo Secret bằng lệnh; mốc hoàn thành là người học tự giải mã được Secret.
+- Phần 4: mount file ở namespace `lab25`; mốc hoàn thành là file đổi còn biến môi trường không đổi.
+- Phần 5: cố ý làm sai `DB_HOST`; mốc hoàn thành là chẩn đoán đúng nguyên nhân.
+:::
 
 ---
 
-## Slide 11: Khái niệm: Readiness probe
+## Khái niệm: Readiness probe
 
 - **Readiness probe** là kiểm tra định kỳ do kubelet thực hiện để xác định container đã sẵn sàng nhận traffic hay chưa.
-- Pod không đạt readiness vẫn chạy nhưng bị loại khỏi Endpoints của Service, và rolling update không coi Pod đó là sẵn sàng.
 - Ví dụ trong dự án: endpoint `/ready` của `club-api` trả `503` khi API không kết nối được PostgreSQL.
+
+::: details Ghi chú cho mentor
+- Pod không đạt readiness vẫn chạy nhưng bị loại khỏi Endpoints của Service, và rolling update không coi Pod đó là sẵn sàng.
+:::
 
 ---
 
-## Slide 12: Phá lỗi: DB_HOST sai
+## Phá lỗi: DB_HOST sai
 
 ![ConfigMap sai DB_HOST làm Pod mới 0/1 còn Pod cũ vẫn phục vụ](/slides/img/s25-readiness-fail.svg)
 
@@ -152,7 +162,7 @@ Lệnh và kết quả: [Buổi 25 – Configuration Management](../../labs/week
 
 ---
 
-## Slide 13: Điều tra từ ngoài vào trong
+## Điều tra từ ngoài vào trong
 
 ![Năm bước: get pods, describe, logs hoặc exec, printenv, đọc ConfigMap](/slides/img/s25-investigate.svg)
 
@@ -165,23 +175,27 @@ Lệnh và kết quả: [Buổi 25 – Configuration Management](../../labs/week
 
 ---
 
-## Slide 14: Lỗi thường gặp
+## Lỗi thường gặp
 
-| Triệu chứng | Nguyên nhân | Xử lý |
+| Lỗi | Nguyên nhân | Xử lý |
 | --- | --- | --- |
-| `CreateContainerConfigError` | Secret hoặc key không tồn tại | Tạo lại đúng namespace, đúng key |
-| Ứng dụng dùng giá trị cũ | Env được chốt lúc start | `rollout restart deployment/ten` |
-| File mount không đổi | Có `subPath` hoặc `immutable` | Mount cả thư mục |
-| Đăng nhập lỗi dù mật khẩu đúng | Secret có ký tự xuống dòng thừa | `echo -n` hoặc `--from-literal` |
+| `CreateContainerConfigError` | Thiếu Secret | Tạo lại |
+| Env cũ | Chốt | `rollout restart` |
+| File cũ | `subPath` | Bỏ `subPath` |
+| Sai mật khẩu | Xuống dòng | `echo -n` |
 
 ::: details Ghi chú cho mentor
+- Cách sửa file mount không đổi: mount cả thư mục thay vì `subPath`.
+- Nguyên nhân: Secret hoặc key không tồn tại; env được chốt lúc start; file mount có `subPath` hoặc `immutable`; Secret có xuống dòng thừa.
+- Xử lý đầy đủ: tạo lại Secret đúng namespace và đúng key; dùng `rollout restart deployment/ten` khi ứng dụng giữ giá trị env cũ.
+- Ứng dụng đăng nhập lỗi dù mật khẩu đúng: Secret có ký tự xuống dòng thừa; tạo lại bằng `echo -n` hoặc `--from-literal`.
 - `secret "club-secrets" not found`: tạo lại Secret đúng namespace. `couldn't find key db-password`: tạo lại với `--from-literal=db-password=...`.
 - Khi mật khẩu đã bị commit lên Git: đổi mật khẩu ngay, sau đó mới dọn lịch sử.
 :::
 
 ---
 
-## Slide 15: Thử thách nâng cao
+## Thử thách nâng cao
 
 - A: mount một tệp bằng `subPath`, giải thích vì sao tệp không tự cập nhật.
 - B: mount Secret thành volume với quyền `0400`, nêu hai cách bảo vệ tốt hơn base64.
@@ -194,7 +208,7 @@ Chi tiết: [Buổi 25 – Thử thách nâng cao](../../labs/week-13/session-25
 
 ---
 
-## Slide 16: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: cấu hình tách rời, base64 không bảo mật, đổi env cần restart](/slides/img/s25-recap.svg)
 
@@ -205,7 +219,7 @@ Chi tiết: [Buổi 25 – Thử thách nâng cao](../../labs/week-13/session-25
 
 ---
 
-## Slide 17: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/): cách tách cấu hình khỏi image.
 - **Tài liệu chính thức:** [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/): lưu dữ liệu nhạy cảm như mật khẩu.

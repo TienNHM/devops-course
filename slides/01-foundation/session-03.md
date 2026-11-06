@@ -2,22 +2,23 @@
 
 > **Tóm tắt:** Ngày 2 sử dụng các lệnh `pwd`, `ls`, `cd`, `find`, `grep`, `less` và pipe để đọc hiểu project Club Management cùng một file access log. Kết quả là trả lời được 5 câu hỏi về project chỉ bằng dòng lệnh.
 
-## Slide 1: Hôm nay làm ra gì
+## Hôm nay làm ra gì
 
-**Cuối ngày:** người học tự trả lời được 5 câu hỏi cụ thể về project Club (có bao nhiêu route, cổng nào, mật khẩu database nằm ở đâu...) chỉ bằng terminal.
+**Cuối ngày:** người học tự trả lời được 5 câu hỏi về project Club chỉ bằng terminal.
 
-**Cần có:** đã hoàn thành Ngày 1, mở được terminal Ubuntu, `~/devops-labs` và `~/devops-course` đã được clone. Người chưa quen terminal đọc nhanh [Terminal cơ bản](../../resources/terminal-101.md).
-
-**Thời gian:** 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng kết và hỏi đáp.
+**Cần có:** đã hoàn thành Ngày 1 và clone `~/devops-labs`, `~/devops-course`. Người chưa quen terminal đọc [Terminal cơ bản](../../resources/terminal-101.md).
 
 ::: details Ghi chú cho mentor
+- Các câu hỏi cụ thể gồm: có bao nhiêu route, cổng nào, mật khẩu database nằm ở đâu.
+- Cần có thêm: mở được terminal Ubuntu.
+- Thời gian: 15 phút giới thiệu, 85 phút thực hành, 20 phút tổng kết và hỏi đáp.
 - Câu hỏi mở đầu: ai từng mở file log bằng Notepad?
 - Thực hành trong Ubuntu (WSL). Thói quen quan trọng nhất cả ngày: trước mọi lệnh xóa file, chạy `pwd` và `ls`.
 :::
 
 ---
 
-## Slide 2: Bài toán thật: project lạ, server không có giao diện
+## Bài toán thật: project lạ, server không có giao diện
 
 ![Log hàng chục nghìn dòng: Notepad không khả thi, pipeline trả lời trong vài chục giây](/slides/img/s03-problem.svg)
 
@@ -32,20 +33,21 @@
 
 ---
 
-## Slide 3: Khái niệm: Thư mục và đường dẫn
+## Khái niệm: Thư mục và đường dẫn
 
-- **Đường dẫn** (path) là chuỗi chỉ vị trí của một file hoặc thư mục trong cây thư mục. Đường dẫn tuyệt đối bắt đầu từ gốc `/` hoặc `~`, đường dẫn tương đối tính từ thư mục hiện tại.
-- Linux tổ chức mọi file thành một cây duy nhất bắt đầu từ thư mục gốc `/`, và phân biệt chữ hoa với chữ thường.
+- **Đường dẫn** (path) là chuỗi chỉ vị trí của một file hoặc thư mục trong cây thư mục.
 - Ví dụ trong dự án: `~/devops-course/starter-project` là đường dẫn tuyệt đối đến project Club.
 
 ::: details Ghi chú cho mentor
+- Đường dẫn tuyệt đối bắt đầu từ gốc `/` hoặc `~`, đường dẫn tương đối tính từ thư mục hiện tại.
+- Linux tổ chức mọi file thành một cây duy nhất bắt đầu từ thư mục gốc `/`, và phân biệt chữ hoa với chữ thường.
 - Đường dẫn tuyệt đối bắt đầu bằng `/` hoặc `~`; đường dẫn tương đối tính từ chỗ đang đứng.
 - Ổ Windows nằm dưới `/mnt/c`, tránh sử dụng trong khóa này.
 :::
 
 ---
 
-## Slide 4: Cây thư mục Linux
+## Cây thư mục Linux
 
 ![Một cây từ gốc /, home là ~, etc, var/log, tmp, ổ Windows dưới /mnt/c](/slides/img/s03-tree.svg)
 
@@ -59,19 +61,21 @@
 
 ---
 
-## Slide 5: Khái niệm: Lệnh, tùy chọn và tham số
+## Khái niệm: Lệnh, tùy chọn và tham số
 
-- Một **lệnh** (command) có dạng `tên-lệnh [tùy chọn] [tham số]`. **Tùy chọn** (option, flag) bắt đầu bằng `-` và thay đổi cách lệnh chạy. **Tham số** (argument) là đối tượng mà lệnh xử lý, ví dụ tên file.
-- Nhờ tùy chọn, một lệnh làm được nhiều việc mà không cần thêm lệnh mới.
-- Ví dụ trong dự án: trong `ls -la`, `ls` là lệnh và `-la` là hai tùy chọn gộp: `-l` liệt kê chi tiết, `-a` hiện cả file ẩn.
+- Một **lệnh** có dạng `tên-lệnh [tùy chọn] [tham số]`; **tùy chọn** bắt đầu bằng `-`, **tham số** là đối tượng lệnh xử lý.
+- Ví dụ trong dự án: `ls -la` gồm lệnh `ls` và hai tùy chọn gộp `-l`, `-a`.
 
 ::: details Ghi chú cho mentor
+- Tùy chọn (option, flag) thay đổi cách lệnh chạy; tham số (argument) là đối tượng mà lệnh xử lý, ví dụ tên file.
+- Nhờ tùy chọn, một lệnh làm được nhiều việc mà không cần thêm lệnh mới.
+- Trong `ls -la`: `-l` liệt kê chi tiết, `-a` hiện cả file ẩn.
 - Tra cứu tùy chọn bằng `man ls` hoặc `ls --help`.
 :::
 
 ---
 
-## Slide 6: Bước 1 (10 phút): Đi vào project và nhìn quanh
+## Bước 1 (10 phút): Đi vào project và nhìn quanh
 
 ```bash
 git -C ~/devops-course pull
@@ -91,7 +95,7 @@ cd -
 
 ---
 
-## Slide 7: Bước 1: Kết quả đúng
+## Bước 1: Kết quả đúng
 
 - `pwd` đầu tiên in `/home/TEN_BAN/devops-course/starter-project`.
 - `ls -la` có `backend`, `frontend`, `database`, `k8s`, `compose.yaml`, `README.md` và file ẩn `.env.example`.
@@ -104,19 +108,21 @@ cd -
 
 ---
 
-## Slide 8: Khái niệm: Mẫu tìm kiếm và ký tự đại diện
+## Khái niệm: Mẫu tìm kiếm và ký tự đại diện
 
-- **Mẫu** (pattern) là chuỗi mô tả nội dung cần khớp. Ký tự đại diện `*` khớp với một chuỗi bất kỳ, ví dụ `*.yaml` khớp mọi tên file kết thúc bằng `.yaml`.
-- `find` tìm **file** theo thuộc tính như tên, loại, kích thước. `grep` tìm **dòng** theo nội dung bên trong file.
-- Ví dụ trong dự án: `find . -name "Dockerfile"` tìm file Dockerfile, còn `grep -n "app.get" backend/app.js` tìm các dòng khai báo route.
+- **Mẫu** (pattern) là chuỗi mô tả nội dung cần khớp; ký tự đại diện `*` khớp một chuỗi bất kỳ.
+- Ví dụ trong dự án: `grep -n "app.get" backend/app.js` tìm các dòng khai báo route.
 
 ::: details Ghi chú cho mentor
+- Ví dụ ký tự đại diện: `*.yaml` khớp mọi tên file kết thúc bằng `.yaml`.
+- `find` tìm **file** theo thuộc tính như tên, loại, kích thước. `grep` tìm **dòng** theo nội dung bên trong file.
+- Ví dụ khác: `find . -name "Dockerfile"` tìm file Dockerfile.
 - Cần đặt mẫu trong dấu nháy kép để shell không tự mở rộng `*` trước khi lệnh nhận được.
 :::
 
 ---
 
-## Slide 9: Bước 2 (10 phút): find tìm file, grep tìm dòng
+## Bước 2 (10 phút): find tìm file, grep tìm dòng
 
 ![find tìm file theo tên, loại, kích thước; grep tìm dòng theo nội dung](/slides/img/s03-find-grep.svg)
 
@@ -128,7 +134,7 @@ Bước 2 dùng `find`. Bước 4 dùng `grep`.
 
 ---
 
-## Slide 10: Bước 2: Tìm file bằng find
+## Bước 2: Tìm file bằng find
 
 ```bash
 cd ~/devops-course/starter-project
@@ -145,7 +151,7 @@ find . -type f -not -path "*/node_modules/*" | wc -l
 
 ---
 
-## Slide 11: Bước 2: Kết quả đúng
+## Bước 2: Kết quả đúng
 
 ```text
 ./backend/Dockerfile
@@ -160,7 +166,7 @@ find . -type f -not -path "*/node_modules/*" | wc -l
 
 ---
 
-## Slide 12: Bước 3 (10 phút): Đọc file từng phần
+## Bước 3 (10 phút): Đọc file từng phần
 
 ```bash
 cat -n backend/app.js | head -n 25
@@ -178,7 +184,7 @@ Trong `less`: nhập `/postgres` rồi Enter để tìm, `n` chuyển sang kết
 
 ---
 
-## Slide 13: Bước 3: Kết quả đúng
+## Bước 3: Kết quả đúng
 
 - `app.js` có các dòng `app.get("/health"` và `app.get("/ready"`.
 - `init.sql` tạo bảng `members` và thêm hai thành viên mẫu.
@@ -191,7 +197,7 @@ Trong `less`: nhập `/postgres` rồi Enter để tìm, `n` chuyển sang kết
 
 ---
 
-## Slide 14: Bước 4 (15 phút): Tìm dòng bằng grep
+## Bước 4 (15 phút): Tìm dòng bằng grep
 
 `grep` trả lời câu hỏi: nội dung này nằm ở đâu trong project.
 
@@ -210,7 +216,7 @@ grep -rn "DB_PASSWORD" . --exclude-dir=node_modules
 
 ---
 
-## Slide 15: Bước 4: Kết quả đúng
+## Bước 4: Kết quả đúng
 
 - Lệnh 1 in 3 dòng (số dòng 8, 12, 21), lệnh 2 in `3`.
 - Lệnh 3 thấy `3000` trong `backend/server.js` và `compose.yaml`.
@@ -226,19 +232,20 @@ grep -rn "DB_PASSWORD" . --exclude-dir=node_modules
 
 ---
 
-## Slide 16: Khái niệm: Luồng dữ liệu và pipe
+## Khái niệm: Luồng dữ liệu và pipe
 
-- Mỗi lệnh nhận dữ liệu qua **đầu vào chuẩn** (stdin) và ghi kết quả ra **đầu ra chuẩn** (stdout), thường hiển thị trên terminal. **Pipe** `|` nối stdout của lệnh trước vào stdin của lệnh sau.
-- Nhờ pipe, các lệnh nhỏ, mỗi lệnh làm một việc, được ghép thành chuỗi xử lý phức tạp hơn.
-- Ví dụ trong dự án: `grep ... | wc -l` lọc các dòng chứa `DB_PASSWORD`, rồi đếm số dòng đó.
+- **Pipe** `|` nối đầu ra chuẩn (stdout) của lệnh trước vào đầu vào chuẩn (stdin) của lệnh sau.
+- Ví dụ trong dự án: `grep ... | wc -l` lọc các dòng chứa `DB_PASSWORD`, rồi đếm.
 
 ::: details Ghi chú cho mentor
+- Mỗi lệnh nhận dữ liệu qua stdin và ghi kết quả ra stdout, thường hiển thị trên terminal.
+- Nhờ pipe, các lệnh nhỏ, mỗi lệnh làm một việc, được ghép thành chuỗi xử lý phức tạp hơn.
 - Ở các bước trước đã dùng pipe: `find ... | sort`, `cat ... | head`. Slide này gọi tên khái niệm đó.
 :::
 
 ---
 
-## Slide 17: Bước 5 (10 phút): Ghép lệnh bằng pipe
+## Bước 5 (10 phút): Ghép lệnh bằng pipe
 
 - `|` chuyển output của lệnh trước thành input của lệnh sau.
 - Mỗi lệnh đảm nhận một việc nhỏ, và các lệnh được ghép lại thành chuỗi.
@@ -255,7 +262,7 @@ grep -rln "DB_PASSWORD" . --exclude-dir=node_modules | sort
 
 ---
 
-## Slide 18: Bước 5: Kết quả đúng
+## Bước 5: Kết quả đúng
 
 Lệnh đầu in `5`. Lệnh sau in 4 tên file, mỗi file một dòng.
 
@@ -267,31 +274,33 @@ Lệnh đầu in `5`. Lệnh sau in 4 tên file, mỗi file một dòng.
 
 ---
 
-## Slide 19: Khái niệm: Chuyển hướng và heredoc
+## Khái niệm: Chuyển hướng và heredoc
 
-- **Chuyển hướng** (redirection) đổi nơi stdout được ghi: `>` ghi đè vào file, `>>` ghi nối thêm vào cuối file. **Heredoc** (`<<'EOF'`) truyền một khối văn bản nhiều dòng vào lệnh cho đến dòng `EOF`.
-- Nhờ chuyển hướng, kết quả của lệnh được lưu thành file để dùng lại thay vì chỉ hiện trên màn hình.
-- Ví dụ trong dự án: `cat > mini-access.log <<'EOF'` tạo file log mẫu từ 10 dòng văn bản được dán vào.
+- **Chuyển hướng** đổi nơi stdout được ghi: `>` ghi đè vào file, `>>` ghi nối thêm vào cuối file.
+- Ví dụ trong dự án: `cat > mini-access.log <<'EOF'` tạo file log mẫu từ 10 dòng được dán vào.
 
 ::: details Ghi chú cho mentor
+- **Heredoc** (`<<'EOF'`) truyền một khối văn bản nhiều dòng vào lệnh cho đến dòng `EOF`.
+- Nhờ chuyển hướng, kết quả của lệnh được lưu thành file để dùng lại thay vì chỉ hiện trên màn hình.
 - Nhắc lại lỗi hay gặp: dùng `>` thay cho `>>` làm mất nội dung cũ của file.
 :::
 
 ---
 
-## Slide 20: Khái niệm: Access log và mã trạng thái HTTP
+## Khái niệm: Access log và mã trạng thái HTTP
 
-- **Access log** là file mà web server ghi mỗi request thành một dòng. **Mã trạng thái HTTP** là số ba chữ số cho biết kết quả của request: `2xx` thành công, `4xx` lỗi từ phía client, `5xx` lỗi từ phía server.
-- Phân tích access log cho biết ai gọi API nào và request nào thất bại.
-- Ví dụ trong dự án: dòng `"GET /health HTTP/1.1" 200 15` ghi một request tới `/health` và nhận mã `200`.
+- **Access log** là file mà web server ghi mỗi request thành một dòng, kèm mã trạng thái HTTP của kết quả.
+- Ví dụ trong dự án: dòng `"GET /health HTTP/1.1" 200 15` ghi một request tới `/health`, mã `200`.
 
 ::: details Ghi chú cho mentor
+- **Mã trạng thái HTTP** là số ba chữ số cho biết kết quả của request: `2xx` thành công, `4xx` lỗi từ phía client, `5xx` lỗi từ phía server.
+- Phân tích access log cho biết ai gọi API nào và request nào thất bại.
 - Dòng mẫu: `10.0.0.5 - - [21/Oct/2026:09:00:01 +0700] "GET /health HTTP/1.1" 200 15`.
 :::
 
 ---
 
-## Slide 21: Bước 6 (20 phút): Đọc một file access log
+## Bước 6 (20 phút): Đọc một file access log
 
 Khi app chạy, web server ghi mỗi request vào access log. Hôm nay chưa có container, nên cần tạo log mẫu 10 dòng.
 
@@ -304,7 +313,7 @@ Khi app chạy, web server ghi mỗi request vào access log. Hôm nay chưa có
 
 ---
 
-## Slide 22: Bước 6: Tạo mini-access.log (phần 1/2)
+## Bước 6: Tạo mini-access.log (phần 1/2)
 
 ```bash
 cd ~
@@ -323,7 +332,7 @@ cat > mini-access.log <<'EOF'
 
 ---
 
-## Slide 23: Bước 6: Tạo mini-access.log (phần 2/2)
+## Bước 6: Tạo mini-access.log (phần 2/2)
 
 ```bash
 10.0.0.7 - - [21/Oct/2026:09:00:06 +0700] "POST /api/members HTTP/1.1" 405 30
@@ -344,7 +353,7 @@ grep -c " 404 " mini-access.log
 
 ---
 
-## Slide 24: Bước 6: Pipeline phân tích log
+## Bước 6: Pipeline phân tích log
 
 ![access.log đi qua awk, sort, uniq -c, sort -nr](/slides/img/s03-pipeline.svg)
 
@@ -357,7 +366,7 @@ grep -c " 404 " mini-access.log
 
 ---
 
-## Slide 25: Bước 6: Đếm request theo IP
+## Bước 6: Đếm request theo IP
 
 ```bash
 awk '{print $1}' mini-access.log | sort | uniq -c | sort -nr
@@ -377,7 +386,7 @@ awk '{print $1}' mini-access.log | sort | uniq -c | sort -nr
 
 ---
 
-## Slide 26: Bước 6: Đếm theo mã HTTP và lọc lỗi 5xx
+## Bước 6: Đếm theo mã HTTP và lọc lỗi 5xx
 
 ```bash
 awk '{print $9}' mini-access.log | sort | uniq -c | sort -nr
@@ -400,17 +409,18 @@ awk '$9 ~ /^5/ {print $1, $7, $9}' mini-access.log
 
 ---
 
-## Slide 27: Bước 7 (10 phút): Trả lời 5 câu hỏi về project Club
+## Bước 7 (10 phút): Trả lời 5 câu hỏi về project Club
 
-Chỉ dùng các lệnh của Ngày 2. Ghi lại lệnh đã dùng cho mỗi câu.
+Chỉ dùng lệnh của Ngày 2.
 
-1. Backend có mấy route? Là những route nào?
-2. Backend chạy ở cổng nào, `compose.yaml` đặt cổng đó ở đâu?
-3. Database được nạp sẵn mấy thành viên? Tên là gì?
-4. Biến mật khẩu database tên gì, nằm trong những file nào?
-5. Trong `mini-access.log`, request nào trả mã 5xx, từ IP nào?
+1. Backend có mấy route, là route nào?
+2. Backend chạy ở cổng nào, `compose.yaml` đặt ở đâu?
+3. Database nạp sẵn mấy thành viên, tên gì?
+4. Biến mật khẩu database tên gì, nằm trong file nào?
+5. Request nào trong `mini-access.log` trả mã 5xx, từ IP nào?
 
 ::: details Ghi chú cho mentor
+- Người học ghi lại lệnh đã dùng cho mỗi câu.
 - Đáp án: 1) 3 route: `/health`, `/ready`, `/api/members`. 2) Cổng 3000: `server.js` đọc `PORT`, `compose.yaml` đặt `PORT: 3000`.
 - 3) 2 thành viên: Alice, Bob. 4) `DB_PASSWORD`, nằm trong 4 file như Bước 4.
 - 5) `GET /api/members` từ `10.0.0.9` trả mã 500.
@@ -419,7 +429,7 @@ Chỉ dùng các lệnh của Ngày 2. Ghi lại lệnh đã dùng cho mỗi câ
 
 ---
 
-## Slide 28: Lỗi thường gặp: thiếu sort khiến uniq đếm sai
+## Lỗi thường gặp: thiếu sort khiến uniq đếm sai
 
 ![Không sort: mã 200 hiện nhiều dòng; có sort: gộp thành 6 request 200](/slides/img/s03-no-sort.svg)
 
@@ -432,23 +442,24 @@ Cách sửa: thêm `sort` trước `uniq -c`, sau đó cộng các số đếm v
 
 ---
 
-## Slide 29: Lỗi thường gặp: đường dẫn và grep
+## Lỗi thường gặp: đường dẫn và grep
 
 | Triệu chứng | Cách xử lý |
 | --- | --- |
-| `No such file or directory` | `pwd` và `ls`; dùng đường dẫn tuyệt đối với `~` |
-| `cd: too many arguments` | Đặt đường dẫn có khoảng trắng trong nháy kép: `cd "my folder"` |
-| `grep` không in gì | Thử `grep -i`; kiểm tra bằng `cat file \| head` |
-| `grep -rn` in cả `node_modules` | Thêm `--exclude-dir=node_modules` |
+| `No such file or directory` | `pwd` và `ls`; dùng đường dẫn với `~` |
+| `cd: too many arguments` | Nháy kép: `cd "my folder"` |
+| `grep` không in gì | Thử `grep -i` |
+| `grep -rn` in `node_modules` | `--exclude-dir=node_modules` |
 
 ::: details Ghi chú cho mentor
+- Với `No such file or directory`, dùng đường dẫn tuyệt đối với `~`. Với `grep` không in gì, thử `grep -i` và kiểm tra bằng `cat file | head`.
 - Thư mục có khoảng trắng phải đặt trong nháy kép: `rm -r "docs/meeting notes"` khác hoàn toàn `rm -r docs/meeting notes`.
 - Chạy `pwd` và `ls` trước mọi lệnh xóa.
 :::
 
 ---
 
-## Slide 30: Tự kiểm tra
+## Tự kiểm tra
 
 1. `find` và `grep` khác nhau thế nào? Khi nào dùng lệnh nào?
 2. Vì sao phải `sort` trước `uniq -c`?
@@ -462,13 +473,13 @@ Cách sửa: thêm `sort` trước `uniq -c`, sau đó cộng các số đếm v
 
 ---
 
-## Slide 31: Tiếp theo
+## Tiếp theo
 
 Ngày 3: đưa project Club vào repository `devops-labs` bằng Git: [Slide Ngày 03](session-06.md).
 
 ---
 
-## Slide 32: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [The Linux Command Line](https://linuxcommand.org/tlcl.php): sách miễn phí dạy dòng lệnh từ cơ bản.
 - **Tài liệu chính thức:** [hier(7): cấu trúc thư mục Linux](https://man7.org/linux/man-pages/man7/hier.7.html): hiểu mỗi thư mục như /etc, /var để làm gì.

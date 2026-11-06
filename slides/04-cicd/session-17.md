@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Buổi học hướng dẫn viết unit test (mock pool) bằng `node:test`, chạy test trong GitHub Actions và dùng branch protection để chặn merge khi CI đỏ. Integration test với Postgres là phần tùy chọn.
 
-## Slide 1: Mục tiêu của buổi học
+## Mục tiêu của buổi học
 
 ![Ba mục tiêu: viết test, chạy tự động, khóa merge](/slides/img/s17-goals.svg)
 
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: Bài toán: chỉ biết lỗi sau khi merge
+## Bài toán: chỉ biết lỗi sau khi merge
 
 ![Thành viên A sửa SQL, merge, cả nhóm gặp lỗi 500](/slides/img/s17-no-gate.svg)
 
@@ -24,23 +24,30 @@
 
 ---
 
-## Slide 3: Khái niệm: Unit test
+## Khái niệm: Unit test
 
-- **Unit test** là bài kiểm tra tự động cho một đơn vị mã nhỏ (một hàm hoặc một route), chạy độc lập với các thành phần bên ngoài.
+- **Unit test** là bài kiểm tra tự động cho một đơn vị mã nhỏ, chạy độc lập với thành phần bên ngoài.
+- Ví dụ trong dự án: test `GET /health` kiểm tra API trả `ok`, không cần PostgreSQL.
+
+::: details Ghi chú cho mentor
+- Đơn vị mã nhỏ là một hàm hoặc một route.
 - Vì không phụ thuộc database hay mạng, unit test chạy nhanh và cho kết quả lặp lại được.
-- Ví dụ trong dự án: test `GET /health` kiểm tra API trả `ok` mà không cần PostgreSQL.
+:::
 
 ---
 
-## Slide 4: Khái niệm: Integration test
+## Khái niệm: Integration test
 
 - **Integration test** là bài kiểm tra nhiều thành phần chạy cùng nhau, ví dụ API kết nối tới database thật.
-- Loại test này phát hiện lỗi ở chỗ nối giữa các thành phần, nhưng chậm hơn và cần môi trường dựng sẵn.
 - Ví dụ trong dự án: truy vấn `/api/members` chạy trên PostgreSQL thật thay vì dữ liệu giả.
+
+::: details Ghi chú cho mentor
+- Loại test này phát hiện lỗi ở chỗ nối giữa các thành phần, nhưng chậm hơn và cần môi trường dựng sẵn.
+:::
 
 ---
 
-## Slide 5: Unit test và integration test
+## Unit test và integration test
 
 ![So sánh unit test dùng mock và integration test dùng DB thật](/slides/img/s17-unit-vs-integration.svg)
 
@@ -51,16 +58,20 @@
 
 ---
 
-## Slide 6: Khái niệm: Mock
+## Khái niệm: Mock
 
-- **Mock** là đối tượng giả thay thế một thành phần thật trong lúc test, và trả về dữ liệu được định sẵn.
+- **Mock** là đối tượng giả thay một thành phần thật khi test, trả dữ liệu định sẵn.
+- Ví dụ trong dự án: `pool.query` được thay bằng bản giả trả `rows` có sẵn.
+
+::: details Ghi chú cho mentor
 - Nhờ mock, test không cần database thật nên chạy nhanh và ổn định.
-- Lưu ý: nếu mock luôn trả dữ liệu đúng thì câu SQL sai vẫn không bị phát hiện; vì vậy cần thêm integration test.
-- Ví dụ trong dự án: `pool.query` được thay bằng bản giả trả về các `rows` có sẵn.
+- Lưu ý: mock luôn trả dữ liệu đúng thì SQL sai vẫn lọt.
+- Nếu mock luôn trả dữ liệu đúng thì câu SQL sai vẫn không bị phát hiện; vì vậy cần thêm integration test.
+:::
 
 ---
 
-## Slide 7: Mock thay thế database
+## Mock thay thế database
 
 ![Mock thay pool.query thật bằng bản giả trả rows có sẵn](/slides/img/s17-mock.svg)
 
@@ -71,7 +82,7 @@
 
 ---
 
-## Slide 8: node:test có sẵn trong Node 22
+## node:test có sẵn trong Node 22
 
 ```js
 import { test } from "node:test";
@@ -88,7 +99,7 @@ Không cần cài Jest hay Mocha. Chạy test bằng `node --test`.
 
 ---
 
-## Slide 9: Chạy test: mốc xanh đầu tiên
+## Chạy test: mốc xanh đầu tiên
 
 ```text
 $ npm test -- --test-reporter=spec
@@ -104,15 +115,18 @@ Kiểm tra: kết quả đúng khi có 5 dấu `✔`, `fail 0` và lệnh tự t
 
 ---
 
-## Slide 10: Khái niệm: Branch protection
+## Khái niệm: Branch protection
 
-- **Branch protection** (bảo vệ nhánh) là bộ quy tắc của GitHub áp dụng cho một nhánh, ví dụ yêu cầu status check phải xanh trước khi merge.
+- **Branch protection** (bảo vệ nhánh) là bộ quy tắc của GitHub cho một nhánh, ví dụ bắt buộc status check xanh trước khi merge.
+- Ví dụ trong dự án: `main` yêu cầu job `unit-tests` xanh; PR đỏ bị khóa Merge.
+
+::: details Ghi chú cho mentor
 - Quy tắc này biến kết quả CI thành điều kiện bắt buộc: pull request có check đỏ không thể merge.
-- Ví dụ trong dự án: nhánh `main` yêu cầu job `unit-tests` xanh; PR đỏ bị khóa nút Merge.
+:::
 
 ---
 
-## Slide 11: Từ pull request đến nút Merge
+## Từ pull request đến nút Merge
 
 ![PR chạy job unit-tests, upload báo cáo, đi qua cổng branch protection](/slides/img/s17-ci-gate.svg)
 
@@ -123,7 +137,7 @@ Kiểm tra: kết quả đúng khi có 5 dấu `✔`, `fail 0` và lệnh tự t
 
 ---
 
-## Slide 12: Demo 1: từ đỏ sang xanh
+## Demo 1: từ đỏ sang xanh
 
 ```text
 $ npm test
@@ -144,7 +158,7 @@ Sửa lại `assert` cho đúng rồi chạy lại: kết quả đúng khi có `
 
 ---
 
-## Slide 13: Demo 2: nút Merge bị khóa
+## Demo 2: nút Merge bị khóa
 
 ![Merge bị khóa khi CI đỏ, mở khi CI xanh](/slides/img/s17-merge-locked.svg)
 
@@ -155,28 +169,36 @@ Sửa lại `assert` cho đúng rồi chạy lại: kết quả đúng khi có `
 
 ---
 
-## Slide 14: Lab L1: bốn phần trong 60 phút
+## Lab L1: bốn phần trong 60 phút
 
-| Phần | Việc làm | Mốc xong |
-| --- | --- | --- |
-| 1 | Chạy test có sẵn | `pass 1` |
-| 2 | Viết 4 unit test với mock | `pass 5` |
-| 3 | Workflow + upload report | Run xanh trên Actions |
-| 4 | Branch protection | PR đỏ bị khóa Merge |
+| Phần | Mốc xong |
+| --- | --- |
+| 1. Chạy test | `pass 1` |
+| 2. Unit test | `pass 5` |
+| 3. Workflow | Run xanh |
+| 4. Branch rule | PR đỏ bị khóa |
 
 Lệnh và code đầy đủ: [Buổi 17 – Automated Testing](../../labs/week-09/session-17.md).
 
+::: details Ghi chú cho mentor
+- Phần 1 chạy test có sẵn. Phần 2 viết 4 unit test với mock; phần 3 gồm workflow và upload report, mốc xong là run xanh trên Actions.
+- Phần 4: PR đỏ bị khóa nút Merge.
+:::
+
 ---
 
-## Slide 15: Khái niệm: Service container
+## Khái niệm: Service container
 
 - **Service container** là container phụ mà GitHub Actions khởi động cùng job, dùng để cung cấp dịch vụ như database cho test.
-- Cấu hình `--health-cmd` làm runner chờ dịch vụ sẵn sàng rồi mới chạy các step của job.
 - Ví dụ trong dự án: `services.postgres` dùng image `postgres:17-alpine` cho integration test (phần tùy chọn).
+
+::: details Ghi chú cho mentor
+- Cấu hình `--health-cmd` làm runner chờ dịch vụ sẵn sàng rồi mới chạy các step của job.
+:::
 
 ---
 
-## Slide 16: Tùy chọn: service container cho integration test
+## Tùy chọn: service container cho integration test
 
 ![Job gọi Postgres qua localhost; host postgres bị ENOTFOUND](/slides/img/s17-service-container.svg)
 
@@ -188,7 +210,7 @@ Lệnh và code đầy đủ: [Buổi 17 – Automated Testing](../../labs/week-
 
 ---
 
-## Slide 17: Debug A: test pass khi chạy riêng, fail khi chạy chung
+## Debug A: test pass khi chạy riêng, fail khi chạy chung
 
 ```text
 $ npm test -- --test-name-pattern="list"   → pass
@@ -206,7 +228,7 @@ Nguyên nhân gốc: các test dùng chung database mà không đưa database v�
 
 ---
 
-## Slide 18: Debug B: không kết nối được service container
+## Debug B: không kết nối được service container
 
 ```text
 Error: getaddrinfo ENOTFOUND postgres
@@ -221,7 +243,7 @@ Error: getaddrinfo ENOTFOUND postgres
 
 ---
 
-## Slide 19: Tổng kết
+## Tổng kết
 
 ![Ba điều cần nhớ: unit nhanh, CI chạy mỗi PR, phải chặn merge](/slides/img/s17-recap.svg)
 
@@ -229,7 +251,7 @@ Buổi tiếp theo: [Buổi 18 – Docker CI Pipeline](session-18.md).
 
 ---
 
-## Slide 20: Đọc thêm: tài liệu chuẩn và best practices
+## Đọc thêm: tài liệu chuẩn và best practices
 
 - **Tài liệu chính thức:** [Node.js test runner](https://nodejs.org/docs/latest-v22.x/api/test.html): cách viết và chạy unit test bằng Node.
 - **Tài liệu chính thức:** [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions): tra cứu từng khóa trong file workflow.
