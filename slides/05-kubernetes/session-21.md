@@ -27,6 +27,8 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ## Khái niệm: Orchestration
 
+![Mất một bản club-api thì Kubernetes tạo lại để đủ 2 bản](/slides/img/s21-k-orchestration.svg)
+
 - **Orchestration** là việc tự động hóa vòng đời của container ở quy mô nhiều bản sao và nhiều máy.
 - Ví dụ trong dự án: backend của Club cần 2 bản sao luôn chạy; Kubernetes tạo lại bản bị mất.
 
@@ -58,6 +60,8 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ## Khái niệm: Declarative và reconciliation loop
 
+![Controller so sánh replicas 2 với thực tế 1 Pod rồi tạo thêm 1 Pod](/slides/img/s21-k-declarative.svg)
+
 - **Declarative** (khai báo) là mô tả trạng thái mong muốn bằng YAML; **reconciliation loop** là vòng lặp so sánh và sửa chênh lệch.
 - Ví dụ trong dự án: còn 1 Pod `club-api` thay vì 2, controller tạo thêm 1.
 
@@ -81,6 +85,8 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ## Khái niệm: Cluster, control plane và node
 
+![Cluster gồm control plane ra quyết định và worker node chạy Pod](/slides/img/s21-k-cluster.svg)
+
 - **Cluster** là tập hợp các máy chạy Kubernetes; **control plane** là nhóm thành phần ra quyết định, **worker node** là máy chạy các Pod.
 - Ví dụ trong dự án: cluster `club` có node `club-control-plane`.
 
@@ -103,6 +109,8 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 ---
 
 ## Khái niệm: API Server
+
+![kubectl hỏi API Server, chỉ API Server đọc ghi etcd](/slides/img/s21-k-api-server.svg)
 
 - **API Server** (`kube-apiserver`) là thành phần của control plane cung cấp API của Kubernetes; mọi thành phần khác giao tiếp qua nó.
 - Ví dụ trong dự án: `kubectl get pods` hỏi API Server, không đọc trực tiếp etcd.
@@ -137,6 +145,8 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 
 ## Khái niệm: kubeconfig và context
 
+![kubectl đọc kubeconfig, context kind-club trỏ tới cluster club](/slides/img/s21-k-kubeconfig.svg)
+
 - **kubeconfig** là tệp cấu hình cho `kubectl` biết cluster nào cần kết nối; **context** là bộ gồm cluster, user và namespace.
 - Ví dụ trong dự án: context `kind-club` trỏ tới cluster `club`; kiểm tra bằng `kubectl config current-context`.
 
@@ -160,6 +170,8 @@ Bài học: [Buổi 21 – Kubernetes Introduction](../../labs/week-11/session-2
 ---
 
 ## Khái niệm: kind
+
+![Container club-control-plane là node; docker ps và kubectl get nodes cùng thấy nó](/slides/img/s21-k-kind.svg)
 
 - **kind** (Kubernetes IN Docker) là công cụ tạo cluster Kubernetes cục bộ, mỗi node là một container Docker.
 - Ví dụ trong dự án: `kind create cluster --name club` tạo container `club-control-plane` và context `kind-club`.

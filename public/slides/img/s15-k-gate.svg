@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Gate cho đi tiếp hoặc chặn lại</text>
+<rect x="30" y="90" width="120" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="90" y="133" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Test</text>
+<path d="M150 125L190 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="190" y="90" width="150" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="265" y="133" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">test pass?</text>
+<path d="M340 125L380 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="380" y="90" width="120" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="440" y="133" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Build</text>
+<path d="M500 125L540 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="540" y="90" width="150" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="615" y="133" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">approval</text>
+<path d="M690 125L730 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="730" y="90" width="190" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="825" y="133" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Production</text>
+<path d="M265 160L265 190" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<text x="285" y="182" font-size="18" font-weight="700" text-anchor="start" fill="#dc2626">fail</text>
+<rect x="190" y="190" width="150" height="50" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="265" y="223" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Dừng</text>
+<path d="M615 160L615 190" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<text x="635" y="182" font-size="18" font-weight="700" text-anchor="start" fill="#dc2626">từ chối</text>
+<rect x="540" y="190" width="150" height="50" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="615" y="223" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Dừng</text>
+
+</svg>

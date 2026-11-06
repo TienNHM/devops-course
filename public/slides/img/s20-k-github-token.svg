@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Mỗi lần chạy có một token riêng</text>
+<rect x="40" y="100" width="230" height="90" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="155" y="141" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Lần chạy</text>
+<text x="155" y="171" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">workflow</text>
+<path d="M270 145L330 145" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="330" y="100" width="260" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="460" y="141" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">GITHUB_TOKEN</text>
+<text x="460" y="171" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tự động tạo</text>
+<path d="M590 125L650 90" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M590 165L650 210" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="650" y="50" width="270" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="785" y="86" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Job đẩy image</text>
+<text x="785" y="116" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">packages: write</text>
+<rect x="650" y="170" width="270" height="80" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="785" y="206" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Job kiểm thử</text>
+<text x="785" y="236" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">không cần ghi</text>
+
+</svg>

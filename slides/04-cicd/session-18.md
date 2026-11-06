@@ -33,6 +33,8 @@
 
 ## Khái niệm: Registry và GHCR
 
+![Actions đẩy image lên ghcr.io, máy học viên kéo về](/slides/img/s18-k-registry-ghcr.svg)
+
 - **Registry** là dịch vụ lưu trữ và phân phối image; **GHCR** (GitHub Container Registry) là registry của GitHub, địa chỉ `ghcr.io`.
 - Ví dụ trong dự án: image `club-api` được đẩy lên `ghcr.io/OWNER/club-api`.
 
@@ -46,6 +48,8 @@
 ---
 
 ## Khái niệm: Tag
+
+![Commit 3f2a1bc thành tag sha-3f2a1bc trỏ tới image](/slides/img/s18-k-tag.svg)
 
 - **Tag** là nhãn do con người đặt, trỏ tới một phiên bản của image trong repository, ví dụ `sha-3f2a1bc`.
 - Ví dụ trong dự án: tag `sha-` cộng 7 ký tự đầu của commit cho biết image build từ commit nào.
@@ -86,6 +90,8 @@
 ---
 
 ## Khái niệm: Permissions và quyền tối thiểu
+
+![Workflow contents read, job publish thêm packages write](/slides/img/s18-k-permissions.svg)
 
 - **Permissions** là khóa quy định GITHUB_TOKEN được làm gì; **quyền tối thiểu** là nguyên tắc chỉ cấp đúng quyền cần thiết.
 - Ví dụ trong dự án: workflow chỉ có `contents: read`; job `publish` được thêm `packages: write`.

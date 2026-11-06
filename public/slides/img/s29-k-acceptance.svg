@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Tiêu chí chấp nhận là checklist của Issue</text>
+<rect x="40" y="70" width="430" height="170" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="255" y="102" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Issue: Add DELETE</text>
+<rect x="60" y="122" width="390" height="42" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="75" y="151" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">DELETE /api/members/1 → 204</text>
+<rect x="60" y="174" width="390" height="42" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="75" y="203" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">id không tồn tại → 404</text>
+<path d="M472 155L580 155" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="526" y="138" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">đối chiếu</text>
+<rect x="584" y="75" width="170" height="60" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="669" y="113" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Reviewer</text>
+<path d="M756 95L800 95" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="802" y="70" width="130" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="867" y="103" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Nhận</text>
+<path d="M756 125L800 175" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="802" y="150" width="130" height="50" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="867" y="183" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Trả lại</text>
+<text x="690" y="222" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">đạt đủ → chấp nhận; thiếu → trả lại</text>
+
+</svg>

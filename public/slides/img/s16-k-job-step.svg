@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" width="960" height="250" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="250" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Job gồm các step chạy tuần tự</text>
+<rect x="40" y="75" width="880" height="150" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="62" y="108" font-size="22" font-weight="700" text-anchor="start" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">job: test</text>
+<rect x="70" y="125" width="180" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="160" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">checkout</text>
+<text x="160" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">uses</text>
+<path d="M250 165L286 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="286" y="125" width="180" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="376" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Cài Node</text>
+<text x="376" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">uses</text>
+<path d="M466 165L502 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="502" y="125" width="180" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="592" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">npm ci</text>
+<text x="592" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">run</text>
+<path d="M682 165L718 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="718" y="125" width="180" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="808" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">npm test</text>
+<text x="808" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">run</text>
+
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 290" width="960" height="290" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="290" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Service khai báo, container chạy</text>
+<rect x="40" y="76" width="330" height="86" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="205" y="115" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Service backend</text>
+<text x="205" y="145" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">khai báo trong YAML</text>
+<path d="M374 119L476 119" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="480" y="76" width="440" height="86" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="700" y="115" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-backend-1</text>
+<text x="700" y="145" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">container đang chạy</text>
+<text x="40" y="222" font-size="20" font-weight="400" text-anchor="start" fill="#475569">Tên container gồm:</text>
+<rect x="480" y="190" width="140" height="50" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="550" y="222" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">club</text>
+<text x="550" y="270" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">project</text>
+<rect x="630" y="190" width="140" height="50" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="700" y="222" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">backend</text>
+<text x="700" y="270" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">service</text>
+<rect x="780" y="190" width="140" height="50" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="850" y="222" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">1</text>
+<text x="850" y="270" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">số thứ tự</text>
+
+</svg>

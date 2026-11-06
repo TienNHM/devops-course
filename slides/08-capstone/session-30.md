@@ -58,6 +58,8 @@ Mỗi nhóm xác nhận cây Git sạch và `.env` bị `.gitignore` chặn.
 
 ## Khái niệm: Dependency injection
 
+![createApp nhận repo SQL khi chạy thật, repo giả khi test](/slides/img/s30-k-injection.svg)
+
 - **Dependency injection** là kỹ thuật truyền thành phần mà hàm cần dùng qua tham số, thay vì để hàm tự tạo.
 - Ví dụ trong dự án: `createApp(repo)` nhận repo SQL khi chạy thật, repo giả khi `npm test`.
 
@@ -86,6 +88,8 @@ export function createApp(repo = pgMembersRepo, db = pool) { /* ... */ }
 
 ## Khái niệm: API contract và mã trạng thái
 
+![Client và backend cùng theo contract về mã trạng thái](/slides/img/s30-k-contract.svg)
+
 - **API contract** là thỏa thuận giữa backend và client về đường dẫn, tên trường và mã trạng thái HTTP của từng phản hồi.
 - Ví dụ trong dự án: `POST` trả 201; dữ liệu sai 400; email trùng 409.
 
@@ -109,6 +113,8 @@ export function createApp(repo = pgMembersRepo, db = pool) { /* ... */ }
 ---
 
 ## Khái niệm: Branch protection
+
+![Pull request phải qua CI và approval mới merge vào main](/slides/img/s30-k-branch-protection.svg)
 
 - **Branch protection** là tập quy tắc của GitHub yêu cầu điều kiện, như CI thành công hoặc approval, trước khi merge vào một nhánh.
 - Ví dụ trong dự án: nhánh `main` chặn nút Merge khi CI thất bại.
@@ -144,6 +150,8 @@ export function createApp(repo = pgMembersRepo, db = pool) { /* ... */ }
 ---
 
 ## Khái niệm: SQL injection và truy vấn tham số hóa
+
+![Nối chuỗi biến dữ liệu thành lệnh; tham số hóa giữ nó là dữ liệu](/slides/img/s30-k-sql-injection.svg)
 
 - **SQL injection** là lỗ hổng do nối dữ liệu người dùng vào câu lệnh SQL; **truy vấn tham số hóa** gửi giá trị riêng biệt.
 - Ví dụ trong dự án: `INSERT INTO members(name, email) VALUES ($1, $2)` nhận giá trị.

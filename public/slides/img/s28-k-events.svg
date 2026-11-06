@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Events ghi lại điều đã xảy ra với Pod</text>
+<rect x="40" y="100" width="220" height="110" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="150" y="151" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod</text>
+<text x="150" y="181" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">club-api</text>
+<path d="M262 155L420 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="340" y="135" font-size="18" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">kubectl describe</text>
+<rect x="430" y="70" width="490" height="170" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="675" y="100" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Events</text>
+<rect x="450" y="114" width="450" height="34" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="470" y="139" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Scheduled</text>
+<path d="M870 131l7 8l14 -17" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="450" y="154" width="450" height="34" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="470" y="179" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Pulling image</text>
+<path d="M870 171l7 8l14 -17" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="450" y="194" width="450" height="34" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+<text x="470" y="219" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Failed to pull image</text>
+<path d="M870 201l18 18M888 201l-18 18" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+
+</svg>

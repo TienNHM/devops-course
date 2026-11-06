@@ -67,6 +67,8 @@
 
 ## Khái niệm: WSL
 
+![WSL2 chạy Linux bên trong Windows](/slides/img/s02-k-wsl.svg)
+
 - **WSL** (Windows Subsystem for Linux) là tính năng của Windows cho phép chạy môi trường Linux trực tiếp trên Windows.
 - Ví dụ trong dự án: Docker, Git và script của project Club chạy trong WSL2.
 
@@ -79,6 +81,8 @@
 ---
 
 ## Khái niệm: Distribution và Ubuntu
+
+![Distribution gồm nhân, công cụ và quản lý gói](/slides/img/s02-k-distribution.svg)
 
 - **Distribution** là một bản Linux hoàn chỉnh gồm nhân Linux, công cụ hệ thống và trình quản lý gói.
 - Ví dụ trong dự án: **Ubuntu 24.04 LTS**, tên trong WSL là `Ubuntu-24.04`.
@@ -108,6 +112,8 @@ Username viết thường, không dấu.
 ---
 
 ## Khái niệm: Terminal và shell
+
+![Terminal chứa shell bash chạy lệnh](/slides/img/s02-k-terminal-shell.svg)
 
 - **Terminal** là cửa sổ nhập lệnh dạng văn bản; **shell** là chương trình bên trong terminal, đọc và thực thi lệnh.
 - Ví dụ trong dự án: Ubuntu trên WSL2 dùng shell `bash`.
@@ -184,6 +190,8 @@ uname -a
 
 ## Khái niệm: Git, commit và repository
 
+![Repository chứa chuỗi commit](/slides/img/s02-k-git-commit.svg)
+
 - **Git** là hệ thống quản lý phiên bản, lưu lịch sử thay đổi của mã nguồn dưới dạng các **commit** trong một **repository**.
 - Ví dụ trong dự án: repository `devops-labs` chứa project Club của người học.
 
@@ -229,6 +237,8 @@ git config --global --list
 ---
 
 ## Khái niệm: SSH key
+
+![Private key ở lại máy, public key ở GitHub](/slides/img/s02-k-ssh-key.svg)
 
 - **SSH key** là cặp khóa gồm **private key** và **public key**, dùng để xác thực với máy từ xa mà không cần mật khẩu.
 - Ví dụ trong dự án: `git push` đến GitHub không hỏi mật khẩu.
@@ -310,6 +320,8 @@ but GitHub does not provide shell access.
 ---
 
 ## Khái niệm: Remote và clone
+
+![Clone, push và pull giữa máy và remote](/slides/img/s02-k-remote-clone.svg)
 
 - **Remote** là bản sao repository trên máy chủ (ở đây là GitHub); **clone** là tạo bản sao đầy đủ của remote trên máy cục bộ.
 - Ví dụ trong dự án: clone `devops-labs` và `devops-course`.

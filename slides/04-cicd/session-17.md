@@ -26,6 +26,8 @@
 
 ## Khái niệm: Unit test
 
+![Unit test chạy club-api riêng, không dùng PostgreSQL](/slides/img/s17-k-unit-test.svg)
+
 - **Unit test** là bài kiểm tra tự động cho một đơn vị mã nhỏ, chạy độc lập với thành phần bên ngoài.
 - Ví dụ trong dự án: test `GET /health` kiểm tra API trả `ok`, không cần PostgreSQL.
 
@@ -37,6 +39,8 @@
 ---
 
 ## Khái niệm: Integration test
+
+![Integration test chạy club-api cùng PostgreSQL thật](/slides/img/s17-k-integration-test.svg)
 
 - **Integration test** là bài kiểm tra nhiều thành phần chạy cùng nhau, ví dụ API kết nối tới database thật.
 - Ví dụ trong dự án: truy vấn `/api/members` chạy trên PostgreSQL thật thay vì dữ liệu giả.
@@ -59,6 +63,8 @@
 ---
 
 ## Khái niệm: Mock
+
+![Mock thay pool.query thật bằng bản giả trả rows](/slides/img/s17-k-mock.svg)
 
 - **Mock** là đối tượng giả thay một thành phần thật khi test, trả dữ liệu định sẵn.
 - Ví dụ trong dự án: `pool.query` được thay bằng bản giả trả `rows` có sẵn.
@@ -116,6 +122,8 @@ Kiểm tra: kết quả đúng khi có 5 dấu `✔`, `fail 0` và lệnh tự t
 ---
 
 ## Khái niệm: Branch protection
+
+![PR xanh mở Merge, PR đỏ khóa Merge](/slides/img/s17-k-branch-protection.svg)
 
 - **Branch protection** (bảo vệ nhánh) là bộ quy tắc của GitHub cho một nhánh, ví dụ bắt buộc status check xanh trước khi merge.
 - Ví dụ trong dự án: `main` yêu cầu job `unit-tests` xanh; PR đỏ bị khóa Merge.
@@ -188,6 +196,8 @@ Lệnh và code đầy đủ: [Buổi 17 – Automated Testing](../../labs/week-
 ---
 
 ## Khái niệm: Service container
+
+![Container postgres chạy cùng job test](/slides/img/s17-k-service-container.svg)
 
 - **Service container** là container phụ mà GitHub Actions khởi động cùng job, dùng để cung cấp dịch vụ như database cho test.
 - Ví dụ trong dự án: `services.postgres` dùng image `postgres:17-alpine` cho integration test (phần tùy chọn).

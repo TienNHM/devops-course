@@ -13,9 +13,9 @@
 <text x="790" y="179" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">GitHub Actions</text>
 <text x="790" y="211" font-size="20" text-anchor="middle" fill="#475569">giao job cho runner</text>
 <path d="M252 167L656 167" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
-<text x="454" y="152" font-size="20" text-anchor="middle" fill="#1d63ed" font-weight="700">HTTPS: runner gọi ra</text>
+<text x="552" y="152" font-size="20" text-anchor="middle" fill="#1d63ed" font-weight="700">HTTPS: runner gọi ra</text>
 <path d="M656 230L444 230" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
-<text x="545" y="258" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">✗ không có kết nối vào</text>
+<text x="552" y="258" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="700">✗ không kết nối vào</text>
 <rect x="40" y="330" width="280" height="42" rx="21" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
 <text x="180" y="358" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">Chỉ repo private</text>
 <rect x="340" y="330" width="280" height="42" rx="21" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>

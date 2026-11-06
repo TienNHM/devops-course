@@ -28,6 +28,8 @@
 
 ## Khái niệm: Label và selector
 
+![Selector app=club-api chọn hai Pod club-api và bỏ qua Pod club-web](/slides/img/s24-k-label-selector.svg)
+
 - **Label** là cặp khóa-giá trị gắn vào object, ví dụ `app: club-api`; **selector** chọn các object theo label.
 - Ví dụ trong dự án: Pod API mang label `app=club-api`, còn Pod `club-web` mang label khác.
 

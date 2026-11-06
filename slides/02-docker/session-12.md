@@ -19,6 +19,8 @@
 
 ## Khái niệm: Dữ liệu bền vững và writable layer
 
+![Docker rm xóa writable layer chứa bảng members](/slides/img/s12-k-writable-layer.svg)
+
 - **Dữ liệu bền vững** là dữ liệu vẫn tồn tại sau khi container tạo ra nó đã kết thúc.
 - Ví dụ trong dự án: các dòng bảng `members` mất sau `docker rm` nếu không có cơ chế lưu riêng.
 
@@ -43,6 +45,8 @@
 ---
 
 ## Khái niệm: Volume
+
+![Container mới gắn lại volume club-pgdata nên dữ liệu còn](/slides/img/s12-k-volume.svg)
 
 - **Volume** là vùng lưu trữ do Docker quản lý, tồn tại độc lập với vòng đời của container.
 - Ví dụ trong dự án: volume `club-pgdata` gắn vào `/var/lib/postgresql/data`, nơi Postgres ghi dữ liệu.
@@ -71,6 +75,8 @@ Bài này dùng hai loại: **named volume** cho dữ liệu và **bind mount** 
 
 ## Khái niệm: Bind mount
 
+![File init.sql trên máy gắn chỉ đọc vào container](/slides/img/s12-k-bind-mount.svg)
+
 - **Bind mount** gắn một file hoặc thư mục có sẵn trên máy chủ vào một đường dẫn trong container.
 - Ví dụ trong dự án: `database/init.sql` gắn `readonly` vào `/docker-entrypoint-initdb.d/init.sql`.
 
@@ -83,6 +89,8 @@ Bài này dùng hai loại: **named volume** cho dữ liệu và **bind mount** 
 ---
 
 ## Khái niệm: Biến môi trường
+
+![Biến -e được truyền vào tiến trình postgres](/slides/img/s12-k-env-var.svg)
 
 - **Biến môi trường** là cặp tên và giá trị mà hệ điều hành cung cấp cho tiến trình khi nó chạy.
 - Ví dụ trong dự án: `-e POSTGRES_USER=club` truyền biến vào container.
@@ -249,6 +257,8 @@ volume club-pgdata -> /var/lib/postgresql/data
 ---
 
 ## Khái niệm: Backup và restore
+
+![pg_dump ra file SQL, psql nạp lại vào database mới](/slides/img/s12-k-backup.svg)
 
 - **Backup** là bản sao dữ liệu lưu riêng; **restore** là nạp bản backup để tái tạo dữ liệu.
 - Ví dụ trong dự án: `pg_dump` xuất `clubdb` ra `~/club-backup.sql`, và `psql` nạp lại file đó.

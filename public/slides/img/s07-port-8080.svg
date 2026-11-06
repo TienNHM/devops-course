@@ -13,6 +13,7 @@
 <text x="755" y="215" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">nginx</text>
 <text x="755" y="250" font-size="20" text-anchor="middle" fill="#475569">lắng nghe cổng 80</text>
 <line x1="285" y1="220" x2="636" y2="230" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
-<text x="460" y="205" font-size="22" text-anchor="middle" fill="#1d63ed" font-weight="700">8080 : 80</text>
-<text x="60" y="320" font-size="20" fill="#475569">Số trái là cổng máy bạn, số phải là cổng trong container.</text>
+<text x="395" y="205" font-size="22" text-anchor="middle" fill="#1d63ed" font-weight="700">8080 : 80</text>
+<text x="60" y="320" font-size="20" fill="#475569">Số trái: cổng trên máy bạn.</text>
+<text x="60" y="346" font-size="20" fill="#475569">Số phải: cổng trong container.</text>
 </svg>

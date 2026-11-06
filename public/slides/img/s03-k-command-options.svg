@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="300" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">ls -la = lệnh + hai tùy chọn</text>
+<rect x="100" y="75" width="160" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="180" y="123" font-size="34" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">ls</text>
+<path d="M180 190L180 160" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="180" y="216" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">lệnh</text>
+<text x="180" y="244" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">liệt kê file</text>
+<rect x="400" y="75" width="160" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="123" font-size="34" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">-l</text>
+<path d="M480 190L480 160" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="216" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">tùy chọn</text>
+<text x="480" y="244" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">liệt kê chi tiết</text>
+<rect x="700" y="75" width="160" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="780" y="123" font-size="34" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">-a</text>
+<path d="M780 190L780 160" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="780" y="216" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">tùy chọn</text>
+<text x="780" y="244" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">hiện cả file ẩn</text>
+<text x="480" y="280" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">-la là hai tùy chọn gộp lại: -l và -a</text>
+
+</svg>

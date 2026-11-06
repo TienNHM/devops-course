@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Tag = tên image : nhãn phiên bản</text>
+<text x="40" y="110" font-size="22" font-weight="400" text-anchor="start" fill="#475569" font-family="Consolas, 'Courier New', monospace">docker build -t club-api:day6 .</text>
+<text x="275" y="190" font-size="56" font-weight="700" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">club-api</text>
+<text x="547" y="190" font-size="56" font-weight="700" text-anchor="start" fill="#475569" font-family="Consolas, 'Courier New', monospace">:</text>
+<text x="581" y="190" font-size="56" font-weight="700" text-anchor="start" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">day6</text>
+<path d="M275 208H547" stroke="#16a34a" stroke-width="4"/>
+<path d="M581 208H717" stroke="#d97706" stroke-width="4"/>
+<text x="411" y="244" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">tên image</text>
+<text x="649" y="244" font-size="22" font-weight="700" text-anchor="middle" fill="#d97706">tag</text>
+
+</svg>

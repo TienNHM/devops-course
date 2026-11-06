@@ -21,7 +21,7 @@
 <path d="M452 260L496 260" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <path d="M692 260L736 260" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <path d="M595 168L595 206" stroke="#d97706" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#a)"/>
-<text x="720" y="140" font-size="20" font-weight="700" text-anchor="middle" fill="#d97706">tự tạo PV</text>
+<text x="800" y="140" font-size="20" font-weight="700" text-anchor="middle" fill="#d97706">tự tạo PV</text>
 <text x="355" y="350" font-size="20" font-weight="700" text-anchor="middle" fill="#1d63ed">Developer tạo</text>
 <text x="595" y="350" font-size="20" font-weight="700" text-anchor="middle" fill="#16a34a">StorageClass tạo</text>
 <text x="480" y="410" font-size="22" text-anchor="middle" fill="#475569">Dynamic provisioning: bạn chỉ viết PVC, phần còn lại tự động.</text>

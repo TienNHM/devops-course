@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Có PVC, StorageClass tự tạo PV</text>
+<rect x="40" y="80" width="220" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="150" y="121" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">PVC</text>
+<text x="150" y="151" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">người dùng tạo</text>
+<path d="M260 125L340 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="344" y="80" width="270" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="479" y="121" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">StorageClass</text>
+<text x="479" y="151" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">standard</text>
+<path d="M614 125L694 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="698" y="80" width="222" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="809" y="121" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">PV</text>
+<text x="809" y="151" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tạo tự động</text>
+<text x="479" y="206" font-size="20" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">WaitForFirstConsumer</text>
+<text x="479" y="236" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">chỉ tạo PV khi có Pod dùng PVC</text>
+
+</svg>

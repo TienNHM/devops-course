@@ -13,6 +13,7 @@
 <text x="690" y="215" font-size="20" text-anchor="middle" fill="#0f172a" font-weight="700">/usr/share/nginx/html</text>
 <text x="690" y="250" font-size="20" text-anchor="middle" fill="#475569">nginx đọc ở đây (chỉ đọc)</text>
 <line x1="365" y1="220" x2="516" y2="230" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
-<text x="440" y="200" font-size="20" text-anchor="middle" fill="#1d63ed" font-weight="700">-v ...:ro</text>
-<text x="60" y="320" font-size="20" fill="#475569">Sửa file trên máy: container thấy ngay, không cần chạy lại.</text>
+<text x="412" y="200" font-size="20" text-anchor="middle" fill="#1d63ed" font-weight="700">-v ...:ro</text>
+<text x="60" y="320" font-size="20" fill="#475569">Sửa file trên máy: container thấy ngay.</text>
+<text x="60" y="346" font-size="20" fill="#475569">Không cần chạy lại container.</text>
 </svg>

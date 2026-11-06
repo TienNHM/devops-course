@@ -60,6 +60,8 @@ aws s3 ls
 
 ## Khái niệm: Infrastructure as Code (IaC)
 
+![File main.tf mô tả bucket và table, Terraform tạo ra](/slides/img/s34-k-iac.svg)
+
 - **Infrastructure as Code** (IaC) là cách mô tả tài nguyên hạ tầng bằng file văn bản, thay cho thao tác thủ công.
 - Ví dụ trong dự án: `main.tf` mô tả bucket `club-assets-tf` và table `club-events-tf`.
 

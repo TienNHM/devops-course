@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">.dockerignore giữ tệp nhạy cảm ngoài image</text>
+<rect x="40" y="70" width="330" height="190" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<rect x="55" y="80" width="300" height="32" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="68" y="103" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">app.js</text>
+<text x="342" y="103" font-size="19" font-weight="700" text-anchor="end" fill="#16a34a">giữ</text>
+<rect x="55" y="115" width="300" height="32" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="68" y="138" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">server.js</text>
+<text x="342" y="138" font-size="19" font-weight="700" text-anchor="end" fill="#16a34a">giữ</text>
+<rect x="55" y="150" width="300" height="32" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="68" y="173" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">package.json</text>
+<text x="342" y="173" font-size="19" font-weight="700" text-anchor="end" fill="#16a34a">giữ</text>
+<rect x="55" y="185" width="300" height="32" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="68" y="208" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">node_modules</text>
+<text x="342" y="208" font-size="19" font-weight="700" text-anchor="end" fill="#dc2626">loại</text>
+<rect x="55" y="220" width="300" height="32" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="68" y="243" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">.env</text>
+<text x="342" y="243" font-size="19" font-weight="700" text-anchor="end" fill="#dc2626">loại</text>
+<path d="M370 165L450 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="450" y="115" width="220" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="560" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">.dockerignore</text>
+<text x="560" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">lọc khi build</text>
+<path d="M670 165L740 165" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="740" y="115" width="180" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="830" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Image</text>
+<text x="830" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">không có .env</text>
+
+</svg>

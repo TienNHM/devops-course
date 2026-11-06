@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 270" width="960" height="270" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="270" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Undo về bản cũ, không sửa nguyên nhân gốc</text>
+<rect x="40" y="90" width="230" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="155" y="136" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bản trước</text>
+<text x="155" y="166" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">chạy tốt</text>
+<rect x="380" y="90" width="230" height="100" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="495" y="136" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bản mới</text>
+<text x="495" y="166" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">bị lỗi</text>
+<path d="M272 125L376 125" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="324" y="112" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">deploy</text>
+<path d="M495 192Q495 245 156 245Q156 225 156 196" fill="none" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="285" y="224" font-size="20" font-weight="700" text-anchor="middle" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">kubectl rollout undo</text>
+<rect x="680" y="90" width="240" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="800" y="130" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Nguyên nhân gốc</text>
+<text x="800" y="160" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">vẫn còn: lỗi có thể</text>
+<text x="800" y="182" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">lặp lại</text>
+
+</svg>

@@ -26,6 +26,8 @@
 
 ## Khái niệm: Demo script
 
+![Kịch bản demo theo thứ tự kiến trúc tới hỏi đáp](/slides/img/s32-k-demo-script.svg)
+
 - **Demo script** (kịch bản demo) là tài liệu ghi thứ tự trình diễn, lệnh cần chạy và kết quả mong đợi.
 - Ví dụ trong dự án: kịch bản 10 phút từ kiến trúc, Compose, CI/CD tới Kubernetes.
 
@@ -143,6 +145,8 @@ $ kubectl delete pod POD_BACKEND -n club
 ---
 
 ## Khái niệm: Postmortem và lessons learned
+
+![Sự cố xử lý xong, postmortem, lessons learned](/slides/img/s32-k-postmortem.svg)
 
 - **Postmortem** là bản ghi một sự cố sau khi xử lý xong, gồm tác động, nguyên nhân gốc và cách xử lý.
 - Ví dụ trong dự án: lessons learned trong `report.md`.

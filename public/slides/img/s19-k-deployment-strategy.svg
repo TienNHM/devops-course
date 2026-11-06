@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Bốn cách thay bản đang chạy</text>
+<rect x="40" y="72" width="205" height="170" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="142" y="102" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Recreate</text>
+<rect x="52" y="130" width="40" height="34" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 4"/>
+<rect x="97" y="130" width="40" height="34" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 4"/>
+<rect x="142" y="130" width="40" height="34" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 4"/>
+<rect x="187" y="130" width="40" height="34" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 4"/>
+<text x="142" y="227" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">tắt hết, rồi bật</text>
+<rect x="265" y="72" width="205" height="170" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="367" y="102" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Rolling</text>
+<rect x="277" y="130" width="40" height="34" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/><text x="297" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v2</text>
+
+<rect x="322" y="130" width="40" height="34" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/><text x="342" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v2</text>
+
+<rect x="367" y="130" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="387" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="412" y="130" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="432" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<text x="367" y="227" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">thay dần từng bản</text>
+<rect x="490" y="72" width="205" height="170" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="592" y="102" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Blue/Green</text>
+<rect x="522" y="118" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="542" y="143" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="572" y="118" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="592" y="143" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="622" y="118" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="642" y="143" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="522" y="162" width="40" height="34" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/><text x="542" y="187" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v2</text>
+
+<rect x="572" y="162" width="40" height="34" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/><text x="592" y="187" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v2</text>
+
+<rect x="622" y="162" width="40" height="34" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/><text x="642" y="187" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v2</text>
+
+<text x="592" y="228" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">chuyển cả bộ</text>
+<rect x="715" y="72" width="205" height="170" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="817" y="102" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Canary</text>
+<rect x="727" y="130" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="747" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="772" y="130" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="792" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="817" y="130" width="40" height="34" rx="6" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/><text x="837" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v1</text>
+
+<rect x="862" y="130" width="40" height="34" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/><text x="882" y="155" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">v2</text>
+
+<text x="817" y="227" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">thử một phần nhỏ</text>
+
+</svg>

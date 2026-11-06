@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Sau sự cố: ghi lại để học, không đổ lỗi</text>
+<rect x="30" y="90" width="190" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="125" y="131" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Sự cố</text>
+<text x="125" y="161" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">đã xử lý xong</text>
+<path d="M222 135L285 135" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="290" y="70" width="300" height="130" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="440" y="100" font-size="22" font-weight="700" text-anchor="middle" fill="#1d63ed">Postmortem</text>
+<text x="310" y="132" font-size="20" font-weight="400" text-anchor="start" fill="#0f172a">• Tác động</text>
+<text x="310" y="160" font-size="20" font-weight="400" text-anchor="start" fill="#0f172a">• Nguyên nhân gốc</text>
+<text x="310" y="188" font-size="20" font-weight="400" text-anchor="start" fill="#0f172a">• Cách xử lý</text>
+<path d="M592 135L655 135" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="660" y="70" width="270" height="130" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="795" y="100" font-size="22" font-weight="700" text-anchor="middle" fill="#16a34a">Lessons learned</text>
+<text x="680" y="132" font-size="20" font-weight="400" text-anchor="start" fill="#0f172a">• Điều tốt</text>
+<text x="680" y="160" font-size="20" font-weight="400" text-anchor="start" fill="#0f172a">• Điều chưa tốt</text>
+<text x="680" y="188" font-size="20" font-weight="400" text-anchor="start" fill="#0f172a">• Làm khác đi</text>
+<text x="480" y="238" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">Lessons learned ghi trong report.md</text>
+
+</svg>

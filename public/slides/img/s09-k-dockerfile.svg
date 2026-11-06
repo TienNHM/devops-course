@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Dockerfile là công thức tạo image</text>
+<rect x="40" y="80" width="420" height="160" rx="14" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="64" y="128" font-size="21" font-weight="400" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">FROM node:22-alpine</text>
+<text x="64" y="170" font-size="21" font-weight="400" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">RUN npm ci --omit=dev</text>
+<text x="64" y="212" font-size="21" font-weight="400" text-anchor="start" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">CMD [&quot;node&quot;, &quot;server.js&quot;]</text>
+<path d="M460 160L600 160" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<text x="530" y="142" font-size="20" font-weight="700" text-anchor="middle" fill="#1d63ed">docker build</text>
+<rect x="600" y="110" width="320" height="100" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="760" y="156" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Image</text>
+<text x="760" y="186" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">club-api:day6</text>
+
+</svg>

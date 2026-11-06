@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 252" width="960" height="252" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="252" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">-p 8080:80 nối cổng máy với cổng container</text>
+<rect x="40" y="90" width="210" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="145" y="136" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">curl</text>
+<text x="145" y="166" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">hoặc trình duyệt</text>
+<rect x="330" y="90" width="190" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="425" y="136" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Cổng 8080</text>
+<text x="425" y="166" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">của máy</text>
+<rect x="600" y="70" width="320" height="150" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="620" y="100" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">club-web</text>
+<rect x="630" y="120" width="260" height="76" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="760" y="154" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Nginx</text>
+<text x="760" y="184" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">lắng nghe cổng 80</text>
+<path d="M254 140L326 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M524 140L626 158" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<text x="430" y="236" font-size="20" font-weight="400" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">-p 8080:80</text>
+
+</svg>

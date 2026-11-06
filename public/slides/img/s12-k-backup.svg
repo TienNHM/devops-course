@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 255" width="960" height="255" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="255" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Backup là bản sao để nạp lại</text>
+<rect x="40" y="80" width="210" height="100" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="145" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">clubdb</text>
+<text x="145" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">club-db2</text>
+<path d="M254 130L371 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="312" y="108" font-size="20" font-weight="700" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">pg_dump</text>
+<rect x="375" y="80" width="210" height="100" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">File SQL</text>
+<text x="480" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">~/club-backup.sql</text>
+<path d="M589 130L706 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<text x="647" y="108" font-size="20" font-weight="700" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">psql</text>
+<rect x="710" y="80" width="210" height="100" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="815" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">clubdb mới</text>
+<text x="815" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">club-db3</text>
+<text x="480" y="232" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">Xóa volume xong vẫn nạp lại được</text>
+
+</svg>

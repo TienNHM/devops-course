@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Kịch bản: đi theo luồng, đúng giờ</text>
+<rect x="30" y="100" width="138" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="99" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Kiến trúc</text>
+<path d="M170 140L190 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="192" y="100" width="138" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="261" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Compose</text>
+<path d="M332 140L352 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="354" y="100" width="138" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="423" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">CI/CD</text>
+<path d="M494 140L514 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="516" y="100" width="138" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="585" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Kubernetes</text>
+<path d="M656 140L676 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="678" y="100" width="138" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="747" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Sự cố</text>
+<path d="M818 140L838 140" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="840" y="100" width="138" height="80" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="909" y="148" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Hỏi đáp</text>
+<path d="M30 205H930" stroke="#94a3b8" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="238" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">Tổng cộng 10 phút, mỗi đoạn một người phụ trách</text>
+
+</svg>

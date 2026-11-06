@@ -27,6 +27,8 @@
 
 ## Khái niệm: ConfigMap
 
+![ConfigMap club-config nạp biến môi trường vào Pod club-api](/slides/img/s25-k-configmap.svg)
+
 - **ConfigMap** là object lưu dữ liệu cấu hình không bí mật dưới dạng cặp khóa-giá trị, tách rời khỏi image của ứng dụng.
 - Ví dụ trong dự án: ConfigMap `club-config` chứa `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`.
 
@@ -140,6 +142,8 @@ Lệnh: [Buổi 25 – Configuration Management](../../labs/week-13/session-25.m
 ---
 
 ## Khái niệm: Readiness probe
+
+![Pod trả 503 ở /ready bị loại khỏi traffic của Service](/slides/img/s25-k-readiness-probe.svg)
 
 - **Readiness probe** là kiểm tra định kỳ do kubelet thực hiện để xác định container đã sẵn sàng nhận traffic hay chưa.
 - Ví dụ trong dự án: endpoint `/ready` của `club-api` trả `503` khi API không kết nối được PostgreSQL.

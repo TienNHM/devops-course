@@ -28,6 +28,8 @@
 
 ## Khái niệm: requests và limits
 
+![requests là mức đảm bảo, limits là trần, vượt thì OOMKilled](/slides/img/s26-k-requests-limits.svg)
+
 - **`requests`** là lượng CPU và memory tối thiểu container yêu cầu; **`limits`** là mức tối đa được phép dùng.
 - Ví dụ trong dự án: club-api khai báo `requests` 100m CPU và 128Mi memory, `limits` 500m CPU và 256Mi memory.
 
@@ -51,6 +53,8 @@
 
 ## Khái niệm: QoS class
 
+![Guaranteed, Burstable, BestEffort suy ra từ requests và limits](/slides/img/s26-k-qos-class.svg)
+
 - **QoS class** là nhóm ưu tiên Kubernetes gán cho Pod dựa trên `requests` và `limits`: Guaranteed, Burstable hoặc BestEffort.
 - Ví dụ trong dự án: club-api (100m/128Mi và 500m/256Mi) thuộc nhóm Burstable.
 
@@ -73,6 +77,8 @@
 ---
 
 ## Khái niệm: Probe
+
+![kubelet kiểm tra container bằng httpGet, tcpSocket hoặc exec](/slides/img/s26-k-probe.svg)
 
 - **Probe** là phép kiểm tra định kỳ do kubelet thực hiện trên container, bằng `httpGet`, `tcpSocket` hoặc `exec`.
 - Ví dụ trong dự án: club-api có hai endpoint, `/health` và `/ready`, phục vụ ba probe này.
@@ -163,6 +169,8 @@ Startup probe cho phép tối đa 2 x 15 = 30 giây. Hướng dẫn đầy đủ
 ---
 
 ## Khái niệm: OOMKilled
+
+![Memory vượt limit 64Mi thì kernel gửi SIGKILL, exit code 137](/slides/img/s26-k-oomkilled.svg)
 
 - **OOMKilled** là trạng thái của container bị kernel kết thúc vì vượt memory limit (OOM: out of memory).
 - Ví dụ trong lab: Pod `oom-demo` có limit memory `64Mi` và cấp phát bộ nhớ liên tục đến khi bị kết thúc.

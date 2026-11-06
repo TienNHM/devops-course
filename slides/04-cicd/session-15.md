@@ -39,6 +39,8 @@
 
 ## Khái niệm: Continuous Integration, Delivery và Deployment
 
+![Sau Build và test, Delivery chờ người bấm nút còn Deployment tự chạy](/slides/img/s15-k-ci-cd-delivery.svg)
+
 - **Continuous Integration (CI)** là thực hành tích hợp thay đổi vào nhánh chung thường xuyên, mỗi lần đều build và test tự động.
 - Ví dụ trong dự án: Club API nên bắt đầu với Continuous Delivery.
 
@@ -64,6 +66,8 @@
 
 ## Khái niệm: Pipeline
 
+![Commit đi qua Test, Build, Publish, Deploy; stage fail thì dừng](/slides/img/s15-k-pipeline.svg)
+
 - **Pipeline** là chuỗi các stage (giai đoạn) chạy theo thứ tự, đưa một thay đổi mã nguồn từ commit đến bản phát hành.
 - Ví dụ trong dự án: pipeline của Club API gồm Test, Build, Publish và Deploy.
 
@@ -74,6 +78,8 @@
 ---
 
 ## Khái niệm: Artifact
+
+![Stage Build tạo image club-api, stage Publish đẩy lên registry](/slides/img/s15-k-artifact.svg)
 
 - **Artifact** là thành phẩm do một stage tạo ra và được giữ lại để các stage sau sử dụng. Với container, artifact là image.
 - Ví dụ trong dự án: image `club-api` do stage Build tạo, stage Publish đẩy lên registry.
@@ -86,6 +92,8 @@
 ---
 
 ## Khái niệm: Gate
+
+![Gate test pass và approval chặn pipeline khi không đạt](/slides/img/s15-k-gate.svg)
 
 - **Gate** (cổng kiểm soát) là điều kiện pipeline phải thỏa mãn trước khi sang stage tiếp theo, ví dụ test pass hoặc có người duyệt.
 - Ví dụ trong dự án: test pass để build; approval để deploy lên production.

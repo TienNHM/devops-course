@@ -87,6 +87,8 @@
 
 ## Khái niệm: Declarative và imperative
 
+![Declarative dùng apply -f với tệp YAML trong Git; imperative dùng scale, edit để thử nhanh](/slides/img/s23-k-declarative.svg)
+
 - **Declarative** khai báo trạng thái mong muốn trong tệp để Kubernetes tự đưa cluster về đó; **imperative** ra lệnh từng thao tác.
 - Ví dụ trong dự án: `apply -f` là mặc định; `scale`, `edit` chỉ để thử nhanh.
 

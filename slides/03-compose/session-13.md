@@ -31,6 +31,8 @@
 
 ## Khái niệm: Docker Compose và compose.yaml
 
+![File compose.yaml khai báo service, volume và network](/slides/img/s13-k-compose-yaml.svg)
+
 - **Docker Compose** là công cụ định nghĩa và chạy ứng dụng gồm nhiều container, dựa trên một file cấu hình YAML.
 - Ví dụ trong dự án: `compose.yaml` của Club khai báo frontend, backend, Postgres, volume và network.
 
@@ -54,6 +56,8 @@
 ---
 
 ## Khái niệm: Service
+
+![Service backend tạo container club-backend-1](/slides/img/s13-k-service.svg)
 
 - **Service** là một thành phần của ứng dụng trong `compose.yaml`, được định nghĩa bởi image hoặc cách build, cùng cấu hình chạy.
 - Ví dụ trong dự án: Club có ba service là `frontend`, `backend` và `postgres`.
@@ -89,6 +93,8 @@ docker rm -f <tên-container-cũ>
 
 ## Khái niệm: Network và phân giải tên service
 
+![Các service gọi nhau bằng tên trong network chung](/slides/img/s13-k-network.svg)
+
 - **Docker network** là mạng ảo cho phép các container liên lạc với nhau; Compose tạo một network mặc định cho mỗi project.
 - Ví dụ trong dự án: backend gọi Postgres bằng tên service `postgres`, không dùng `localhost`.
 ::: details Ghi chú cho mentor
@@ -115,6 +121,8 @@ Trong `compose.yaml`, backend có `DB_HOST: postgres`, nghĩa là gọi Postgres
 
 ## Khái niệm: Healthcheck
 
+![Healthcheck chuyển trạng thái từ starting sang healthy](/slides/img/s13-k-healthcheck.svg)
+
 - **Healthcheck** là lệnh mà Docker chạy định kỳ bên trong container để xác định ứng dụng có hoạt động đúng hay không.
 - Ví dụ trong dự án: Postgres dùng `pg_isready -U club -d clubdb` để báo đã nhận kết nối.
 
@@ -127,6 +135,8 @@ Trong `compose.yaml`, backend có `DB_HOST: postgres`, nghĩa là gọi Postgres
 ---
 
 ## Khái niệm: depends_on
+
+![Postgres healthy rồi backend, rồi frontend mới start](/slides/img/s13-k-depends-on.svg)
 
 - **`depends_on`** là khóa trong `compose.yaml` khai báo rằng một service phụ thuộc vào service khác khi khởi động.
 - Ví dụ trong dự án: `backend` chỉ khởi động sau khi `postgres` đạt trạng thái `healthy`.
@@ -178,6 +188,8 @@ Tìm đoạn sau trong `backend` và `postgres`:
 ---
 
 ## Khái niệm: Biến môi trường và file .env
+
+![Compose đọc .env, Git chỉ lưu .env.example](/slides/img/s13-k-env-file.svg)
 
 - **Biến môi trường** (environment variable) là cặp tên và giá trị dùng để cấu hình ứng dụng mà không sửa mã nguồn.
 - Ví dụ trong dự án: `DB_PASSWORD` nằm trong `.env`; Git chỉ lưu mẫu `.env.example`.

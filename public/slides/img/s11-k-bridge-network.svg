@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Cùng bridge thì gửi được gói tin</text>
+<rect x="110" y="66" width="740" height="170" rx="14" fill="none" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="126" y="94" font-size="20" font-weight="700" text-anchor="start" fill="#1d63ed" font-family="Consolas, 'Courier New', monospace">club-net (bridge)</text>
+<rect x="160" y="120" width="220" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="270" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api</text>
+<text x="270" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">container API</text>
+<rect x="580" y="120" width="220" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="690" y="161" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">postgres</text>
+<text x="690" y="191" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">container DB</text>
+<path d="M384 165L576 165" stroke="#475569" stroke-width="3" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="480" y="148" font-size="20" font-weight="700" text-anchor="middle" fill="#475569">gói tin</text>
+
+</svg>

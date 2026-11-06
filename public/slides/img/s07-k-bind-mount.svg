@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 262" width="960" height="262" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="262" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Bind mount: một thư mục, hai đường dẫn</text>
+<rect x="40" y="70" width="380" height="170" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="64" y="102" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Máy của bạn</text>
+<rect x="64" y="130" width="332" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="230" y="171" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club/frontend</text>
+<text x="230" y="201" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">thư mục thật</text>
+<rect x="540" y="70" width="380" height="170" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="564" y="102" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">club-web</text>
+<rect x="564" y="130" width="332" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="730" y="171" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">/usr/share/nginx/html</text>
+<text x="730" y="201" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">Nginx đọc trang</text>
+<path d="M424 175L536 175" stroke="#475569" stroke-width="3" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="480" y="158" font-size="20" font-weight="400" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">-v</text>
+
+</svg>

@@ -28,6 +28,8 @@
 
 ## Khái niệm: User, group, UID và GID
 
+![Tên user và group được Linux đổi thành UID và GID](/slides/img/s04-k-uid-gid.svg)
+
 ```text
 $ id
 uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)

@@ -26,6 +26,8 @@
 
 ## Khái niệm: PV và PVC
 
+![Pod dùng PVC, PVC gắn với PV là kho lưu trữ thật](/slides/img/s27-k-pv-pvc.svg)
+
 - **PV** là phần lưu trữ thật trong cluster; **PVC** là yêu cầu cấp dung lượng do người dùng tạo.
 - Ví dụ trong dự án: Pod `postgres-0` dùng một PVC, gắn với một PV chứa dữ liệu database.
 
@@ -37,6 +39,8 @@
 ---
 
 ## Khái niệm: StorageClass
+
+![PVC gọi StorageClass standard, PV được tạo tự động](/slides/img/s27-k-storageclass.svg)
 
 - **StorageClass** là đối tượng mô tả một loại lưu trữ và cách Kubernetes tạo PV tự động (dynamic provisioning).
 - Ví dụ trong dự án: kind có StorageClass mặc định `standard`, với policy `Delete` và chế độ `WaitForFirstConsumer`.
@@ -61,6 +65,8 @@
 
 ## Khái niệm: reclaimPolicy
 
+![Xóa PVC: Delete xóa PV và dữ liệu, Retain giữ lại](/slides/img/s27-k-reclaim-policy.svg)
+
 - **`reclaimPolicy`** quy định cách xử lý PV và dữ liệu bên trong sau khi PVC liên kết bị xóa: `Delete` hoặc `Retain`.
 - Ví dụ trong dự án: StorageClass `standard` của kind dùng `Delete`, nên xóa PVC làm database rỗng.
 
@@ -83,6 +89,8 @@
 ---
 
 ## Khái niệm: StatefulSet
+
+![Pod postgres-0 được tạo lại cùng tên và gắn lại PVC cũ](/slides/img/s27-k-statefulset.svg)
 
 - **StatefulSet** là workload dành cho ứng dụng có trạng thái: mỗi Pod có tên ổn định và có thể gắn với storage riêng.
 - Ví dụ trong dự án: `postgres-0` là Pod do StatefulSet `postgres` quản lý.
@@ -168,6 +176,8 @@ Khi xóa PVC (policy `Delete`), PV biến mất và database rỗng.
 ---
 
 ## Khái niệm: Ingress và ingress controller
+
+![Ingress là luật, ingress-nginx đọc luật và chuyển request](/slides/img/s27-k-ingress.svg)
 
 - **Ingress** là luật định tuyến HTTP (host, path) tới các Service; **ingress controller** là thành phần đọc và thực thi các luật đó.
 - Ví dụ trong dự án: ingress-nginx chuyển `/api` tới Service `backend` và `/` tới `club-web`.

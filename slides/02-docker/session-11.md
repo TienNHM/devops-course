@@ -29,6 +29,8 @@ Bài học: [Buổi 11 – Container Networking](../../labs/week-06/session-11.m
 
 ## Khái niệm: Bridge network
 
+![Hai container cùng bridge club-net gửi gói tin cho nhau](/slides/img/s11-k-bridge-network.svg)
+
 - **Bridge network** là mạng ảo do Docker tạo trên máy chủ; các container cùng bridge gửi được gói tin cho nhau.
 - Ví dụ trong dự án: network `club-net` chứa container API và container Postgres.
 

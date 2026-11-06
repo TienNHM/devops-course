@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" width="960" height="250" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="250" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Stage nối stage, fail thì dừng</text>
+<rect x="30" y="95" width="130" height="70" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="95" y="138" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Commit</text>
+<path d="M160 130L200 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="200" y="85" width="160" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="280" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Test</text>
+<text x="280" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">kiểm tra</text>
+<path d="M360 130L400 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="400" y="85" width="160" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Build</text>
+<text x="480" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tạo image</text>
+<path d="M560 130L600 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="600" y="85" width="160" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="680" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Publish</text>
+<text x="680" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">lên registry</text>
+<path d="M760 130L800 130" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="800" y="85" width="130" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="865" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Deploy</text>
+<text x="865" y="156" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">chạy bản mới</text>
+<text x="480" y="225" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">Một stage fail: các stage sau không chạy</text>
+
+</svg>

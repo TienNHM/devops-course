@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 285" width="960" height="285" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="285" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Linux thật chạy ngay trong Windows</text>
+<rect x="40" y="70" width="880" height="190" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="60" y="102" font-size="22" font-weight="700" text-anchor="start" fill="#1d63ed">Windows</text>
+<rect x="80" y="118" width="800" height="124" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="100" y="148" font-size="22" font-weight="700" text-anchor="start" fill="#16a34a">WSL2 (Ubuntu-24.04)</text>
+<rect x="100" y="164" width="170" height="58" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="185" y="201" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Nhân Linux</text>
+<rect x="295" y="164" width="170" height="58" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="380" y="201" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Docker</text>
+<rect x="490" y="164" width="170" height="58" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="575" y="201" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Git</text>
+<rect x="685" y="164" width="170" height="58" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="770" y="201" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">Script Club</text>
+
+</svg>

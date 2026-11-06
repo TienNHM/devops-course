@@ -29,6 +29,8 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ## Khái niệm: GITHUB_TOKEN
 
+![Mỗi lần chạy workflow GitHub tạo một GITHUB_TOKEN; job đẩy image có packages write, job kiểm thử thì không](/slides/img/s20-k-github-token.svg)
+
 - **`GITHUB_TOKEN`** là token xác thực mà GitHub tạo tự động cho mỗi lần chạy workflow, dùng để gọi API của GitHub.
 - Ví dụ trong dự án: job đẩy image lên GHCR cần `packages: write`, job kiểm thử thì không.
 
@@ -66,6 +68,8 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 ---
 
 ## Khái niệm: Secret
+
+![Mật khẩu nằm trong GitHub Secrets và đến workflow lúc chạy, không ghi vào YAML hay Dockerfile](/slides/img/s20-k-secret.svg)
 
 - **Secret** là giá trị nhạy cảm (mật khẩu, token, khóa API) mà workflow cần dùng nhưng không được nằm trong mã nguồn.
 - Ví dụ trong dự án: mật khẩu cơ sở dữ liệu không được ghi vào YAML hay Dockerfile.
@@ -153,6 +157,8 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 
 ## Khái niệm: CVE và SBOM (nâng cao)
 
+![CVE mới được tra trong SBOM: club-api có gói bị ảnh hưởng, club-web không](/slides/img/s20-k-cve-sbom.svg)
+
 - **CVE** là mã định danh công khai của một lỗ hổng đã công bố; **SBOM** là danh sách thành phần trong một image.
 - Ví dụ trong dự án: SBOM của `club-api` có gói bị ảnh hưởng, `club-web` thì không.
 
@@ -175,6 +181,8 @@ Bài học viên: [Buổi 20 – Pipeline Security](../../labs/week-10/session-2
 ---
 
 ## Khái niệm: Trivy và quét lỗ hổng
+
+![Trivy đối chiếu image club-api:1.0.0 với cơ sở dữ liệu CVE rồi in báo cáo Total](/slides/img/s20-k-trivy.svg)
 
 - **Trivy** là công cụ mã nguồn mở quét lỗ hổng bảo mật trong image, hệ tệp và mã nguồn.
 - Ví dụ trong dự án: Trivy quét image `club-api:1.0.0` và báo số lỗ hổng ở dòng `Total`.

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Phá có chủ đích, xem hệ thống tự hồi phục</text>
+<rect x="30" y="100" width="250" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="155" y="141" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod club-api</text>
+<text x="155" y="171" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">bị xóa</text>
+<text x="155" y="90" font-size="20" font-weight="700" text-anchor="middle" fill="#dc2626" font-family="Consolas, 'Courier New', monospace">kubectl delete pod</text>
+<path d="M282 145L360 145" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="365" y="100" width="230" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="141" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Quan sát</text>
+<text x="480" y="171" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">get, events</text>
+<path d="M597 145L675 145" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="680" y="100" width="250" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="805" y="141" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Pod mới</text>
+<text x="805" y="171" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">thay thế</text>
+<text x="480" y="235" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">Một lỗi, có đường lui, ghi lại điều quan sát</text>
+
+</svg>

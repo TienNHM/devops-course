@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 270" width="960" height="270" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="270" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Contract: hai bên hiểu mã trạng thái như nhau</text>
+<rect x="40" y="100" width="170" height="100" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="125" y="158" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Client</text>
+<rect x="750" y="100" width="170" height="100" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="835" y="158" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Backend</text>
+<rect x="270" y="70" width="420" height="170" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="480" y="100" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">API contract</text>
+<rect x="290" y="114" width="380" height="34" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="480" y="139" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">POST → 201</text>
+<rect x="290" y="154" width="380" height="34" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<text x="480" y="179" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">dữ liệu sai → 400</text>
+<rect x="290" y="194" width="380" height="34" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+<text x="480" y="219" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">email trùng → 409</text>
+<path d="M212 150L266 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M748 150L694 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="300" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Repository lưu chuỗi commit</text>
+<rect x="40" y="75" width="880" height="175" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="60" y="108" font-size="22" font-weight="700" text-anchor="start" fill="#1d63ed">Repository: devops-labs</text>
+<rect x="80" y="135" width="220" height="90" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="190" y="176" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">commit 1</text>
+<text x="190" y="204" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tên + email</text>
+<path d="M302 180L366 180" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="370" y="135" width="220" height="90" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="480" y="176" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">commit 2</text>
+<text x="480" y="204" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tên + email</text>
+<path d="M592 180L656 180" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="660" y="135" width="220" height="90" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="770" y="176" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">commit 3</text>
+<text x="770" y="204" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tên + email</text>
+<text x="480" y="276" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">Git ghi lại lịch sử thay đổi theo thứ tự</text>
+
+</svg>

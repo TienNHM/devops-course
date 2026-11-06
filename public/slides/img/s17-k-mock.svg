@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Bản giả thay bản thật</text>
+<text x="40" y="115" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Chạy thật</text>
+<rect x="220" y="88" width="200" height="60" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="320" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api</text>
+<path d="M420 118L500 118" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="500" y="88" width="200" height="60" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="600" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">pool.query</text>
+<path d="M700 118L750 118" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="750" y="88" width="170" height="60" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="835" y="126" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">PostgreSQL</text>
+<text x="40" y="205" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Khi test</text>
+<rect x="220" y="175" width="200" height="60" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="320" y="213" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-api</text>
+<path d="M420 205L500 205" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="500" y="175" width="200" height="60" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="600" y="213" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">pool.query giả</text>
+<path d="M700 205L750 205" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="750" y="175" width="170" height="60" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="835" y="213" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">rows có sẵn</text>
+
+</svg>

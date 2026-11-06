@@ -49,6 +49,8 @@
 
 ## Khái niệm: Workflow
 
+![File club-ci.yml trong .github/workflows là workflow Club CI](/slides/img/s16-k-workflow.svg)
+
 - **Workflow** là một quy trình tự động của GitHub Actions, được mô tả trong một file YAML đặt ở `.github/workflows/`.
 - Ví dụ trong dự án: file `club-ci.yml` là workflow `Club CI` của Club API.
 
@@ -61,6 +63,8 @@
 ---
 
 ## Khái niệm: Event (trigger)
+
+![Mở pull request hoặc push vào main thì workflow Club CI chạy](/slides/img/s16-k-event.svg)
 
 - **Event** là sự kiện trên repository làm một workflow bắt đầu chạy, ví dụ mở pull request hoặc push lên một nhánh.
 - Ví dụ trong dự án: `Club CI` chạy khi mở pull request và khi push vào `main`.
@@ -75,6 +79,8 @@
 
 ## Khái niệm: Job và step
 
+![Job test gồm bốn step chạy lần lượt](/slides/img/s16-k-job-step.svg)
+
 - **Job** là một nhóm step chạy tuần tự trên cùng một runner. **Step** là một lệnh shell (`run`) hoặc một action (`uses`).
 - Ví dụ trong dự án: job `test` gồm các step checkout, cài Node, `npm ci`, `npm test`.
 
@@ -88,6 +94,8 @@
 ---
 
 ## Khái niệm: Runner
+
+![Mỗi job chạy trên một runner ubuntu-latest mới](/slides/img/s16-k-runner.svg)
 
 - **Runner** là máy ảo do GitHub cung cấp để thực thi một job; mỗi job nhận một máy mới.
 - Ví dụ trong dự án: `runs-on: ubuntu-latest` chọn runner Ubuntu cho cả hai job.
@@ -235,6 +243,8 @@ Khai báo `needs: test` nghĩa là khi test đỏ thì job này không chạy, n
 ---
 
 ## Khái niệm: Status check
+
+![Hai job xanh thì pull request hiện All checks have passed](/slides/img/s16-k-status-check.svg)
 
 - **Status check** là kết quả (xanh hoặc đỏ) mà một workflow báo về commit hoặc pull request sau khi chạy xong.
 - Ví dụ trong dự án: PR hiện "All checks have passed" khi cả `test` và `build-image` xanh.

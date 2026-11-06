@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Khai báo trong file, Terraform tạo ra</text>
+<rect x="30" y="80" width="300" height="140" rx="12" fill="#0f172a"/>
+<text x="48" y="110" font-size="20" font-weight="700" text-anchor="start" fill="#94a3b8">main.tf</text>
+<text x="48" y="145" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0">bucket = &quot;club-assets-tf&quot;</text>
+<text x="48" y="180" font-size="20" font-family="Consolas, 'Courier New', monospace" fill="#e2e8f0">name = &quot;club-events-tf&quot;</text>
+<path d="M332 150L400 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="405" y="105" width="190" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="500" y="146" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Terraform</text>
+<text x="500" y="176" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">đọc file .tf</text>
+<path d="M597 130L665 105" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M597 170L665 195" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="670" y="80" width="260" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="113" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">S3 club-assets-tf</text>
+<rect x="670" y="170" width="260" height="50" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="203" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">table club-events-tf</text>
+
+</svg>

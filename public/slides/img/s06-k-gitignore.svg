@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 268" width="960" height="268" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="268" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">.gitignore chặn tệp khỏi commit</text>
+<rect x="40" y="76" width="230" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="155" y="119" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club/</text>
+<rect x="40" y="176" width="230" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="155" y="207" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">.env</text>
+<text x="155" y="237" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">bí mật</text>
+<rect x="400" y="70" width="160" height="182" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2.5"/>
+<text x="480" y="130" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">.gitignore</text>
+<text x="480" y="165" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">liệt kê:</text>
+<text x="480" y="200" font-size="22" font-weight="700" text-anchor="middle" fill="#d97706" font-family="Consolas, 'Courier New', monospace">.env</text>
+<path d="M274 111L396 111" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M564 111L686 111" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="690" y="76" width="230" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="805" y="119" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Commit và push</text>
+<path d="M274 211L396 211" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="690" y="176" width="230" height="70" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="805" y="219" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Bị bỏ qua</text>
+
+</svg>

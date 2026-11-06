@@ -117,6 +117,8 @@
 
 ## Khái niệm: Pipeline, registry và health check
 
+![Pipeline dừng khi bước Test thất bại](/slides/img/s01-k-pipeline.svg)
+
 - **Pipeline** là chuỗi bước tự động chạy theo thứ tự (build, test, đóng gói, deploy); bước thất bại thì các bước sau dừng.
 - Ví dụ trong dự án: GitHub Actions là pipeline, GHCR là registry.
 

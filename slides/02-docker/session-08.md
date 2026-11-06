@@ -59,6 +59,8 @@ docker ps -a
 
 ## Khái niệm: Cổng và ánh xạ cổng
 
+![Cổng 8080 của máy chủ nối vào cổng 80 của container](/slides/img/s08-k-port-mapping.svg)
+
 - **Ánh xạ cổng** (port mapping) là quy tắc chuyển kết nối đến một cổng của máy chủ vào một cổng trong container.
 - Ví dụ trong dự án: `-p 8080:80` chuyển cổng 8080 của máy chủ vào cổng 80 của Nginx.
 
@@ -69,6 +71,8 @@ docker ps -a
 ---
 
 ## Khái niệm: Biến môi trường
+
+![Biến môi trường truyền vào container khi khởi động](/slides/img/s08-k-env-var.svg)
 
 - **Biến môi trường** (environment variable) là một cặp `TÊN=giá trị` được truyền cho tiến trình khi nó khởi động.
 - Ví dụ trong dự án: cờ `-e POSTGRES_PASSWORD=...` truyền mật khẩu cho Postgres ở Bước 3.
@@ -110,6 +114,8 @@ Kết quả mong đợi: `docker ps` có dòng `club-web ... Up ... 0.0.0.0:8080
 
 ## Khái niệm: Log của container
 
+![Log là đầu ra stdout và stderr của tiến trình chính](/slides/img/s08-k-logs.svg)
+
 - **Log** (nhật ký) của container là nội dung mà tiến trình chính ghi ra stdout và stderr.
 - Ví dụ trong dự án: Nginx ghi mỗi yêu cầu HTTP thành một dòng log; `docker logs` hiển thị các dòng đó.
 
@@ -139,6 +145,8 @@ Kết quả mong đợi: các dòng chứa `GET / HTTP/1.1" 200`.
 ---
 
 ## Khái niệm: Lệnh exec
+
+![docker exec chạy thêm shell trong container đang chạy](/slides/img/s08-k-exec.svg)
 
 - **`docker exec`** là lệnh chạy thêm một tiến trình mới bên trong container đang chạy.
 - Ví dụ trong dự án: `docker exec -it club-web sh` mở một shell trong container `club-web`.
@@ -175,6 +183,8 @@ Kết quả mong đợi: thấy `index.html` của Club và `nginx: master proce
 
 ## Khái niệm: Lệnh inspect
 
+![docker inspect hiển thị JSON về container](/slides/img/s08-k-inspect.svg)
+
 - **`docker inspect`** là lệnh hiển thị thông tin cấu hình và trạng thái của một container dưới dạng JSON.
 - Ví dụ trong dự án: `--format` lấy riêng trạng thái của `club-web`.
 
@@ -203,6 +213,8 @@ docker inspect --format 'status={{.State.Status}} started={{.State.StartedAt}}' 
 ---
 
 ## Khái niệm: Exit code
+
+![Exited (0) là bình thường, Exited (1) là lỗi](/slides/img/s08-k-exit-code.svg)
 
 - **Exit code** (mã thoát) là số nguyên mà tiến trình trả về khi kết thúc; `0` là bình thường, khác `0` là lỗi.
 - Ví dụ trong dự án: `docker ps -a` hiển thị `Exited (0)` hoặc `Exited (1)`.

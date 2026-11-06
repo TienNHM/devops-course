@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">exec thêm tiến trình, không khởi động lại</text>
+<rect x="40" y="110" width="220" height="90" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="150" y="151" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Terminal</text>
+<text x="150" y="181" font-size="19" font-weight="400" text-anchor="middle" fill="#475569" font-family="Consolas, 'Courier New', monospace">docker exec -it</text>
+<path d="M260 155L360 155" stroke="#d97706" stroke-width="3" marker-end="url(#a)"/>
+<rect x="340" y="80" width="580" height="160" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="630" y="110" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-web</text>
+<rect x="370" y="140" width="230" height="80" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="485" y="176" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">sh</text>
+<text x="485" y="206" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tiến trình mới</text>
+<rect x="630" y="140" width="260" height="80" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="760" y="176" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">nginx</text>
+<text x="760" y="206" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">đang chạy sẵn</text>
+
+</svg>

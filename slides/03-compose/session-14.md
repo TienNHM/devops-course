@@ -54,6 +54,8 @@ Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/we
 
 ## Khái niệm: depends_on và condition
 
+![Postgres chuyển từ starting sang healthy rồi backend mới khởi động](/slides/img/s14-k-depends-on.svg)
+
 - **`depends_on`** khai báo thứ tự khởi động giữa các service; `condition` quy định Compose chờ đến trạng thái nào của service được phụ thuộc.
 - Ví dụ trong dự án: backend dùng `condition: service_healthy` để chờ Postgres `healthy`.
 
@@ -105,6 +107,8 @@ Bài học đầy đủ: [Buổi 14 – Production-minded Compose](../../labs/we
 ---
 
 ## Khái niệm: Liveness và readiness
+
+![API còn sống trả 200 ở /health nhưng trả 503 ở /ready khi Postgres dừng](/slides/img/s14-k-liveness-readiness.svg)
 
 - **Liveness** cho biết ứng dụng còn sống; **readiness** cho biết ứng dụng sẵn sàng phục vụ, gồm cả các phụ thuộc như database.
 - Ví dụ trong dự án: `/health` trả `200` khi API sống; `/ready` trả `503` khi PostgreSQL dừng.

@@ -35,6 +35,8 @@
 
 ## Khái niệm: Thư mục và đường dẫn
 
+![Đường dẫn tuyệt đối và tương đối](/slides/img/s03-k-path.svg)
+
 - **Đường dẫn** (path) là chuỗi chỉ vị trí của một file hoặc thư mục trong cây thư mục.
 - Ví dụ trong dự án: `~/devops-course/starter-project` là đường dẫn tuyệt đối đến project Club.
 
@@ -62,6 +64,8 @@
 ---
 
 ## Khái niệm: Lệnh, tùy chọn và tham số
+
+![ls -la gồm lệnh và hai tùy chọn](/slides/img/s03-k-command-options.svg)
 
 - Một **lệnh** có dạng `tên-lệnh [tùy chọn] [tham số]`; **tùy chọn** bắt đầu bằng `-`, **tham số** là đối tượng lệnh xử lý.
 - Ví dụ trong dự án: `ls -la` gồm lệnh `ls` và hai tùy chọn gộp `-l`, `-a`.
@@ -109,6 +113,8 @@ cd -
 ---
 
 ## Khái niệm: Mẫu tìm kiếm và ký tự đại diện
+
+![Mẫu *.yaml khớp tên file kết thúc .yaml](/slides/img/s03-k-wildcard.svg)
 
 - **Mẫu** (pattern) là chuỗi mô tả nội dung cần khớp; ký tự đại diện `*` khớp một chuỗi bất kỳ.
 - Ví dụ trong dự án: `grep -n "app.get" backend/app.js` tìm các dòng khai báo route.
@@ -234,6 +240,8 @@ grep -rn "DB_PASSWORD" . --exclude-dir=node_modules
 
 ## Khái niệm: Luồng dữ liệu và pipe
 
+![Pipe nối stdout của grep vào stdin của wc](/slides/img/s03-k-pipe.svg)
+
 - **Pipe** `|` nối đầu ra chuẩn (stdout) của lệnh trước vào đầu vào chuẩn (stdin) của lệnh sau.
 - Ví dụ trong dự án: `grep ... | wc -l` lọc các dòng chứa `DB_PASSWORD`, rồi đếm.
 
@@ -276,6 +284,8 @@ Lệnh đầu in `5`. Lệnh sau in 4 tên file, mỗi file một dòng.
 
 ## Khái niệm: Chuyển hướng và heredoc
 
+![Dấu > ghi đè, dấu >> ghi nối thêm](/slides/img/s03-k-redirect.svg)
+
 - **Chuyển hướng** đổi nơi stdout được ghi: `>` ghi đè vào file, `>>` ghi nối thêm vào cuối file.
 - Ví dụ trong dự án: `cat > mini-access.log <<'EOF'` tạo file log mẫu từ 10 dòng được dán vào.
 
@@ -288,6 +298,8 @@ Lệnh đầu in `5`. Lệnh sau in 4 tên file, mỗi file một dòng.
 ---
 
 ## Khái niệm: Access log và mã trạng thái HTTP
+
+![Một dòng access log và mã trạng thái](/slides/img/s03-k-access-log.svg)
 
 - **Access log** là file mà web server ghi mỗi request thành một dòng, kèm mã trạng thái HTTP của kết quả.
 - Ví dụ trong dự án: dòng `"GET /health HTTP/1.1" 200 15` ghi một request tới `/health`, mã `200`.

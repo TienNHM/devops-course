@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">inspect trả về JSON; lọc bằng --format</text>
+<rect x="40" y="110" width="200" height="90" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="140" y="140" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-web</text>
+<path d="M240 155L330 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="330" y="76" width="590" height="170" rx="14" fill="#0f172a" stroke="#0f172a" stroke-width="2.5"/>
+<text x="360" y="118" font-size="22" font-weight="700" text-anchor="start" fill="#7dd3fc" font-family="Consolas, 'Courier New', monospace">State.Status</text>
+<text x="900" y="118" font-size="22" font-weight="400" text-anchor="end" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">running</text>
+<text x="360" y="164" font-size="22" font-weight="700" text-anchor="start" fill="#7dd3fc" font-family="Consolas, 'Courier New', monospace">State.ExitCode</text>
+<text x="900" y="164" font-size="22" font-weight="400" text-anchor="end" fill="#e2e8f0" font-family="Consolas, 'Courier New', monospace">0</text>
+<text x="360" y="210" font-size="22" font-weight="700" text-anchor="start" fill="#fcd34d" font-family="Consolas, 'Courier New', monospace">Config.Env</text>
+<text x="900" y="210" font-size="20" font-weight="700" text-anchor="end" fill="#fcd34d">có thể có mật khẩu</text>
+
+</svg>

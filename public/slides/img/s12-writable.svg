@@ -14,7 +14,7 @@
 <text x="240" y="318" font-size="22" text-anchor="middle" fill="#0f172a" font-weight="700">Writable layer</text>
 <text x="240" y="350" font-size="19" text-anchor="middle" fill="#475569">Postgres ghi dữ liệu vào đây</text>
 <path d="M442 330L556 200" stroke="#dc2626" stroke-width="3" marker-end="url(#r)"/>
-<text x="470" y="330" font-size="20" text-anchor="start" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker rm</text>
+<text x="458" y="330" font-size="20" text-anchor="start" fill="#dc2626" font-weight="700" font-family="Consolas, 'Courier New', monospace">docker rm</text>
 <rect x="560" y="100" width="360" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="10 6"/>
 <text x="740" y="154" font-size="22" text-anchor="middle" fill="#dc2626" font-weight="700">💥 Writable layer mất</text>
 <text x="740" y="186" font-size="20" text-anchor="middle" fill="#475569">dữ liệu mất theo</text>

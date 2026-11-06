@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">kind: mỗi node là một container</text>
+<rect x="40" y="85" width="230" height="60" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="155" y="122" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">docker ps</text>
+<rect x="40" y="185" width="230" height="60" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="155" y="222" font-size="19" font-weight="700" text-anchor="middle" fill="#0f172a" font-family="Consolas, 'Courier New', monospace">kubectl get nodes</text>
+<rect x="330" y="70" width="590" height="190" rx="14" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="350" y="98" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Docker trên máy bạn</text>
+<rect x="400" y="125" width="450" height="110" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="625" y="176" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-control-plane</text>
+<text x="625" y="206" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">container = node Kubernetes</text>
+<path d="M270 115L398 160" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M270 215L398 200" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+
+</svg>

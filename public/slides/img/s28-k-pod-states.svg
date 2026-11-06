@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="300" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Pod hỏng ở bước nào, trạng thái đó</text>
+<rect x="40" y="80" width="260" height="70" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="170" y="123" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Gán Node</text>
+<path d="M170 152L170 178" stroke="#d97706" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<rect x="40" y="182" width="260" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="170" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#92400e">Pending</text>
+<text x="170" y="250" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">chưa có Node</text>
+<path d="M302 115L386 115" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="350" y="80" width="260" height="70" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="480" y="123" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Kéo image</text>
+<path d="M480 152L480 178" stroke="#dc2626" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<rect x="350" y="182" width="260" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="480" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">ImagePullBackOff</text>
+<text x="480" y="250" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">kéo image thất bại</text>
+<path d="M612 115L696 115" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="660" y="80" width="260" height="70" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="790" y="123" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Chạy container</text>
+<path d="M790 152L790 178" stroke="#dc2626" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<rect x="660" y="182" width="260" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="790" y="218" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">CrashLoopBackOff</text>
+<text x="790" y="250" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">chạy rồi thoát, lặp lại</text>
+
+</svg>

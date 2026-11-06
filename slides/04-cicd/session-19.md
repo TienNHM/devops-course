@@ -46,6 +46,8 @@ Khóa này dùng Continuous Delivery.
 
 ## Khái niệm: Artifact bất biến
 
+![Tag sha cố định, latest đổi theo thời gian](/slides/img/s19-k-immutable-artifact.svg)
+
 - **Artifact bất biến** là artifact không bao giờ thay đổi nội dung sau khi được tạo ra, được nhận diện bằng tag cố định.
 - Ví dụ trong dự án: tag `sha-abc1234` luôn trỏ tới một image.
 
@@ -75,6 +77,8 @@ Khóa này dùng Continuous Delivery.
 
 ## Khái niệm: Environment, secret và approval
 
+![Job qua approval tới environment local, secret nằm ngoài](/slides/img/s19-k-environment-secret.svg)
+
 - **Environment** là tên nơi triển khai; **secret** là giá trị nhạy cảm lưu ngoài repository; **approval** là bước reviewer duyệt trước khi job chạy.
 - Ví dụ trong dự án: job deploy dùng `environment: local`; mật khẩu nằm trong GitHub Secrets.
 
@@ -100,6 +104,8 @@ Khóa này dùng Continuous Delivery.
 
 ## Khái niệm: Deployment strategy
 
+![Bốn chiến lược thay bản: Recreate, Rolling, Blue/Green, Canary](/slides/img/s19-k-deployment-strategy.svg)
+
 - **Deployment strategy** (chiến lược triển khai) là cách thay bản đang chạy bằng bản mới: Recreate, Rolling, Blue/Green hoặc Canary.
 - Ví dụ trong dự án: Compose trên một máy là Recreate; Kubernetes Deployment mặc định là Rolling.
 
@@ -122,6 +128,8 @@ Khóa này dùng Continuous Delivery.
 ---
 
 ## Khái niệm: Rollback
+
+![Rollback đổi TAG về previous, database không đổi](/slides/img/s19-k-rollback.svg)
 
 - **Rollback** là thao tác đưa hệ thống trở về phiên bản đã chạy ổn định trước đó.
 - Ví dụ trong dự án: `ROLLBACK=1` gán lại `TAG` bằng `previous`.
@@ -153,6 +161,8 @@ Khóa này dùng Continuous Delivery.
 
 ## Khái niệm: Self-hosted runner
 
+![GitHub giao job cho runner trên máy người học](/slides/img/s19-k-self-hosted-runner.svg)
+
 - **Self-hosted runner** là runner do người dùng tự cài trên máy mình để thực thi job của GitHub Actions, thay cho runner của GitHub.
 - Ví dụ trong dự án: runner trên máy người học nhận job và chạy `deploy-local.sh`.
 
@@ -175,6 +185,8 @@ Khóa này dùng Continuous Delivery.
 ---
 
 ## Khái niệm: Health check
+
+![Script hỏi /ready, đạt thì ghi tag, hỏng thì rollback](/slides/img/s19-k-health-check.svg)
 
 - **Health check** (kiểm tra sức khỏe) là yêu cầu tự động gửi tới ứng dụng để xác nhận nó sẵn sàng phục vụ.
 - Ví dụ trong dự án: script hỏi `/ready` tối đa 20 lần; đạt thì ghi `current-tag`.

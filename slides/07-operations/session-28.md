@@ -26,6 +26,8 @@
 
 ## Khái niệm: ReplicaSet và rollout
 
+![Deployment tạo ReplicaSet mới, Pod cũ giảm dần, Pod mới tăng dần](/slides/img/s28-k-replicaset.svg)
+
 - **ReplicaSet** duy trì số Pod cố định theo Pod template; **rollout** là quá trình Deployment thay dần Pod cũ bằng Pod mới.
 - Ví dụ trong dự án: đổi image của `club-api` tạo ra một ReplicaSet mới.
 
@@ -36,6 +38,8 @@
 ---
 
 ## Khái niệm: maxSurge và maxUnavailable
+
+![Tối đa 4 Pod trong rollout, luôn đủ 3 Pod sẵn sàng](/slides/img/s28-k-maxsurge.svg)
 
 - **`maxSurge`** là số Pod được vượt quá `replicas`; **`maxUnavailable`** là số Pod được phép không sẵn sàng trong lúc rollout.
 - Ví dụ trong dự án: Deployment 3 replicas có `maxSurge` là 1 và `maxUnavailable` là 0.
@@ -61,6 +65,8 @@
 
 ## Khái niệm: Events
 
+![Pod club-api ghi lại Events, xem bằng kubectl describe](/slides/img/s28-k-events.svg)
+
 - **Events** là bản ghi mô tả điều đã xảy ra với một đối tượng, như xếp lịch Pod, kéo image hoặc probe thất bại.
 - Ví dụ trong dự án: Events báo `Failed to pull image` khi tag không tồn tại.
 
@@ -72,6 +78,8 @@
 ---
 
 ## Khái niệm: ImagePullBackOff, CrashLoopBackOff và Pending
+
+![Ba trạng thái lỗi tương ứng ba bước: gán Node, kéo image, chạy container](/slides/img/s28-k-pod-states.svg)
 
 - **ImagePullBackOff**: kéo image thất bại; **CrashLoopBackOff**: container khởi động rồi thoát lặp lại; **Pending**: Pod chưa được gán Node.
 - Ví dụ trong dự án: tag `nginx:1.27.999` gây `ImagePullBackOff`, thiếu biến `DB_HOST` gây `CrashLoopBackOff`.
@@ -186,6 +194,8 @@ Dòng chứa `not found` cho biết tag không tồn tại trong registry.
 ---
 
 ## Khái niệm: Rollback
+
+![rollout undo quay về bản trước nhưng nguyên nhân gốc vẫn còn](/slides/img/s28-k-rollback.svg)
 
 - **Rollback** là thao tác đưa Deployment về một revision trước đó, thực hiện bằng `kubectl rollout undo`.
 - Lưu ý: rollback không loại bỏ nguyên nhân gốc, nên lỗi có thể lặp lại.

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Log là đầu ra của tiến trình chính</text>
+<rect x="40" y="110" width="170" height="90" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="125" y="151" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">curl</text>
+<text x="125" y="181" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">gọi web</text>
+<path d="M210 155L260 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="260" y="90" width="240" height="130" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="380" y="120" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">club-web</text>
+<rect x="285" y="145" width="190" height="55" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="380" y="180" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Nginx</text>
+<path d="M500 155L560 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="560" y="110" width="170" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="645" y="151" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">stdout</text>
+<text x="645" y="181" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">stderr</text>
+<path d="M730 155L770 155" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="770" y="110" width="150" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="845" y="151" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">docker</text>
+<text x="845" y="181" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">logs</text>
+<text x="480" y="262" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">mỗi yêu cầu HTTP là một dòng log</text>
+
+</svg>

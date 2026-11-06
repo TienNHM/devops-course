@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Mỗi Issue có tiêu chí riêng, DoD chung</text>
+<rect x="40" y="70" width="250" height="48" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2"/>
+<text x="60" y="101" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Issue 1</text>
+<text x="270" y="101" font-size="18" font-weight="400" text-anchor="end" fill="#475569">tiêu chí riêng</text>
+<path d="M292 94L430 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="128" width="250" height="48" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2"/>
+<text x="60" y="159" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Issue 2</text>
+<text x="270" y="159" font-size="18" font-weight="400" text-anchor="end" fill="#475569">tiêu chí riêng</text>
+<path d="M292 152L430 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="40" y="186" width="250" height="48" rx="12" fill="#fff" stroke="#1d63ed" stroke-width="2"/>
+<text x="60" y="217" font-size="20" font-weight="700" text-anchor="start" fill="#0f172a">Issue 3</text>
+<text x="270" y="217" font-size="18" font-weight="400" text-anchor="end" fill="#475569">tiêu chí riêng</text>
+<path d="M292 210L430 150" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="434" y="95" width="250" height="110" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="559" y="138" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Definition of Done</text>
+<text x="559" y="170" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">chung cho cả nhóm</text>
+<text x="559" y="194" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">(PR template)</text>
+<path d="M686 150L780 150" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<rect x="782" y="115" width="150" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="857" y="160" font-size="24" font-weight="700" text-anchor="middle" fill="#16a34a">Done</text>
+
+</svg>

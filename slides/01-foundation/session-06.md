@@ -33,6 +33,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ## Khái niệm: Git và repository
 
+![Repository gồm tệp dự án và lịch sử thay đổi](/slides/img/s06-k-repository.svg)
+
 - **Git** là hệ thống quản lý phiên bản (version control system) lưu lịch sử thay đổi của mã nguồn trong **repository**.
 - Ví dụ trong dự án: `~/devops-labs` là một repository, và `club/` sẽ trở thành thư mục trong đó.
 
@@ -55,6 +57,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ## Khái niệm: Commit
 
+![Chuỗi commit, mỗi commit là một snapshot](/slides/img/s06-k-commit.svg)
+
 - **Commit** là một bản ghi (snapshot) trạng thái các tệp tại một thời điểm, kèm thông điệp mô tả thay đổi.
 - Ví dụ trong dự án: `git commit -m "Add Club project"` tạo commit chứa `club/`.
 
@@ -67,6 +71,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ## Khái niệm: Branch
 
+![Branch feature tách ra từ main](/slides/img/s06-k-branch.svg)
+
 - **Branch** (nhánh) là một dòng lịch sử commit riêng, tách ra từ một điểm của nhánh khác.
 - Ví dụ trong dự án: `feature/add-club` chứa việc thêm `club/`.
 
@@ -78,6 +84,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 ---
 
 ## Khái niệm: Remote và push
+
+![Push gửi commit từ máy lên GitHub](/slides/img/s06-k-remote-push.svg)
 
 - **Remote** là phiên bản của repository đặt trên máy chủ, ở đây là GitHub; **push** gửi commit từ máy lên remote.
 - Ví dụ trong dự án: `git push -u origin feature/add-club` gửi branch lên GitHub.
@@ -136,6 +144,8 @@ Kết quả: `ls -a club` liệt kê `backend`, `frontend`, `database`, `compose
 ---
 
 ## Khái niệm: .gitignore
+
+![Tệp .env bị .gitignore chặn, club/ được commit](/slides/img/s06-k-gitignore.svg)
 
 - **`.gitignore`** là tệp liệt kê các mẫu tên tệp mà Git phải bỏ qua.
 - Ví dụ trong dự án: `.env` được liệt kê để không bị push.
@@ -225,6 +235,8 @@ Kết quả: dòng cuối là `branch 'feature/add-club' set up to track 'origin
 
 ## Khái niệm: Pull Request và merge
 
+![Branch qua Pull Request rồi merge vào main](/slides/img/s06-k-pull-request.svg)
+
 - **Pull Request** (PR) là yêu cầu của GitHub để đưa commit của một branch vào branch khác, kèm không gian xem xét (review).
 - Ví dụ trong dự án: PR từ `feature/add-club` vào `main`, rồi "Merge pull request".
 
@@ -273,6 +285,8 @@ Kết quả: `Deleted branch feature/add-club`; `git log` có commit `Add Club p
 ---
 
 ## Khái niệm: Merge conflict
+
+![Hai branch sửa dòng 1 gây conflict](/slides/img/s06-k-merge-conflict.svg)
 
 - **Merge conflict** (xung đột merge) xảy ra khi hai branch cùng sửa một vị trí trong một tệp và Git không thể tự chọn kết quả.
 - Ví dụ trong dự án: hai branch cùng sửa dòng 1 của `club/README.md`.

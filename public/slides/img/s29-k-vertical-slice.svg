@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="280" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Một Issue đi xuyên mọi tầng</text>
+<rect x="300" y="66" width="260" height="196" rx="12" fill="#eff6ff" stroke="#1d63ed" stroke-width="2.5" stroke-dasharray="8 5"/>
+<rect x="40" y="76" width="520" height="38" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<text x="60" y="103" font-size="20" font-weight="700" text-anchor="start" fill="#475569">API</text>
+<rect x="320" y="79" width="220" height="32" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="430" y="102" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">route</text>
+<rect x="40" y="122" width="520" height="38" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<text x="60" y="149" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Test</text>
+<rect x="320" y="125" width="220" height="32" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="430" y="148" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">test</text>
+<rect x="40" y="168" width="520" height="38" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<text x="60" y="195" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Frontend</text>
+<rect x="320" y="171" width="220" height="32" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="430" y="194" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">nút Delete</text>
+<rect x="40" y="214" width="520" height="38" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<text x="60" y="241" font-size="20" font-weight="700" text-anchor="start" fill="#475569">Tài liệu</text>
+<rect x="320" y="217" width="220" height="32" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2"/>
+<text x="430" y="240" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">README</text>
+<path d="M580 165L660 165" stroke="#1d63ed" stroke-width="3" marker-end="url(#a)"/>
+<rect x="670" y="95" width="260" height="140" rx="12" fill="#fff" stroke="#16a34a" stroke-width="2.5"/>
+<text x="800" y="135" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Issue Add DELETE</text>
+<text x="800" y="170" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">hoàn chỉnh,</text>
+<text x="800" y="198" font-size="20" font-weight="400" text-anchor="middle" fill="#475569">review và demo được</text>
+
+</svg>

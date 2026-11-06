@@ -39,6 +39,8 @@
 
 ## Khái niệm: Requirement kiểm chứng được
 
+![Yêu cầu mơ hồ không kiểm được; GET trả 404 kiểm bằng curl](/slides/img/s29-k-verifiable.svg)
+
 - **Requirement kiểm chứng được** là yêu cầu có thể xác nhận đúng hoặc sai bằng một phép kiểm tra cụ thể.
 - Ví dụ trong dự án: `GET /api/members/999` trả 404, kiểm chứng bằng `curl`.
 
@@ -110,6 +112,8 @@
 
 ## Khái niệm: Lát cắt dọc (vertical slice)
 
+![Một Issue đi xuyên API, test, frontend và tài liệu](/slides/img/s29-k-vertical-slice.svg)
+
 - **Lát cắt dọc** là phần việc đi xuyên mọi tầng hệ thống để tạo ra kết quả hoàn chỉnh, có thể review và demo.
 - Ví dụ trong dự án: Issue "Add DELETE" gồm route, test, nút Delete và README.
 
@@ -135,6 +139,8 @@
 
 ## Khái niệm: Acceptance criteria
 
+![Reviewer đối chiếu checklist của Issue để nhận hoặc trả lại](/slides/img/s29-k-acceptance.svg)
+
 - **Acceptance criteria** (tiêu chí chấp nhận) là danh sách điều kiện cụ thể mà một Issue phải thỏa mãn để coi là hoàn thành.
 - Ví dụ trong dự án: `DELETE /api/members/1` trả 204; id không tồn tại trả 404.
 
@@ -159,6 +165,8 @@
 
 ## Khái niệm: Definition of Done
 
+![Mỗi Issue có tiêu chí riêng, mọi Issue qua cùng một DoD](/slides/img/s29-k-dod.svg)
+
 - **Definition of Done (DoD)** là tập điều kiện chung mà mọi hạng mục công việc phải đạt trước khi được đánh dấu `Done`.
 - Ví dụ trong dự án: DoD của nhóm gồm bốn điều kiện, áp dụng qua PR template.
 
@@ -170,6 +178,8 @@
 ---
 
 ## Khái niệm: Architecture Decision Record (ADR)
+
+![ADR gồm bối cảnh, lựa chọn, quyết định, hệ quả](/slides/img/s29-k-adr.svg)
 
 - **ADR** là tài liệu ngắn ghi lại một quyết định kiến trúc, gồm bối cảnh, các lựa chọn, quyết định và hệ quả.
 - Ví dụ trong dự án: ADR về chiến lược tag image so sánh các cách đặt tag.

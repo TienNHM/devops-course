@@ -28,6 +28,8 @@
 
 ## Khái niệm: Dockerfile
 
+![Dockerfile được docker build biến thành image](/slides/img/s09-k-dockerfile.svg)
+
 - **Dockerfile** là tệp văn bản chứa các chỉ thị (instruction) mà Docker thực hiện tuần tự để tạo ra image.
 - Ví dụ trong dự án: `club/backend/Dockerfile` mô tả cách đóng gói API của Club thành image.
 
@@ -56,6 +58,8 @@
 
 ## Khái niệm: Base image
 
+![Image nền nằm dưới các layer của bạn](/slides/img/s09-k-base-image.svg)
+
 - **Base image** (image nền) là image mà Dockerfile bắt đầu từ đó, được khai báo bằng chỉ thị `FROM`.
 - Ví dụ trong dự án: `FROM node:22-alpine` dùng Node 22 trên Alpine Linux.
 
@@ -68,6 +72,8 @@
 
 ## Khái niệm: Lệnh mặc định CMD
 
+![CMD chạy khi docker run khởi động container](/slides/img/s09-k-cmd.svg)
+
 - **`CMD`** là chỉ thị khai báo lệnh mà container thực thi khi khởi động.
 - Ví dụ trong dự án: `CMD ["node", "server.js"]` khởi động API của Club.
 
@@ -78,6 +84,8 @@
 ---
 
 ## Khái niệm: .dockerignore
+
+![Tệp bị loại không vào image](/slides/img/s09-k-dockerignore.svg)
 
 - **`.dockerignore`** là tệp liệt kê các tệp và thư mục mà Docker loại khỏi dữ liệu gửi đi khi build.
 - Ví dụ trong dự án: `.dockerignore` của backend loại `node_modules` và `.env` khỏi image.
@@ -156,6 +164,8 @@ CMD ["node", "server.js"]
 
 ## Khái niệm: Tag
 
+![Tag gồm tên image và nhãn phiên bản](/slides/img/s09-k-tag.svg)
+
 - **Tag** là nhãn gắn vào image theo dạng `tên:nhãn`, thường dùng để ghi phiên bản.
 - Ví dụ trong dự án: `-t club-api:day6` đặt tên image là `club-api` với tag `day6`.
 
@@ -225,6 +235,8 @@ docker rm -f club-api-4000
 ---
 
 ## Khái niệm: Build cache
+
+![Layer không đổi được dùng lại từ cache](/slides/img/s09-k-build-cache.svg)
 
 - **Build cache** là bộ nhớ đệm các layer đã build, được dùng lại nếu đầu vào của layer không đổi.
 - Ví dụ trong dự án: `npm ci` đứng trước `COPY . .`, nên sửa mã nguồn không phải cài lại.

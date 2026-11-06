@@ -33,6 +33,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ## Khái niệm: Container
 
+![Container club-web cô lập với tiến trình khác của máy](/slides/img/s07-k-container.svg)
+
 - **Container** là một tiến trình chạy cô lập với phần còn lại của máy, cùng các tệp và thư viện mà ứng dụng cần.
 - Ví dụ trong dự án: Nginx phục vụ trang Club bên trong một container tên `club-web`.
 
@@ -45,6 +47,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 
 ## Khái niệm: Image
 
+![Một image tạo ra nhiều container](/slides/img/s07-k-image.svg)
+
 - **Image** là gói chỉ đọc chứa các tệp, thư viện và chỉ dẫn cần thiết để tạo ra container.
 - Ví dụ trong dự án: image `nginx:1.27-alpine` chứa máy chủ web Nginx, là nguồn tạo container `club-web`.
 
@@ -55,6 +59,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 ---
 
 ## Khái niệm: Registry và tag
+
+![Docker Hub lưu image, tag chọn phiên bản](/slides/img/s07-k-registry-tag.svg)
 
 - **Registry** là dịch vụ lưu trữ và phân phối image.
 - **Tag** là nhãn gắn vào image để phân biệt phiên bản.
@@ -79,6 +85,8 @@ Thời gian: 15 phút slide, 85 phút thực hành, 20 phút tổng kết.
 ---
 
 ## Khái niệm: Docker, client và daemon
+
+![Client docker gửi yêu cầu tới daemon dockerd](/slides/img/s07-k-docker-client-daemon.svg)
 
 - **Docker** là nền tảng để xây dựng, phân phối và chạy container.
 - Ví dụ trong dự án: lệnh `docker run` ở Bước 2 được client gửi tới daemon để tạo và khởi động container.
@@ -120,6 +128,8 @@ Kết quả: `docker version` có cả khối `Client:` và `Server:`; `hello-wo
 ---
 
 ## Khái niệm: Port mapping (ánh xạ cổng)
+
+![Cổng 8080 của máy nối tới cổng 80 trong container](/slides/img/s07-k-port-mapping.svg)
 
 - **Port mapping** chuyển các kết nối đến một cổng của máy tới một cổng bên trong container, bằng tùy chọn `-p HOST:CONTAINER`.
 - Ví dụ trong dự án: `-p 8080:80` chuyển cổng cổng 8080 của máy tới cổng 80 của Nginx.
@@ -215,6 +225,8 @@ Kết quả: `8080 -> 200` và `8081 -> 200`.
 ---
 
 ## Khái niệm: Bind mount
+
+![Thư mục club/frontend của máy gắn vào container](/slides/img/s07-k-bind-mount.svg)
 
 - **Bind mount** gắn một thư mục của máy vào một đường dẫn bên trong container, bằng tùy chọn `-v`.
 - Ví dụ trong dự án: `club/frontend` được gắn vào `/usr/share/nginx/html`, nơi Nginx đọc trang web.

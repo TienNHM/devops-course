@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="960" height="260" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker></defs>
+<rect width="960" height="260" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="40" y="48" font-size="28" font-weight="700" fill="#0f172a">Ba khái niệm khác nhau ở bước cuối</text>
+<rect x="40" y="100" width="130" height="70" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="105" y="143" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Commit</text>
+<path d="M170 135L210 135" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="210" y="100" width="170" height="70" rx="12" fill="#dbeafe" stroke="#1d63ed" stroke-width="2.5"/>
+<text x="295" y="143" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Build + test</text>
+<path d="M380 135L420 135" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="420" y="100" width="140" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="490" y="143" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Sẵn sàng</text>
+<path d="M560 125L690 112" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<path d="M560 145L690 208" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
+<rect x="690" y="80" width="230" height="64" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+<text x="805" y="108" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Delivery</text>
+<text x="805" y="138" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">người bấm nút</text>
+<rect x="690" y="176" width="230" height="64" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+<text x="805" y="204" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Deployment</text>
+<text x="805" y="234" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">tự động</text>
+<path d="M40 192H380" stroke="#1d63ed" stroke-width="3"/>
+<text x="210" y="225" font-size="20" font-weight="700" text-anchor="middle" fill="#1d63ed">CI: tích hợp liên tục</text>
+
+</svg>

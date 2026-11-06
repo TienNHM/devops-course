@@ -26,6 +26,8 @@
 
 ## Khái niệm: Smoke test
 
+![Smoke test: ba lệnh curl kiểm tra /health, /ready, /api/members](/slides/img/s31-k-smoke-test.svg)
+
 - **Smoke test** là bước kiểm tra nhanh xác nhận các chức năng thiết yếu hoạt động sau khi triển khai.
 - Ví dụ trong dự án: `curl /health`, `curl /ready` và `curl /api/members` sau khi `docker compose up`.
 
@@ -48,6 +50,8 @@
 ---
 
 ## Khái niệm: Failure injection
+
+![Xóa Pod club-api, quan sát, Pod mới thay thế](/slides/img/s31-k-failure-injection.svg)
 
 - **Failure injection** (gây lỗi có chủ đích) là kỹ thuật cố ý tạo sự cố để quan sát phản ứng của hệ thống.
 - Ví dụ trong dự án: `kubectl delete pod` xóa Pod `club-api`, Pod mới thay thế.
@@ -94,6 +98,8 @@
 ---
 
 ## Khái niệm: Readiness probe và liveness probe
+
+![Readiness quyết định nhận traffic, liveness quyết định restart](/slides/img/s31-k-probes.svg)
 
 - **Readiness probe** kiểm tra Pod sẵn sàng nhận traffic; **liveness probe** kiểm tra tiến trình còn sống để quyết định restart.
 - Ví dụ trong dự án: `/ready` chạy `SELECT 1` tới PostgreSQL; `/health` chỉ báo tiến trình còn sống.
@@ -192,6 +198,8 @@ Mã `200` vẫn liên tục vì còn Pod thứ hai.
 ---
 
 ## Khái niệm: Runbook
+
+![Sự cố dẫn tới các bước trong runbook](/slides/img/s31-k-runbook.svg)
 
 - **Runbook** là tài liệu ngắn mô tả các bước vận hành cụ thể để xử lý một tình huống đã biết.
 - Ví dụ trong dự án: runbook liệt kê `kubectl logs`, `kubectl rollout undo` và `kubectl scale`.

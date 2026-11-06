@@ -35,6 +35,8 @@
 
 ## Khái niệm: Cloud emulator
 
+![Lệnh aws gửi tới floci tại localhost:4566 thay vì AWS thật](/slides/img/s33-k-cloud-emulator.svg)
+
 - **Cloud emulator** là phần mềm chạy cục bộ, trả lời các lời gọi API giống một dịch vụ cloud thật.
 - Ví dụ trong dự án: floci là bộ giả lập AWS mã nguồn mở, chạy trong container Docker.
 
@@ -73,6 +75,8 @@
 ---
 
 ## Khái niệm: Thông tin xác thực và region
+
+![Ba biến môi trường giá trị giả để floci chấp nhận](/slides/img/s33-k-credentials.svg)
 
 - **Credentials** gồm `AWS_ACCESS_KEY_ID` và `AWS_SECRET_ACCESS_KEY`; **region** là vùng của dịch vụ.
 - Ví dụ trong dự án: floci chấp nhận mọi giá trị không rỗng, nên dùng `test`.
