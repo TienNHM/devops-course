@@ -12,7 +12,8 @@
 <rect x="690" y="110" width="230" height="90" rx="12" fill="#ffffff" stroke="#1d63ed" stroke-width="2.5"/>
 <text x="805" y="151" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">Máy của bạn</text>
 <text x="805" y="181" font-size="19" font-weight="400" text-anchor="middle" fill="#475569">image tải về</text>
-<path d="M288 198L686 160" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<path d="M562 155L684 155" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
+<text x="626" y="140" font-size="18" font-weight="700" text-anchor="middle" fill="#16a34a" font-family="Consolas, 'Courier New', monospace">docker pull</text>
 <text x="480" y="266" font-size="18" font-weight="400" text-anchor="middle" fill="#475569">ghim tag cụ thể; latest có thể đổi</text>
 
 </svg>

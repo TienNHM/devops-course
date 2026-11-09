@@ -14,7 +14,7 @@
 <text x="40" y="215" font-size="22" font-weight="700" fill="#0f172a">backend</text>
 <text x="40" y="241" font-size="18" fill="#475569">depends_on mặc định</text>
 <rect x="300" y="205" width="620" height="44" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
-<text x="610" y="234" font-size="18" font-weight="700" text-anchor="middle" fill="#dc2626">start ngay: kết nối DB thất bại ✗</text>
+<text x="745" y="234" font-size="18" font-weight="700" text-anchor="middle" fill="#dc2626">start ngay: kết nối DB thất bại ✗</text>
 <text x="40" y="315" font-size="22" font-weight="700" fill="#0f172a">backend</text>
 <text x="40" y="341" font-size="18" font-family="Consolas, 'Courier New', monospace" fill="#475569">service_healthy</text>
 <rect x="220" y="305" width="340" height="44" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="8 5"/>

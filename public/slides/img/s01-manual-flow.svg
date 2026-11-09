@@ -24,12 +24,12 @@
 <path d="M845 172L845 238" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <path d="M845 240L905 290L845 340L785 290Z" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
 <text x="845" y="298" font-size="20" font-weight="700" text-anchor="middle" fill="#0f172a">OK?</text>
-<rect x="567" y="250" width="185" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
-<text x="659" y="284" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Hỏi lại dev</text>
-<text x="659" y="316" font-size="20" text-anchor="middle" fill="#475569">đoán nguyên nhân</text>
-<path d="M783 290L754 290" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
-<text x="757" y="278" font-size="18" text-anchor="start" fill="#dc2626">Không</text>
-<path d="M662 250L662 172" fill="none" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<rect x="527" y="250" width="185" height="80" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+<text x="619" y="284" font-size="22" font-weight="700" text-anchor="middle" fill="#dc2626">Hỏi lại dev</text>
+<text x="619" y="316" font-size="20" text-anchor="middle" fill="#475569">đoán nguyên nhân</text>
+<path d="M783 290L714 290" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
+<text x="726" y="280" font-size="18" text-anchor="start" fill="#dc2626">Không</text>
+<path d="M622 250L622 172" fill="none" stroke="#dc2626" stroke-width="3" marker-end="url(#a)"/>
 <path d="M845 342L845 383" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
 <text x="865" y="368" font-size="20" font-weight="700" text-anchor="start" fill="#16a34a">Có</text>
 <rect x="745" y="385" width="200" height="60" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>

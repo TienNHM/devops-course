@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Sửa thêm 4 hình có nhãn đè lên đường nối hoặc bị mũi tên đi xuyên qua (`s01-manual-flow`, `s02-ssh-handshake`, `s07-k-registry-tag`, `s13-depends`).
 - Thêm hình minh họa (SVG) cho 122 slide khái niệm còn thiếu hình (`public/slides/img/sNN-k-*.svg`): mọi slide khái niệm giờ đều có hình. Sửa 9 hình có nhãn chữ đè lên cạnh khung hoặc đường nối.
 - Cắt chữ trên slide: slide khái niệm chỉ giữ định nghĩa và ví dụ, phần giải thích thêm chuyển vào ghi chú mentor; trung vị còn 38 chữ mỗi slide (trước đó 47), slide khái niệm 45 chữ (trước đó 73). Trình chiếu thêm nút "Ghi chú" (phím N) để mentor xem ghi chú ngay khi chiếu.
 - Giao diện di động: trình chiếu dùng chiều cao động của màn hình (không bị thanh trình duyệt che), nút bấm 46 px trên màn hình cảm ứng; đã kiểm tra 19 trang ở 360 và 390 px, không tràn ngang.

@@ -13,21 +13,21 @@
 <text x="810" y="111" font-size="22" font-weight="700" text-anchor="middle" fill="#0f172a">GitHub</text>
 <path d="M150 175L810 175" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <rect x="371" y="143" width="219" height="26" rx="6" fill="#f8fafc"/>
-<text x="480" y="163" font-size="20" text-anchor="middle" fill="#0f172a">1. git push qua SSH</text>
+<text paint-order="stroke" stroke="#f8fafc" stroke-width="8" stroke-linejoin="round" x="480" y="163" font-size="20" text-anchor="middle" fill="#0f172a">1. git push qua SSH</text>
 <path d="M810 225L150 225" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <rect x="260" y="193" width="440" height="26" rx="6" fill="#f8fafc"/>
-<text x="480" y="213" font-size="20" text-anchor="middle" fill="#0f172a">2. thử thách, dựa trên public key đã lưu</text>
+<text paint-order="stroke" stroke="#f8fafc" stroke-width="8" stroke-linejoin="round" x="480" y="213" font-size="20" text-anchor="middle" fill="#0f172a">2. thử thách, dựa trên public key đã lưu</text>
 <path d="M150 275L480 275" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <rect x="169" y="243" width="293" height="26" rx="6" fill="#f8fafc"/>
-<text x="315" y="263" font-size="20" text-anchor="middle" fill="#0f172a">3. xin ký bằng private key</text>
+<text paint-order="stroke" stroke="#f8fafc" stroke-width="8" stroke-linejoin="round" x="315" y="263" font-size="20" text-anchor="middle" fill="#0f172a">3. xin ký bằng private key</text>
 <path d="M480 325L150 325" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <rect x="237" y="293" width="156" height="26" rx="6" fill="#f8fafc"/>
-<text x="315" y="313" font-size="20" text-anchor="middle" fill="#0f172a">4. trả chữ ký</text>
+<text paint-order="stroke" stroke="#f8fafc" stroke-width="8" stroke-linejoin="round" x="315" y="313" font-size="20" text-anchor="middle" fill="#0f172a">4. trả chữ ký</text>
 <path d="M150 375L810 375" stroke="#475569" stroke-width="3" marker-end="url(#a)"/>
 <rect x="402" y="343" width="156" height="26" rx="6" fill="#f8fafc"/>
-<text x="480" y="363" font-size="20" text-anchor="middle" fill="#0f172a">5. gửi chữ ký</text>
+<text paint-order="stroke" stroke="#f8fafc" stroke-width="8" stroke-linejoin="round" x="480" y="363" font-size="20" text-anchor="middle" fill="#0f172a">5. gửi chữ ký</text>
 <path d="M810 425L150 425" stroke="#16a34a" stroke-width="3" marker-end="url(#a)"/>
 <rect x="355" y="393" width="251" height="26" rx="6" fill="#f8fafc"/>
-<text x="480" y="413" font-size="20" text-anchor="middle" fill="#16a34a">6. xác thực thành công</text>
+<text paint-order="stroke" stroke="#f8fafc" stroke-width="8" stroke-linejoin="round" x="480" y="413" font-size="20" text-anchor="middle" fill="#16a34a">6. xác thực thành công</text>
 
 </svg>
